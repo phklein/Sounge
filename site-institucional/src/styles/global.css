@@ -23,8 +23,8 @@ body {
 }
 
 .container {
-    width: 90%;
-    max-width: 1200px;
+    width: 1200px;
+    max-width: 90%;
     margin: 0 auto;
     text-align: center;
 }
@@ -82,20 +82,20 @@ header {
 _______________________________________________________________________________________ */
 
 .button {
-    background: var(--light-purple);
-    box-shadow: inset 0 0 20px #9292fa;
-    color: var(--black);
-    font-weight: 900;
+    background: var(--dark-purple);
+    box-shadow: inset 0 0 20px #712abd;
+    color: var(--light-gray);
+    font-weight: 700;
     text-transform: uppercase;
-    border-radius: 2px;
-    border: 1px solid #9c9cff;
-    padding: 10px 15px;
+    border-radius: 20px;
+    border: none;
+    padding: 12px 30px;
     cursor: pointer;
     transition: ease-in-out .3s;
 }
 
 .button:hover { 
-    background: var(--white);
-    border-color: var(--white);
+    background: var(--light-gray);
+    color: var(--dark-gray);
     box-shadow: none;
 }

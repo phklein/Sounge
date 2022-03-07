@@ -5,6 +5,12 @@ import '../styles/home.css'
 import { Button } from '../components/Button'
 import { NavBar } from '../components/Navbar'
 
+const cardStyles = { 
+    publicationStyle1: { background: 'url(https://s3-alpha-sig.figma.com/img/5bdd/3129/8f7dc0725f4efc3daf9b18b0d1e93303?Expires=1647820800&Signature=N8ql0T470F~7gWehiWIuptBvg~q5TiRajyoq3r4LUTKIo0YKBopibruCUSOGCuwK8ZyIzEpkruc5N9MBUN7i1SMt3yoULfbLfLtJ2r3cf8uGSbBF-1zbyzdGG5v4Awo12MgIENSeFJJ675IBrZAedWgeWa0A1jjtqXa94tcrPzDU13pABkt27~85d8rsXLYzu-PQ6n7in--X2mzDziIsqKMQGcrGYXF-iM0EadxTvJ8yxOUvGjDOi-K7nClaZ8v4sdvKwobMLER-nv8r3zZlQ50r6-XdwqWdZ9n~v85VOZX970BPlx~VBBYhowxjkzcsWBUA0J9K7M0GhAYjBLaoQA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)' },
+    publicationStyle2: { background: 'url(https://s3-alpha-sig.figma.com/img/1f69/9ff5/f8d9c435c1258b95b7ea8680c283f9eb?Expires=1647820800&Signature=hH~7gDj6pQsmIPRS3lpDqXIjCgovf-T~Gf-W4mqsHjrUOchN-qDI3fFM6s3ZENRTeqnYMnyvf-PoKbgKB6DvuZd9wk4rli~Ty5~vCSPX50U9q-bJSaQfaZIH51DVBezNRV-S6gHrWBnkXFMnA3Vg1iONGUBdbZafNL3lMwOpkRThscwI-5AD0eSFyAo3IV9~hZhXsyvzTCxjQer-bLsF9U0tS3tTT3EVKIJgnByf48RdJgizmXtbeV-s9QVJxq-8R1qZTV4-09nJngwpCqJwuxUEaIVAPmmxgh1sPESD1iWrakYp96ujgoQ-Y-TC~O7OwV~3adG3RHopdO8b49f3Dg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)' },
+    publicationStyle3: { background: 'url(https://s3-alpha-sig.figma.com/img/6698/f5f7/6b2416b1dd205bc9d60d88ecb8dae7ce?Expires=1647820800&Signature=fbYyJmohH-oTbwoeYTI3mAYGV-sTfQ5zIRxEQUYrz9neMYALDhDO2z0k0~RwDN5K0tt5DDoHcwMjQjOkURSxnhsNZwmoLWnXnLGNdNB9Jo~Rd4DYtJGYW5GPY6i3tSkk~gBTPYVDTizdfFKEi3BlSIeTJ6iEP2YXDEcbJqREbyhhXpB0ei78Zq8pXGEDdxIl5PmYLWygkneMIfLtdUvUmuLHxeLBW80dkQAqqTxqWW276XW-5oQ4ZSHm-wd8iRCUfQECjgkAoyWBFidyMfzqKcM7CPJWhaSl4vS-2eHni~iz~idqVBq4FWb5yixBDhpCCP3x9LfKMaUmoIK8wM~zzQ__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)' }
+}
+
 export function Home() {
     return (
         <div>
@@ -14,7 +20,7 @@ export function Home() {
                 <p>Ludwing Van Beethoven</p>
             </section>
             <section className="player">
-                <h1>Compartilhe seu som!</h1>
+                <h1>Compartilhe <span>seu som!</span></h1>
                 <iframe className="container" src="https://open.spotify.com/embed/playlist/2M2aj5IeLoaNlu4wgNxvcH?utm_source=generator" width="100%" height="100%" frameBorder="0" allowFullScreen={true} allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
             </section>
             <section className="events">
@@ -38,6 +44,14 @@ export function Home() {
                         <p>sáb., 10 de agosto</p>
                         <Button>rspv</Button>
                     </div>
+                </div>
+            </section>
+            <section className="publications">
+                <h1>Veja publicações do momento</h1>
+                <div className="container publications-list">
+                    <div className="publication-item" style={cardStyles.publicationStyle1}></div>
+                    <div className="publication-item" style={cardStyles.publicationStyle2}></div>
+                    <div className="publication-item" style={cardStyles.publicationStyle3}></div>
                 </div>
             </section>
         </div>
