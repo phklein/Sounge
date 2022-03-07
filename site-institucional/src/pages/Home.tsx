@@ -2,8 +2,9 @@ import { useNavigate, Link } from 'react-router-dom'
 
 import '../styles/home.css'
 
-import { Button } from '../components/Button'
 import { NavBar } from '../components/Navbar'
+import { Footer } from '../components/Footer'
+import { Button } from '../components/Button'
 
 const cardStyles = { 
     publicationStyle1: { background: 'url(https://s3-alpha-sig.figma.com/img/5bdd/3129/8f7dc0725f4efc3daf9b18b0d1e93303?Expires=1647820800&Signature=N8ql0T470F~7gWehiWIuptBvg~q5TiRajyoq3r4LUTKIo0YKBopibruCUSOGCuwK8ZyIzEpkruc5N9MBUN7i1SMt3yoULfbLfLtJ2r3cf8uGSbBF-1zbyzdGG5v4Awo12MgIENSeFJJ675IBrZAedWgeWa0A1jjtqXa94tcrPzDU13pABkt27~85d8rsXLYzu-PQ6n7in--X2mzDziIsqKMQGcrGYXF-iM0EadxTvJ8yxOUvGjDOi-K7nClaZ8v4sdvKwobMLER-nv8r3zZlQ50r6-XdwqWdZ9n~v85VOZX970BPlx~VBBYhowxjkzcsWBUA0J9K7M0GhAYjBLaoQA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)' },
@@ -54,6 +55,7 @@ export function Home() {
                     <div className="publication-item" style={cardStyles.publicationStyle3}></div>
                 </div>
             </section>
+            <Footer />
         </div>
     )
 }
