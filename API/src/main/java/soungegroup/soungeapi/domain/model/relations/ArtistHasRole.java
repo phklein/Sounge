@@ -1,10 +1,9 @@
 package soungegroup.soungeapi.domain.model.relations;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import soungegroup.soungeapi.domain.model.relations.idclass.ArtistHasRoleId;
-import soungegroup.soungeapi.domain.model.tags.Role;
-import soungegroup.soungeapi.domain.model.users.Artist;
+import soungegroup.soungeapi.domain.model.Role;
+import soungegroup.soungeapi.domain.model.Artist;
 
 import javax.persistence.*;
 import java.time.LocalDate;

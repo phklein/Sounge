@@ -1,0 +1,18 @@
+server:
+  error:
+    include-stacktrace: ON_PARAM
+
+spring:
+  datasource:
+    url: ''
+    username: ''
+    password: ''
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.SQLServer2012Dialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
