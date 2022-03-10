@@ -1,11 +1,53 @@
 package soungegroup.soungeapi.domain.mapper;
 
 import org.springframework.stereotype.Component;
-import soungegroup.soungeapi.api.dto.LoginResponseDTO;
-import soungegroup.soungeapi.domain.model.User;
+import soungegroup.soungeapi.api.dto.user.LoginResponseDTO;
+import soungegroup.soungeapi.api.dto.user.SaveRequestArtistDTO;
+import soungegroup.soungeapi.domain.model.*;
+import soungegroup.soungeapi.domain.model.relations.ArtistHasRole;
+import soungegroup.soungeapi.domain.model.relations.UserLikesGenre;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class UserMapper {
+    public User toUser(SaveRequestArtistDTO body) {
+        Artist artist = Artist.builder()
+                .email(body.getEmail())
+                .passwordHash(body.getPassword())
+                .name(body.getName())
+                .description(body.getDescription())
+                .birthDate(body.getBirthDate())
+                .state(body.getState())
+                .city(body.getCity())
+                .gender(body.getGender())
+                .build();
+
+        List<UserLikesGenre> likedGenresAssoc = new ArrayList<>();
+        List<ArtistHasRole> rolesAssoc = new ArrayList<>();
+
+        body.getLikedGenres().forEach(g ->
+                likedGenresAssoc.add(UserLikesGenre.builder()
+                        .user(artist)
+                        .genre(Genre.builder().name(g.getName()).build())
+                        .build())
+        );
+
+        body.getRoles().forEach(r ->
+                rolesAssoc.add(ArtistHasRole.builder()
+                        .artist(artist)
+                        .role(Role.builder().name(r.getName()).build())
+                        .startDate(r.getStartDate())
+                        .build())
+        );
+
+        artist.setLikedGenresAssoc(likedGenresAssoc);
+        artist.setRolesAssoc(rolesAssoc);
+
+        return artist;
+    }
+
     public LoginResponseDTO toLoginResponseDTO(User user) {
         return LoginResponseDTO.builder()
                 .id(user.getId())

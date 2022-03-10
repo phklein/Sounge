@@ -32,6 +32,7 @@ public class User {
     @Column(name = "user_name") private String name;
     @Column(name = "user_description") private String description;
     @Column(name = "user_birth_date") private LocalDate birthDate;
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "user_state") private State state;
     @Column(name = "user_city") private String city;
     @Column(name = "user_latitude") private String latitude;
@@ -64,10 +65,6 @@ public class User {
     // Many users are liked by many users
     @OneToMany(mappedBy = "liked", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserLikesUser> usersWhoLikedAssoc;
-
-    // One profile can belong to one member
-    @OneToOne(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Member member;
 
     public List<Genre> getGenres() {
         List<Genre> genres = new ArrayList<>();

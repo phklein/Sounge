@@ -2,9 +2,6 @@ package soungegroup.soungeapi.domain.model;
 
 import lombok.*;
 import soungegroup.soungeapi.domain.model.relations.ArtistHasRole;
-import soungegroup.soungeapi.domain.model.relations.MemberHasRole;
-import soungegroup.soungeapi.domain.model.Artist;
-import soungegroup.soungeapi.domain.model.Member;
 import soungegroup.soungeapi.enums.RoleName;
 
 import javax.persistence.*;
@@ -29,19 +26,9 @@ public class Role {
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ArtistHasRole> artistsAssoc;
 
-    // Many roles are associated to many members
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<MemberHasRole> membersAssoc;
-
     public List<Artist> getArtists() {
         List<Artist> artists = new ArrayList<>();
         artistsAssoc.forEach(ahr -> artists.add(ahr.getArtist()));
         return artists;
-    }
-
-    public List<Member> getMembers() {
-        List<Member> members = new ArrayList<>();
-        membersAssoc.forEach(mhr -> members.add(mhr.getMember()));
-        return members;
     }
 }

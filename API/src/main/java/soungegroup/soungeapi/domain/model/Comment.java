@@ -15,14 +15,10 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
-    private Long id;
-    @Column(name = "comment_text")
-    private String text;
-    @Column(name = "comment_media_url")
-    private String mediaUrl;
-    @Column(name = "comment_date_time")
-    private LocalDateTime commentDateTime;
+    @Column(name = "comment_id") private Long id;
+    @Column(name = "comment_text") private String text;
+    @Column(name = "comment_media_url") private String mediaUrl;
+    @Column(name = "comment_date_time") private LocalDateTime commentDateTime;
 
     // Many comments belong to one post
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

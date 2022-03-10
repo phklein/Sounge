@@ -2,7 +2,9 @@ package soungegroup.soungeapi.domain.model;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.lang.Nullable;
 import soungegroup.soungeapi.domain.model.relations.ArtistHasRole;
+import soungegroup.soungeapi.enums.Gender;
 import soungegroup.soungeapi.enums.UserType;
 
 import javax.persistence.*;
@@ -21,11 +23,17 @@ public class Artist extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id") private Long id;
-    @Column(name = "artist_gender") private Integer gender;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "artist_gender") private Gender gender;
 
     // Many artists are associated to many roles
     @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ArtistHasRole> rolesAssoc;
+
+    // Many artists belong to one group
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_fk")
+    private Group group;
 
     public UserType getUserType() {
         return UserType.CREATOR;

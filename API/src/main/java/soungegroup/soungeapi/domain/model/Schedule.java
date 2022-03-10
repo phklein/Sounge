@@ -18,6 +18,7 @@ public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "schedule_id") private Long id;
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "schedule_weekday") private Weekday weekday;
     @Column(name = "schedule_start_time") private LocalTime startTime;
     @Column(name = "schedule_end_time") private LocalTime endTime;

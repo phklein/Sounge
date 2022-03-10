@@ -6,5 +6,5 @@ import soungegroup.soungeapi.domain.model.User;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findUserByLoginAndPasswordHash(String login, String passwordHash);
+    List<User> findUserByEmailAndPasswordHash(String login, String passwordHash);
 }
