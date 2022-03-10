@@ -1,9 +1,8 @@
 package soungegroup.soungeapi.domain.model.relations;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import soungegroup.soungeapi.domain.model.relations.idclass.UserLikesUserId;
-import soungegroup.soungeapi.domain.model.users.User;
+import soungegroup.soungeapi.domain.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
