@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.dto.user.LoginRequestDTO;
-import soungegroup.soungeapi.dto.user.LoginResponseDTO;
+import soungegroup.soungeapi.dto.user.LoginResponseArtistDTO;
 import soungegroup.soungeapi.dto.user.SaveRequestArtistDTO;
 import soungegroup.soungeapi.mapper.UserMapper;
 import soungegroup.soungeapi.model.User;
@@ -27,14 +27,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<LoginResponseDTO> saveAndAuthenticate(SaveRequestArtistDTO body) {
+    public ResponseEntity<LoginResponseArtistDTO> saveAndAuthenticate(SaveRequestArtistDTO body) {
         User user = userRepository.save(mapper.toUser(body));
         activeUsers.add(user);
         return new ResponseEntity<>(mapper.toLoginResponseDTO(user), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<LoginResponseDTO> authenticate(LoginRequestDTO body) {
+    public ResponseEntity<LoginResponseArtistDTO> authenticate(LoginRequestDTO body) {
         List<User> users = userRepository.findUserByEmailAndPasswordHash(body.getEmail(), body.getPassword());
         if (users.size() == 1) {
             User user = users.get(0);

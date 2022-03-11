@@ -14,5 +14,5 @@ public enum RoleName {
     CORNETPLAYER, TROMBONIST, SAXOPHONIST, FLUTIST,
 
     // Other roles
-    DJ, PRODUCER, VOCALIST
+    DJ, PRODUCER, VOCALIST, OTHERS
 }

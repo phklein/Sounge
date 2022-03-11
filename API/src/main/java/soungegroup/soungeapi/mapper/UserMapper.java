@@ -1,7 +1,7 @@
 package soungegroup.soungeapi.mapper;
 
 import org.springframework.stereotype.Component;
-import soungegroup.soungeapi.dto.user.LoginResponseDTO;
+import soungegroup.soungeapi.dto.user.LoginResponseArtistDTO;
 import soungegroup.soungeapi.dto.user.SaveRequestArtistDTO;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.model.relations.ArtistHasRole;
@@ -48,8 +48,8 @@ public class UserMapper {
         return artist;
     }
 
-    public LoginResponseDTO toLoginResponseDTO(User user) {
-        return LoginResponseDTO.builder()
+    public LoginResponseArtistDTO toLoginResponseDTO(User user) {
+        return LoginResponseArtistDTO.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getName())

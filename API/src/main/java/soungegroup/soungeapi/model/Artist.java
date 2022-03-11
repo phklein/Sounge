@@ -34,10 +34,6 @@ public class Artist extends User {
     @JoinColumn(name = "group_fk")
     private Group group;
 
-    public UserType getUserType() {
-        return UserType.CREATOR;
-    }
-
     public List<Role> getRoles() {
         List<Role> roles = new ArrayList<>();
         rolesAssoc.forEach(ahr -> roles.add(ahr.getRole()));

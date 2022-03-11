@@ -4,15 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import soungegroup.soungeapi.enums.State;
+import soungegroup.soungeapi.enums.UserType;
 
 import java.time.LocalDate;
 
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponseDTO {
+public abstract class LoginResponseUserDTOStrategy {
     private Long id;
     private String email;
     private String name;
@@ -21,4 +23,5 @@ public class LoginResponseDTO {
     private String city;
     private String latitude;
     private String longitude;
+    public abstract UserType getUserType();
 }
