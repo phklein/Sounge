@@ -2,6 +2,7 @@ package soungegroup.soungeapi.mapper;
 
 import org.springframework.stereotype.Component;
 import soungegroup.soungeapi.dto.user.LoginResponseArtistDTO;
+import soungegroup.soungeapi.dto.user.LoginResponseUserDTO;
 import soungegroup.soungeapi.dto.user.SaveRequestArtistDTO;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.model.relations.ArtistHasRole;
@@ -48,16 +49,47 @@ public class UserMapper {
         return artist;
     }
 
-    public LoginResponseArtistDTO toLoginResponseDTO(User user) {
-        return LoginResponseArtistDTO.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .name(user.getName())
-                .birthDate(user.getBirthDate())
-                .state(user.getState())
-                .city(user.getCity())
-                .latitude(user.getLatitude())
-                .longitude(user.getLongitude())
-                .build();
+    public LoginResponseUserDTO toLoginResponseDTO(User user) {
+        switch (user.getUserType()) {
+            case ARTIST:
+                Artist artist = (Artist) user;
+                return LoginResponseArtistDTO.builder()
+                        .id(artist.getId())
+                        .email(artist.getEmail())
+                        .name(artist.getName())
+                        .birthDate(artist.getBirthDate())
+                        .state(artist.getState())
+                        .city(artist.getCity())
+                        .latitude(artist.getLatitude())
+                        .longitude(artist.getLongitude())
+                        .gender(artist.getGender())
+                        .build();
+            case GROUP:
+                Group group = (Group) user;
+                return LoginResponseArtistDTO.builder()
+                        .id(group.getId())
+                        .email(group.getEmail())
+                        .name(group.getName())
+                        .birthDate(group.getBirthDate())
+                        .state(group.getState())
+                        .city(group.getCity())
+                        .latitude(group.getLatitude())
+                        .longitude(group.getLongitude())
+                        .build();
+            case PLACE:
+                Place place = (Place) user;
+                return LoginResponseArtistDTO.builder()
+                        .id(place.getId())
+                        .email(place.getEmail())
+                        .name(place.getName())
+                        .birthDate(place.getBirthDate())
+                        .state(place.getState())
+                        .city(place.getCity())
+                        .latitude(place.getLatitude())
+                        .longitude(place.getLongitude())
+                        .build();
+            default:
+                return null;
+        }
     }
 }

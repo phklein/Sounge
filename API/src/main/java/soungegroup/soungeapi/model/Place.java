@@ -19,6 +19,7 @@ public class Place extends User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id") private Long id;
 
+    @Override
     public UserType getUserType() {
         return UserType.PLACE;
     }

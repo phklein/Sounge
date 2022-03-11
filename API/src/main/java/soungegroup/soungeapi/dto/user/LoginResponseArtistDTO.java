@@ -7,12 +7,11 @@ import soungegroup.soungeapi.enums.UserType;
 
 @Data
 @SuperBuilder
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class LoginResponseArtistDTO extends LoginResponseUserDTOStrategy {
+public class LoginResponseArtistDTO extends LoginResponseUserDTO {
     private Gender gender;
 
+    @Override
     public UserType getUserType() {
         return UserType.ARTIST;
     }

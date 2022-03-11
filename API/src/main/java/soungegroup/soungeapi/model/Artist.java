@@ -39,4 +39,9 @@ public class Artist extends User {
         rolesAssoc.forEach(ahr -> roles.add(ahr.getRole()));
         return roles;
     }
+
+    @Override
+    public UserType getUserType() {
+        return UserType.ARTIST;
+    }
 }

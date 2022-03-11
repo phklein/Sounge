@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import soungegroup.soungeapi.enums.UserType;
 import soungegroup.soungeapi.model.relations.UserLikesGenre;
 import soungegroup.soungeapi.model.relations.UserLikesPost;
 import soungegroup.soungeapi.model.relations.UserLikesUser;
 import soungegroup.soungeapi.enums.State;
+import soungegroup.soungeapi.strategy.UserTypeStrategy;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -23,7 +25,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+public abstract class User implements UserTypeStrategy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id") private Long id;
