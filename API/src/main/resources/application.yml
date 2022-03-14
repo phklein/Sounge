@@ -4,9 +4,9 @@ server:
 
 spring:
   datasource:
-    url: ''
-    username: ''
-    password: ''
+    url: 'jdbc:sqlserver://soungeserver.database.windows.net;databaseName=sounge'
+    username: 'sounge'
+    password: '3ads@grupo5'
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     hibernate:
