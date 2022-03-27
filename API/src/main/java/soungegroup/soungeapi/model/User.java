@@ -5,11 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import soungegroup.soungeapi.enums.UserType;
+import soungegroup.soungeapi.enums.State;
 import soungegroup.soungeapi.model.relations.UserLikesGenre;
 import soungegroup.soungeapi.model.relations.UserLikesPost;
 import soungegroup.soungeapi.model.relations.UserLikesUser;
-import soungegroup.soungeapi.enums.State;
 import soungegroup.soungeapi.strategy.UserTypeStrategy;
 
 import javax.persistence.*;
@@ -67,6 +66,11 @@ public abstract class User implements UserTypeStrategy {
     // Many users are liked by many users
     @OneToMany(mappedBy = "liked", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserLikesUser> usersWhoLikedAssoc;
+
+    // Many users can have one signature
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "signature_fk")
+    private Signature signature;
 
     public List<Genre> getGenres() {
         List<Genre> genres = new ArrayList<>();

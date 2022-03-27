@@ -1,8 +1,8 @@
 package soungegroup.soungeapi.model.relations;
 
 import lombok.*;
-import soungegroup.soungeapi.model.relations.idclass.UserLikesUserId;
 import soungegroup.soungeapi.model.User;
+import soungegroup.soungeapi.model.relations.idclass.UserLikesUserId;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

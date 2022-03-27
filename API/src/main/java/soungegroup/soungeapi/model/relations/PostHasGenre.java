@@ -1,9 +1,9 @@
 package soungegroup.soungeapi.model.relations;
 
 import lombok.*;
+import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Post;
 import soungegroup.soungeapi.model.relations.idclass.PostHasGenreId;
-import soungegroup.soungeapi.model.Genre;
 
 import javax.persistence.*;
 
