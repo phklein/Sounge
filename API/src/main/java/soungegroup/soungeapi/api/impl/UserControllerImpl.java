@@ -5,10 +5,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soungegroup.soungeapi.api.UserController;
-import soungegroup.soungeapi.dto.user.LoginRequestDTO;
-import soungegroup.soungeapi.dto.user.LoginResponseArtistDTO;
-import soungegroup.soungeapi.dto.user.LoginResponseUserDTO;
-import soungegroup.soungeapi.dto.user.SaveRequestArtistDTO;
+import soungegroup.soungeapi.dto.user.LoginRequest;
+import soungegroup.soungeapi.dto.user.LoginResponse;
+import soungegroup.soungeapi.dto.user.SaveRequestArtist;
 import soungegroup.soungeapi.service.impl.UserServiceImpl;
 import soungegroup.soungeapi.util.DateUtil;
 
@@ -23,14 +22,14 @@ public class UserControllerImpl implements UserController {
 
     // Registering
     @Override
-    public ResponseEntity<LoginResponseUserDTO> saveArtistAndLogin(@RequestBody SaveRequestArtistDTO body) {
+    public ResponseEntity<LoginResponse> saveArtistAndLogin(@RequestBody SaveRequestArtist body) {
         logDateTime();
         return service.saveAndAuthenticate(body);
     }
 
     // Authentication
     @Override
-    public ResponseEntity<LoginResponseUserDTO> login(@RequestBody LoginRequestDTO body) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest body) {
         logDateTime();
         return service.authenticate(body);
     }

@@ -10,6 +10,6 @@ import soungegroup.soungeapi.enums.GenreName;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaveRequestGenreDTO {
+public class SaveRequestGenre {
     private GenreName name;
 }

@@ -3,10 +3,9 @@ package soungegroup.soungeapi.service.impl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import soungegroup.soungeapi.dto.user.LoginRequestDTO;
-import soungegroup.soungeapi.dto.user.LoginResponseArtistDTO;
-import soungegroup.soungeapi.dto.user.LoginResponseUserDTO;
-import soungegroup.soungeapi.dto.user.SaveRequestArtistDTO;
+import soungegroup.soungeapi.dto.user.LoginRequest;
+import soungegroup.soungeapi.dto.user.LoginResponse;
+import soungegroup.soungeapi.dto.user.SaveRequestArtist;
 import soungegroup.soungeapi.mapper.UserMapper;
 import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.UserRepository;
@@ -28,14 +27,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<LoginResponseUserDTO> saveAndAuthenticate(SaveRequestArtistDTO body) {
+    public ResponseEntity<LoginResponse> saveAndAuthenticate(SaveRequestArtist body) {
         User user = userRepository.save(mapper.toUser(body));
         activeUsers.add(user);
         return new ResponseEntity<>(mapper.toLoginResponseDTO(user), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<LoginResponseUserDTO> authenticate(LoginRequestDTO body) {
+    public ResponseEntity<LoginResponse> authenticate(LoginRequest body) {
         List<User> users = userRepository.findUserByEmailAndPasswordHash(body.getEmail(), body.getPassword());
         if (users.size() == 1) {
             User user = users.get(0);
