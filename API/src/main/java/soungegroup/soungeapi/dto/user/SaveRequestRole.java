@@ -4,12 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import soungegroup.soungeapi.enums.RoleName;
+
+import java.time.LocalDate;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequestDTO {
-    private String email;
-    private String password;
+public class SaveRequestRole {
+    private RoleName name;
+    private LocalDate startDate;
 }

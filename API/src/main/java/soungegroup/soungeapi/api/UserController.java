@@ -2,19 +2,19 @@ package soungegroup.soungeapi.api;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import soungegroup.soungeapi.dto.user.LoginRequestDTO;
-import soungegroup.soungeapi.dto.user.LoginResponseUserDTO;
-import soungegroup.soungeapi.dto.user.SaveRequestArtistDTO;
+import soungegroup.soungeapi.dto.user.LoginRequest;
+import soungegroup.soungeapi.dto.user.LoginResponse;
+import soungegroup.soungeapi.dto.user.SaveRequestArtist;
 
 @RequestMapping(UserController.URL)
 public interface UserController {
     String URL = "/users";
 
     @PostMapping("/artists")
-    ResponseEntity<LoginResponseUserDTO> saveArtistAndLogin(@RequestBody SaveRequestArtistDTO body);
+    ResponseEntity<LoginResponse> saveArtistAndLogin(@RequestBody SaveRequestArtist body);
 
     @PostMapping("/login")
-    ResponseEntity<LoginResponseUserDTO> login(@RequestBody LoginRequestDTO body);
+    ResponseEntity<LoginResponse> login(@RequestBody LoginRequest body);
 
     @DeleteMapping("/login/{id}")
     ResponseEntity<Void> logout(@PathVariable Long id);

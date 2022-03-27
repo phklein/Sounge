@@ -1,9 +1,9 @@
 package soungegroup.soungeapi.mapper;
 
 import org.springframework.stereotype.Component;
-import soungegroup.soungeapi.dto.user.LoginResponseArtistDTO;
-import soungegroup.soungeapi.dto.user.LoginResponseUserDTO;
-import soungegroup.soungeapi.dto.user.SaveRequestArtistDTO;
+import soungegroup.soungeapi.dto.user.LoginResponseArtist;
+import soungegroup.soungeapi.dto.user.LoginResponse;
+import soungegroup.soungeapi.dto.user.SaveRequestArtist;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.model.relations.ArtistHasRole;
 import soungegroup.soungeapi.model.relations.UserLikesGenre;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 public class UserMapper {
-    public User toUser(SaveRequestArtistDTO body) {
+    public User toUser(SaveRequestArtist body) {
         Artist artist = Artist.builder()
                 .email(body.getEmail())
                 .passwordHash(body.getPassword())
@@ -49,11 +49,11 @@ public class UserMapper {
         return artist;
     }
 
-    public LoginResponseUserDTO toLoginResponseDTO(User user) {
+    public LoginResponse toLoginResponseDTO(User user) {
         switch (user.getUserType()) {
             case ARTIST:
                 Artist artist = (Artist) user;
-                return LoginResponseArtistDTO.builder()
+                return LoginResponseArtist.builder()
                         .id(artist.getId())
                         .email(artist.getEmail())
                         .name(artist.getName())
@@ -66,7 +66,7 @@ public class UserMapper {
                         .build();
             case GROUP:
                 Group group = (Group) user;
-                return LoginResponseArtistDTO.builder()
+                return LoginResponseArtist.builder()
                         .id(group.getId())
                         .email(group.getEmail())
                         .name(group.getName())
@@ -78,7 +78,7 @@ public class UserMapper {
                         .build();
             case PLACE:
                 Place place = (Place) user;
-                return LoginResponseArtistDTO.builder()
+                return LoginResponseArtist.builder()
                         .id(place.getId())
                         .email(place.getEmail())
                         .name(place.getName())
