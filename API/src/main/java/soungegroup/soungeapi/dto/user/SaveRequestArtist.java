@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class SaveRequestArtistDTO extends SaveRequestUserDTO {
+public class SaveRequestArtist extends SaveRequest {
     private Gender gender;
-    private List<SaveRequestRoleDTO> roles;
+    private List<SaveRequestRole> roles;
 }
