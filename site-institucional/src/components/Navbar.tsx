@@ -6,7 +6,7 @@ export function NavBar(props: any) {
     return (
         <header>
             <nav className="container navbar">
-                <img src="https://s3-alpha-sig.figma.com/img/e68c/cd7e/cf67a34866a0ad05813a407693875fe9?Expires=1647216000&Signature=B5bOvM-FkAYOuLio-GRQK~sQ6-N296wbtEZ8wOBAsctz~L~ZwHFJeKle~cyV8BkvbQ8rt0jHqJcgQcnEmkX-p4LZcvd6FPjh~ApAfpU-hnwjibbTXXaMkb5H~4BtkugiCu8u0xWiy5kGxjG-EY7UefrTCRU9oxZLbA5Cjgdy-PPo7XHj-bAnCTP7GwnZXMHYHD-rZN5kgFMXyQhsnS4YAYMmtjooN58cSx~FdxSSKNICbCmDnadRwBaVeQMf-kQ5Ts8WER38QR20SgNA-TxEzXpGMpprBD4FjX68SgXbGtvlnnbPX5PW0NI76FegGePSqi1GpVc2cGVbgcHUCfKgfw__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" alt="" />
+                <img src="https://s3-alpha-sig.figma.com/img/b95e/e1ed/e10c46f9e02772cb19fa8c255a122fc8?Expires=1648425600&Signature=S-98rq30aNE4O5f6OVS4Qj9Rxtl7ZiANQsU30GIW1dwu~DzsFVRJcxE~yJZAgYs8040sZTRP08j4QVbSVLVq40jBDZeHAN4qhjoIPfcYM1iXholvsKVpRE0z0EnMOPYlH0LY2C4e~pivLp9Tgu904mVc0epWJG2mZ5PINLfUFNoN8TaLgz9-SJq9HEYExRDUw80d0vkk67B9KHSq8WmB7lGX-I6vyuXGCLFd3ThLk5EIVF~LiUZDPpEhUh5KzFMv5rYl0Toi-Lc-C1TpimUI6g0zs5MWeKzzmlecWW6CAQxQI10ziVxDWhayBXGKnJvcxdajRbxM1MsXN0VQTG2s9Q__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" alt="" />
                 <ul>
                     <li><Link to="/page-not-found" className="link-navbar">Inicio</Link></li>
                     <li><Link to="/page-not-found" className="link-navbar">Blog</Link></li>
