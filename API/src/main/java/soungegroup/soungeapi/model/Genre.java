@@ -1,9 +1,9 @@
 package soungegroup.soungeapi.model;
 
 import lombok.*;
+import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.model.relations.PostHasGenre;
 import soungegroup.soungeapi.model.relations.UserLikesGenre;
-import soungegroup.soungeapi.enums.GenreName;
 
 import javax.persistence.*;
 import java.util.ArrayList;

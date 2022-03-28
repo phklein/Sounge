@@ -1,8 +1,8 @@
 package soungegroup.soungeapi.mapper;
 
 import org.springframework.stereotype.Component;
-import soungegroup.soungeapi.dto.user.LoginResponseArtist;
 import soungegroup.soungeapi.dto.user.LoginResponse;
+import soungegroup.soungeapi.dto.user.LoginResponseArtist;
 import soungegroup.soungeapi.dto.user.SaveRequestArtist;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.model.relations.ArtistHasRole;

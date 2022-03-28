@@ -1,6 +1,7 @@
 package soungegroup.soungeapi.dto.user;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import soungegroup.soungeapi.enums.UserType;
 

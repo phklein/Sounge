@@ -2,9 +2,9 @@ package soungegroup.soungeapi.model;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import soungegroup.soungeapi.model.relations.ArtistHasRole;
 import soungegroup.soungeapi.enums.Gender;
 import soungegroup.soungeapi.enums.UserType;
+import soungegroup.soungeapi.model.relations.ArtistHasRole;
 
 import javax.persistence.*;
 import java.util.ArrayList;

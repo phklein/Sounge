@@ -1,8 +1,8 @@
 package soungegroup.soungeapi.model;
 
 import lombok.*;
-import soungegroup.soungeapi.model.relations.ArtistHasRole;
 import soungegroup.soungeapi.enums.RoleName;
+import soungegroup.soungeapi.model.relations.ArtistHasRole;
 
 import javax.persistence.*;
 import java.util.ArrayList;
