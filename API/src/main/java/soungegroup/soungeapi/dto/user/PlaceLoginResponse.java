@@ -8,7 +8,7 @@ import soungegroup.soungeapi.enums.UserType;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class LoginResponsePlace extends LoginResponse {
+public class PlaceLoginResponse extends LoginResponse {
     @Override
     public UserType getUserType() {
         return UserType.PLACE;

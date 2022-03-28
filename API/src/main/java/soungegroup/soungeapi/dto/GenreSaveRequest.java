@@ -1,4 +1,4 @@
-package soungegroup.soungeapi.dto.user;
+package soungegroup.soungeapi.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +10,6 @@ import soungegroup.soungeapi.enums.GenreName;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaveRequestGenre {
+public class GenreSaveRequest {
     private GenreName name;
 }
