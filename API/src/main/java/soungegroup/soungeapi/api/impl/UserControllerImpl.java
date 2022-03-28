@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import soungegroup.soungeapi.api.UserController;
 import soungegroup.soungeapi.dto.user.LoginRequest;
 import soungegroup.soungeapi.dto.user.LoginResponse;
-import soungegroup.soungeapi.dto.user.SaveRequestArtist;
+import soungegroup.soungeapi.dto.user.ArtistSaveRequest;
 import soungegroup.soungeapi.service.impl.UserServiceImpl;
 import soungegroup.soungeapi.util.DateUtil;
 
@@ -24,7 +24,7 @@ public class UserControllerImpl implements UserController {
 
     // Registering
     @Override
-    public ResponseEntity<LoginResponse> saveArtistAndLogin(@RequestBody SaveRequestArtist body) {
+    public ResponseEntity<LoginResponse> saveArtistAndLogin(@RequestBody ArtistSaveRequest body) {
         logDateTime();
         return service.saveAndAuthenticate(body);
     }
