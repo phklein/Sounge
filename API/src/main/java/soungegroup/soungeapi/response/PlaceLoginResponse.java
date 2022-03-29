@@ -1,4 +1,4 @@
-package soungegroup.soungeapi.dto.user;
+package soungegroup.soungeapi.response;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import soungegroup.soungeapi.api.UserController;
-import soungegroup.soungeapi.dto.user.LoginRequest;
-import soungegroup.soungeapi.dto.user.LoginResponse;
-import soungegroup.soungeapi.dto.user.ArtistSaveRequest;
+import soungegroup.soungeapi.request.ArtistSaveRequest;
+import soungegroup.soungeapi.request.LoginRequest;
+import soungegroup.soungeapi.response.LoginResponse;
 import soungegroup.soungeapi.service.impl.UserServiceImpl;
 import soungegroup.soungeapi.util.DateUtil;
 

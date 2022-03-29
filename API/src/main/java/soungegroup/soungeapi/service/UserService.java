@@ -1,9 +1,9 @@
 package soungegroup.soungeapi.service;
 
 import org.springframework.http.ResponseEntity;
-import soungegroup.soungeapi.dto.user.LoginRequest;
-import soungegroup.soungeapi.dto.user.LoginResponse;
-import soungegroup.soungeapi.dto.user.ArtistSaveRequest;
+import soungegroup.soungeapi.request.ArtistSaveRequest;
+import soungegroup.soungeapi.request.LoginRequest;
+import soungegroup.soungeapi.response.LoginResponse;
 
 public interface UserService {
     ResponseEntity<LoginResponse> saveAndAuthenticate(ArtistSaveRequest body);

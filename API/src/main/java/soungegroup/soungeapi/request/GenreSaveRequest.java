@@ -1,4 +1,4 @@
-package soungegroup.soungeapi.dto;
+package soungegroup.soungeapi.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

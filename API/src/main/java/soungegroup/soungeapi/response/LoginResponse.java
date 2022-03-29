@@ -1,25 +1,25 @@
-package soungegroup.soungeapi.dto.user;
+package soungegroup.soungeapi.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import soungegroup.soungeapi.enums.State;
+import soungegroup.soungeapi.strategy.UserTypeStrategy;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class SaveRequest {
+public abstract class LoginResponse implements UserTypeStrategy {
+    private Long id;
     private String email;
-    private String password;
     private String name;
-    private String description;
     private LocalDate birthDate;
     private State state;
     private String city;
-    private List<SaveRequestGenre> likedGenres;
+    private String latitude;
+    private String longitude;
 }

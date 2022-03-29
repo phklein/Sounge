@@ -1,12 +1,12 @@
 package soungegroup.soungeapi.mapper;
 
 import org.springframework.stereotype.Component;
-import soungegroup.soungeapi.dto.user.LoginResponse;
-import soungegroup.soungeapi.dto.user.ArtistLoginResponse;
-import soungegroup.soungeapi.dto.user.ArtistSaveRequest;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.model.relations.ArtistHasRole;
 import soungegroup.soungeapi.model.relations.UserLikesGenre;
+import soungegroup.soungeapi.request.ArtistSaveRequest;
+import soungegroup.soungeapi.response.ArtistLoginResponse;
+import soungegroup.soungeapi.response.LoginResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class UserMapper {
         return artist;
     }
 
-    public LoginResponse toLoginResponseDTO(User user) {
+    public LoginResponse toLoginResponse(User user) {
         switch (user.getUserType()) {
             case ARTIST:
                 Artist artist = (Artist) user;

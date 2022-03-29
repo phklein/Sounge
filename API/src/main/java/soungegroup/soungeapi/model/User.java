@@ -68,7 +68,7 @@ public abstract class User implements UserTypeStrategy {
     private List<UserLikesUser> usersWhoLikedAssoc;
 
     // Many users can have one signature
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "signature_fk")
     private Signature signature;
 

@@ -3,12 +3,12 @@ package soungegroup.soungeapi.service.impl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import soungegroup.soungeapi.dto.user.LoginRequest;
-import soungegroup.soungeapi.dto.user.LoginResponse;
-import soungegroup.soungeapi.dto.user.ArtistSaveRequest;
 import soungegroup.soungeapi.mapper.UserMapper;
 import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.UserRepository;
+import soungegroup.soungeapi.request.ArtistSaveRequest;
+import soungegroup.soungeapi.request.LoginRequest;
+import soungegroup.soungeapi.response.LoginResponse;
 import soungegroup.soungeapi.service.UserService;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<LoginResponse> saveAndAuthenticate(ArtistSaveRequest body) {
         User user = userRepository.save(mapper.toUser(body));
         activeUsers.add(user);
-        return new ResponseEntity<>(mapper.toLoginResponseDTO(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(mapper.toLoginResponse(user), HttpStatus.CREATED);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
         if (users.size() == 1) {
             User user = users.get(0);
             activeUsers.add(user);
-            return new ResponseEntity<>(mapper.toLoginResponseDTO(user), HttpStatus.OK);
+            return new ResponseEntity<>(mapper.toLoginResponse(user), HttpStatus.OK);
         } else if (users.size() > 1) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
