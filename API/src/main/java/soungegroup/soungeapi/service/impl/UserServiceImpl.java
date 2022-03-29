@@ -3,12 +3,12 @@ package soungegroup.soungeapi.service.impl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import soungegroup.soungeapi.request.LoginRequest;
+import soungegroup.soungeapi.response.LoginResponse;
+import soungegroup.soungeapi.request.ArtistSaveRequest;
 import soungegroup.soungeapi.mapper.UserMapper;
 import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.UserRepository;
-import soungegroup.soungeapi.request.ArtistSaveRequest;
-import soungegroup.soungeapi.request.LoginRequest;
-import soungegroup.soungeapi.response.LoginResponse;
 import soungegroup.soungeapi.service.UserService;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<LoginResponse> saveAndAuthenticate(ArtistSaveRequest body) {
         User user = userRepository.save(mapper.toUser(body));
         activeUsers.add(user);
-        return new ResponseEntity<>(mapper.toLoginResponse(user), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toLoginResponse(user));
     }
 
     @Override
@@ -39,18 +39,18 @@ public class UserServiceImpl implements UserService {
         if (users.size() == 1) {
             User user = users.get(0);
             activeUsers.add(user);
-            return new ResponseEntity<>(mapper.toLoginResponse(user), HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(mapper.toLoginResponse(user));
         } else if (users.size() > 1) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override
     public ResponseEntity<Void> logout(Long id) {
         if (activeUsers.removeIf(u -> u.getId().equals(id))) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).build();
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
