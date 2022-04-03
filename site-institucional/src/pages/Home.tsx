@@ -20,6 +20,31 @@ export function Home() {
                 <h1>“Tocar uma nota equivocada é insignificante.<br />Tocar sem paixão é imperdoável”</h1>
                 <p>Ludwing Van Beethoven</p>
             </section>
+            <section className="presentation">
+                <div className="container">
+                    <div className="presentation-container">
+                        <div className="presentation-item">
+                            <h1>Realize</h1>
+                            <h1>Negocie</h1>
+                            <h1>Compartilhe</h1>
+                            <h2>Divulgue o seu trabalho e alcance a oportunidade que tanto almeja!</h2>
+                            <h2>Divulgue o seu trabalho e alcance a oportunidade que tanto almeja!</h2>
+                            <h2>Divulgue o seu trabalho e alcance a oportunidade que tanto almeja!</h2>
+                        </div>
+                        <div className="presentation-item">
+                            <div className="img-presentation">
+                                <h2>Realize</h2>
+                            </div>
+                            <div className="img-presentation">
+                                <h2>Negocie</h2>
+                            </div>
+                            <div className="img-presentation">
+                                <h2>Compartilhe</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <section className="player">
                 <h1>Compartilhe <span>seu som!</span></h1>
                 <iframe className="container" src="https://open.spotify.com/embed/playlist/2M2aj5IeLoaNlu4wgNxvcH?utm_source=generator" width="100%" height="100%" frameBorder="0" allowFullScreen={true} allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
