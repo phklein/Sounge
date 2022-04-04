@@ -1,10 +1,14 @@
+import React from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+// import Swal from 'sweetalert2'
+// import withReactContent from 'sweetalert2-react-content'
 
 import '../styles/home.css'
 
 import { NavBar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 import { Button } from '../components/Button'
+
 
 const cardStyles = { 
     publicationStyle1: { background: 'url(https://s3-alpha-sig.figma.com/img/5bdd/3129/8f7dc0725f4efc3daf9b18b0d1e93303?Expires=1647820800&Signature=N8ql0T470F~7gWehiWIuptBvg~q5TiRajyoq3r4LUTKIo0YKBopibruCUSOGCuwK8ZyIzEpkruc5N9MBUN7i1SMt3yoULfbLfLtJ2r3cf8uGSbBF-1zbyzdGG5v4Awo12MgIENSeFJJ675IBrZAedWgeWa0A1jjtqXa94tcrPzDU13pABkt27~85d8rsXLYzu-PQ6n7in--X2mzDziIsqKMQGcrGYXF-iM0EadxTvJ8yxOUvGjDOi-K7nClaZ8v4sdvKwobMLER-nv8r3zZlQ50r6-XdwqWdZ9n~v85VOZX970BPlx~VBBYhowxjkzcsWBUA0J9K7M0GhAYjBLaoQA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)' },
@@ -14,7 +18,7 @@ const cardStyles = {
 
 export function Home() {
     return (
-        <div>
+        <div className="page-init">
             <NavBar />
             <section className="banner">
                 <h1>“Tocar uma nota equivocada é insignificante.<br />Tocar sem paixão é imperdoável”</h1>

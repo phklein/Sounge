@@ -7,8 +7,12 @@
     text-decoration: none;
 }
 
-body {
+.page-init {
     background: var(--dark-gray);
+}
+
+body {
+    background: var(--black);
 }
 
 :root {
@@ -30,10 +34,17 @@ body {
 }
 
 .button {
-    background: var(--dark-purple);
-    color: var(--white);
+    /* background: var(--dark-purple); */
+    /* color: var(--white); */
     border-radius: 4px;
     padding: 10px 15px;
+}
+
+.max-width-height {
+    width: 100%;
+    height: 100vh;
+    padding: 5%;
+    display: flex;
 }
 
 /* Component NavBar
@@ -194,9 +205,9 @@ footer {
 _______________________________________________________________________________________ */
 
 .button {
-    background: var(--dark-purple);
+    /* background: var(--dark-purple); */
     box-shadow: inset 0 0 20px #712abd;
-    color: var(--light-gray);
+    /* color: var(--light-gray); */
     font-weight: 700;
     text-transform: uppercase;
     border-radius: 20px;
@@ -207,7 +218,7 @@ ________________________________________________________________________________
 }
 
 .button:hover { 
-    background: var(--light-gray);
-    color: var(--dark-gray);
+    /* background: var(--light-gray); */
+    /* color: var(--dark-gray); */
     box-shadow: none;
 }

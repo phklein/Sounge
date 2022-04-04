@@ -14,7 +14,7 @@ export function NavBar(props: any) {
                     <li><Link to="/page-not-found" className="link-navbar">Membros</Link></li>
                     <li><Link to="/page-not-found" className="link-navbar">Fórum</Link></li>
                 </ul>
-                <Button>Cadastre-se</Button>   
+                <Link to="/register"><Button>Cadastre-se</Button></Link>   
             </nav>
         </header>
     )
