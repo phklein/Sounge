@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import soungegroup.soungeapi.api.UserController;
 import soungegroup.soungeapi.request.ArtistSaveRequest;
+import soungegroup.soungeapi.request.GroupRequest;
 import soungegroup.soungeapi.request.LoginRequest;
+import soungegroup.soungeapi.response.GroupLoginResponse;
 import soungegroup.soungeapi.response.LoginResponse;
 import soungegroup.soungeapi.service.impl.UserServiceImpl;
 import soungegroup.soungeapi.util.DateUtil;
@@ -42,8 +44,13 @@ public class UserControllerImpl implements UserController {
         return service.logout(id);
     }
 
+
     private void logDateTime() {
         log.info(dateUtil.formatLocalDateTime(LocalDateTime.now()));
     }
+
+
+
+    
 
 }
