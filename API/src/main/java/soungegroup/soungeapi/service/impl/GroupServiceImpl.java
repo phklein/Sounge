@@ -1,6 +1,7 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.mapper.Mapper;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.repository.GroupRepository;
 import soungegroup.soungeapi.service.GroupService;
@@ -9,4 +10,6 @@ import soungegroup.soungeapi.service.GroupService;
 @RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
     private final GroupRepository repository;
+    private final Mapper mapper;
+
 }

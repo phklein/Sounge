@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.request.LoginRequest;
+import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.LoginResponse;
 import soungegroup.soungeapi.request.ArtistSaveRequest;
 import soungegroup.soungeapi.mapper.UserMapper;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<LoginResponse> saveAndAuthenticate(ArtistSaveRequest body) {
+    public ResponseEntity<LoginResponse> saveAndAuthenticate(UserSaveRequest body) {
         User user = userRepository.save(mapper.toUser(body));
         activeUsers.add(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toLoginResponse(user));

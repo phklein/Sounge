@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import soungegroup.soungeapi.enums.State;
+import soungegroup.soungeapi.enums.UserType;
 import soungegroup.soungeapi.strategy.UserTypeStrategy;
 
 import java.time.LocalDate;
@@ -22,4 +23,5 @@ public abstract class LoginResponse implements UserTypeStrategy {
     private String city;
     private String latitude;
     private String longitude;
+    private UserType type;
 }

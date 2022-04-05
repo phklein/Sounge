@@ -1,9 +1,6 @@
 package soungegroup.soungeapi.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import soungegroup.soungeapi.enums.State;
 import soungegroup.soungeapi.model.relations.UserLikesGenre;
