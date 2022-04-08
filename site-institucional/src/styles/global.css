@@ -34,8 +34,8 @@ body {
 }
 
 .button {
-    /* background: var(--dark-purple); */
-    /* color: var(--white); */
+    background: var(--dark-purple);
+    color: var(--white);
     border-radius: 4px;
     padding: 10px 15px;
 }
@@ -45,6 +45,28 @@ body {
     height: 100vh;
     padding: 5%;
     display: flex;
+}
+
+.input-all {
+    width: 100%;
+}
+
+.container-input-hlf {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-hlf {
+    width: 49%;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
 }
 
 /* Component NavBar
@@ -205,9 +227,9 @@ footer {
 _______________________________________________________________________________________ */
 
 .button {
-    /* background: var(--dark-purple); */
+    background: var(--dark-purple);
     box-shadow: inset 0 0 20px #712abd;
-    /* color: var(--light-gray); */
+    color: var(--light-gray);
     font-weight: 700;
     text-transform: uppercase;
     border-radius: 20px;
@@ -218,7 +240,7 @@ ________________________________________________________________________________
 }
 
 .button:hover { 
-    /* background: var(--light-gray); */
-    /* color: var(--dark-gray); */
+    background: var(--light-gray);
+    color: var(--dark-gray);
     box-shadow: none;
 }

@@ -1,12 +1,82 @@
 
+.register-container-left,
+.register-container-right {
+    height: 100%;
+    padding: 50px;
+}
+
 .register-container-left {
     width: 60%;
-    height: 100%;
-    background: red;
+    position: relative;
+}
+
+.register-container-left h2 {
+    font-size: 25px;
+    font-weight: 500;
+    color: var(--white);
+}
+
+.register-container-left input {
+    z-index: 1000;
+    background: var(--black);
+    border: none;
+    outline: none;
+    padding: 13px 20px;
+    margin: 5px 0;
 }
 
 .register-container-right {
     width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: left;
+}
+
+.register-container-right img {
+    width: 70%;
+}
+
+.register-container-right h1 {
+    font-size: 35px;
+    font-weight: 500;
+    color: var(--white);
+}
+
+.register-container-right p {
+    font-size: 14px;
+    color: #757575;
+}
+
+.register-form {
+    width: 100%;
     height: 100%;
-    background: blue;
+    background: var(--dark-gray);
+    z-index: 1;
+    padding: 60px 50px;
+}
+
+.register-form h2 {
+    margin: -10px 0 30px;
+}
+
+form {
+    width: 100%;
+    height: 100%;
+}
+
+Button {
+    margin-top: 40px;
+}
+
+form Button:first-of-type {
+    float: left;
+    box-shadow: none;
+    background: var(--black);
+    border: 1px solid var(--white);
+    color: var(--white);
+}
+
+form Button:last-of-type {
+    float: right;
 }
