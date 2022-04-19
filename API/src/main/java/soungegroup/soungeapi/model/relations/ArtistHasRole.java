@@ -1,9 +1,9 @@
 package soungegroup.soungeapi.model.relations;
 
 import lombok.*;
-import soungegroup.soungeapi.model.relations.idclass.ArtistHasRoleId;
-import soungegroup.soungeapi.model.Role;
 import soungegroup.soungeapi.model.Artist;
+import soungegroup.soungeapi.model.Role;
+import soungegroup.soungeapi.model.relations.idclass.ArtistHasRoleId;
 
 import javax.persistence.*;
 import java.time.LocalDate;

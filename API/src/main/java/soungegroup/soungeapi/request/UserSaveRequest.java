@@ -1,4 +1,4 @@
-package soungegroup.soungeapi.dto.user;
+package soungegroup.soungeapi.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.List;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class SaveRequestUserDTO {
+public abstract class UserSaveRequest {
     private String email;
     private String password;
     private String name;
@@ -21,5 +21,5 @@ public abstract class SaveRequestUserDTO {
     private LocalDate birthDate;
     private State state;
     private String city;
-    private List<SaveRequestGenreDTO> likedGenres;
+    private List<GenreSaveRequest> likedGenres;
 }

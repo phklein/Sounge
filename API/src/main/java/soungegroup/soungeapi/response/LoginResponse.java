@@ -1,10 +1,11 @@
-package soungegroup.soungeapi.dto.user;
+package soungegroup.soungeapi.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import soungegroup.soungeapi.enums.State;
+import soungegroup.soungeapi.enums.UserType;
 import soungegroup.soungeapi.strategy.UserTypeStrategy;
 
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class LoginResponseUserDTO implements UserTypeStrategy {
+public abstract class LoginResponse implements UserTypeStrategy {
     private Long id;
     private String email;
     private String name;
@@ -22,4 +23,5 @@ public abstract class LoginResponseUserDTO implements UserTypeStrategy {
     private String city;
     private String latitude;
     private String longitude;
+    private UserType type;
 }

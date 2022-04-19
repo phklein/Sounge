@@ -1,4 +1,4 @@
-package soungegroup.soungeapi.dto.user;
+package soungegroup.soungeapi.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaveRequestRoleDTO {
+public class RoleSaveRequest {
     private RoleName name;
     private LocalDate startDate;
 }

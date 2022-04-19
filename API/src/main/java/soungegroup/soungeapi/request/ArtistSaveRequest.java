@@ -1,4 +1,4 @@
-package soungegroup.soungeapi.dto.user;
+package soungegroup.soungeapi.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class SaveRequestArtistDTO extends SaveRequestUserDTO {
+public class ArtistSaveRequest extends UserSaveRequest {
     private Gender gender;
-    private List<SaveRequestRoleDTO> roles;
+    private List<RoleSaveRequest> roles;
 }

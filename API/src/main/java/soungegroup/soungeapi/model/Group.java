@@ -2,11 +2,9 @@ package soungegroup.soungeapi.model;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.UserType;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity(name = "Group")
