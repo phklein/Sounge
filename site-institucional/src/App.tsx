@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { MultiForm } from "./components/MultiForm"
 
 import { Home } from "./pages/Home"
-import { Login } from "./pages/Login"
 import { PageNotFound } from "./pages/PageNotFound"
-import { Register } from "./pages/Register"
+import { Login } from "./pages/Login"
+import { Register } from "./pages/register/Register"
+
+import { MultiForm } from "./components/MultiForm"
 
 function App() {
   return (

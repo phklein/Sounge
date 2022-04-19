@@ -2,7 +2,7 @@
 .register-container-left,
 .register-container-right {
     height: 100%;
-    padding: 50px;
+    padding: 40px;
 }
 
 .register-container-left {
@@ -16,12 +16,13 @@
     color: var(--white);
 }
 
-.register-container-left input {
+.form-label {
     z-index: 1000;
     background: var(--black);
+    color: var(--light-gray);
     border: none;
     outline: none;
-    padding: 13px 20px;
+    padding: 15px 20px;
     margin: 5px 0;
 }
 
@@ -60,7 +61,7 @@
     margin: -10px 0 30px;
 }
 
-form {
+Form {
     width: 100%;
     height: 100%;
 }
@@ -69,7 +70,7 @@ Button {
     margin-top: 40px;
 }
 
-form Button:first-of-type {
+.form-group-previous Button {
     float: left;
     box-shadow: none;
     background: var(--black);
@@ -77,6 +78,21 @@ form Button:first-of-type {
     color: var(--white);
 }
 
-form Button:last-of-type {
+.form-group-next {
     float: right;
+}
+
+.form-group {
+    width: 49%;
+}
+
+.form-select {
+    z-index: 1000;
+    width: 100%;
+    background: var(--black);
+    color: var(--gray);
+    border: none;
+    outline: none;
+    padding: 13px 20px;
+    margin: 5px 0;
 }
