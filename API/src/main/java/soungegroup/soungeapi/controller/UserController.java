@@ -1,9 +1,9 @@
 package soungegroup.soungeapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
@@ -25,8 +25,20 @@ public class UserController {
         return service.login(body);
     }
 
-    @DeleteMapping("/auth/{id}")
+    @DeleteMapping("/{id}/auth")
     public ResponseEntity<Void> logoff(@PathVariable Long id) {
         return service.logoff(id);
+    }
+
+    @PatchMapping("/{id}/password")
+    public ResponseEntity<Void> changePassword(@PathVariable Long id,
+                                               @RequestBody PasswordChangeRequest body) {
+        return service.changePassword(id, body);
+    }
+
+    @DeleteMapping("/{id}/{pwd}")
+    public ResponseEntity<Void> delete(@PathVariable Long id,
+                                       @PathVariable String pwd) {
+        return service.delete(id, pwd);
     }
 }

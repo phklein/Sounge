@@ -5,6 +5,8 @@ import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Role;
 
+import java.util.Optional;
+
 public interface RoleRepository extends JpaRepository<Role, Long> {
-    Role findByName(RoleName name);
+    Optional<Role> findByName(RoleName name);
 }

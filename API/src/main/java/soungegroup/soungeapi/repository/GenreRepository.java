@@ -5,6 +5,8 @@ import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Post;
 
+import java.util.Optional;
+
 public interface GenreRepository extends JpaRepository<Genre, Long> {
-    Genre findByName(GenreName name);
+    Optional<Genre> findByName(GenreName name);
 }

@@ -7,27 +7,36 @@ import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.UserAdapter;
 import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.UserRepository;
+import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final UserAdapter adapter;
+
     private final List<UserLoginResponse> sessions;
 
     @Override
     public ResponseEntity<UserLoginResponse> saveAndLogin(UserSaveRequest body) {
-        User savedUser = repository.save(adapter.toUser(body));
-        UserLoginResponse loginResponse = adapter.toLoginResponse(savedUser);
+        User user = adapter.toUser(body);
 
-        sessions.add(loginResponse);
-        return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
+        if (user != null) {
+            repository.save(user);
+            UserLoginResponse loginResponse = adapter.toLoginResponse(user);
+
+            sessions.add(loginResponse);
+            return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @Override
@@ -49,6 +58,43 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<Void> logoff(Long id) {
         if (sessions.removeIf(u -> u.getId().equals(id))) {
             return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> changePassword(Long id, PasswordChangeRequest body) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            if (user.getPassword().equals(body.getOldPassword())) {
+                user.setPassword(body.getNewPassword());
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> delete(Long id, String password) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            if (user.getPassword().equals(password)) {
+                repository.delete(user);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

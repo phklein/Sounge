@@ -10,12 +10,12 @@ import soungegroup.soungeapi.model.Role;
 import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.repository.RoleRepository;
-import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -32,11 +32,18 @@ public class UserAdapter {
         List<Role> roles = new ArrayList<>();
 
         for (GenreName gn : userSaveRequest.getLikedGenres()) {
-            genres.add(genreRepository.findByName(gn));
+            Optional<Genre> genre = genreRepository.findByName(gn);
+            genre.ifPresent(genres::add);
         }
 
         for (RoleName rn : userSaveRequest.getRoles()) {
-            roles.add(roleRepository.findByName(rn));
+            Optional<Role> role = roleRepository.findByName(rn);
+            role.ifPresent(roles::add);
+        }
+
+        if (genres.size() < userSaveRequest.getLikedGenres().size() ||
+                roles.size() < userSaveRequest.getRoles().size()) {
+            return null;
         }
 
         user.setLikedGenres(genres);
