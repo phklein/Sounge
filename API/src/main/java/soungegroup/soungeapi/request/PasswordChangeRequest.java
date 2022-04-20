@@ -1,16 +1,14 @@
 package soungegroup.soungeapi.request;
 
 import lombok.Data;
-import soungegroup.soungeapi.enums.GenreName;
-import soungegroup.soungeapi.enums.RoleName;
-import soungegroup.soungeapi.enums.Sex;
-import soungegroup.soungeapi.enums.State;
+import org.hibernate.validator.constraints.Length;
 
-import java.time.LocalDate;
-import java.util.List;
+import javax.validation.constraints.NotBlank;
 
 @Data
 public class PasswordChangeRequest {
+    @Length(min = 8)
     private String oldPassword;
+    @Length(min = 8)
     private String newPassword;
 }

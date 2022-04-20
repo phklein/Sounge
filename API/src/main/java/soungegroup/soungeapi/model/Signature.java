@@ -1,6 +1,9 @@
 package soungegroup.soungeapi.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import soungegroup.soungeapi.enums.SignatureType;
 
 import javax.persistence.*;

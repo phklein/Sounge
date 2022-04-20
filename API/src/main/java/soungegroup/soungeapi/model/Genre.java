@@ -1,10 +1,12 @@
 package soungegroup.soungeapi.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import soungegroup.soungeapi.enums.GenreName;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Genre")
