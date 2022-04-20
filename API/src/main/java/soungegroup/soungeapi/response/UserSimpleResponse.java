@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import soungegroup.soungeapi.enums.Sex;
-import soungegroup.soungeapi.enums.State;
-
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor

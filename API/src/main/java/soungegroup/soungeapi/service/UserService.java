@@ -12,4 +12,5 @@ public interface UserService {
     ResponseEntity<Void> logoff(Long id);
     ResponseEntity<Void> changePassword(Long id, PasswordChangeRequest body);
     ResponseEntity<Void> delete(Long id, String password);
+    ResponseEntity export();
 }

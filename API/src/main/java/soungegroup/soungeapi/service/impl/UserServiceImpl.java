@@ -10,6 +10,7 @@ import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
+import soungegroup.soungeapi.response.UserCsvResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.service.UserService;
 
@@ -98,5 +99,22 @@ public class UserServiceImpl implements UserService {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity export() {
+        List<UserCsvResponse> users = repository.findAllCsv();
+        StringBuilder report = new StringBuilder();
+        for (UserCsvResponse u : users) {
+            report.append(String.format("%d;%s;%s;%s;%s;%s;%s\r\n",
+                    u.getId(), u.getName(), u.getSex(), u.getDescription(),
+                    u.getBirthDate(), u.getState(), u.getCity()));
+        }
+        return users.isEmpty() ?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                ResponseEntity.status(HttpStatus.OK)
+                .header("content-type", "text/csv")
+                .header("content-disposition", "filename=\".csv\"")
+                .body(report.toString());
     }
 }

@@ -1,7 +1,6 @@
 package soungegroup.soungeapi.model;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

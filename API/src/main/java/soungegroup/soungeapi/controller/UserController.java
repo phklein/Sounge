@@ -9,6 +9,8 @@ import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.service.UserService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -16,12 +18,12 @@ public class UserController {
     private final UserService service;
 
     @PostMapping
-    public ResponseEntity<UserLoginResponse> saveAndLogin(@RequestBody UserSaveRequest body) {
+    public ResponseEntity<UserLoginResponse> saveAndLogin(@RequestBody @Valid UserSaveRequest body) {
         return service.saveAndLogin(body);
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest body) {
+    public ResponseEntity<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest body) {
         return service.login(body);
     }
 
@@ -32,7 +34,7 @@ public class UserController {
 
     @PatchMapping("/{id}/password")
     public ResponseEntity<Void> changePassword(@PathVariable Long id,
-                                               @RequestBody PasswordChangeRequest body) {
+                                               @RequestBody @Valid PasswordChangeRequest body) {
         return service.changePassword(id, body);
     }
 
@@ -40,5 +42,10 @@ public class UserController {
     public ResponseEntity<Void> delete(@PathVariable Long id,
                                        @PathVariable String pwd) {
         return service.delete(id, pwd);
+    }
+
+    @GetMapping("/report")
+    public ResponseEntity getReport() {
+        return service.export();
     }
 }

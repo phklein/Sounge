@@ -10,9 +10,11 @@ import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.GroupRepository;
 import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.GroupSaveRequest;
+import soungegroup.soungeapi.response.GroupCsvResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,5 +67,21 @@ public class GroupServiceImpl implements GroupService {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity export() {
+        List<GroupCsvResponse> groups = repository.findAllCsv();
+        StringBuilder report = new StringBuilder();
+        for (GroupCsvResponse g : groups) {
+            report.append(String.format("%d;%s;%s;%s\r\n",
+                    g.getId(), g.getName(), g.getDescription(), g.getCreationDate()));
+        }
+        return groups.isEmpty() ?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                ResponseEntity.status(HttpStatus.OK)
+                        .header("content-type", "text/csv")
+                        .header("content-disposition", "filename=\".csv\"")
+                        .body(report.toString());
     }
 }
