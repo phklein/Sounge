@@ -6,24 +6,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.GroupAdapter;
 import soungegroup.soungeapi.model.Group;
-import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.GroupRepository;
-import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.response.GroupCsvResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
     private final GroupRepository repository;
     private final GroupAdapter adapter;
-
-    private final UserRepository userRepository;
 
     @Override
     public ResponseEntity<GroupSimpleResponse> save(GroupSaveRequest body) {
@@ -40,26 +35,6 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseEntity<Void> addMember(Long id, Long memberId) {
-        Optional<Group> groupOptional = repository.findById(id);
-
-        if (groupOptional.isPresent()) {
-            Group group = groupOptional.get();
-
-            Optional<User> userOptional = userRepository.findById(memberId);
-
-            if (userOptional.isPresent()) {
-                group.getUsers().add(userOptional.get());
-                return ResponseEntity.status(HttpStatus.OK).build();
-            }
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    @Override
     public ResponseEntity<Void> delete(Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
@@ -67,6 +42,15 @@ public class GroupServiceImpl implements GroupService {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<GroupSimpleResponse>> findAll() {
+        List<Group> foundGroups = repository.findAll();
+
+        return foundGroups.isEmpty() ?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                ResponseEntity.status(HttpStatus.OK).body(adapter.toSimpleResponse(foundGroups));
     }
 
     @Override

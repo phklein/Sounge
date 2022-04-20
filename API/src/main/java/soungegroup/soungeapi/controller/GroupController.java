@@ -8,6 +8,7 @@ import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/groups")
@@ -15,24 +16,23 @@ import javax.validation.Valid;
 public class GroupController {
     private final GroupService service;
 
-    @PostMapping
-    public ResponseEntity<GroupSimpleResponse> save(@RequestBody @Valid GroupSaveRequest body) {
-        return service.save(body);
-    }
-
-    @PatchMapping("/{id}/members/{memberId}")
-    public ResponseEntity<Void> addMember(@PathVariable Long id,
-                                          @PathVariable Long memberId) {
-        return service.addMember(id, memberId);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        return service.delete(id);
+    @GetMapping
+    public ResponseEntity<List<GroupSimpleResponse>> findAll() {
+        return service.findAll();
     }
 
     @GetMapping("/report")
     public ResponseEntity getReport() {
         return service.export();
+    }
+
+    @PostMapping
+    public ResponseEntity<GroupSimpleResponse> save(@RequestBody @Valid GroupSaveRequest body) {
+        return service.save(body);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        return service.delete(id);
     }
 }
