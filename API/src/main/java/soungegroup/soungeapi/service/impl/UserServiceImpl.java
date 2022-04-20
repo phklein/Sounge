@@ -88,6 +88,11 @@ public class UserServiceImpl implements UserService {
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
                 user.setGroup(group);
+
+                if (group.getUsers().isEmpty()) {
+                    user.setLeader(true);
+                }
+
                 repository.save(user);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
@@ -255,15 +260,15 @@ public class UserServiceImpl implements UserService {
         List<UserCsvResponse> users = repository.findAllCsv();
         StringBuilder report = new StringBuilder();
         for (UserCsvResponse u : users) {
-            report.append(String.format("%d;%s;%s;%s;%s;%s;%s\r\n",
+            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s\r\n",
                     u.getId(), u.getName(), u.getSex(), u.getDescription(),
-                    u.getBirthDate(), u.getState(), u.getCity()));
+                    u.getBirthDate(), u.getState(), u.getCity(), u.isLeader()));
         }
         return users.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                 ResponseEntity.status(HttpStatus.OK)
                 .header("content-type", "text/csv")
-                .header("content-disposition", "filename=\".csv\"")
+                .header("content-disposition", "filename=\"users.csv\"")
                 .body(report.toString());
     }
 }

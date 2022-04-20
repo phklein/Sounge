@@ -63,7 +63,7 @@ public class GroupServiceImpl implements GroupService {
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                 ResponseEntity.status(HttpStatus.OK)
                         .header("content-type", "text/csv")
-                        .header("content-disposition", "filename=\".csv\"")
+                        .header("content-disposition", "filename=\"groups.csv\"")
                         .body(report.toString());
     }
 }

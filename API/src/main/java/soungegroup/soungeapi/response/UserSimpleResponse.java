@@ -16,4 +16,5 @@ public class UserSimpleResponse {
     private Sex sex;
     private List<GenreSimpleResponse> likedGenres;
     private List<RoleSimpleResponse> roles;
+    private boolean leader;
 }

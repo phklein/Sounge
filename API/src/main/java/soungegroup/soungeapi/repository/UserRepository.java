@@ -12,14 +12,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select new soungegroup.soungeapi.response.UserLoginResponse(" +
             "u.id, u.name, u.sex, " +
             "u.description, u.birthDate, " +
-            "u.state, u.city) " +
+            "u.state, u.city, u.leader) " +
             "from User u where u.email = ?1 and u.password = ?2")
     List<UserLoginResponse> findUserByEmailAndPassword(String email, String password);
 
     @Query("select new soungegroup.soungeapi.response.UserCsvResponse(" +
             "u.id, u.name, u.sex, " +
             "u.description, u.birthDate, " +
-            "u.state, u.city) " +
+            "u.state, u.city, u.leader) " +
             "from User u")
     List<UserCsvResponse> findAllCsv();
 }
