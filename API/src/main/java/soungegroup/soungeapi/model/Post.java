@@ -4,20 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
-import soungegroup.soungeapi.model.relations.PostHasGenre;
-import soungegroup.soungeapi.model.relations.UserLikesPost;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "Post")
 @Table(name = "tb_post")
-@Getter
-@Setter
-@SuperBuilder
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -38,21 +32,14 @@ public class Post {
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    // Many posts are associated to many genres
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PostHasGenre> genresAssoc;
+    // Many users like many genres
+    @ManyToMany
+    @JoinTable(name = "tb_post_has_genre",
+            joinColumns = @JoinColumn(name = "post_fk"),
+            inverseJoinColumns = @JoinColumn(name = "genre_fk"))
+    private List<Genre> genres;
 
     // Many posts are liked by many users
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserLikesPost> usersWhoLikeAssoc;
-
-    public List<Genre> getGenres() {
-        List<Genre> genres = new ArrayList<>();
-        genresAssoc.forEach(phg -> genres.add(phg.getGenre()));
-        return genres;
-    }
-
-    public Integer getLikeCount() {
-        return usersWhoLikeAssoc.size();
-    }
+    @ManyToMany(mappedBy = "likedPosts", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<User> usersWhoLiked;
 }

@@ -1,7 +1,6 @@
 package soungegroup.soungeapi.model;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -9,9 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity(name = "Event")
 @Table(name = "tb_event")
-@Getter
-@Setter
-@SuperBuilder
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)

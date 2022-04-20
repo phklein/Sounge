@@ -1,6 +1,9 @@
 package soungegroup.soungeapi.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import soungegroup.soungeapi.enums.Weekday;
 
 import javax.persistence.*;
@@ -8,9 +11,7 @@ import java.time.LocalTime;
 
 @Entity(name = "Schedule")
 @Table(name = "tb_schedule")
-@Builder
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Schedule {
