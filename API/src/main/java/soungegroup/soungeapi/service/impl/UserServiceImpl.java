@@ -1,56 +1,56 @@
 package soungegroup.soungeapi.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import soungegroup.soungeapi.request.LoginRequest;
-import soungegroup.soungeapi.response.LoginResponse;
-import soungegroup.soungeapi.request.ArtistSaveRequest;
-import soungegroup.soungeapi.mapper.UserMapper;
+import soungegroup.soungeapi.adapter.UserAdapter;
 import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.UserRepository;
+import soungegroup.soungeapi.request.UserLoginRequest;
+import soungegroup.soungeapi.request.UserSaveRequest;
+import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.service.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final UserMapper mapper;
-    private final List<User> activeUsers;
+    private final UserRepository repository;
+    private final UserAdapter adapter;
+    private final List<UserLoginResponse> sessions;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper mapper) {
-        this.userRepository = userRepository;
-        this.mapper = mapper;
-        this.activeUsers = new ArrayList<>();
+    @Override
+    public ResponseEntity<UserLoginResponse> saveAndLogin(UserSaveRequest body) {
+        User savedUser = repository.save(adapter.toUser(body));
+        UserLoginResponse loginResponse = adapter.toLoginResponse(savedUser);
+
+        sessions.add(loginResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
     }
 
     @Override
-    public ResponseEntity<LoginResponse> saveAndAuthenticate(ArtistSaveRequest body) {
-        User user = userRepository.save(mapper.toUser(body));
-        activeUsers.add(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toLoginResponse(user));
-    }
+    public ResponseEntity<UserLoginResponse> login(UserLoginRequest body) {
+        List<UserLoginResponse> foundUsers = repository.findUserByEmailAndPassword(body.getEmail(), body.getPassword());
 
-    @Override
-    public ResponseEntity<LoginResponse> authenticate(LoginRequest body) {
-        List<User> users = userRepository.findUserByEmailAndPasswordHash(body.getEmail(), body.getPassword());
-        if (users.size() == 1) {
-            User user = users.get(0);
-            activeUsers.add(user);
-            return ResponseEntity.status(HttpStatus.OK).body(mapper.toLoginResponse(user));
-        } else if (users.size() > 1) {
+        if (foundUsers.size() == 1) {
+            UserLoginResponse user = foundUsers.get(0);
+            sessions.add(user);
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        } else if (foundUsers.size() > 1) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override
-    public ResponseEntity<Void> logout(Long id) {
-        if (activeUsers.removeIf(u -> u.getId().equals(id))) {
+    public ResponseEntity<Void> logoff(Long id) {
+        if (sessions.removeIf(u -> u.getId().equals(id))) {
             return ResponseEntity.status(HttpStatus.OK).build();
         }
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

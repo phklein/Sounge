@@ -4,33 +4,27 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+import soungegroup.soungeapi.enums.Sex;
 import soungegroup.soungeapi.enums.State;
-import soungegroup.soungeapi.model.relations.UserLikesGenre;
-import soungegroup.soungeapi.model.relations.UserLikesPost;
-import soungegroup.soungeapi.model.relations.UserLikesUser;
-import soungegroup.soungeapi.strategy.UserTypeStrategy;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "User")
 @Table(name = "tb_user")
-@Getter
-@Setter
-@SuperBuilder
-@NoArgsConstructor
+@Getter @Setter
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User implements UserTypeStrategy {
+@NoArgsConstructor
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id") private Long id;
     @Column(name = "user_email") private String email;
-    @Column(name = "user_password_hash") private String passwordHash;
+    @Column(name = "user_password") private String password;
     @Column(name = "user_name") private String name;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "user_sex") private Sex sex;
     @Column(name = "user_description") private String description;
     @Column(name = "user_birth_date") private LocalDate birthDate;
     @Enumerated(EnumType.ORDINAL)
@@ -51,48 +45,45 @@ public abstract class User implements UserTypeStrategy {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Schedule> schedules;
 
-    // Many users like many genres
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserLikesGenre> likedGenresAssoc;
-
-    // Many users like many posts
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserLikesPost> likedPostsAssoc;
-
-    // Many users like many users
-    @OneToMany(mappedBy = "liker", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserLikesUser> likedUsersAssoc;
-
-    // Many users are liked by many users
-    @OneToMany(mappedBy = "liked", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserLikesUser> usersWhoLikedAssoc;
-
     // Many users can have one signature
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "signature_fk")
     private Signature signature;
 
-    public List<Genre> getGenres() {
-        List<Genre> genres = new ArrayList<>();
-        likedGenresAssoc.forEach(ulg -> genres.add(ulg.getGenre()));
-        return genres;
-    }
+    // Many users can belong to one group
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_fk")
+    private Group group;
 
-    public List<Post> getLikedPosts() {
-        List<Post> posts = new ArrayList<>();
-        likedPostsAssoc.forEach(ulp -> posts.add(ulp.getPost()));
-        return posts;
-    }
+    // Many users like many genres
+    @ManyToMany
+    @JoinTable(name = "tb_user_likes_genre",
+            joinColumns = @JoinColumn(name = "user_fk"),
+            inverseJoinColumns = @JoinColumn(name = "genre_fk"))
+    private List<Genre> likedGenres;
 
-    public List<User> getLikedUsers() {
-        List<User> users = new ArrayList<>();
-        likedUsersAssoc.forEach(ulu -> users.add(ulu.getLiked()));
-        return users;
-    }
+    // Many users like many users
+    @ManyToMany
+    @JoinTable(name = "tb_user_has_role",
+            joinColumns = @JoinColumn(name = "user_fk"),
+            inverseJoinColumns = @JoinColumn(name = "role_fk"))
+    private List<Role> roles;
 
-    public List<User> getUsersWhoLiked() {
-        List<User> users = new ArrayList<>();
-        usersWhoLikedAssoc.forEach(ulu -> users.add(ulu.getLiker()));
-        return users;
-    }
+    // Many users like many posts
+    @ManyToMany
+    @JoinTable(name = "tb_user_likes_post",
+            joinColumns = @JoinColumn(name = "user_fk"),
+            inverseJoinColumns = @JoinColumn(name = "post_fk"))
+    private List<Post> likedPosts;
+
+    // Many users like many users
+    @ManyToMany
+    @JoinTable(name = "tb_user_likes_user",
+            joinColumns = @JoinColumn(name = "liker_fk"),
+            inverseJoinColumns = @JoinColumn(name = "liked_fk"))
+    private List<User> likedUsers;
+
+    // Many users are liked by many users
+    @ManyToMany(mappedBy = "likedUsers", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<User> usersWhoLiked;
 }

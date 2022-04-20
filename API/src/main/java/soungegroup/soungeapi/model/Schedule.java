@@ -8,9 +8,7 @@ import java.time.LocalTime;
 
 @Entity(name = "Schedule")
 @Table(name = "tb_schedule")
-@Builder
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Schedule {

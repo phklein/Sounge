@@ -1,25 +1,24 @@
 package soungegroup.soungeapi.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import soungegroup.soungeapi.enums.GenreName;
+import soungegroup.soungeapi.enums.RoleName;
+import soungegroup.soungeapi.enums.Sex;
 import soungegroup.soungeapi.enums.State;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@SuperBuilder
-@AllArgsConstructor
-@NoArgsConstructor
-public abstract class UserSaveRequest {
+public class UserSaveRequest {
     private String email;
     private String password;
     private String name;
+    private Sex sex;
     private String description;
     private LocalDate birthDate;
     private State state;
     private String city;
-    private List<GenreSaveRequest> likedGenres;
+    private List<GenreName> likedGenres;
+    private List<RoleName> roles;
 }

@@ -7,9 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity(name = "Comment")
 @Table(name = "tb_comment")
-@Getter
-@Setter
-@Builder
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {

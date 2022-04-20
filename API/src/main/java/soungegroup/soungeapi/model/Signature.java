@@ -9,9 +9,7 @@ import java.util.List;
 
 @Entity(name = "Signature")
 @Table(name = "tb_signature")
-@Builder
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Signature {
