@@ -53,7 +53,7 @@ public class UserController {
         return service.addGenre(id, genreName);
     }
 
-    @PostMapping("/{id}/roles/{genreName}")
+    @PostMapping("/{id}/roles/{roleName}")
     public ResponseEntity<Void> addRole(@PathVariable Long id,
                                         @PathVariable RoleName roleName) {
         return service.addRole(id, roleName);
@@ -82,7 +82,7 @@ public class UserController {
         return service.removeGenre(id, genreName);
     }
 
-    @DeleteMapping("/{id}/roles/{genreName}")
+    @DeleteMapping("/{id}/roles/{roleName}")
     public ResponseEntity<Void> removeRole(@PathVariable Long id,
                                            @PathVariable RoleName roleName) {
         return service.removeRole(id, roleName);
