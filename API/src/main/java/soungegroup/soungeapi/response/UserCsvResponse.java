@@ -19,4 +19,5 @@ public class UserCsvResponse {
     private LocalDate birthDate;
     private State state;
     private String city;
+    private boolean leader;
 }

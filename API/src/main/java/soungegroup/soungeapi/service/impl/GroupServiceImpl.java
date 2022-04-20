@@ -25,10 +25,8 @@ public class GroupServiceImpl implements GroupService {
         Group group = adapter.toGroup(body);
 
         if (group != null) {
-            repository.save(group);
-            GroupSimpleResponse groupSimpleResponse = adapter.toSimpleResponse(group);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(groupSimpleResponse);
+            group = repository.save(group);
+            return ResponseEntity.status(HttpStatus.CREATED).body(adapter.toSimpleResponse(group));
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -65,7 +63,7 @@ public class GroupServiceImpl implements GroupService {
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                 ResponseEntity.status(HttpStatus.OK)
                         .header("content-type", "text/csv")
-                        .header("content-disposition", "filename=\".csv\"")
+                        .header("content-disposition", "filename=\"groups.csv\"")
                         .body(report.toString());
     }
 }

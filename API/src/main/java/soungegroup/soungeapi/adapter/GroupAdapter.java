@@ -29,25 +29,17 @@ public class GroupAdapter {
         Group group = mapper.map(groupSaveRequest, Group.class);
 
         List<Genre> genres = new ArrayList<>();
-        List<User> users = new ArrayList<>();
 
         for (GenreName gn : groupSaveRequest.getGenres()) {
             Optional<Genre> genre = genreRepository.findByName(gn);
             genre.ifPresent(genres::add);
         }
 
-        for (Long id : groupSaveRequest.getUsersIds()) {
-            Optional<User> user = userRepository.findById(id);
-            user.ifPresent(users::add);
-        }
-
-        if (users.size() < groupSaveRequest.getUsersIds().size() ||
-                genres.size() < groupSaveRequest.getGenres().size()) {
+        if (genres.size() < groupSaveRequest.getGenres().size()) {
             return null;
         }
 
         group.setGenres(genres);
-        group.setUsers(users);
 
         return group;
     }
