@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
         User user = adapter.toUser(body);
 
         if (user != null) {
-            repository.save(user);
+            user = repository.save(user);
             UserLoginResponse loginResponse = adapter.toLoginResponse(user);
 
             sessions.add(loginResponse);

@@ -41,5 +41,5 @@ public class Post {
 
     // Many posts are liked by many users
     @ManyToMany(mappedBy = "likedPosts", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<User> users;
+    private List<User> usersWhoLiked;
 }

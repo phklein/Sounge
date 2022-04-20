@@ -25,10 +25,8 @@ public class GroupServiceImpl implements GroupService {
         Group group = adapter.toGroup(body);
 
         if (group != null) {
-            repository.save(group);
-            GroupSimpleResponse groupSimpleResponse = adapter.toSimpleResponse(group);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(groupSimpleResponse);
+            group = repository.save(group);
+            return ResponseEntity.status(HttpStatus.CREATED).body(adapter.toSimpleResponse(group));
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
