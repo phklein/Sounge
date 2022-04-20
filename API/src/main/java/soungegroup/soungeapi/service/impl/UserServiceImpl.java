@@ -260,9 +260,9 @@ public class UserServiceImpl implements UserService {
         List<UserCsvResponse> users = repository.findAllCsv();
         StringBuilder report = new StringBuilder();
         for (UserCsvResponse u : users) {
-            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s\r\n",
+            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s\r\n",
                     u.getId(), u.getName(), u.getSex(), u.getDescription(),
-                    u.getBirthDate(), u.getState(), u.getCity(), u.isLeader()));
+                    u.getBirthDate(), u.getState(), u.getCity(), u.isLeader(), u.getSkillLevel()));
         }
         return users.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :

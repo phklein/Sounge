@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import soungegroup.soungeapi.enums.Sex;
+import soungegroup.soungeapi.enums.SkillLevel;
 import soungegroup.soungeapi.enums.State;
 
 import java.time.LocalDate;
@@ -20,4 +21,5 @@ public class UserCsvResponse {
     private State state;
     private String city;
     private boolean leader;
+    private SkillLevel skillLevel;
 }

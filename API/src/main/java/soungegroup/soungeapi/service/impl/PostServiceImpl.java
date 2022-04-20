@@ -4,30 +4,28 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import soungegroup.soungeapi.adapter.GroupAdapter;
 import soungegroup.soungeapi.adapter.PostAdapter;
-import soungegroup.soungeapi.model.Group;
+import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Post;
-import soungegroup.soungeapi.repository.GroupRepository;
+import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.PostRepository;
-import soungegroup.soungeapi.request.GroupSaveRequest;
+import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.PostSaveRequest;
 import soungegroup.soungeapi.request.PostUpdateRequest;
-import soungegroup.soungeapi.response.GroupCsvResponse;
-import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.response.PostSimpleResponse;
-import soungegroup.soungeapi.service.GroupService;
 import soungegroup.soungeapi.service.PostService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
     private final PostRepository repository;
+    private final UserRepository userRepository;
     private final PostAdapter adapter;
 
     @Override
@@ -45,8 +43,32 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<List<PostSimpleResponse>> findAll() {
+    public ResponseEntity<List<PostSimpleResponse>> findAll(Optional<Long> userId) {
         List<Post> foundPosts = repository.findAll();
+
+        if (userId.isPresent()) {
+            Optional<User> userOptional = userRepository.findById(userId.get());
+
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+
+                foundPosts = foundPosts.stream().filter(post -> {
+                    if (user.getLikedUsers().contains(post.getUser())) {
+                        return true;
+                    }
+
+                    for (Genre g : post.getGenres()) {
+                        if (user.getLikedGenres().contains(g)) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }).collect(Collectors.toList());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        }
 
         return foundPosts.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :

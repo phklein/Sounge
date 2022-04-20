@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.request.PostSaveRequest;
 import soungegroup.soungeapi.request.PostUpdateRequest;
@@ -14,6 +15,7 @@ import soungegroup.soungeapi.service.PostService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/posts")
@@ -27,8 +29,8 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostSimpleResponse>> findAll() {
-        return service.findAll();
+    public ResponseEntity<List<PostSimpleResponse>> findAll(@RequestParam Optional<Long> userId) {
+        return service.findAll(userId);
     }
 
     @PutMapping("/{id}")

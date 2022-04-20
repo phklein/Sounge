@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import soungegroup.soungeapi.enums.Sex;
+import soungegroup.soungeapi.enums.SkillLevel;
 import soungegroup.soungeapi.enums.State;
 
 import javax.persistence.*;
@@ -33,6 +34,8 @@ public class User {
     @Column(name = "user_latitude") private String latitude;
     @Column(name = "user_longitude") private String longitude;
     @Column(name = "user_leader") private boolean leader;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "user_skill_level") private SkillLevel skillLevel;
 
     // One user has many posts
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
