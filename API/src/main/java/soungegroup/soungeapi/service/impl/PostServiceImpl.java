@@ -30,14 +30,13 @@ public class PostServiceImpl implements PostService {
     private final PostAdapter adapter;
 
     @Override
-    public ResponseEntity<PostSimpleResponse> save(PostSaveRequest body) {
+    public ResponseEntity<Long> save(PostSaveRequest body) {
         Post post = adapter.toPost(body);
 
         if (post != null) {
             post.setPostDateTime(LocalDateTime.now());
-            post.setUsersWhoLiked(new ArrayList<>());
             post = repository.save(post);
-            return ResponseEntity.status(HttpStatus.CREATED).body(adapter.toSimpleResponse(post));
+            return ResponseEntity.status(HttpStatus.CREATED).body(post.getId());
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -73,15 +72,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<PostSimpleResponse> update(Long id, PostUpdateRequest body) {
+    public ResponseEntity<Void> update(Long id, PostUpdateRequest body) {
         Optional<Post> postOptional = repository.findById(id);
 
         if (postOptional.isPresent()) {
             Post post = postOptional.get();
             post.setText(body.getText());
             post.setMediaUrl(body.getMediaUrl());
-            post = repository.save(post);
-            return ResponseEntity.status(HttpStatus.OK).body(adapter.toSimpleResponse(post));
+            repository.save(post);
+            return ResponseEntity.status(HttpStatus.OK).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

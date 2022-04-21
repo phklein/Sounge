@@ -7,7 +7,7 @@ import soungegroup.soungeapi.response.CommentSimpleResponse;
 import java.util.List;
 
 public interface CommentService {
-    ResponseEntity<CommentSimpleResponse> save(Long id, CommentSaveRequest body);
+    ResponseEntity<Long> save(Long id, CommentSaveRequest body);
 
     ResponseEntity<List<CommentSimpleResponse>> findByPostId(Long postId);
 

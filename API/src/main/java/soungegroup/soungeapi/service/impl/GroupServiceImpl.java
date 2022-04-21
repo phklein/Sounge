@@ -23,12 +23,12 @@ public class GroupServiceImpl implements GroupService {
     private final GroupAdapter adapter;
 
     @Override
-    public ResponseEntity<GroupSimpleResponse> save(GroupSaveRequest body) {
+    public ResponseEntity<Long> save(GroupSaveRequest body) {
         Group group = adapter.toGroup(body);
 
         if (group != null) {
             group = repository.save(group);
-            return ResponseEntity.status(HttpStatus.CREATED).body(adapter.toSimpleResponse(group));
+            return ResponseEntity.status(HttpStatus.CREATED).body(group.getId());
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

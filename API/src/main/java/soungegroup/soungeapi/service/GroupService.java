@@ -6,7 +6,7 @@ import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
 
 public interface GroupService {
-    ResponseEntity<GroupSimpleResponse> save(GroupSaveRequest body);
+    ResponseEntity<Long> save(GroupSaveRequest body);
 
     ResponseEntity<GroupPageResponse> findById(Long id);
     ResponseEntity export();

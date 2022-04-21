@@ -116,6 +116,46 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<Void> likeUser(Long id, Long likedId) {
+        Optional<User> likerOptional = repository.findById(id);
+        Optional<User> likedOptional = repository.findById(likedId);
+
+        if (likerOptional.isPresent() && likedOptional.isPresent()) {
+            User liker = likerOptional.get();
+            User liked = likedOptional.get();
+
+            if (!liker.getLikedUsers().contains(liked)) {
+                liker.getLikedUsers().add(liked);
+                repository.save(liker);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> unlikeUser(Long id, Long likedId) {
+        Optional<User> likerOptional = repository.findById(id);
+        Optional<User> likedOptional = repository.findById(likedId);
+
+        if (likerOptional.isPresent() && likedOptional.isPresent()) {
+            User liker = likerOptional.get();
+            User liked = likedOptional.get();
+
+            if (liker.getLikedUsers().contains(liked)) {
+                liker.getLikedUsers().remove(liked);
+                repository.save(liker);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
     public ResponseEntity<Void> joinGroup(Long id, Long groupId) {
         Optional<Group> groupOptional = groupRepository.findById(groupId);
 

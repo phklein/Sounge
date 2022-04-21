@@ -64,6 +64,18 @@ public class UserController {
         return service.unlikePost(id, postId);
     }
 
+    @PostMapping("/{id}/likeUser/{likedId}")
+    public ResponseEntity<Void> likeUser(@PathVariable Long id,
+                                         @PathVariable Long likedId) {
+        return service.likeUser(id, likedId);
+    }
+
+    @DeleteMapping("/{id}/likeUser/{likedId}")
+    public ResponseEntity<Void> unlikeUser(@PathVariable Long id,
+                                           @PathVariable Long likedId) {
+        return service.unlikeUser(id, likedId);
+    }
+
     @PostMapping("/{id}/group/{groupId}")
     public ResponseEntity<Void> joinGroup(@PathVariable Long id,
                                           @PathVariable Long groupId) {

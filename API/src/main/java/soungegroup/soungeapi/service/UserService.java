@@ -20,6 +20,9 @@ public interface UserService {
     ResponseEntity<Void> likePost(Long id, Long postId);
     ResponseEntity<Void> unlikePost(Long id, Long postId);
 
+    ResponseEntity<Void> likeUser(Long id, Long likedId);
+    ResponseEntity<Void> unlikeUser(Long id, Long likedId);
+
     ResponseEntity<Void> joinGroup(Long id, Long groupId);
     ResponseEntity<Void> leaveGroup(Long id);
 

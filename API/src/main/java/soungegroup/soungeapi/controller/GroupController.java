@@ -17,7 +17,7 @@ public class GroupController {
     private final GroupService service;
 
     @PostMapping
-    public ResponseEntity<GroupSimpleResponse> save(@RequestBody @Valid GroupSaveRequest body) {
+    public ResponseEntity<Long> save(@RequestBody @Valid GroupSaveRequest body) {
         return service.save(body);
     }
     @GetMapping("/{id}")

@@ -28,7 +28,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentAdapter adapter;
 
     @Override
-    public ResponseEntity<CommentSimpleResponse> save(Long id, CommentSaveRequest body) {
+    public ResponseEntity<Long> save(Long id, CommentSaveRequest body) {
         Optional<Post> postOptional = postRepository.findById(id);
         Optional<User> userOptional = userRepository.findById(body.getUserId());
 
@@ -37,8 +37,8 @@ public class CommentServiceImpl implements CommentService {
             comment.setUser(userOptional.get());
             comment.setPost(postOptional.get());
             comment.setCommentDateTime(LocalDateTime.now());
-            repository.save(comment);
-            return ResponseEntity.status(HttpStatus.CREATED).body(adapter.toSimpleResponse(comment));
+            comment = repository.save(comment);
+            return ResponseEntity.status(HttpStatus.CREATED).body(comment.getId());
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
