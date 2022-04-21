@@ -1,31 +1,35 @@
 package soungegroup.soungeapi.model;
 
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-import soungegroup.soungeapi.enums.UserType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity(name = "Group")
 @Table(name = "tb_group")
-@SuperBuilder
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Group extends User {
+public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id") private Long id;
+    @Column(name = "group_id") private Long id;
+    @Column(name = "group_name") private String name;
+    @Column(name = "group_description") private String description;
+    @Column(name = "group_creation_date") private LocalDate creationDate;
 
-    // One group has many members
+    // Many users like many genres
+    @ManyToMany
+    @JoinTable(name = "tb_group_has_genre",
+            joinColumns = @JoinColumn(name = "group_fk"),
+            inverseJoinColumns = @JoinColumn(name = "genre_fk"))
+    private List<Genre> genres;
+
+    // One group can have many users
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Artist> members;
-
-    @Override
-    public UserType getUserType() {
-        return UserType.GROUP;
-    }
+    private List<User> users;
 }

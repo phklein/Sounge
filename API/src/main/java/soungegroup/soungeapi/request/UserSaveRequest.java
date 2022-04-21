@@ -1,25 +1,35 @@
 package soungegroup.soungeapi.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import org.hibernate.validator.constraints.Length;
+import soungegroup.soungeapi.enums.GenreName;
+import soungegroup.soungeapi.enums.RoleName;
+import soungegroup.soungeapi.enums.Sex;
 import soungegroup.soungeapi.enums.State;
 
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@SuperBuilder
-@AllArgsConstructor
-@NoArgsConstructor
-public abstract class UserSaveRequest {
+public class UserSaveRequest {
+    @Email
     private String email;
+    @Length(min = 8)
     private String password;
+    @NotBlank
     private String name;
+    @NotNull
+    private Sex sex;
     private String description;
+    @Past
+    @NotNull
     private LocalDate birthDate;
+    @NotNull
     private State state;
+    @NotBlank
     private String city;
-    private List<GenreSaveRequest> likedGenres;
+    @NotEmpty
+    private List<GenreName> likedGenres;
+    private List<RoleName> roles;
 }
