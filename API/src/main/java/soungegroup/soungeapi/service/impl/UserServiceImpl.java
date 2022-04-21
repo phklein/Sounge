@@ -81,9 +81,15 @@ public class UserServiceImpl implements UserService {
 
         if (userOptional.isPresent() && postOptional.isPresent()) {
             User user = userOptional.get();
-            user.getLikedPosts().add(postOptional.get());
-            repository.save(user);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            Post post = postOptional.get();
+
+            if (!user.getLikedPosts().contains(post)) {
+                user.getLikedPosts().add(postOptional.get());
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -161,9 +167,14 @@ public class UserServiceImpl implements UserService {
 
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                user.getLikedGenres().add(genre);
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
+
+                if (!user.getLikedGenres().contains(genre)) {
+                    user.getLikedGenres().add(genre);
+                    repository.save(user);
+                    return ResponseEntity.status(HttpStatus.CREATED).build();
+                }
+
+                return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
             }
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -183,9 +194,14 @@ public class UserServiceImpl implements UserService {
 
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                user.getRoles().add(role);
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
+
+                if (!user.getRoles().contains(role)) {
+                    user.getRoles().add(role);
+                    repository.save(user);
+                    return ResponseEntity.status(HttpStatus.CREATED).build();
+                }
+
+                return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
             }
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -205,9 +221,13 @@ public class UserServiceImpl implements UserService {
 
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                user.getLikedGenres().remove(genre);
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.OK).build();
+
+                if (user.getLikedGenres().contains(genre)) {
+                    user.getLikedGenres().remove(genre);
+                    repository.save(user);
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                }
+
             }
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -227,9 +247,12 @@ public class UserServiceImpl implements UserService {
 
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                user.getRoles().remove(role);
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.OK).build();
+
+                if (user.getRoles().contains(role)) {
+                    user.getRoles().remove(role);
+                    repository.save(user);
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                }
             }
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
