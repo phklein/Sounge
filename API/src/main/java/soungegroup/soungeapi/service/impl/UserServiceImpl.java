@@ -30,7 +30,6 @@ public class UserServiceImpl implements UserService {
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
-
     private final UserAdapter adapter;
     private final PostAdapter postAdapter;
     private final List<UserLoginResponse> sessions;
@@ -353,7 +352,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = repository.findById(id);
 
         if (userOptional.isPresent()) {
-            List<Post> foundPosts = postRepository.findByUser(userOptional.get());
+            List<Post> foundPosts = postRepository.findTop50ByUserOrderByPostDateTimeDesc(userOptional.get());
 
             return foundPosts.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :

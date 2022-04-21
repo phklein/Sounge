@@ -49,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
         Optional<Post> postOptional = postRepository.findById(postId);
 
         if (postOptional.isPresent()) {
-            List<Comment> comments = repository.findByPost(postOptional.get());
+            List<Comment> comments = repository.findTop50ByPostOrderByCommentDateTimeDesc(postOptional.get());
 
             return comments.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :

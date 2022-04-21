@@ -44,7 +44,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<List<PostSimpleResponse>> findAll(Optional<Long> userId) {
-        List<Post> foundPosts = repository.findAll();
+        List<Post> foundPosts = repository.findTop50ByOrderByPostDateTimeDesc();
 
         if (userId.isPresent()) {
             Optional<User> userOptional = userRepository.findById(userId.get());
@@ -60,7 +60,7 @@ public class PostServiceImpl implements PostService {
                     }
 
                     return user.getLikedUsers().contains(post.getUser());
-                }).sorted(Comparator.comparing(Post::getPostDateTime).reversed()).collect(Collectors.toList());
+                }).collect(Collectors.toList());
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }

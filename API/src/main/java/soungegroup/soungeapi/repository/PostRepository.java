@@ -7,5 +7,6 @@ import soungegroup.soungeapi.model.User;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findByUser(User user);
+    List<Post> findTop50ByOrderByPostDateTimeDesc();
+    List<Post> findTop50ByUserOrderByPostDateTimeDesc(User user);
 }
