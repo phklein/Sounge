@@ -9,11 +9,10 @@ import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserSimpleResponse;
+import soungegroup.soungeapi.response.UserPageResponse;
 import soungegroup.soungeapi.service.UserService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -21,25 +20,20 @@ import java.util.List;
 public class UserController {
     private final UserService service;
 
-    @GetMapping
-    public ResponseEntity<List<UserSimpleResponse>> findAll() {
-        return service.findAll();
-    }
-
-    @GetMapping("/report")
-    public ResponseEntity getReport() {
-        return service.export();
-    }
-
     @PostMapping
     public ResponseEntity<UserLoginResponse> saveAndLogin(@RequestBody @Valid UserSaveRequest body) {
         return service.saveAndLogin(body);
     }
 
-    @DeleteMapping("/{id}/{pwd}")
-    public ResponseEntity<Void> delete(@PathVariable Long id,
-                                       @PathVariable String pwd) {
-        return service.delete(id, pwd);
+    @GetMapping("/{id}")
+    public ResponseEntity<UserPageResponse> findById(@PathVariable Long id) {
+        return service.findById(id);
+    }
+
+
+    @GetMapping("/report")
+    public ResponseEntity getReport() {
+        return service.export();
     }
 
     @PostMapping("/auth")
@@ -54,13 +48,13 @@ public class UserController {
 
     @PostMapping("/{id}/likePost/{postId}")
     public ResponseEntity<Void> likePost(@PathVariable Long id,
-                                     @PathVariable Long postId) {
+                                         @PathVariable Long postId) {
         return service.likePost(id, postId);
     }
 
     @DeleteMapping("/{id}/likePost/{postId}")
     public ResponseEntity<Void> unlikePost(@PathVariable Long id,
-                                     @PathVariable Long postId) {
+                                           @PathVariable Long postId) {
         return service.unlikePost(id, postId);
     }
 
@@ -70,10 +64,9 @@ public class UserController {
         return service.joinGroup(id, groupId);
     }
 
-    @DeleteMapping("/{id}/group/{groupId}")
-    public ResponseEntity<Void> leaveGroup(@PathVariable Long id,
-                                           @PathVariable Long groupId) {
-        return service.leaveGroup(id, groupId);
+    @DeleteMapping("/{id}/group")
+    public ResponseEntity<Void> leaveGroup(@PathVariable Long id) {
+        return service.leaveGroup(id);
     }
 
     @PostMapping("/{id}/genres/{genreName}")
@@ -104,5 +97,11 @@ public class UserController {
     public ResponseEntity<Void> changePassword(@PathVariable Long id,
                                                @RequestBody @Valid PasswordChangeRequest body) {
         return service.changePassword(id, body);
+    }
+
+    @DeleteMapping("/{id}/{pwd}")
+    public ResponseEntity<Void> delete(@PathVariable Long id,
+                                       @PathVariable String pwd) {
+        return service.delete(id, pwd);
     }
 }

@@ -6,22 +6,27 @@ import lombok.NoArgsConstructor;
 import soungegroup.soungeapi.enums.Sex;
 import soungegroup.soungeapi.enums.SkillLevel;
 import soungegroup.soungeapi.enums.State;
+import soungegroup.soungeapi.model.*;
 
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCsvResponse {
+public class UserPageResponse {
     private Long id;
     private String name;
     private Sex sex;
     private String description;
-    private LocalDate birthDate;
+    private Integer age;
     private State state;
     private String city;
-    private String latitude;
-    private String longitude;
     private boolean leader;
     private SkillLevel skillLevel;
+    private String pictureUrl;
+    private GroupSimpleResponse group;
+    private List<GenreSimpleResponse> likedGenres;
+    private List<RoleSimpleResponse> roles;
 }

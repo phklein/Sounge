@@ -4,22 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Component;
-import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.model.Comment;
-import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Post;
-import soungegroup.soungeapi.model.User;
-import soungegroup.soungeapi.repository.GenreRepository;
-import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.CommentSaveRequest;
-import soungegroup.soungeapi.request.PostSaveRequest;
 import soungegroup.soungeapi.response.CommentSimpleResponse;
-import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.response.PostSimpleResponse;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -31,10 +25,20 @@ public class CommentAdapter {
     }
 
     public CommentSimpleResponse toSimpleResponse(Comment comment) {
-        return mapper.map(comment, CommentSimpleResponse.class);
+        CommentSimpleResponse response = mapper.map(comment, CommentSimpleResponse.class);
+
+        response.setHoursPast(Duration.between(comment.getCommentDateTime(), LocalDateTime.now()).toHours());
+
+        return response;
     }
 
     public List<CommentSimpleResponse> toSimpleResponse(List<Comment> comments) {
-        return mapper.map(comments, new TypeToken<List<CommentSimpleResponse>>() {}.getType());
+        List<CommentSimpleResponse> responseList = new ArrayList<>();
+
+        for (Comment c : comments) {
+            responseList.add(toSimpleResponse(c));
+        }
+
+        return responseList;
     }
 }

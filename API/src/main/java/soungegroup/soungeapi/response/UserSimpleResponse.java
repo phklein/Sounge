@@ -14,9 +14,7 @@ import java.util.List;
 public class UserSimpleResponse {
     private Long id;
     private String name;
-    private Sex sex;
-    private List<GenreSimpleResponse> likedGenres;
+    private String pictureUrl;
     private List<RoleSimpleResponse> roles;
     private boolean leader;
-    private SkillLevel skillLevel;
 }

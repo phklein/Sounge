@@ -14,6 +14,6 @@ public class CommentSimpleResponse {
     private Long id;
     private String text;
     private String mediaUrl;
-    private LocalDateTime commentDateTime;
+    private Long hoursPast;
     private UserSimpleResponse user;
 }

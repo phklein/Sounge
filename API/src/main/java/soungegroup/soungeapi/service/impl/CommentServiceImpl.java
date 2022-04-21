@@ -69,8 +69,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public ResponseEntity<Void> delete(Long id) {
-        if (repository.existsById(id)) {
+    public ResponseEntity<Void> delete(Long postId, Long id) {
+        if (repository.existsById(id) && postRepository.existsById(postId)) {
             repository.deleteById(id);
             return ResponseEntity.status(HttpStatus.OK).build();
         }

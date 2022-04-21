@@ -14,6 +14,7 @@ import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserCsvResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
+import soungegroup.soungeapi.response.UserPageResponse;
 import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.service.UserService;
 
@@ -93,9 +94,14 @@ public class UserServiceImpl implements UserService {
 
         if (userOptional.isPresent() && postOptional.isPresent()) {
             User user = userOptional.get();
-            user.getLikedPosts().remove(postOptional.get());
-            repository.save(user);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            Post post = postOptional.get();
+
+            if (user.getLikedPosts().contains(post)) {
+                user.getLikedPosts().remove(post);
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -129,18 +135,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Void> leaveGroup(Long id, Long groupId) {
-        if (groupRepository.existsById(groupId)) {
-            Optional<User> userOptional = repository.findById(id);
+    public ResponseEntity<Void> leaveGroup(Long id) {
+        Optional<User> userOptional = repository.findById(id);
 
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                user.setGroup(null);
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
-            }
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setGroup(null);
+            repository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -272,12 +274,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<List<UserSimpleResponse>> findAll() {
-        List<User> foundUsers = repository.findAll();
+    public ResponseEntity<UserPageResponse> findById(Long id) {
+        Optional<User> userOptional = repository.findById(id);
 
-        return foundUsers.isEmpty() ?
-                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                ResponseEntity.status(HttpStatus.OK).body(adapter.toSimpleResponse(foundUsers));
+        return userOptional.isPresent() ?
+                ResponseEntity.status(HttpStatus.OK).body(adapter.toPageResponse(userOptional.get())) :
+                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
     }
 
     @Override
@@ -285,9 +288,11 @@ public class UserServiceImpl implements UserService {
         List<UserCsvResponse> users = repository.findAllCsv();
         StringBuilder report = new StringBuilder();
         for (UserCsvResponse u : users) {
-            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s\r\n",
+            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\r\n",
                     u.getId(), u.getName(), u.getSex(), u.getDescription(),
-                    u.getBirthDate(), u.getState(), u.getCity(), u.isLeader(), u.getSkillLevel()));
+                    u.getBirthDate(), u.getState(), u.getCity(),
+                    u.getLatitude(), u.getLongitude(),
+                    u.isLeader(), u.getSkillLevel()));
         }
         return users.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :

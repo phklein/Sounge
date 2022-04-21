@@ -2,7 +2,6 @@ package soungegroup.soungeapi.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Component;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
@@ -13,8 +12,10 @@ import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.repository.RoleRepository;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserSimpleResponse;
+import soungegroup.soungeapi.response.UserPageResponse;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +59,9 @@ public class UserAdapter {
         return mapper.map(user, UserLoginResponse.class);
     }
 
-    public List<UserSimpleResponse> toSimpleResponse(List<User> users) {
-        return mapper.map(users, new TypeToken<List<UserSimpleResponse>>() {}.getType());
+    public UserPageResponse toPageResponse(User user) {
+        UserPageResponse response =  mapper.map(user, UserPageResponse.class);
+        response.setAge(Period.between(user.getBirthDate(), LocalDate.now()).getYears());
+        return response;
     }
 }

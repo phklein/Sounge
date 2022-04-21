@@ -59,8 +59,9 @@ public class PostController {
         return service.delete(id);
     }
 
-    @DeleteMapping("/comments/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
-        return commentService.delete(id);
+    @DeleteMapping("/{postId}/comments/{id}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long postId,
+                                              @PathVariable Long id) {
+        return commentService.delete(postId, id);
     }
 }

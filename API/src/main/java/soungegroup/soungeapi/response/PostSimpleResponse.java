@@ -19,8 +19,8 @@ public class PostSimpleResponse {
     private Long id;
     private String text;
     private String mediaUrl;
-    private LocalDateTime postDateTime;
+    private Long hoursPast;
     private UserSimpleResponse user;
-    private List<GenreSimpleResponse> genres;
     private Integer likeCount;
+    private Integer commentCount;
 }

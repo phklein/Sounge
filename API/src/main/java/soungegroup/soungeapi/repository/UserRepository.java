@@ -17,7 +17,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select new soungegroup.soungeapi.response.UserCsvResponse(" +
             "u.id, u.name, u.sex, " +
             "u.description, u.birthDate, " +
-            "u.state, u.city, u.leader, u.skillLevel) " +
+            "u.state, u.city, u.latitude, " +
+            "u.longitude, u.leader, u.skillLevel) " +
             "from User u")
     List<UserCsvResponse> findAllCsv();
 }

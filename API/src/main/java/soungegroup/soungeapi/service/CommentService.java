@@ -15,5 +15,5 @@ public interface CommentService {
 
     ResponseEntity<List<CommentSimpleResponse>> findByPostId(Long postId);
 
-    ResponseEntity<Void> delete(Long id);
+    ResponseEntity<Void> delete(Long postId, Long id);
 }
