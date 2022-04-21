@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import soungegroup.soungeapi.model.Group;
 import soungegroup.soungeapi.response.GroupCsvResponse;
-import soungegroup.soungeapi.response.GroupSimpleResponse;
 
 import java.util.List;
 

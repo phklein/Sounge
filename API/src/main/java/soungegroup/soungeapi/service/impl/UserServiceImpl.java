@@ -4,23 +4,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.adapter.UserAdapter;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
-import soungegroup.soungeapi.model.Genre;
-import soungegroup.soungeapi.model.Group;
-import soungegroup.soungeapi.model.Role;
-import soungegroup.soungeapi.model.User;
-import soungegroup.soungeapi.repository.GenreRepository;
-import soungegroup.soungeapi.repository.GroupRepository;
-import soungegroup.soungeapi.repository.RoleRepository;
-import soungegroup.soungeapi.repository.UserRepository;
+import soungegroup.soungeapi.model.*;
+import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
+import soungegroup.soungeapi.request.PictureChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
+import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.response.UserCsvResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserSimpleResponse;
+import soungegroup.soungeapi.response.UserPageResponse;
 import soungegroup.soungeapi.service.UserService;
 
 import java.util.List;
@@ -30,11 +27,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
+    private final PostRepository postRepository;
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
-
     private final UserAdapter adapter;
+    private final PostAdapter postAdapter;
     private final List<UserLoginResponse> sessions;
 
     @Override
@@ -64,13 +62,94 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @Override
     public ResponseEntity<Void> logoff(Long id) {
         if (sessions.removeIf(u -> u.getId().equals(id))) {
             return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> likePost(Long id, Long postId) {
+        Optional<User> userOptional = repository.findById(id);
+        Optional<Post> postOptional = postRepository.findById(postId);
+
+        if (userOptional.isPresent() && postOptional.isPresent()) {
+            User user = userOptional.get();
+            Post post = postOptional.get();
+
+            if (!user.getLikedPosts().contains(post)) {
+                user.getLikedPosts().add(postOptional.get());
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> unlikePost(Long id, Long postId) {
+        Optional<User> userOptional = repository.findById(id);
+        Optional<Post> postOptional = postRepository.findById(postId);
+
+        if (userOptional.isPresent() && postOptional.isPresent()) {
+            User user = userOptional.get();
+            Post post = postOptional.get();
+
+            if (user.getLikedPosts().contains(post)) {
+                user.getLikedPosts().remove(post);
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> likeUser(Long id, Long likedId) {
+        Optional<User> likerOptional = repository.findById(id);
+        Optional<User> likedOptional = repository.findById(likedId);
+
+        if (likerOptional.isPresent() && likedOptional.isPresent()) {
+            User liker = likerOptional.get();
+            User liked = likedOptional.get();
+
+            if (!liker.getLikedUsers().contains(liked)) {
+                liker.getLikedUsers().add(liked);
+                repository.save(liker);
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> unlikeUser(Long id, Long likedId) {
+        Optional<User> likerOptional = repository.findById(id);
+        Optional<User> likedOptional = repository.findById(likedId);
+
+        if (likerOptional.isPresent() && likedOptional.isPresent()) {
+            User liker = likerOptional.get();
+            User liked = likedOptional.get();
+
+            if (liker.getLikedUsers().contains(liked)) {
+                liker.getLikedUsers().remove(liked);
+                repository.save(liker);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -104,18 +183,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Void> leaveGroup(Long id, Long groupId) {
-        if (groupRepository.existsById(groupId)) {
-            Optional<User> userOptional = repository.findById(id);
+    public ResponseEntity<Void> leaveGroup(Long id) {
+        Optional<User> userOptional = repository.findById(id);
 
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                user.setGroup(null);
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
-            }
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setGroup(null);
+            repository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -132,9 +207,14 @@ public class UserServiceImpl implements UserService {
 
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                user.getLikedGenres().add(genre);
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
+
+                if (!user.getLikedGenres().contains(genre)) {
+                    user.getLikedGenres().add(genre);
+                    repository.save(user);
+                    return ResponseEntity.status(HttpStatus.CREATED).build();
+                }
+
+                return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
             }
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -154,9 +234,14 @@ public class UserServiceImpl implements UserService {
 
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                user.getRoles().add(role);
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.CREATED).build();
+
+                if (!user.getRoles().contains(role)) {
+                    user.getRoles().add(role);
+                    repository.save(user);
+                    return ResponseEntity.status(HttpStatus.CREATED).build();
+                }
+
+                return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
             }
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -176,9 +261,13 @@ public class UserServiceImpl implements UserService {
 
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                user.getLikedGenres().remove(genre);
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.OK).build();
+
+                if (user.getLikedGenres().contains(genre)) {
+                    user.getLikedGenres().remove(genre);
+                    repository.save(user);
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                }
+
             }
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -198,9 +287,12 @@ public class UserServiceImpl implements UserService {
 
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-                user.getRoles().remove(role);
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.OK).build();
+
+                if (user.getRoles().contains(role)) {
+                    user.getRoles().remove(role);
+                    repository.save(user);
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                }
             }
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -229,6 +321,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<Void> changePicture(Long id, PictureChangeRequest body) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setPictureUrl(body.getUrl());
+            repository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
     public ResponseEntity<Void> delete(Long id, String password) {
         Optional<User> userOptional = repository.findById(id);
 
@@ -247,12 +353,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<List<UserSimpleResponse>> findAll() {
-        List<User> foundUsers = repository.findAll();
+    public ResponseEntity<UserPageResponse> findById(Long id) {
+        Optional<User> userOptional = repository.findById(id);
 
-        return foundUsers.isEmpty() ?
-                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                ResponseEntity.status(HttpStatus.OK).body(adapter.toSimpleResponse(foundUsers));
+        return userOptional.isPresent() ?
+                ResponseEntity.status(HttpStatus.OK).body(adapter.toPageResponse(userOptional.get())) :
+                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+    }
+
+    @Override
+    public ResponseEntity<List<PostSimpleResponse>> findPostsById(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            List<Post> foundPosts = postRepository.findTop50ByUserOrderByPostDateTimeDesc(userOptional.get());
+
+            return foundPosts.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(postAdapter.toSimpleResponse(foundPosts));
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override
@@ -260,9 +382,11 @@ public class UserServiceImpl implements UserService {
         List<UserCsvResponse> users = repository.findAllCsv();
         StringBuilder report = new StringBuilder();
         for (UserCsvResponse u : users) {
-            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s\r\n",
+            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\r\n",
                     u.getId(), u.getName(), u.getSex(), u.getDescription(),
-                    u.getBirthDate(), u.getState(), u.getCity(), u.isLeader()));
+                    u.getBirthDate(), u.getState(), u.getCity(),
+                    u.getLatitude(), u.getLongitude(),
+                    u.isLeader(), u.getSkillLevel()));
         }
         return users.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :

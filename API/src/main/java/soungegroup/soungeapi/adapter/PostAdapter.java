@@ -2,7 +2,6 @@ package soungegroup.soungeapi.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Component;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.model.Genre;
@@ -11,10 +10,9 @@ import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.PostSaveRequest;
-import soungegroup.soungeapi.request.PostUpdateRequest;
-import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.response.PostSimpleResponse;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +52,8 @@ public class PostAdapter {
         PostSimpleResponse response = mapper.map(post, PostSimpleResponse.class);
 
         response.setLikeCount(post.getUsersWhoLiked().size());
+        response.setCommentCount(post.getComments().size());
+        response.setHoursPast(Duration.between(post.getPostDateTime(), LocalDateTime.now()).toHours());
 
         return response;
     }
