@@ -4,12 +4,14 @@ import org.springframework.http.ResponseEntity;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
+import soungegroup.soungeapi.request.PictureChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserPageResponse;
 
+import java.net.URL;
 import java.util.List;
 
 public interface UserService {
@@ -32,6 +34,7 @@ public interface UserService {
     ResponseEntity<Void> removeRole(Long id, RoleName roleName);
 
     ResponseEntity<Void> changePassword(Long id, PasswordChangeRequest body);
+    ResponseEntity<Void> changePicture(Long id, PictureChangeRequest body);
 
     ResponseEntity<Void> delete(Long id, String password);
 

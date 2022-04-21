@@ -6,8 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.GroupAdapter;
 import soungegroup.soungeapi.model.Group;
+import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.GroupRepository;
 import soungegroup.soungeapi.request.GroupSaveRequest;
+import soungegroup.soungeapi.request.PictureChangeRequest;
 import soungegroup.soungeapi.response.GroupCsvResponse;
 import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
@@ -67,5 +69,19 @@ public class GroupServiceImpl implements GroupService {
                         .header("content-type", "text/csv")
                         .header("content-disposition", "filename=\"groups.csv\"")
                         .body(report.toString());
+    }
+
+    @Override
+    public ResponseEntity<Void> changePicture(Long id, PictureChangeRequest body) {
+        Optional<Group> groupOptional = repository.findById(id);
+
+        if (groupOptional.isPresent()) {
+            Group group = groupOptional.get();
+            group.setPictureUrl(body.getUrl());
+            repository.save(group);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

@@ -1,11 +1,13 @@
 package soungegroup.soungeapi.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
+import soungegroup.soungeapi.request.PictureChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.PostSimpleResponse;
@@ -115,6 +117,12 @@ public class UserController {
     public ResponseEntity<Void> changePassword(@PathVariable Long id,
                                                @RequestBody @Valid PasswordChangeRequest body) {
         return service.changePassword(id, body);
+    }
+
+    @PatchMapping("/{id}/picture")
+    public ResponseEntity<Void> changePicture(@PathVariable Long id,
+                                              @RequestBody @Valid PictureChangeRequest body) {
+        return service.changePicture(id, body);
     }
 
     @DeleteMapping("/{id}/{pwd}")

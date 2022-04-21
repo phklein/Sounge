@@ -11,6 +11,7 @@ import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
+import soungegroup.soungeapi.request.PictureChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.PostSimpleResponse;
@@ -314,6 +315,20 @@ public class UserServiceImpl implements UserService {
             }
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> changePicture(Long id, PictureChangeRequest body) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setPictureUrl(body.getUrl());
+            repository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

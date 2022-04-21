@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soungegroup.soungeapi.request.GroupSaveRequest;
+import soungegroup.soungeapi.request.PictureChangeRequest;
 import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
@@ -28,6 +29,12 @@ public class GroupController {
     @GetMapping("/report")
     public ResponseEntity getReport() {
         return service.export();
+    }
+
+    @PatchMapping("/{id}/picture")
+    public ResponseEntity<Void> changePicture(@PathVariable Long id,
+                                              @RequestBody @Valid PictureChangeRequest body) {
+        return service.changePicture(id, body);
     }
 
     @DeleteMapping("/{id}")
