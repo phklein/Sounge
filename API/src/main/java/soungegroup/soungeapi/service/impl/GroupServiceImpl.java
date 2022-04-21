@@ -1,25 +1,15 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
-<<<<<<< HEAD
-import org.apache.catalina.mapper.Mapper;
-=======
 import org.springframework.http.HttpStatus;
->>>>>>> develop
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.GroupAdapter;
 import soungegroup.soungeapi.model.Group;
 import soungegroup.soungeapi.repository.GroupRepository;
-<<<<<<< HEAD
-import soungegroup.soungeapi.request.GroupRequest;
-import soungegroup.soungeapi.request.LoginRequest;
-import soungegroup.soungeapi.response.LoginResponse;
-=======
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.response.GroupCsvResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
->>>>>>> develop
 import soungegroup.soungeapi.service.GroupService;
 
 import java.util.List;
@@ -28,28 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
     private final GroupRepository repository;
-<<<<<<< HEAD
-    private final Mapper mapper;
-    // @Override
-    // public ResponseEntity<LoginResponse> saveAndAuthenticate(GroupRequest body) {
-        
-    //     return null;
-    // }
-    // @Override
-    // public ResponseEntity<LoginResponse> authenticate(LoginRequest body) {
-
-    //     return null;
-    // }
-    // @Override
-    // public ResponseEntity<Void> logout(Long id) {
-    //     return null;
-    // }
-
-
-
-    
-
-=======
     private final GroupAdapter adapter;
 
     @Override
@@ -98,5 +66,4 @@ public class GroupServiceImpl implements GroupService {
                         .header("content-disposition", "filename=\"groups.csv\"")
                         .body(report.toString());
     }
->>>>>>> develop
 }

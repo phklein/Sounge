@@ -1,15 +1,10 @@
 package soungegroup.soungeapi.model;
 
-<<<<<<< HEAD
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-=======
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import soungegroup.soungeapi.enums.Sex;
->>>>>>> develop
 import soungegroup.soungeapi.enums.State;
 
 import javax.persistence.*;

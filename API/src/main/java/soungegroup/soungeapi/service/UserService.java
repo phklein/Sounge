@@ -1,16 +1,6 @@
 package soungegroup.soungeapi.service;
 
 import org.springframework.http.ResponseEntity;
-<<<<<<< HEAD
-import soungegroup.soungeapi.request.LoginRequest;
-import soungegroup.soungeapi.request.UserSaveRequest;
-import soungegroup.soungeapi.response.LoginResponse;
-
-public interface UserService {
-    ResponseEntity<LoginResponse> saveAndAuthenticate(UserSaveRequest body);
-    ResponseEntity<LoginResponse> authenticate(LoginRequest body);
-    ResponseEntity<Void> logout(Long id);
-=======
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
@@ -38,5 +28,4 @@ public interface UserService {
 
     ResponseEntity<List<UserSimpleResponse>> findAll();
     ResponseEntity export();
->>>>>>> develop
 }

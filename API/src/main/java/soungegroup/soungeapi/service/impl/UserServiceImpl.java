@@ -4,19 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-<<<<<<< HEAD
-import soungegroup.soungeapi.model.Artist;
-import soungegroup.soungeapi.request.LoginRequest;
-import soungegroup.soungeapi.request.UserSaveRequest;
-import soungegroup.soungeapi.response.LoginResponse;
-import soungegroup.soungeapi.request.ArtistSaveRequest;
-import soungegroup.soungeapi.request.GroupRequest;
-import soungegroup.soungeapi.mapper.UserMapper;
-import soungegroup.soungeapi.model.Group;
-import soungegroup.soungeapi.model.User;
-import soungegroup.soungeapi.repository.ArtistRepository;
-import soungegroup.soungeapi.repository.GroupRepository;
-=======
 import soungegroup.soungeapi.adapter.UserAdapter;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
@@ -27,7 +14,6 @@ import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.repository.GroupRepository;
 import soungegroup.soungeapi.repository.RoleRepository;
->>>>>>> develop
 import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
@@ -43,37 +29,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-<<<<<<< HEAD
-    private final UserRepository userRepository;
-    private final UserMapper mapper;
-    private final List<User> activeUsers;
-    private final GroupRepository groupRepository;
-    private final ArtistRepository artistRepository;
-
-    public UserServiceImpl(UserRepository userRepository,
-                                         UserMapper mapper, 
-                                        GroupRepository groupRepository,
-                                        ArtistRepository artistRepository) {
-        this.userRepository = userRepository;
-        this.mapper = mapper;
-        this.activeUsers = new ArrayList<>();
-        this.groupRepository = groupRepository;
-        this.artistRepository  = artistRepository;
-    }
-
-    @Override
-    public ResponseEntity<LoginResponse> saveAndAuthenticate(UserSaveRequest body) {
-        User user = null;
-        if (body instanceof  ArtistSaveRequest){
-             user  = userRepository.save(mapper.toUser(body));
-        }else if (body instanceof GroupRequest){
-            user = groupRepository.save((Group) mapper.toUser(body));
-        }else if (body instanceof ArtistSaveRequest){
-            artistRepository.save((Artist) mapper.toUser(body));
-        }
-        activeUsers.add(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toLoginResponse(user));
-=======
     private final UserRepository repository;
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
@@ -95,7 +50,6 @@ public class UserServiceImpl implements UserService {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
->>>>>>> develop
     }
 
     @Override
