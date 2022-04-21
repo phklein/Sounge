@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.adapter.UserAdapter;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
@@ -12,10 +14,10 @@ import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
+import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.response.UserCsvResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserPageResponse;
-import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.service.UserService;
 
 import java.util.List;
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private final GroupRepository groupRepository;
 
     private final UserAdapter adapter;
+    private final PostAdapter postAdapter;
     private final List<UserLoginResponse> sessions;
 
     @Override
@@ -281,6 +284,21 @@ public class UserServiceImpl implements UserService {
                 ResponseEntity.status(HttpStatus.OK).body(adapter.toPageResponse(userOptional.get())) :
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
+    }
+
+    @Override
+    public ResponseEntity<List<PostSimpleResponse>> findPostsById(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            List<Post> foundPosts = postRepository.findByUser(userOptional.get());
+
+            return foundPosts.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(postAdapter.toSimpleResponse(foundPosts));
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override

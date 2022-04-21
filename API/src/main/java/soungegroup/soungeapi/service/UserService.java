@@ -6,8 +6,11 @@ import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
+import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserPageResponse;
+
+import java.util.List;
 
 public interface UserService {
     ResponseEntity<UserLoginResponse> saveAndLogin(UserSaveRequest body);
@@ -30,5 +33,6 @@ public interface UserService {
     ResponseEntity<Void> delete(Long id, String password);
 
     ResponseEntity<UserPageResponse> findById(Long id);
+    ResponseEntity<List<PostSimpleResponse>> findPostsById(Long id);
     ResponseEntity export();
 }

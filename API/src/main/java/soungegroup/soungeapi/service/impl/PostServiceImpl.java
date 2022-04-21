@@ -73,21 +73,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<List<PostSimpleResponse>> findByUserId(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
-
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            List<Post> foundPosts = repository.findByUser(user);
-            return foundPosts.isEmpty() ?
-                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                    ResponseEntity.status(HttpStatus.OK).body(adapter.toSimpleResponse(foundPosts));
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    @Override
     public ResponseEntity<PostSimpleResponse> update(Long id, PostUpdateRequest body) {
         Optional<Post> postOptional = repository.findById(id);
 

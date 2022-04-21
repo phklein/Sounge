@@ -8,11 +8,13 @@ import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
+import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserPageResponse;
 import soungegroup.soungeapi.service.UserService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -30,6 +32,10 @@ public class UserController {
         return service.findById(id);
     }
 
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<List<PostSimpleResponse>> findPostsById(@PathVariable Long id) {
+        return service.findPostsById(id);
+    }
 
     @GetMapping("/report")
     public ResponseEntity getReport() {
