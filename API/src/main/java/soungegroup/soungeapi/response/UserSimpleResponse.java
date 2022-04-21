@@ -3,8 +3,6 @@ package soungegroup.soungeapi.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import soungegroup.soungeapi.enums.Sex;
-import soungegroup.soungeapi.enums.SkillLevel;
 
 import java.util.List;
 

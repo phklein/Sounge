@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.adapter.UserAdapter;
 import soungegroup.soungeapi.enums.GenreName;

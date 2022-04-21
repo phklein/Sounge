@@ -2,13 +2,10 @@ package soungegroup.soungeapi.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Component;
 import soungegroup.soungeapi.model.Comment;
-import soungegroup.soungeapi.model.Post;
 import soungegroup.soungeapi.request.CommentSaveRequest;
 import soungegroup.soungeapi.response.CommentSimpleResponse;
-import soungegroup.soungeapi.response.PostSimpleResponse;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

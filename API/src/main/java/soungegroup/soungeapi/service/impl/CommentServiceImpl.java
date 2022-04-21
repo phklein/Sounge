@@ -5,28 +5,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.CommentAdapter;
-import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.model.Comment;
-import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Post;
 import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.CommentRepository;
 import soungegroup.soungeapi.repository.PostRepository;
 import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.CommentSaveRequest;
-import soungegroup.soungeapi.request.PostSaveRequest;
-import soungegroup.soungeapi.request.PostUpdateRequest;
 import soungegroup.soungeapi.response.CommentSimpleResponse;
-import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.service.CommentService;
-import soungegroup.soungeapi.service.PostService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

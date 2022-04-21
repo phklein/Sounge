@@ -7,7 +7,6 @@ import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Group;
 import soungegroup.soungeapi.repository.GenreRepository;
-import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;

@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import soungegroup.soungeapi.enums.Sex;
 import soungegroup.soungeapi.enums.SkillLevel;
 import soungegroup.soungeapi.enums.State;
-import soungegroup.soungeapi.model.*;
 
-import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 
 @Data

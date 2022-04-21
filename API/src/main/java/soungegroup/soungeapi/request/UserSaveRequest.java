@@ -2,7 +2,6 @@ package soungegroup.soungeapi.request;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.URL;
 import soungegroup.soungeapi.enums.*;
 
 import javax.validation.constraints.*;
