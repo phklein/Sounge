@@ -12,6 +12,7 @@ public interface PostService {
     ResponseEntity<PostSimpleResponse> save(PostSaveRequest body);
 
     ResponseEntity<List<PostSimpleResponse>> findAll(Optional<Long> userId);
+    ResponseEntity<List<PostSimpleResponse>> findByUserId(Long userId);
 
     ResponseEntity<PostSimpleResponse> update(Long id, PostUpdateRequest body);
 

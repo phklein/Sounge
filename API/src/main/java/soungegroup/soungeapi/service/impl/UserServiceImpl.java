@@ -7,14 +7,8 @@ import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.UserAdapter;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
-import soungegroup.soungeapi.model.Genre;
-import soungegroup.soungeapi.model.Group;
-import soungegroup.soungeapi.model.Role;
-import soungegroup.soungeapi.model.User;
-import soungegroup.soungeapi.repository.GenreRepository;
-import soungegroup.soungeapi.repository.GroupRepository;
-import soungegroup.soungeapi.repository.RoleRepository;
-import soungegroup.soungeapi.repository.UserRepository;
+import soungegroup.soungeapi.model.*;
+import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
@@ -30,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
+    private final PostRepository postRepository;
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
@@ -64,12 +59,42 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @Override
     public ResponseEntity<Void> logoff(Long id) {
         if (sessions.removeIf(u -> u.getId().equals(id))) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> likePost(Long id, Long postId) {
+        Optional<User> userOptional = repository.findById(id);
+        Optional<Post> postOptional = postRepository.findById(postId);
+
+        if (userOptional.isPresent() && postOptional.isPresent()) {
+            User user = userOptional.get();
+            user.getLikedPosts().add(postOptional.get());
+            repository.save(user);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> unlikePost(Long id, Long postId) {
+        Optional<User> userOptional = repository.findById(id);
+        Optional<Post> postOptional = postRepository.findById(postId);
+
+        if (userOptional.isPresent() && postOptional.isPresent()) {
+            User user = userOptional.get();
+            user.getLikedPosts().remove(postOptional.get());
+            repository.save(user);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
 

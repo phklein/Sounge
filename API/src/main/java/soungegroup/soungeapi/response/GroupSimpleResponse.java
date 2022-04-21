@@ -17,4 +17,5 @@ public class GroupSimpleResponse {
     private LocalDate creationDate;
     private List<GenreSimpleResponse> genres;
     private List<UserSimpleResponse> users;
+    private String pictureUrl;
 }

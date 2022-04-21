@@ -21,6 +21,7 @@ public class Group {
     @Column(name = "group_name") private String name;
     @Column(name = "group_description") private String description;
     @Column(name = "group_creation_date") private LocalDate creationDate;
+    @Column(name = "group_picture_url") private String pictureUrl;
 
     // Many users like many genres
     @ManyToMany

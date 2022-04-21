@@ -11,4 +11,5 @@ import soungegroup.soungeapi.response.GroupCsvResponse;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
+    List<Post> findByUser(User user);
 }

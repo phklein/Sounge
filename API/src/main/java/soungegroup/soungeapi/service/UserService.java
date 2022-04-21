@@ -16,6 +16,9 @@ public interface UserService {
     ResponseEntity<UserLoginResponse> login(UserLoginRequest body);
     ResponseEntity<Void> logoff(Long id);
 
+    ResponseEntity<Void> likePost(Long id, Long postId);
+    ResponseEntity<Void> unlikePost(Long id, Long postId);
+
     ResponseEntity<Void> joinGroup(Long id, Long groupId);
     ResponseEntity<Void> leaveGroup(Long id, Long groupId);
     ResponseEntity<Void> addGenre(Long id, GenreName genreName);

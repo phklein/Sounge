@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select new soungegroup.soungeapi.response.UserLoginResponse(" +
-            "u.id, u.name) " +
+            "u.id, u.name, u.pictureUrl) " +
             "from User u where u.email = ?1 and u.password = ?2")
     List<UserLoginResponse> findUserByEmailAndPassword(String email, String password);
 

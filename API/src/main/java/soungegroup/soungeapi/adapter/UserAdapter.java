@@ -7,13 +7,11 @@ import org.springframework.stereotype.Component;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.model.Genre;
-import soungegroup.soungeapi.model.Group;
 import soungegroup.soungeapi.model.Role;
 import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.repository.RoleRepository;
 import soungegroup.soungeapi.request.UserSaveRequest;
-import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserSimpleResponse;
 

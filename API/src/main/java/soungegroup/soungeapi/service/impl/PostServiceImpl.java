@@ -17,6 +17,7 @@ import soungegroup.soungeapi.service.PostService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,18 +54,14 @@ public class PostServiceImpl implements PostService {
                 User user = userOptional.get();
 
                 foundPosts = foundPosts.stream().filter(post -> {
-                    if (user.getLikedUsers().contains(post.getUser())) {
-                        return true;
-                    }
-
                     for (Genre g : post.getGenres()) {
                         if (user.getLikedGenres().contains(g)) {
                             return true;
                         }
                     }
 
-                    return false;
-                }).collect(Collectors.toList());
+                    return user.getLikedUsers().contains(post.getUser());
+                }).sorted(Comparator.comparing(Post::getPostDateTime).reversed()).collect(Collectors.toList());
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
@@ -73,6 +70,21 @@ public class PostServiceImpl implements PostService {
         return foundPosts.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                 ResponseEntity.status(HttpStatus.OK).body(adapter.toSimpleResponse(foundPosts));
+    }
+
+    @Override
+    public ResponseEntity<List<PostSimpleResponse>> findByUserId(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<Post> foundPosts = repository.findByUser(user);
+            return foundPosts.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(adapter.toSimpleResponse(foundPosts));
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override

@@ -36,9 +36,32 @@ public class UserController {
         return service.saveAndLogin(body);
     }
 
+    @DeleteMapping("/{id}/{pwd}")
+    public ResponseEntity<Void> delete(@PathVariable Long id,
+                                       @PathVariable String pwd) {
+        return service.delete(id, pwd);
+    }
+
     @PostMapping("/auth")
     public ResponseEntity<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest body) {
         return service.login(body);
+    }
+
+    @DeleteMapping("/{id}/auth")
+    public ResponseEntity<Void> logoff(@PathVariable Long id) {
+        return service.logoff(id);
+    }
+
+    @PostMapping("/{id}/likePost/{postId}")
+    public ResponseEntity<Void> likePost(@PathVariable Long id,
+                                     @PathVariable Long postId) {
+        return service.likePost(id, postId);
+    }
+
+    @DeleteMapping("/{id}/likePost/{postId}")
+    public ResponseEntity<Void> unlikePost(@PathVariable Long id,
+                                     @PathVariable Long postId) {
+        return service.unlikePost(id, postId);
     }
 
     @PostMapping("/{id}/group/{groupId}")
@@ -47,33 +70,16 @@ public class UserController {
         return service.joinGroup(id, groupId);
     }
 
-    @PostMapping("/{id}/genres/{genreName}")
-    public ResponseEntity<Void> addGenre(@PathVariable Long id,
-                                         @PathVariable GenreName genreName) {
-        return service.addGenre(id, genreName);
-    }
-
-    @PostMapping("/{id}/roles/{roleName}")
-    public ResponseEntity<Void> addRole(@PathVariable Long id,
-                                        @PathVariable RoleName roleName) {
-        return service.addRole(id, roleName);
-    }
-
     @DeleteMapping("/{id}/group/{groupId}")
     public ResponseEntity<Void> leaveGroup(@PathVariable Long id,
                                            @PathVariable Long groupId) {
         return service.leaveGroup(id, groupId);
     }
 
-    @PatchMapping("/{id}/password")
-    public ResponseEntity<Void> changePassword(@PathVariable Long id,
-                                               @RequestBody @Valid PasswordChangeRequest body) {
-        return service.changePassword(id, body);
-    }
-
-    @DeleteMapping("/{id}/auth")
-    public ResponseEntity<Void> logoff(@PathVariable Long id) {
-        return service.logoff(id);
+    @PostMapping("/{id}/genres/{genreName}")
+    public ResponseEntity<Void> addGenre(@PathVariable Long id,
+                                         @PathVariable GenreName genreName) {
+        return service.addGenre(id, genreName);
     }
 
     @DeleteMapping("/{id}/genres/{genreName}")
@@ -82,15 +88,21 @@ public class UserController {
         return service.removeGenre(id, genreName);
     }
 
+    @PostMapping("/{id}/roles/{roleName}")
+    public ResponseEntity<Void> addRole(@PathVariable Long id,
+                                        @PathVariable RoleName roleName) {
+        return service.addRole(id, roleName);
+    }
+
     @DeleteMapping("/{id}/roles/{roleName}")
     public ResponseEntity<Void> removeRole(@PathVariable Long id,
                                            @PathVariable RoleName roleName) {
         return service.removeRole(id, roleName);
     }
 
-    @DeleteMapping("/{id}/{pwd}")
-    public ResponseEntity<Void> delete(@PathVariable Long id,
-                                       @PathVariable String pwd) {
-        return service.delete(id, pwd);
+    @PatchMapping("/{id}/password")
+    public ResponseEntity<Void> changePassword(@PathVariable Long id,
+                                               @RequestBody @Valid PasswordChangeRequest body) {
+        return service.changePassword(id, body);
     }
 }

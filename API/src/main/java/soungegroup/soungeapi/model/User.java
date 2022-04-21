@@ -36,6 +36,7 @@ public class User {
     @Column(name = "user_leader") private boolean leader;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "user_skill_level") private SkillLevel skillLevel;
+    @Column(name = "user_picture_url") private String pictureUrl;
 
     // One user has many posts
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

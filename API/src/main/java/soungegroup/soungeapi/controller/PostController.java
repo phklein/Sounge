@@ -1,16 +1,11 @@
 package soungegroup.soungeapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import soungegroup.soungeapi.enums.GenreName;
-import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.request.PostSaveRequest;
 import soungegroup.soungeapi.request.PostUpdateRequest;
-import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.response.PostSimpleResponse;
-import soungegroup.soungeapi.service.GroupService;
 import soungegroup.soungeapi.service.PostService;
 
 import javax.validation.Valid;
@@ -31,6 +26,11 @@ public class PostController {
     @GetMapping
     public ResponseEntity<List<PostSimpleResponse>> findAll(@RequestParam Optional<Long> userId) {
         return service.findAll(userId);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<PostSimpleResponse>> findByUserId(@PathVariable Long userId) {
+        return service.findByUserId(userId);
     }
 
     @PutMapping("/{id}")
