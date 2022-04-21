@@ -15,6 +15,18 @@ body {
     background: var(--black);
 }
 
+body::-webkit-scrollbar {
+    width: 10px;
+}
+  
+body::-webkit-scrollbar-track {
+    background: var(--dark-gray);
+}
+  
+body::-webkit-scrollbar-thumb {
+    background-color: var(--dark-purple);
+}
+
 :root {
     --white: #FFFFFF;
     --light-gray: #F3F3F3;

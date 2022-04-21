@@ -1,20 +1,18 @@
-
+import { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 
 import '../../styles/register.css'
 
-import { IFormState } from '../../components/MultiForm'
-
-import { TypeUserEnum } from '../../enums/TypeUserEnum';
+import { IFormUserState } from '../../components/MultiForm'
 
 interface Iprops {
     nextStep: () => void;
-    formState: IFormState;
+    formState: IFormUserState;
     handleChange: (value: any, fieldName: string) => void;
     previousStep: () => void;
 }
 
-export function RegisterTypeUser(props: Iprops) {
+export function Register2(props: Iprops) {
     const { nextStep, formState, handleChange, previousStep } = props;
 
     return (
@@ -23,23 +21,13 @@ export function RegisterTypeUser(props: Iprops) {
                 <div className="register-container-left">
                     <Form>
                         <div className="register-form">
-                            <h2>Vamos escolher seu tipo de perfil</h2>
-                            <Form.Group controlId="formGroupEstiloTipoUsuario">
-                                <Form.Select value={formState.tipoUsuario} onChange={(event) => handleChange(event.target.value, 'tipoUsuario')}>
-                                    <option value={TypeUserEnum.NULL}>Selecione o tipo de usuário</option>
-                                    <option value={TypeUserEnum.ARTIST}>Músico</option>
-                                    <option value={TypeUserEnum.DJ}>DJ</option>
-                                    <option value={TypeUserEnum.GROUP}>Banda / Artista Solo</option>
-                                    <option value={TypeUserEnum.SERVICE}>Serviços</option>
-                                    <option value={TypeUserEnum.LOCAL}>Locais</option>
-                                </Form.Select>
-                            </Form.Group>
+                            <h2>Fale um pouco mais sobre você</h2>
                         </div>
                         <Form.Group className="form-group-previous">
                             <Button onClick={previousStep} type="submit" className="button">Voltar</Button>
                         </Form.Group>
                         <Form.Group className="form-group-next">
-                            <Button onClick={nextStep} type="submit" className="button">Próximo</Button>
+                            <Button onClick={nextStep} type="submit" className="button">Finalizar</Button>
                         </Form.Group>
                     </Form>
                 </div>

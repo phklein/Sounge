@@ -5,18 +5,20 @@ import { useNavigate, Link } from 'react-router-dom'
 
 import '../../styles/register.css'
 
-import UserService from '../../services/ArtistService'
+import UserService from '../../routes/UserRoute'
 
+import { IFormUserState } from '../../components/MultiForm'
 import { Buttonaa } from '../../components/Buttonaa'
-import { IFormState } from '../../components/MultiForm'
+
 
 import { StateEnum } from '../../enums/StateEnum'
+import { SexEnum, SexEnumDesc } from '../../enums/SexEnum'
 
 
 
 interface Iprops {
     nextStep: () => void;
-    formState: IFormState;
+    formState: IFormUserState;
     handleChange: (value: any, fieldName: string) => void;
 }
 
@@ -38,8 +40,8 @@ export function Register(props: Iprops) {
                             <h2>Crie sua conta</h2>
                             <Form.Group controlId="formGroupNome">
                                 <Form.Control 
-                                    value={formState.nome} 
-                                    onChange={(event) => handleChange(event.target.value, 'nome')}
+                                    value={formState.name} 
+                                    onChange={(event) => handleChange(event.target.value, 'name')}
                                     type="text" 
                                     placeholder="Nome" 
                                     className="input-all form-label"                               
@@ -56,31 +58,52 @@ export function Register(props: Iprops) {
                                     />                                
                                 </Form.Group>
                                 <Form.Group controlId="formGroupCpf" className="form-group">
-                                    <Form.Control 
-                                        value={formState.cpf} 
-                                        onChange={(event) => handleChange(event.target.value, 'cpf')}
-                                        type="text" 
-                                        placeholder="CPF" 
-                                        className="input-all form-label"
-                                    />                                
+                                    <Form.Select value={formState.sex} onChange={(event) => handleChange(event.target.value, 'sex')} className="form-select">
+                                        <option value={SexEnum.NULL}>Selecione o seu Sexo</option>
+                                        <option value={SexEnum.MALE}>{SexEnumDesc.get(SexEnum.MALE)}</option>
+                                        <option value={SexEnum.FEMALE}>{SexEnumDesc.get(SexEnum.FEMALE)}</option>
+                                        <option value={SexEnum.NOT_APPLICABLE}>{SexEnumDesc.get(SexEnum.NOT_APPLICABLE)}</option>
+                                        <option value={SexEnum.NOT_KNOWN}>{SexEnumDesc.get(SexEnum.NOT_KNOWN)}</option>
+                                    </Form.Select>                          
                                 </Form.Group>
                             </div>
                             <div className="container-input-hlf">
                                 <Form.Group controlId="formGroupEstado" className="form-group">
-                                    <Form.Select value={formState.estado} onChange={(event) => handleChange(event.target.value, 'estado')} className="form-select">
+                                    <Form.Select value={formState.state} onChange={(event) => handleChange(event.target.value, 'state')} className="form-select">
                                         <option value={StateEnum.NULL}>Selecione o seu Estado</option>
-                                        <option value={StateEnum.SP}>{StateEnum.SP.valueOf}</option>
-                                        <option value={StateEnum.RJ}>{StateEnum.RJ.valueOf}</option>
-                                        <option value={StateEnum.MG}>{StateEnum.MG.valueOf}</option>
-                                        <option value={StateEnum.PR}>{StateEnum.PR.valueOf}</option>
-                                        <option value={StateEnum.RS}>{StateEnum.RS.valueOf}</option>
-                                        <option value={StateEnum.SC}>{StateEnum.SC.valueOf}</option>
+                                        <option value={StateEnum.AC}>{StateEnum.AC}</option>
+                                        <option value={StateEnum.AL}>{StateEnum.AL}</option>
+                                        <option value={StateEnum.AP}>{StateEnum.AP}</option>
+                                        <option value={StateEnum.AM}>{StateEnum.AM}</option>
+                                        <option value={StateEnum.BA}>{StateEnum.BA}</option>
+                                        <option value={StateEnum.CE}>{StateEnum.CE}</option>
+                                        <option value={StateEnum.DF}>{StateEnum.DF}</option>
+                                        <option value={StateEnum.ES}>{StateEnum.ES}</option>
+                                        <option value={StateEnum.GO}>{StateEnum.GO}</option>
+                                        <option value={StateEnum.MA}>{StateEnum.MA}</option>
+                                        <option value={StateEnum.MT}>{StateEnum.MT}</option>
+                                        <option value={StateEnum.MS}>{StateEnum.MS}</option>
+                                        <option value={StateEnum.MG}>{StateEnum.MG}</option>
+                                        <option value={StateEnum.PA}>{StateEnum.PA}</option>
+                                        <option value={StateEnum.PB}>{StateEnum.PB}</option>
+                                        <option value={StateEnum.PR}>{StateEnum.PR}</option>
+                                        <option value={StateEnum.PE}>{StateEnum.PE}</option>
+                                        <option value={StateEnum.PI}>{StateEnum.PI}</option>
+                                        <option value={StateEnum.RJ}>{StateEnum.RJ}</option>
+                                        <option value={StateEnum.RN}>{StateEnum.RN}</option>
+                                        <option value={StateEnum.RS}>{StateEnum.RS}</option>
+                                        <option value={StateEnum.RO}>{StateEnum.RO}</option>
+                                        <option value={StateEnum.RR}>{StateEnum.RR}</option>
+                                        <option value={StateEnum.SC}>{StateEnum.SC}</option>
+                                        <option value={StateEnum.SP}>{StateEnum.SP}</option>
+                                        <option value={StateEnum.SE}>{StateEnum.SE}</option>
+                                        <option value={StateEnum.TO}>{StateEnum.TO}</option>
                                     </Form.Select>
                                 </Form.Group>
                                 <Form.Group controlId="formGroupCidade" className="form-group">
                                     <Form.Control 
-                                        value={formState.cidade} 
-                                        onChange={(event) => handleChange(event.target.value, 'cidade')}
+                                        value={formState.city} 
+                                        onChange={(event) => handleChange(event.target.value, 'city')}
                                         type="text" 
                                         placeholder="Cidade" 
                                         className="input-all form-label" 
@@ -89,8 +112,8 @@ export function Register(props: Iprops) {
                             </div>
                             <Form.Group controlId="formGroupSenha">
                                 <Form.Control 
-                                    value={formState.senha} 
-                                    onChange={(event) => handleChange(event.target.value, 'senha')}
+                                    value={formState.password}
+                                    onChange={(event) => handleChange(event.target.value, 'password')}
                                     type="text" 
                                     placeholder="Senha" 
                                     className="input-all form-label"
@@ -98,8 +121,8 @@ export function Register(props: Iprops) {
                                 </Form.Group>
                             <Form.Group controlId="formGroupConfirmarSenha">
                                 <Form.Control 
-                                    value={formState.confirmarSenha} 
-                                    onChange={(event) => handleChange(event.target.value, 'confirmarSenha')}
+                                    value={formState.confirmPassword} 
+                                    onChange={(event) => handleChange(event.target.value, 'confirmPassword')}
                                     type="text" 
                                     placeholder="Confirmar Senha" 
                                     className="input-all form-label"
