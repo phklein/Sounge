@@ -2,17 +2,17 @@ package soungegroup.soungeapi.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Component;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Group;
-import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.GenreRepository;
-import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.GroupSaveRequest;
+import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +23,6 @@ public class GroupAdapter {
     private final ModelMapper mapper;
 
     private final GenreRepository genreRepository;
-    private final UserRepository userRepository;
 
     public Group toGroup(GroupSaveRequest groupSaveRequest) {
         Group group = mapper.map(groupSaveRequest, Group.class);
@@ -48,7 +47,9 @@ public class GroupAdapter {
         return mapper.map(group, GroupSimpleResponse.class);
     }
 
-    public List<GroupSimpleResponse> toSimpleResponse(List<Group> groups) {
-        return mapper.map(groups, new TypeToken<List<GroupSimpleResponse>>() {}.getType());
+    public GroupPageResponse toPageResponse(Group group) {
+        GroupPageResponse response = mapper.map(group, GroupPageResponse.class);
+        response.setAge(Period.between(group.getCreationDate(), LocalDate.now()).getYears());
+        return response;
     }
 }
