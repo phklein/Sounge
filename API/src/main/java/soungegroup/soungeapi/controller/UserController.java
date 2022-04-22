@@ -7,11 +7,14 @@ import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.PictureChangeRequest;
+import soungegroup.soungeapi.request.UpdateUserProfileRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserPageResponse;
+import soungegroup.soungeapi.response.UserProfileResponse;
+import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.service.UserService;
 
 import javax.validation.Valid;
@@ -28,10 +31,6 @@ public class UserController {
         return service.saveAndLogin(body);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserPageResponse> findById(@PathVariable Long id) {
-        return service.findById(id);
-    }
 
     @GetMapping("/{id}/posts")
     public ResponseEntity<List<PostSimpleResponse>> findPostsById(@PathVariable Long id) {
@@ -118,15 +117,20 @@ public class UserController {
         return service.changePassword(id, body);
     }
 
-    @PatchMapping("/{id}/picture")
-    public ResponseEntity<Void> changePicture(@PathVariable Long id,
-                                              @RequestBody @Valid PictureChangeRequest body) {
-        return service.changePicture(id, body);
-    }
+
 
     @DeleteMapping("/{id}/{pwd}")
     public ResponseEntity<Void> delete(@PathVariable Long id,
                                        @PathVariable String pwd) {
         return service.delete(id, pwd);
     }
+    @GetMapping("/profile/{id}")
+    public  ResponseEntity<UserProfileResponse> getProfileForId(@PathVariable Long id){
+        return  service.getProfileForId(id);
+    }
+    @PostMapping("/profile/update")
+    public  ResponseEntity<Void> updateProfile(@RequestBody UpdateUserProfileRequest body){
+        return service.updateProfilePage(body);
+    }
+
 }

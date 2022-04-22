@@ -13,13 +13,17 @@ import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.PictureChangeRequest;
+import soungegroup.soungeapi.request.UpdateUserProfileRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.response.UserCsvResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserPageResponse;
+import soungegroup.soungeapi.response.UserProfileResponse;
+import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.service.UserService;
+import soungegroup.soungeapi.util.ListaObj;
 
 import java.util.List;
 import java.util.Optional;
@@ -323,19 +327,7 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @Override
-    public ResponseEntity<Void> changePicture(Long id, PictureChangeRequest body) {
-        Optional<User> userOptional = repository.findById(id);
 
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setPictureUrl(body.getUrl());
-            repository.save(user);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
 
     @Override
     public ResponseEntity<Void> delete(Long id, String password) {
@@ -355,15 +347,6 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @Override
-    public ResponseEntity<UserPageResponse> findById(Long id) {
-        Optional<User> userOptional = repository.findById(id);
-
-        return userOptional.isPresent() ?
-                ResponseEntity.status(HttpStatus.OK).body(adapter.toPageResponse(userOptional.get())) :
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
-    }
 
     @Override
     public ResponseEntity<List<PostSimpleResponse>> findPostsById(Long id) {
@@ -386,9 +369,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity export() {
         List<UserCsvResponse> users = repository.findAllCsv();
+        ListaObj<UserCsvResponse> responseObj = new ListaObj<UserCsvResponse>(users.size());
+        for (UserCsvResponse csv:
+             users) {
+            responseObj.adiciona(csv);
+        }
         StringBuilder report = new StringBuilder();
-        for (UserCsvResponse u : users) {
-            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\r\n",
+        for (int i = 0; i < responseObj.getTamanho(); i++) {
+            UserCsvResponse u = responseObj.getElemento(i);
+            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s\r\n",
                     u.getId(), u.getName(), u.getSex(), u.getDescription(),
                     u.getBirthDate(), u.getState(), u.getCity(),
                     u.getLatitude(), u.getLongitude(),
@@ -401,4 +390,42 @@ public class UserServiceImpl implements UserService {
                 .header("content-disposition", "filename=\"users.csv\"")
                 .body(report.toString());
     }
+
+    @Override
+    public Boolean hasSession(User user) {
+        for (UserLoginResponse ulr: sessions) {
+            if(ulr.getId().equals(user.getId())){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    @Override
+    public ResponseEntity<UserProfileResponse> getProfileForId(Long id) {
+        if(repository.existsById(id)){
+            User user =  repository.getById(id);
+            UserProfileResponse response = adapter.toProfileResponse(user);
+            response.setOnline(hasSession(user));
+            return  ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> updateProfilePage(UpdateUserProfileRequest body) {
+       Optional<User> userOptional = repository.findById(body.getId());
+       if(userOptional.isPresent()){
+           User user = userOptional.get();
+           user.setSpotifyID(body.getSpotifyId());
+           user.setDescription(body.getDescription());
+           user.setProfilePic(body.getProfilePic());
+           repository.save(user);
+           return ResponseEntity.status(HttpStatus.OK).build();
+       }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+    }
 }
+

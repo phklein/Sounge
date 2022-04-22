@@ -13,6 +13,8 @@ import soungegroup.soungeapi.repository.RoleRepository;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserPageResponse;
+import soungegroup.soungeapi.response.UserProfileResponse;
+import soungegroup.soungeapi.response.UserSimpleResponse;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -63,5 +65,11 @@ public class UserAdapter {
         UserPageResponse response =  mapper.map(user, UserPageResponse.class);
         response.setAge(Period.between(user.getBirthDate(), LocalDate.now()).getYears());
         return response;
+    }
+    public UserProfileResponse toProfileResponse(User user){
+        UserProfileResponse returnObj = mapper.map(user, UserProfileResponse.class);
+        returnObj.setAge(Period.between(user.getBirthDate(), LocalDate.now()).getYears());
+        return  returnObj;
+
     }
 }
