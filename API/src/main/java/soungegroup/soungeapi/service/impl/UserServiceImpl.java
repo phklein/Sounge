@@ -16,6 +16,7 @@ import soungegroup.soungeapi.repository.GroupRepository;
 import soungegroup.soungeapi.repository.RoleRepository;
 import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
+import soungegroup.soungeapi.request.UpdateUserProfileRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserCsvResponse;
@@ -295,5 +296,19 @@ public class UserServiceImpl implements UserService {
         return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    @Override
+    public ResponseEntity<Void> updateProfilePage(UpdateUserProfileRequest body) {
+       Optional<User> userOptional = repository.findById(body.getId());
+       if(userOptional.isPresent()){
+           User user = userOptional.get();
+           user.setSpotifyID(body.getSpotifyId());
+           user.setDescription(body.getDescription());
+           user.setProfilePic(body.getProfilePic());
+           repository.save(user);
+           return ResponseEntity.status(HttpStatus.OK).build();
+       }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+    }
 }
 

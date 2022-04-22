@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
+import soungegroup.soungeapi.request.UpdateUserProfileRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
@@ -97,6 +98,10 @@ public class UserController {
     @GetMapping("/profile/{id}")
     public  ResponseEntity<UserProfileResponse> getProfileForId(@PathVariable Long id){
         return  service.getProfileForId(id);
+    }
+    @PostMapping("/profile/update")
+    public  ResponseEntity<Void> updateProfile(@RequestBody UpdateUserProfileRequest body){
+        return service.updateProfilePage(body);
     }
 
 }

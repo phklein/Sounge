@@ -5,6 +5,7 @@ import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
+import soungegroup.soungeapi.request.UpdateUserProfileRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
@@ -34,6 +35,8 @@ public interface UserService {
     Boolean hasSession (User user);
 
     ResponseEntity<UserProfileResponse> getProfileForId(Long id);
+
+    ResponseEntity<Void> updateProfilePage(UpdateUserProfileRequest body);
 
 
 
