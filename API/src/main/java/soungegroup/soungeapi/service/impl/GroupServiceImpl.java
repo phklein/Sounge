@@ -6,13 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.GroupAdapter;
 import soungegroup.soungeapi.model.Group;
-import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.GroupRepository;
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.request.PictureChangeRequest;
 import soungegroup.soungeapi.response.GroupCsvResponse;
 import soungegroup.soungeapi.response.GroupPageResponse;
-import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 
 import java.util.List;

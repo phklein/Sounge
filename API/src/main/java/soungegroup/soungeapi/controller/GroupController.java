@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.request.PictureChangeRequest;
 import soungegroup.soungeapi.response.GroupPageResponse;
-import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 
 import javax.validation.Valid;

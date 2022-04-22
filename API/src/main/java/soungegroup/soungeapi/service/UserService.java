@@ -11,7 +11,6 @@ import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserPageResponse;
 
-import java.net.URL;
 import java.util.List;
 
 public interface UserService {

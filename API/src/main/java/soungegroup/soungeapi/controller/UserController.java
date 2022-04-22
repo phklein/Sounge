@@ -1,7 +1,6 @@
 package soungegroup.soungeapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soungegroup.soungeapi.enums.GenreName;

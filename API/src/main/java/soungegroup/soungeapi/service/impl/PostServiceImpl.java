@@ -1,11 +1,11 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.PostAdapter;
-import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Post;
 import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.PostRepository;
@@ -16,15 +16,14 @@ import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.service.PostService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
+    private static final int PAGE_SIZE = 50;
+
     private final PostRepository repository;
     private final UserRepository userRepository;
     private final PostAdapter adapter;
@@ -44,7 +43,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<List<PostSimpleResponse>> findAll(Optional<Long> userId) {
-        List<Post> foundPosts = repository.findTop50ByOrderByPostDateTimeDesc();
+        List<Post> foundPosts;
 
         if (userId.isPresent()) {
             Optional<User> userOptional = userRepository.findById(userId.get());
@@ -52,18 +51,16 @@ public class PostServiceImpl implements PostService {
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
 
-                foundPosts = foundPosts.stream().filter(post -> {
-                    for (Genre g : post.getGenres()) {
-                        if (user.getLikedGenres().contains(g)) {
-                            return true;
-                        }
-                    }
-
-                    return user.getLikedUsers().contains(post.getUser());
-                }).collect(Collectors.toList());
+                foundPosts = repository.findByUserPreferencesOrderByPostDateTimeDesc(
+                        user.getLikedGenres(),
+                        user.getLikedUsers(),
+                        Pageable.ofSize(PAGE_SIZE)
+                );
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
+        } else {
+            foundPosts = repository.findByOrderByPostDateTimeDesc(Pageable.ofSize(PAGE_SIZE));
         }
 
         return foundPosts.isEmpty() ?

@@ -1,6 +1,7 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
+    private static final int PAGE_SIZE = 50;
+
     private final CommentRepository repository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
@@ -49,7 +52,10 @@ public class CommentServiceImpl implements CommentService {
         Optional<Post> postOptional = postRepository.findById(postId);
 
         if (postOptional.isPresent()) {
-            List<Comment> comments = repository.findTop50ByPostOrderByCommentDateTimeDesc(postOptional.get());
+            List<Comment> comments = repository.findByPostOrderByCommentDateTimeDesc(
+                    postOptional.get(),
+                    Pageable.ofSize(PAGE_SIZE)
+            );
 
             return comments.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :

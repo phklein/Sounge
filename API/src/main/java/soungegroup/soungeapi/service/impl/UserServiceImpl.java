@@ -1,6 +1,7 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private static final int POST_PAGE_SIZE = 50;
+
     private final UserRepository repository;
     private final PostRepository postRepository;
     private final GenreRepository genreRepository;
@@ -367,7 +370,10 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = repository.findById(id);
 
         if (userOptional.isPresent()) {
-            List<Post> foundPosts = postRepository.findTop50ByUserOrderByPostDateTimeDesc(userOptional.get());
+            List<Post> foundPosts = postRepository.findByUserOrderByPostDateTimeDesc(
+                    userOptional.get(),
+                    Pageable.ofSize(POST_PAGE_SIZE)
+            );
 
             return foundPosts.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
