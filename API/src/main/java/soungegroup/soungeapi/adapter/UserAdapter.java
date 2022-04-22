@@ -15,6 +15,7 @@ import soungegroup.soungeapi.repository.RoleRepository;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
+import soungegroup.soungeapi.response.UserProfileResponse;
 import soungegroup.soungeapi.response.UserSimpleResponse;
 
 import java.util.ArrayList;
@@ -62,5 +63,11 @@ public class UserAdapter {
 
     public List<UserSimpleResponse> toSimpleResponse(List<User> users) {
         return mapper.map(users, new TypeToken<List<UserSimpleResponse>>() {}.getType());
+    }
+    public UserProfileResponse toProfileResponse(User user){
+        UserProfileResponse returnObj = mapper.map(user, UserProfileResponse.class);
+        returnObj.setUser(mapper.map(user, UserSimpleResponse.class));
+        return  returnObj;
+
     }
 }

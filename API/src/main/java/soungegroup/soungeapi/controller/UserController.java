@@ -9,6 +9,7 @@ import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
+import soungegroup.soungeapi.response.UserProfileResponse;
 import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.service.UserService;
 
@@ -93,4 +94,9 @@ public class UserController {
                                        @PathVariable String pwd) {
         return service.delete(id, pwd);
     }
+    @GetMapping("/profile/{id}")
+    public  ResponseEntity<UserProfileResponse> getProfileForId(@PathVariable Long id){
+        return  service.getProfileForId(id);
+    }
+
 }

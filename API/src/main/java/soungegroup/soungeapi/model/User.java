@@ -33,6 +33,9 @@ public class User {
     @Column(name = "user_latitude") private String latitude;
     @Column(name = "user_longitude") private String longitude;
     @Column(name = "user_leader") private boolean leader;
+    @Column(name = "user_photo") private  String profilePic;
+    @Column(name = "use_spotify_id") private  String spotifyID;
+
 
     // One user has many posts
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

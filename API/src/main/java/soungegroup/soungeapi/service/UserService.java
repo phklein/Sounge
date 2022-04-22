@@ -3,10 +3,12 @@ package soungegroup.soungeapi.service;
 import org.springframework.http.ResponseEntity;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
+import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.request.PasswordChangeRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
+import soungegroup.soungeapi.response.UserProfileResponse;
 import soungegroup.soungeapi.response.UserSimpleResponse;
 
 import java.util.List;
@@ -28,4 +30,11 @@ public interface UserService {
 
     ResponseEntity<List<UserSimpleResponse>> findAll();
     ResponseEntity export();
+
+    Boolean hasSession (User user);
+
+    ResponseEntity<UserProfileResponse> getProfileForId(Long id);
+
+
+
 }

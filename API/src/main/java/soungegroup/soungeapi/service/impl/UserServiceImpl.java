@@ -20,6 +20,7 @@ import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserCsvResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
+import soungegroup.soungeapi.response.UserProfileResponse;
 import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.service.UserService;
 
@@ -271,4 +272,28 @@ public class UserServiceImpl implements UserService {
                 .header("content-disposition", "filename=\"users.csv\"")
                 .body(report.toString());
     }
+
+    @Override
+    public Boolean hasSession(User user) {
+        for (UserLoginResponse ulr: sessions) {
+            if(ulr.getId().equals(user.getId())){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    @Override
+    public ResponseEntity<UserProfileResponse> getProfileForId(Long id) {
+        if(repository.existsById(id)){
+            User user =  repository.getById(id);
+            UserProfileResponse response = adapter.toProfileResponse(user);
+            response.setOnline(hasSession(user));
+            return  ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
 }
+
