@@ -3,7 +3,6 @@ package soungegroup.soungeapi.adapter;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Group;
 import soungegroup.soungeapi.repository.GenreRepository;
@@ -28,10 +27,10 @@ public class GroupAdapter {
 
         List<Genre> genres = new ArrayList<>();
 
-        for (GenreName gn : groupSaveRequest.getGenres()) {
+        groupSaveRequest.getGenres().forEach(gn -> {
             Optional<Genre> genre = genreRepository.findByName(gn);
             genre.ifPresent(genres::add);
-        }
+        });
 
         if (genres.size() < groupSaveRequest.getGenres().size()) {
             return null;

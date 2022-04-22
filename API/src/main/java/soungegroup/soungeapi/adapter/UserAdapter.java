@@ -34,15 +34,15 @@ public class UserAdapter {
         List<Genre> genres = new ArrayList<>();
         List<Role> roles = new ArrayList<>();
 
-        for (GenreName gn : userSaveRequest.getLikedGenres()) {
+        userSaveRequest.getLikedGenres().forEach(gn -> {
             Optional<Genre> genre = genreRepository.findByName(gn);
             genre.ifPresent(genres::add);
-        }
+        });
 
-        for (RoleName rn : userSaveRequest.getRoles()) {
+        userSaveRequest.getRoles().forEach(rn -> {
             Optional<Role> role = roleRepository.findByName(rn);
             role.ifPresent(roles::add);
-        }
+        });
 
         if (genres.size() < userSaveRequest.getLikedGenres().size() ||
                 roles.size() < userSaveRequest.getRoles().size()) {
