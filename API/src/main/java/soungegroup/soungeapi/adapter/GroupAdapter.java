@@ -9,7 +9,6 @@ import soungegroup.soungeapi.model.Group;
 import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.response.GroupPageResponse;
-import soungegroup.soungeapi.response.GroupSimpleResponse;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -41,10 +40,6 @@ public class GroupAdapter {
         group.setGenres(genres);
 
         return group;
-    }
-
-    public GroupSimpleResponse toSimpleResponse(Group group) {
-        return mapper.map(group, GroupSimpleResponse.class);
     }
 
     public GroupPageResponse toPageResponse(Group group) {
