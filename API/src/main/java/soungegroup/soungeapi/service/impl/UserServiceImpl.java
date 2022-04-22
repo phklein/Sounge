@@ -24,6 +24,7 @@ import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
 import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.service.UserService;
+import soungegroup.soungeapi.util.ListaObj;
 
 import java.util.List;
 import java.util.Optional;
@@ -260,8 +261,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity export() {
         List<UserCsvResponse> users = repository.findAllCsv();
+        ListaObj<UserCsvResponse> responseObj = new ListaObj<UserCsvResponse>(users.size());
+        for (UserCsvResponse csv:
+             users) {
+            responseObj.adiciona(csv);
+        }
         StringBuilder report = new StringBuilder();
-        for (UserCsvResponse u : users) {
+        for (int i = 0; i < responseObj.getTamanho(); i++) {
+            UserCsvResponse u = responseObj.getElemento(i);
             report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s\r\n",
                     u.getId(), u.getName(), u.getSex(), u.getDescription(),
                     u.getBirthDate(), u.getState(), u.getCity(), u.isLeader()));
