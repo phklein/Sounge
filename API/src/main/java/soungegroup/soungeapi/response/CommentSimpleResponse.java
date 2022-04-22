@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostSimpleResponse {
+public class CommentSimpleResponse {
     private Long id;
     private String text;
     private String mediaUrl;
     private Long hoursPast;
     private UserSimpleResponse user;
-    private Integer likeCount;
-    private Integer commentCount;
 }

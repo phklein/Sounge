@@ -2,10 +2,7 @@ package soungegroup.soungeapi.request;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import soungegroup.soungeapi.enums.GenreName;
-import soungegroup.soungeapi.enums.RoleName;
-import soungegroup.soungeapi.enums.Sex;
-import soungegroup.soungeapi.enums.State;
+import soungegroup.soungeapi.enums.*;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -32,4 +29,5 @@ public class UserSaveRequest {
     @NotEmpty
     private List<GenreName> likedGenres;
     private List<RoleName> roles;
+    private SkillLevel skillLevel;
 }

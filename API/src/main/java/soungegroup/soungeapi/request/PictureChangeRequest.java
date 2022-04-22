@@ -1,11 +1,11 @@
 package soungegroup.soungeapi.request;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
 @Data
-public class PostUpdateRequest {
-    private String text;
+public class PictureChangeRequest {
     @URL
-    private String mediaUrl;
+    private String url;
 }
