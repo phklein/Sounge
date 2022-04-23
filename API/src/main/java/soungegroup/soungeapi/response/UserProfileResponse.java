@@ -11,9 +11,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserProfileResponse {
-    private UserSimpleResponse user;
-    private List<PostSimpleResponse> postList;
+    private Long id;
+    private String name;
     private String profilePic;
+    private boolean leader;
+    private List<PostSimpleResponse> postList;
     private String spotifyID;
     private String description;
     private Boolean isOnline;
