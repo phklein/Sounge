@@ -4,18 +4,11 @@ import org.springframework.http.ResponseEntity;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.model.User;
-import soungegroup.soungeapi.request.PasswordChangeRequest;
-import soungegroup.soungeapi.request.PictureChangeRequest;
 import soungegroup.soungeapi.request.UpdateUserProfileRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
-import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserPageResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
-import soungegroup.soungeapi.response.UserSimpleResponse;
-
-import java.util.List;
 
 public interface UserService {
     ResponseEntity<UserLoginResponse> saveAndLogin(UserSaveRequest body);
@@ -36,20 +29,10 @@ public interface UserService {
     ResponseEntity<Void> removeGenre(Long id, GenreName genreName);
     ResponseEntity<Void> removeRole(Long id, RoleName roleName);
 
-    ResponseEntity<Void> changePassword(Long id, PasswordChangeRequest body);
+    ResponseEntity<Void> updateProfilePage(Long id, UpdateUserProfileRequest body);
     ResponseEntity<Void> delete(Long id, String password);
-    ResponseEntity<List<PostSimpleResponse>> findPostsById(Long id);
-
-
 
     ResponseEntity export();
-
     Boolean hasSession (User user);
-
     ResponseEntity<UserProfileResponse> getProfileForId(Long id);
-
-    ResponseEntity<Void> updateProfilePage(UpdateUserProfileRequest body);
-
-
-
 }

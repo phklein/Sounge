@@ -18,6 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/posts")
 @RequiredArgsConstructor
+@CrossOrigin
 public class PostController {
     private final PostService service;
     private final CommentService commentService;

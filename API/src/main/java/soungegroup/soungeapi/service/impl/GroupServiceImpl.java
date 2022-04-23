@@ -8,7 +8,7 @@ import soungegroup.soungeapi.adapter.GroupAdapter;
 import soungegroup.soungeapi.model.Group;
 import soungegroup.soungeapi.repository.GroupRepository;
 import soungegroup.soungeapi.request.GroupSaveRequest;
-import soungegroup.soungeapi.request.PictureChangeRequest;
+import soungegroup.soungeapi.request.UpdateGroupPageRequest;
 import soungegroup.soungeapi.response.GroupCsvResponse;
 import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.service.GroupService;
@@ -70,12 +70,14 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseEntity<Void> changePicture(Long id, PictureChangeRequest body) {
+    public ResponseEntity<Void> update(Long id, UpdateGroupPageRequest body) {
         Optional<Group> groupOptional = repository.findById(id);
 
         if (groupOptional.isPresent()) {
             Group group = groupOptional.get();
-            group.setPictureUrl(body.getUrl());
+            group.setName(body.getName());
+            group.setDescription(body.getDescription());
+            group.setPictureUrl(body.getPictureUrl());
             repository.save(group);
             return ResponseEntity.status(HttpStatus.OK).build();
         }

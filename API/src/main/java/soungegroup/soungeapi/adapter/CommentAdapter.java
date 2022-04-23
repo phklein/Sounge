@@ -21,14 +21,15 @@ public class CommentAdapter {
         return mapper.map(commentSaveRequest, Comment.class);
     }
 
-    public void toSimpleResponse(Comment comment) {
+    public CommentSimpleResponse toSimpleResponse(Comment comment) {
         CommentSimpleResponse response = mapper.map(comment, CommentSimpleResponse.class);
         response.setHoursPast(Duration.between(comment.getCommentDateTime(), LocalDateTime.now()).toHours());
+        return response;
     }
 
     public List<CommentSimpleResponse> toSimpleResponse(List<Comment> comments) {
         List<CommentSimpleResponse> responseList = new ArrayList<>();
-        comments.forEach(this::toSimpleResponse);
+        comments.forEach(c -> { responseList.add(toSimpleResponse(c)); });
         return responseList;
     }
 }

@@ -48,16 +48,17 @@ public class PostAdapter {
         return post;
     }
 
-    public void toSimpleResponse(Post post) {
+    public PostSimpleResponse toSimpleResponse(Post post) {
         PostSimpleResponse response = mapper.map(post, PostSimpleResponse.class);
         response.setLikeCount(post.getUsersWhoLiked().size());
         response.setCommentCount(post.getComments().size());
         response.setHoursPast(Duration.between(post.getPostDateTime(), LocalDateTime.now()).toHours());
+        return response;
     }
 
     public List<PostSimpleResponse> toSimpleResponse(List<Post> posts) {
         List<PostSimpleResponse> responseList = new ArrayList<>();
-        posts.forEach(this::toSimpleResponse);
+        posts.forEach(p -> { responseList.add(toSimpleResponse(p)); });
         return responseList;
     }
 }

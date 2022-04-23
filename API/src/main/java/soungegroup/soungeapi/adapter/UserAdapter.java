@@ -3,8 +3,6 @@ package soungegroup.soungeapi.adapter;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import soungegroup.soungeapi.enums.GenreName;
-import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Role;
 import soungegroup.soungeapi.model.User;
@@ -12,9 +10,7 @@ import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.repository.RoleRepository;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserPageResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
-import soungegroup.soungeapi.response.UserSimpleResponse;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -26,6 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserAdapter {
     private final ModelMapper mapper;
+    private final PostAdapter postAdapter;
 
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
@@ -61,15 +58,10 @@ public class UserAdapter {
         return mapper.map(user, UserLoginResponse.class);
     }
 
-    public UserPageResponse toPageResponse(User user) {
-        UserPageResponse response =  mapper.map(user, UserPageResponse.class);
-        response.setAge(Period.between(user.getBirthDate(), LocalDate.now()).getYears());
-        return response;
-    }
     public UserProfileResponse toProfileResponse(User user){
         UserProfileResponse returnObj = mapper.map(user, UserProfileResponse.class);
         returnObj.setAge(Period.between(user.getBirthDate(), LocalDate.now()).getYears());
+        returnObj.setPostList(postAdapter.toSimpleResponse(user.getPosts()));
         return  returnObj;
-
     }
 }

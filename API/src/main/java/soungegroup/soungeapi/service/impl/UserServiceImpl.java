@@ -1,7 +1,6 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,17 +10,12 @@ import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.repository.*;
-import soungegroup.soungeapi.request.PasswordChangeRequest;
-import soungegroup.soungeapi.request.PictureChangeRequest;
 import soungegroup.soungeapi.request.UpdateUserProfileRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
-import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.response.UserCsvResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserPageResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
-import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.service.UserService;
 import soungegroup.soungeapi.util.ListaObj;
 
@@ -31,8 +25,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private static final int POST_PAGE_SIZE = 50;
-
     private final UserRepository repository;
     private final PostRepository postRepository;
     private final GenreRepository genreRepository;
@@ -309,27 +301,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Void> changePassword(Long id, PasswordChangeRequest body) {
-        Optional<User> userOptional = repository.findById(id);
-
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-
-            if (user.getPassword().equals(body.getOldPassword())) {
-                user.setPassword(body.getNewPassword());
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.OK).build();
-            }
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-
-
-    @Override
     public ResponseEntity<Void> delete(Long id, String password) {
         Optional<User> userOptional = repository.findById(id);
 
@@ -342,25 +313,6 @@ public class UserServiceImpl implements UserService {
             }
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-
-    @Override
-    public ResponseEntity<List<PostSimpleResponse>> findPostsById(Long id) {
-        Optional<User> userOptional = repository.findById(id);
-
-        if (userOptional.isPresent()) {
-            List<Post> foundPosts = postRepository.findByUserOrderByPostDateTimeDesc(
-                    userOptional.get(),
-                    Pageable.ofSize(POST_PAGE_SIZE)
-            );
-
-            return foundPosts.isEmpty() ?
-                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                    ResponseEntity.status(HttpStatus.OK).body(postAdapter.toSimpleResponse(foundPosts));
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -399,7 +351,6 @@ public class UserServiceImpl implements UserService {
             }
         }
         return false;
-
     }
 
     @Override
@@ -407,15 +358,15 @@ public class UserServiceImpl implements UserService {
         if(repository.existsById(id)){
             User user =  repository.getById(id);
             UserProfileResponse response = adapter.toProfileResponse(user);
-            response.setOnline(hasSession(user));
+            response.setIsOnline(hasSession(user));
             return  ResponseEntity.status(HttpStatus.OK).body(response);
         }
         return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override
-    public ResponseEntity<Void> updateProfilePage(UpdateUserProfileRequest body) {
-       Optional<User> userOptional = repository.findById(body.getId());
+    public ResponseEntity<Void> updateProfilePage(Long id, UpdateUserProfileRequest body) {
+       Optional<User> userOptional = repository.findById(id);
        if(userOptional.isPresent()){
            User user = userOptional.get();
            user.setSpotifyID(body.getSpotifyId());

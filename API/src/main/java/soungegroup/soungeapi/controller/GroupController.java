@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soungegroup.soungeapi.request.GroupSaveRequest;
-import soungegroup.soungeapi.request.PictureChangeRequest;
+import soungegroup.soungeapi.request.UpdateGroupPageRequest;
 import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.service.GroupService;
 
@@ -13,6 +13,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/groups")
 @RequiredArgsConstructor
+@CrossOrigin
 public class GroupController {
     private final GroupService service;
 
@@ -30,10 +31,10 @@ public class GroupController {
         return service.export();
     }
 
-    @PatchMapping("/{id}/picture")
-    public ResponseEntity<Void> changePicture(@PathVariable Long id,
-                                              @RequestBody @Valid PictureChangeRequest body) {
-        return service.changePicture(id, body);
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id,
+                                       @RequestBody @Valid UpdateGroupPageRequest body) {
+        return service.update(id, body);
     }
 
     @DeleteMapping("/{id}")
