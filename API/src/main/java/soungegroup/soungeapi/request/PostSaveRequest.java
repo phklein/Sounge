@@ -6,11 +6,13 @@ import soungegroup.soungeapi.enums.GenreName;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Data
 public class PostSaveRequest {
     @NotNull
+    @Positive
     private Long userId;
     private String text;
     @URL

@@ -12,7 +12,6 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByOrderByPostDateTimeDesc(Pageable pageable);
-    List<Post> findByUserOrderByPostDateTimeDesc(User user, Pageable pageable);
 
     @Query( "SELECT p FROM Post p JOIN p.genres g " +
             "WHERE g IN :genres " +
