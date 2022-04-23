@@ -2,17 +2,17 @@ package soungegroup.soungeapi.request;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.URL;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class UserLoginRequest {
-    @Email
-    @NotBlank
-    private String email;
+public class UpdateUserProfileRequest {
     @Length(min = 8)
     @NotNull
     private String password;
+    private String description;
+    private String spotifyId;
+    @URL
+    private String profilePic;
 }

@@ -2,9 +2,8 @@ package soungegroup.soungeapi.service;
 
 import org.springframework.http.ResponseEntity;
 import soungegroup.soungeapi.request.GroupSaveRequest;
-import soungegroup.soungeapi.request.PictureChangeRequest;
+import soungegroup.soungeapi.request.UpdateGroupPageRequest;
 import soungegroup.soungeapi.response.GroupPageResponse;
-import soungegroup.soungeapi.response.GroupSimpleResponse;
 
 public interface GroupService {
     ResponseEntity<Long> save(GroupSaveRequest body);
@@ -12,7 +11,7 @@ public interface GroupService {
     ResponseEntity<GroupPageResponse> findById(Long id);
     ResponseEntity export();
 
-    ResponseEntity<Void> changePicture(Long id, PictureChangeRequest body);
+    ResponseEntity<Void> update(Long id, UpdateGroupPageRequest body);
 
     ResponseEntity<Void> delete(Long id);
 }

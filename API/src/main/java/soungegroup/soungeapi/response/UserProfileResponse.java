@@ -3,27 +3,25 @@ package soungegroup.soungeapi.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import soungegroup.soungeapi.enums.Sex;
 import soungegroup.soungeapi.enums.SkillLevel;
-import soungegroup.soungeapi.enums.State;
 
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserPageResponse {
+public class UserProfileResponse {
     private Long id;
     private String name;
-    private Sex sex;
-    private String description;
-    private Integer age;
-    private State state;
-    private String city;
+    private String profilePic;
     private boolean leader;
+    private List<PostSimpleResponse> postList;
+    private String spotifyID;
+    private String description;
+    private Boolean isOnline;
     private SkillLevel skillLevel;
-    private String pictureUrl;
     private GroupSimpleResponse group;
     private List<GenreSimpleResponse> likedGenres;
     private List<RoleSimpleResponse> roles;
+    private Integer age;
 }

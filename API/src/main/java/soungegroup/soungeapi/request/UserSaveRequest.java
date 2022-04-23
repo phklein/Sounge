@@ -11,8 +11,10 @@ import java.util.List;
 @Data
 public class UserSaveRequest {
     @Email
+    @NotBlank
     private String email;
     @Length(min = 8)
+    @NotNull
     private String password;
     @NotBlank
     private String name;
@@ -28,6 +30,7 @@ public class UserSaveRequest {
     private String city;
     @NotEmpty
     private List<GenreName> likedGenres;
+    @NotEmpty
     private List<RoleName> roles;
     private SkillLevel skillLevel;
 }

@@ -23,19 +23,13 @@ public class CommentAdapter {
 
     public CommentSimpleResponse toSimpleResponse(Comment comment) {
         CommentSimpleResponse response = mapper.map(comment, CommentSimpleResponse.class);
-
         response.setHoursPast(Duration.between(comment.getCommentDateTime(), LocalDateTime.now()).toHours());
-
         return response;
     }
 
     public List<CommentSimpleResponse> toSimpleResponse(List<Comment> comments) {
         List<CommentSimpleResponse> responseList = new ArrayList<>();
-
-        for (Comment c : comments) {
-            responseList.add(toSimpleResponse(c));
-        }
-
+        comments.forEach(c -> { responseList.add(toSimpleResponse(c)); });
         return responseList;
     }
 }
