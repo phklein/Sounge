@@ -10,11 +10,8 @@ import UserService from '../../routes/UserRoute'
 import { IFormUserState } from '../../components/MultiForm'
 import { Buttonaa } from '../../components/Buttonaa'
 
-
 import { StateEnum } from '../../enums/StateEnum'
 import { SexEnum, SexEnumDesc } from '../../enums/SexEnum'
-
-
 
 interface Iprops {
     nextStep: () => void;

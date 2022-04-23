@@ -14,6 +14,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/groups")
 @RequiredArgsConstructor
+@CrossOrigin
 public class GroupController {
     private final GroupService service;
 

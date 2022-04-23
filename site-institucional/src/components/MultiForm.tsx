@@ -31,6 +31,16 @@ export interface IFormUserState {
     skillLevel: SkillLevelEnum;
 }
 
+export interface IListGenreName {
+    size: number;
+    genres: GenreNameEnum[];
+}
+
+export interface IListRoleName {
+    size: number;
+    roles: RoleNameEnum[];
+}
+
 const defaultUserValue: IFormUserState = {
     step: 1,
     email: '',
@@ -47,12 +57,51 @@ const defaultUserValue: IFormUserState = {
     skillLevel: SkillLevelEnum.BEGINNER
 }
 
+const defaultListGenreNameValue: IListGenreName = {
+    size: 0,
+    genres: [] 
+}
+
+const defaultListRoleNameValue: IListRoleName = {
+    size: 0,
+    roles: []
+}
+
 export function MultiForm() {
     const navigate = useNavigate()
 
     const [userResponse, setUserResponse] = useState<IUserResponseDto>()
     const [formUserState, setFormState] = useState<IFormUserState>(defaultUserValue)
+
+    const [listGenreName, setListGenreName] = useState<IListGenreName>(defaultListGenreNameValue)
+    const [listRoleName, setListRoleName] = useState<IListRoleName>(defaultListRoleNameValue)
     
+    const handleAddFromListChange = (value: GenreNameEnum) => {
+        listGenreName.genres.push(value)
+        listGenreName.size = listGenreName.size + 1
+        setListGenreName(listGenreName)
+        console.log(listGenreName)
+    }
+
+    const handleRemoveFromListChange = (value: GenreNameEnum) => {
+        const index = listGenreName.genres.indexOf(value)
+        listGenreName.size = listGenreName.size - 1
+        setListGenreName(listGenreName)
+        console.log(listGenreName)
+    }
+
+    const handleSaveFromListChange = () => {
+        formUserState.likedGenres = listGenreName.genres
+
+        console.log(listGenreName.genres)
+    }
+
+    const handleSaveFromListChangeRole = () => {
+        formUserState.roles = listRoleName.roles
+
+        console.log(listRoleName.roles)
+    }
+
     const handleFieldChange = (value: any, fieldName: string) => {
         setFormState({
             ...formUserState,
@@ -80,7 +129,7 @@ export function MultiForm() {
             return <Register nextStep={handleNextStep} handleChange={handleFieldChange} formState={formUserState} />
         } else 
         if (formUserState.step === 2) {
-            return <Register2 previousStep={handlePreviousStep} nextStep={handleNextStep} handleChange={handleFieldChange} formState={formUserState} />
+            return <Register2 removeFromList={handleRemoveFromListChange} addFromListGenre={handleAddFromListChange} addFromListRole={handleSaveFromListChange} saveList={handleSaveFromListChange} previousStep={handlePreviousStep} nextStep={handleNextStep} handleChange={handleFieldChange} formState={formUserState} />
         } else
         if (formUserState.step === 3) {
             console.log(formUserState)
@@ -101,15 +150,17 @@ export function MultiForm() {
                 }
     
                 UserService.saveAndLogin(user).then(res => {
-                    if (res.status === 200) {
+                    if (res.status === 201) {
                         setUserResponse(res.data)
                         alert('Usuário cadastrado com sucesso!')
                         navigate('/login')
                     }
-                }).catch(() => {
+                }).catch(res => {
+                    console.log(res.status)
                     alert('Erro ao cadastrar usuário!')
                     navigate('/')
                 })
+                console.log(test)
             } else {
                 alert('Senhas não conferem!')
             }
