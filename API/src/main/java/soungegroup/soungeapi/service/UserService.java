@@ -32,7 +32,7 @@ public interface UserService {
     ResponseEntity<Void> updateProfilePage(Long id, UpdateUserProfileRequest body);
     ResponseEntity<Void> delete(Long id, String password);
 
-    ResponseEntity export();
+    ResponseEntity<String> export();
     Boolean hasSession (User user);
-    ResponseEntity<UserProfileResponse> getProfileForId(Long id);
+    ResponseEntity<UserProfileResponse> getProfileById(Long id);
 }

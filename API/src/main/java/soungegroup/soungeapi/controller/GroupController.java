@@ -21,13 +21,14 @@ public class GroupController {
     public ResponseEntity<Long> save(@RequestBody @Valid GroupSaveRequest body) {
         return service.save(body);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<GroupPageResponse> findById(@PathVariable Long id) {
         return service.findById(id);
     }
 
     @GetMapping("/report")
-    public ResponseEntity getReport() {
+    public ResponseEntity<String> getReport() {
         return service.export();
     }
 

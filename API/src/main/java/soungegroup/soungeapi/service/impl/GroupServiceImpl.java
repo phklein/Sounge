@@ -11,7 +11,6 @@ import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.request.UpdateGroupPageRequest;
 import soungegroup.soungeapi.response.GroupCsvResponse;
 import soungegroup.soungeapi.response.GroupPageResponse;
-import soungegroup.soungeapi.response.UserCsvResponse;
 import soungegroup.soungeapi.service.GroupService;
 import soungegroup.soungeapi.util.ListaObj;
 
@@ -56,16 +55,16 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseEntity export() {
+    public ResponseEntity<String> export() {
         List<GroupCsvResponse> groups = repository.findAllCsv();
-        ListaObj<GroupCsvResponse> responseObj = new ListaObj<GroupCsvResponse>(groups.size());
+        ListaObj<GroupCsvResponse> responseObj = new ListaObj<>(groups.size());
         for (GroupCsvResponse csv: groups) {
             responseObj.adiciona(csv);
         }
         StringBuilder report = new StringBuilder();
         for (int i = 0; i < responseObj.getTamanho(); i++) {
             GroupCsvResponse g = responseObj.getElemento(i);
-            report.append(String.format("%d;%s;%s;%s\r\n",
+            report.append(String.format("%d;%s;%s;%s\r%n",
                     g.getId(), g.getName(), g.getDescription(), g.getCreationDate()));
         }
         return groups.isEmpty() ?

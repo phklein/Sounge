@@ -26,8 +26,13 @@ public class UserController {
         return service.saveAndLogin(body);
     }
 
+    @GetMapping("/{id}")
+    public  ResponseEntity<UserProfileResponse> getProfileById(@PathVariable Long id){
+        return  service.getProfileById(id);
+    }
+
     @GetMapping("/report")
-    public ResponseEntity getReport() {
+    public ResponseEntity<String> getReport() {
         return service.export();
     }
 
@@ -39,6 +44,12 @@ public class UserController {
     @DeleteMapping("/{id}/auth")
     public ResponseEntity<Void> logoff(@PathVariable Long id) {
         return service.logoff(id);
+    }
+
+    @PutMapping("/{id}")
+    public  ResponseEntity<Void> updateProfile(@PathVariable Long id,
+                                               @RequestBody UpdateUserProfileRequest body){
+        return service.updateProfilePage(id, body);
     }
 
     @PostMapping("/{id}/likePost/{postId}")
@@ -105,15 +116,4 @@ public class UserController {
                                        @PathVariable String pwd) {
         return service.delete(id, pwd);
     }
-    @GetMapping("/{id}")
-    public  ResponseEntity<UserProfileResponse> getProfileForId(@PathVariable Long id){
-        return  service.getProfileForId(id);
-    }
-
-    @PutMapping("/{id}")
-    public  ResponseEntity<Void> updateProfile(@PathVariable Long id,
-                                               @RequestBody UpdateUserProfileRequest body){
-        return service.updateProfilePage(id, body);
-    }
-
 }

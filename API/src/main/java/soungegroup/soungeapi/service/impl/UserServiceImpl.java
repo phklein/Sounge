@@ -319,16 +319,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity export() {
+    public ResponseEntity<String> export() {
         List<UserCsvResponse> users = repository.findAllCsv();
-        ListaObj<UserCsvResponse> responseObj = new ListaObj<UserCsvResponse>(users.size());
+        ListaObj<UserCsvResponse> responseObj = new ListaObj<>(users.size());
         for (UserCsvResponse csv: users) {
             responseObj.adiciona(csv);
         }
         StringBuilder report = new StringBuilder();
         for (int i = 0; i < responseObj.getTamanho(); i++) {
             UserCsvResponse u = responseObj.getElemento(i);
-            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\r\n",
+            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\r%n",
                     u.getId(), u.getName(), u.getSex(), u.getDescription(),
                     u.getBirthDate(), u.getState(), u.getCity(),
                     u.getLatitude(), u.getLongitude(),
@@ -353,7 +353,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserProfileResponse> getProfileForId(Long id) {
+    public ResponseEntity<UserProfileResponse> getProfileById(Long id) {
         if(repository.existsById(id)){
             User user =  repository.getById(id);
             UserProfileResponse response = adapter.toProfileResponse(user);
