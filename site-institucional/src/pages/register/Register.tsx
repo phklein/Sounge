@@ -27,7 +27,7 @@ export function Register(props: Iprops) {
     const cancelRegister = () => {
         navigate('/')
     }
-
+    
     return (
         <>
             <div className="max-width-height">
@@ -37,8 +37,8 @@ export function Register(props: Iprops) {
                             <h2>Crie sua conta</h2>
                             <Form.Group controlId="formGroupNome">
                                 <Form.Control 
-                                    value={formState.name} 
-                                    onChange={(event) => handleChange(event.target.value, 'name')}
+                                    value={formState.name}
+                                    onChange={(event) => handleChange(event.target.value, 'name')} 
                                     type="text" 
                                     placeholder="Nome" 
                                     className="input-all form-label"                               
@@ -99,8 +99,8 @@ export function Register(props: Iprops) {
                                 </Form.Group>
                                 <Form.Group controlId="formGroupCidade" className="form-group">
                                     <Form.Control 
-                                        value={formState.city} 
-                                        onChange={(event) => handleChange(event.target.value, 'city')}
+                                        value={formState.city}
+                                        onChange={(event) => handleChange(event.target.value, 'city')} 
                                         type="text" 
                                         placeholder="Cidade" 
                                         className="input-all form-label" 

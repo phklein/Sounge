@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
+import { useForm, SubmitHandler } from "react-hook-form"
 
 import '../../styles/register.css'
+
+import IUserRequestDto from '../../dto/IUserRequestDto'
 
 import { IFormUserState } from '../../components/MultiForm'
 
@@ -18,12 +21,20 @@ interface Iprops {
     addFromListRole: (value: RoleNameEnum) => void;
     removeFromList: (value: GenreNameEnum) => void;
     saveList: () => void;
+    submit: () => void;
 }
 
 export function Register2(props: Iprops) {
-    const { nextStep, formState, handleChange, previousStep, addFromListGenre, addFromListRole, removeFromList, saveList } = props
+    
+    const { nextStep, formState, handleChange, previousStep, addFromListGenre, addFromListRole, saveList, submit } = props
     const [show, setShow] = useState(false)
+    
+    const { handleSubmit } = useForm<IUserRequestDto>()
 
+    const onSubmit: SubmitHandler<IUserRequestDto> = data => {
+        props.submit()
+    }
+    
     const handleClose = () => {
         setShow(false)
     }
@@ -40,7 +51,7 @@ export function Register2(props: Iprops) {
         <>
             <div className="max-width-height">
                 <div className="register-container-left">
-                    <Form>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
                         <div className="register-form">
                             <h2>Fale um pouco mais sobre você</h2>
                             <div className="form-group-modal">
@@ -133,7 +144,7 @@ export function Register2(props: Iprops) {
                             <Button onClick={previousStep} type="submit" className="button">Voltar</Button>
                         </Form.Group>
                         <Form.Group className="form-group-next">
-                            <Button onClick={nextStep} type="submit" className="button">Finalizar</Button>
+                            <Button type="submit" className="button">Finalizar</Button>
                         </Form.Group>
                     </Form>
                 </div>

@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { useForm, SubmitHandler } from "react-hook-form"
 
 import UserService from '../routes/UserRoute'
 
 import { Register } from '../pages/register/Register'
 import { Register2 } from '../pages/register/Register2'
+import { RegisterConcluid } from '../pages/register/RegisterConcluid'
 
 import IUserResponseDto from '../dto/IUserResponseDto'
 import IUserRequestDto from '../dto/IUserRequestDto'
@@ -14,6 +16,7 @@ import { GenreNameEnum } from '../enums/GenreNameEnum'
 import { RoleNameEnum } from '../enums/RoleNameEnum'
 import { SkillLevelEnum } from '../enums/SkillLevelEnum'
 import { SexEnum } from '../enums/SexEnum'
+import IUserLoginRequestDto from '../dto/IUserLoginRequestDto'
 
 export interface IFormUserState {
     step: number;
@@ -52,8 +55,8 @@ const defaultUserValue: IFormUserState = {
     birthDate: '',
     state: StateEnum.NULL,
     city: '',
-    likedGenres: [],
-    roles: [],
+    likedGenres: [GenreNameEnum.CLASSICAL],
+    roles: [RoleNameEnum.BASSPLAYER],
     skillLevel: SkillLevelEnum.BEGINNER
 }
 
@@ -123,47 +126,57 @@ export function MultiForm() {
         })
     }
 
+    const submitForm = () => {
+        if (formUserState.password == formUserState.confirmPassword) {
+            const user: IUserRequestDto = {
+                email: formUserState.email,
+                password: formUserState.password,
+                name: formUserState.name,
+                sex: formUserState.sex,
+                description: formUserState.description,
+                birthDate: formUserState.birthDate,
+                state: formUserState.state,
+                city: formUserState.city,
+                likedGenres: formUserState.likedGenres,
+                roles: formUserState.roles,
+                skillLevel: formUserState.skillLevel
+            }
+
+            UserService.saveAndLogin(user).then(res => {
+                if (res.status == 201) {
+                    console.log(res.data)   
+                                 
+                    const userLoginRequest: IUserLoginRequestDto = {
+                        email: formUserState.email,
+                        password: formUserState.password
+                    }
+        
+                    UserService.login(userLoginRequest).then(res => {
+                        alert('logando')
+        
+                        navigate(`/profile?id=${res.data.id}`)
+                    }).catch(err => {
+                        console.log(err)
+                        alert('erro ao tentar logar')
+                    })
+                }  
+            }).catch(err => {
+                console.log(err)
+                alert('Erro ao cadastrar')
+            })
+
+        } else {
+            alert('Senhas não conferem!')
+        }
+    }
+
     const renderForms = () => {
         if (formUserState.step === 1) {
             if (formUserState)
             return <Register nextStep={handleNextStep} handleChange={handleFieldChange} formState={formUserState} />
         } else 
         if (formUserState.step === 2) {
-            return <Register2 removeFromList={handleRemoveFromListChange} addFromListGenre={handleAddFromListChange} addFromListRole={handleSaveFromListChange} saveList={handleSaveFromListChange} previousStep={handlePreviousStep} nextStep={handleNextStep} handleChange={handleFieldChange} formState={formUserState} />
-        } else
-        if (formUserState.step === 3) {
-            console.log(formUserState)
-
-            if (formUserState.password == formUserState.confirmPassword) {
-                const user: IUserRequestDto = {
-                    email: formUserState.email,
-                    password: formUserState.password,
-                    name: formUserState.name,
-                    sex: formUserState.sex,
-                    description: formUserState.description,
-                    birthDate: formUserState.birthDate,
-                    state: formUserState.state,
-                    city: formUserState.city,
-                    likedGenres: formUserState.likedGenres,
-                    roles: formUserState.roles,
-                    skillLevel: formUserState.skillLevel
-                }
-    
-                UserService.saveAndLogin(user).then(res => {
-                    if (res.status === 201) {
-                        setUserResponse(res.data)
-                        alert('Usuário cadastrado com sucesso!')
-                        navigate('/login')
-                    }
-                }).catch(res => {
-                    console.log(res.status)
-                    alert('Erro ao cadastrar usuário!')
-                    navigate('/')
-                })
-                console.log(test)
-            } else {
-                alert('Senhas não conferem!')
-            }
+            return <Register2 submit={submitForm} removeFromList={handleRemoveFromListChange} addFromListGenre={handleAddFromListChange} addFromListRole={handleSaveFromListChange} saveList={handleSaveFromListChange} previousStep={handlePreviousStep} nextStep={handleNextStep} handleChange={handleFieldChange} formState={formUserState} />
         }
 
         return <></>

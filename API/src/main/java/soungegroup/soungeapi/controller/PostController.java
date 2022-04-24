@@ -34,8 +34,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id,
-                                                     @RequestBody @Valid PostUpdateRequest body) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody @Valid PostUpdateRequest body) {
         return service.update(id, body);
     }
 
@@ -57,8 +56,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}/comments/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long postId,
-                                              @PathVariable Long id) {
+    public ResponseEntity<Void> deleteComment(@PathVariable Long postId, @PathVariable Long id) {
         return commentService.delete(postId, id);
     }
 }

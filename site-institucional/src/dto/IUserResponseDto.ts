@@ -1,6 +1,7 @@
 
 export default interface IUserResponseDto {
     id: number,
-    name: string
+    name: string,
+    profilePic: string
 }
 
