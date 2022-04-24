@@ -3,8 +3,10 @@ import { Home } from "./pages/Home";
 import { PageNotFound } from "./pages/PageNotFound";
 import { Login } from "./pages/Login";
 import { Profile } from "./pages/profile/Profile"
+import { Register } from "./pages/register/Register"
+import { Premium} from "./pages/Premium"
 
-import { MultiForm } from "./components/MultiForm";
+import { MultiForm } from "./components/MultiForm"
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
         <Route path="/register" element={<MultiForm />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/premium" element={<Premium />} />
       </Routes>
     </BrowserRouter>
   );
