@@ -50,21 +50,15 @@ public class PostAdapter {
 
     public PostSimpleResponse toSimpleResponse(Post post) {
         PostSimpleResponse response = mapper.map(post, PostSimpleResponse.class);
-
         response.setLikeCount(post.getUsersWhoLiked().size());
         response.setCommentCount(post.getComments().size());
         response.setHoursPast(Duration.between(post.getPostDateTime(), LocalDateTime.now()).toHours());
-
         return response;
     }
 
     public List<PostSimpleResponse> toSimpleResponse(List<Post> posts) {
         List<PostSimpleResponse> responseList = new ArrayList<>();
-
-        for (Post p : posts) {
-            responseList.add(toSimpleResponse(p));
-        }
-
+        posts.forEach(p -> { responseList.add(toSimpleResponse(p)); });
         return responseList;
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class UserSimpleResponse {
     private Long id;
     private String name;
-    private String pictureUrl;
+    private String profilePic;
     private List<RoleSimpleResponse> roles;
     private boolean leader;
 }

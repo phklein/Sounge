@@ -1,10 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 import { Home } from "./pages/Home";
 import { PageNotFound } from "./pages/PageNotFound";
 import { Login } from "./pages/Login";
-import { Profile } from "./pages/profile/Profile";
 import { Register } from "./pages/register/Register";
+import { Profile } from "./pages/Profile"
 
 import { MultiForm } from "./components/MultiForm";
 

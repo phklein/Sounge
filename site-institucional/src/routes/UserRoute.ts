@@ -2,13 +2,14 @@
 import http from '../http-commn'
 
 import IUserRequestDto from '../dto/IUserRequestDto'
+import IUserLoginRequestDto from '../dto/IUserLoginRequestDto'
 import IUserResponseDto from '../dto/IUserResponseDto'
 
 const saveAndLogin = (data: IUserRequestDto) => {
     return http.post<IUserResponseDto>("/users", data)
 }
 
-const login = (data: IUserRequestDto) => {
+const login = (data: IUserLoginRequestDto) => {
     return http.post<IUserResponseDto>("/users/auth", data)
 }
 

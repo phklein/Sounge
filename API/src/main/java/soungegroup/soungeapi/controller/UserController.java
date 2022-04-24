@@ -1,42 +1,29 @@
 package soungegroup.soungeapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
-import soungegroup.soungeapi.request.PasswordChangeRequest;
-import soungegroup.soungeapi.request.PictureChangeRequest;
+import soungegroup.soungeapi.request.UpdateUserProfileRequest;
 import soungegroup.soungeapi.request.UserLoginRequest;
 import soungegroup.soungeapi.request.UserSaveRequest;
-import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserPageResponse;
+import soungegroup.soungeapi.response.UserProfileResponse;
 import soungegroup.soungeapi.service.UserService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@CrossOrigin
 public class UserController {
     private final UserService service;
 
     @PostMapping
     public ResponseEntity<UserLoginResponse> saveAndLogin(@RequestBody @Valid UserSaveRequest body) {
         return service.saveAndLogin(body);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<UserPageResponse> findById(@PathVariable Long id) {
-        return service.findById(id);
-    }
-
-    @GetMapping("/{id}/posts")
-    public ResponseEntity<List<PostSimpleResponse>> findPostsById(@PathVariable Long id) {
-        return service.findPostsById(id);
     }
 
     @GetMapping("/report")
@@ -113,21 +100,20 @@ public class UserController {
         return service.removeRole(id, roleName);
     }
 
-    @PatchMapping("/{id}/password")
-    public ResponseEntity<Void> changePassword(@PathVariable Long id,
-                                               @RequestBody @Valid PasswordChangeRequest body) {
-        return service.changePassword(id, body);
-    }
-
-    @PatchMapping("/{id}/picture")
-    public ResponseEntity<Void> changePicture(@PathVariable Long id,
-                                              @RequestBody @Valid PictureChangeRequest body) {
-        return service.changePicture(id, body);
-    }
-
     @DeleteMapping("/{id}/{pwd}")
     public ResponseEntity<Void> delete(@PathVariable Long id,
                                        @PathVariable String pwd) {
         return service.delete(id, pwd);
     }
+    @GetMapping("/{id}")
+    public  ResponseEntity<UserProfileResponse> getProfileForId(@PathVariable Long id){
+        return  service.getProfileForId(id);
+    }
+
+    @PutMapping("/{id}")
+    public  ResponseEntity<Void> updateProfile(@PathVariable Long id,
+                                               @RequestBody UpdateUserProfileRequest body){
+        return service.updateProfilePage(id, body);
+    }
+
 }
