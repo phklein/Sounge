@@ -1,0 +1,40 @@
+.background-post {
+  width: 100vh;
+  height: 100%;
+  padding: 2%;
+  margin-bottom: 4%;
+  background-color: #0D0C0C;
+  color: white;
+}
+
+.profile-details-post {
+  display: flex;
+  flex-direction: initial;
+  align-items: center;
+  padding: 2%;
+}
+.profile-picture-post {  
+  background-size: 50px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../img/ari-pagodeira.png");
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  margin-right: 2%;
+}
+
+.profile-user-name-post {  
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 42px;
+  color: #6E6FF1;;
+}
+
+.background-post-wrapper {
+  margin: 2%;
+  padding: 2%;
+  background-color: #333333;
+  color: white;
+  border-radius: 5px;
+}
