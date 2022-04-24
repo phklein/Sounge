@@ -23,6 +23,7 @@ public class PostController {
     private final PostService service;
     private final CommentService commentService;
 
+    // Posts
     @PostMapping
     public ResponseEntity<Long> save(@RequestBody @Valid PostSaveRequest body) {
         return service.save(body);
@@ -35,7 +36,7 @@ public class PostController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id,
-                                                     @RequestBody @Valid PostUpdateRequest body) {
+                                       @RequestBody @Valid PostUpdateRequest body) {
         return service.update(id, body);
     }
 
@@ -44,10 +45,10 @@ public class PostController {
         return service.delete(id);
     }
 
-
+    // Comments
     @PostMapping("/{postId}/comments")
     public ResponseEntity<Long> saveComment(@PathVariable Long postId,
-                                                             @RequestBody @Valid CommentSaveRequest body) {
+                                            @RequestBody @Valid CommentSaveRequest body) {
         return commentService.save(postId, body);
     }
 

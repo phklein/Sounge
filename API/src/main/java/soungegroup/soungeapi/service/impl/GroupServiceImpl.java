@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.GroupAdapter;
 import soungegroup.soungeapi.model.Group;
 import soungegroup.soungeapi.repository.GroupRepository;
+import soungegroup.soungeapi.request.GroupPageUpdateRequest;
 import soungegroup.soungeapi.request.GroupSaveRequest;
-import soungegroup.soungeapi.request.UpdateGroupPageRequest;
+import soungegroup.soungeapi.request.PictureUpdateRequest;
 import soungegroup.soungeapi.response.GroupCsvResponse;
 import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.service.GroupService;
@@ -76,14 +77,27 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseEntity<Void> update(Long id, UpdateGroupPageRequest body) {
+    public ResponseEntity<Void> update(Long id, GroupPageUpdateRequest body) {
         Optional<Group> groupOptional = repository.findById(id);
 
         if (groupOptional.isPresent()) {
             Group group = groupOptional.get();
             group.setName(body.getName());
             group.setDescription(body.getDescription());
-            group.setPictureUrl(body.getPictureUrl());
+            repository.save(group);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> updatePicture(Long id, PictureUpdateRequest body) {
+        Optional<Group> groupOptional = repository.findById(id);
+
+        if (groupOptional.isPresent()) {
+            Group group = groupOptional.get();
+            group.setPictureUrl(body.getUrl());
             repository.save(group);
             return ResponseEntity.status(HttpStatus.OK).build();
         }

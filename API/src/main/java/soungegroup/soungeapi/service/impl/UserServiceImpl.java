@@ -10,9 +10,7 @@ import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.repository.*;
-import soungegroup.soungeapi.request.UpdateUserProfileRequest;
-import soungegroup.soungeapi.request.UserLoginRequest;
-import soungegroup.soungeapi.request.UserSaveRequest;
+import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserCsvResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
@@ -354,28 +352,59 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<UserProfileResponse> getProfileById(Long id) {
-        if(repository.existsById(id)){
+        if (repository.existsById(id)){
             User user =  repository.getById(id);
             UserProfileResponse response = adapter.toProfileResponse(user);
             response.setIsOnline(hasSession(user));
-            return  ResponseEntity.status(HttpStatus.OK).body(response);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
-        return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override
-    public ResponseEntity<Void> updateProfilePage(Long id, UpdateUserProfileRequest body) {
+    public ResponseEntity<Void> updateProfilePage(Long id, UserProfileUpdateRequest body) {
        Optional<User> userOptional = repository.findById(id);
-       if(userOptional.isPresent()){
+
+       if (userOptional.isPresent()){
            User user = userOptional.get();
            user.setSpotifyID(body.getSpotifyId());
            user.setDescription(body.getDescription());
-           user.setProfilePic(body.getProfilePic());
+           user.setName(body.getName());
            repository.save(user);
            return ResponseEntity.status(HttpStatus.OK).build();
        }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 
+    @Override
+    public ResponseEntity<Void> updatePicture(Long id, PictureUpdateRequest body) {
+        Optional<User> userOptional = repository.findById(id);
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            user.setProfilePic(body.getUrl());
+            repository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> updatePassword(Long id, UserPasswordUpdateRequest body) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+
+            if (body.getOldPassword().equals(user.getPassword())) {
+                user.setPassword(body.getNewPassword());
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
 

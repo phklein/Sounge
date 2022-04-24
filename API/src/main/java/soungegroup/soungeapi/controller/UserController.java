@@ -5,9 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
-import soungegroup.soungeapi.request.UpdateUserProfileRequest;
-import soungegroup.soungeapi.request.UserLoginRequest;
-import soungegroup.soungeapi.request.UserSaveRequest;
+import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
 import soungegroup.soungeapi.service.UserService;
@@ -47,9 +45,21 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<Void> updateProfile(@PathVariable Long id,
-                                               @RequestBody UpdateUserProfileRequest body){
+    public ResponseEntity<Void> updateProfile(@PathVariable Long id,
+                                              @RequestBody @Valid UserProfileUpdateRequest body){
         return service.updateProfilePage(id, body);
+    }
+
+    @PatchMapping("/{id}/photo")
+    public ResponseEntity<Void> updatePicture(@PathVariable Long id,
+                                              @RequestBody @Valid PictureUpdateRequest body) {
+        return service.updatePicture(id, body);
+    }
+
+    @PatchMapping("/{id}/password")
+    public ResponseEntity<Void> updatePassword(@PathVariable Long id,
+                                               @RequestBody @Valid UserPasswordUpdateRequest body) {
+        return service.updatePassword(id, body);
     }
 
     @PostMapping("/{id}/likePost/{postId}")
