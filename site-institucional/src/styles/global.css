@@ -36,6 +36,8 @@ body::-webkit-scrollbar-thumb {
     --light-purple: #6E6FF1;
     --dark-purple: #531693;
     --black-to-gray: linear-gradient(147deg, #000000 0%, #434343 74%);
+    --green: #25CC44;
+    --black-purple: #0D0C0C;
 }
 
 .container {
