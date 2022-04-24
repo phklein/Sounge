@@ -66,9 +66,12 @@ Form {
     height: 100%;
 }
 
-Button {
+/* Button {
     margin-top: 40px;
-}
+
+    BOTÃO QUE BUGOU TUDO ARRUMAR
+    
+} */
 
 .form-group-previous Button {
     float: left;
