@@ -38,7 +38,7 @@ public class GroupController {
             description = "Verifica se o grupo existe pelo Id, e retorna a página dele")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Post não encontrado", content = @Content)
+            @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content)
     })
     public ResponseEntity<GroupPageResponse> findById(@PathVariable Long id) {
         return service.findById(id);
@@ -61,7 +61,7 @@ public class GroupController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Atualizado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Informações inválidas"),
-            @ApiResponse(responseCode = "404", description = "Post não encontrado")
+            @ApiResponse(responseCode = "404", description = "Grupo não encontrado")
     })
     public ResponseEntity<Void> update(@PathVariable Long id,
                                        @RequestBody @Valid GroupPageUpdateRequest body) {
@@ -74,7 +74,7 @@ public class GroupController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Atualizado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Informações inválidas"),
-            @ApiResponse(responseCode = "404", description = "Post não encontrado")
+            @ApiResponse(responseCode = "404", description = "Grupo não encontrado")
     })
     public ResponseEntity<Void> updatePicture(@PathVariable Long id,
                                               @RequestBody @Valid PictureUpdateRequest body) {
@@ -86,7 +86,7 @@ public class GroupController {
             description = "Remove um grupo pelo ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Removido com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Post não encontrado")
+            @ApiResponse(responseCode = "404", description = "Grupo não encontrado")
     })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         return service.delete(id);
