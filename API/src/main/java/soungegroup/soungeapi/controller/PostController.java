@@ -1,5 +1,6 @@
 package soungegroup.soungeapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,39 +26,53 @@ public class PostController {
 
     // Posts
     @PostMapping
+    @Operation(tags = {"Posts - Criação e edição"}, summary = "Salvar um post",
+            description = "Cria um registro de post no banco")
     public ResponseEntity<Long> save(@RequestBody @Valid PostSaveRequest body) {
         return service.save(body);
     }
 
     @GetMapping
+    @Operation(tags = {"Posts - Consultas"}, summary = "Buscar posts",
+            description = "Busca até 50 posts aleatórios. Caso o userId seja passado, realiza um filtro pelo usuário")
     public ResponseEntity<List<PostSimpleResponse>> findAll(@RequestParam Optional<Long> userId) {
         return service.findAll(userId);
     }
 
     @PutMapping("/{id}")
+    @Operation(tags = {"Posts - Criação e edição"}, summary = "Atualizar um post",
+            description = "Atualiza o texto e a mídia de um post")
     public ResponseEntity<Void> update(@PathVariable Long id,
                                        @RequestBody @Valid PostUpdateRequest body) {
         return service.update(id, body);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(tags = {"Posts - Criação e edição"}, summary = "Deletar um post",
+            description = "Deleta um post pelo ID")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         return service.delete(id);
     }
 
     // Comments
     @PostMapping("/{postId}/comments")
+    @Operation(tags = {"Posts - Criação e edição"}, summary = "Criar um comentário em um post",
+            description = "Cria um comentário em um post pelo ID")
     public ResponseEntity<Long> saveComment(@PathVariable Long postId,
                                             @RequestBody @Valid CommentSaveRequest body) {
         return commentService.save(postId, body);
     }
 
     @GetMapping("/{postId}/comments")
+    @Operation(tags = {"Posts - Consultas"}, summary = "Buscar comentários de um post",
+            description = "Busca até 50 comentários de um post pelo ID")
     public ResponseEntity<List<CommentSimpleResponse>> findCommentsByPostId(@PathVariable Long postId) {
         return commentService.findByPostId(postId);
     }
 
     @DeleteMapping("/{postId}/comments/{id}")
+    @Operation(tags = {"Posts - Criação e edição"}, summary = "Deletar um comentário de um post",
+            description = "Deleta um comentário de um post pelo ID")
     public ResponseEntity<Void> deleteComment(@PathVariable Long postId,
                                               @PathVariable Long id) {
         return commentService.delete(postId, id);
