@@ -51,7 +51,6 @@ public class PostController {
         return service.findAll(userId);
     }
 
-    @PutMapping("/{id}")
     @Operation(tags = {"Posts - Criação e edição"}, summary = "Atualizar um post",
             description = "Atualiza o texto e a mídia de um post")
     @ApiResponses(value = {
@@ -99,8 +98,7 @@ public class PostController {
     public ResponseEntity<List<CommentSimpleResponse>> findCommentsByPostId(@PathVariable Long postId) {
         return commentService.findByPostId(postId);
     }
-
-    @DeleteMapping("/{postId}/comments/{id}")
+  
     @Operation(tags = {"Posts - Criação e edição"}, summary = "Deletar um comentário de um post",
             description = "Deleta um comentário de um post pelo ID")
     @ApiResponses(value = {
