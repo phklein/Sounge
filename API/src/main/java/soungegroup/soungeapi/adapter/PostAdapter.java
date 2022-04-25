@@ -15,8 +15,10 @@ import soungegroup.soungeapi.response.PostSimpleResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -58,6 +60,9 @@ public class PostAdapter {
 
     public List<PostSimpleResponse> toSimpleResponse(List<Post> posts) {
         List<PostSimpleResponse> responseList = new ArrayList<>();
+        posts = posts.stream()
+                .sorted(Comparator.comparing(Post::getPostDateTime).reversed())
+                .collect(Collectors.toList());
         posts.forEach(p -> responseList.add(toSimpleResponse(p)));
         return responseList;
     }
