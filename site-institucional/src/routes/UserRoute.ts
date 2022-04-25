@@ -26,7 +26,9 @@ const getProfileForId = (idUser: any) => {
     return http.get<IUserProfileResponseDto>(`/users/${idUser}`)
 }
 
-
+const logout = (idUser: any) => {
+    return http.delete<void>(`/users/${idUser}/auth`)
+}
 
 
 
@@ -88,7 +90,8 @@ const UserRoute = {
     login,
     joinGroup,
     leaveGroup,
-    getProfileForId
+    getProfileForId,
+    logout
 }
   
 export default UserRoute;

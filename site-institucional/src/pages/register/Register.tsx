@@ -136,7 +136,7 @@ export function Register(props: Iprops) {
                 <div className="register-container-right">
                     <img src={LogoHorizontal} alt="" />
                     <h1>Crie sua conta<br />aqui agora!</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur incididunt ut labore et dolore magna aliqua.</p>
+                    <p>Tocar uma nota equivocada é insignificante.Tocar sem paixão é imperdoável</p>
                 </div>
             </div>
         </>
