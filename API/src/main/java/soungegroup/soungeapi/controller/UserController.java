@@ -69,6 +69,17 @@ public class UserController {
         return service.login(body);
     }
 
+    @GetMapping("/auth/{id}")
+    @Operation(tags = {"Usuários - Autenticação"}, summary = "Verificar se usuário tem sessão",
+            description = "Verifica se o usuário possui sessão ativa pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Consulta realizada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
+    })
+    public ResponseEntity<Boolean> checkSession(@PathVariable Long id) {
+        return service.checkSession(id);
+    }
+
     @DeleteMapping("/{id}/auth")
     @Operation(tags = {"Usuários - Autenticação"}, summary = "Desloga um usuário (Logoff)",
             description = "Busca uma sessão de usuário pelo ID, e remove ela caso achar")

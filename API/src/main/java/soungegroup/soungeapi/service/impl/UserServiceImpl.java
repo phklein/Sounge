@@ -63,6 +63,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<Boolean> checkSession(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(hasSession(userOptional.get()));
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
     public ResponseEntity<Void> logoff(Long id) {
         if (sessions.removeIf(u -> u.getId().equals(id))) {
             return ResponseEntity.status(HttpStatus.OK).build();
@@ -341,16 +352,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean hasSession(User user) {
-        for (UserLoginResponse ulr: sessions) {
-            if(ulr.getId().equals(user.getId())){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public ResponseEntity<UserProfileResponse> getProfileById(Long id) {
         if (repository.existsById(id)){
             User user =  repository.getById(id);
@@ -359,6 +360,15 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    private Boolean hasSession(User user) {
+        for (UserLoginResponse ulr: sessions) {
+            if (ulr.getId().equals(user.getId())){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

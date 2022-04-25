@@ -3,7 +3,6 @@ package soungegroup.soungeapi.service;
 import org.springframework.http.ResponseEntity;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
-import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
@@ -11,6 +10,7 @@ import soungegroup.soungeapi.response.UserProfileResponse;
 public interface UserService {
     ResponseEntity<UserLoginResponse> saveAndLogin(UserSaveRequest body);
     ResponseEntity<UserLoginResponse> login(UserLoginRequest body);
+    ResponseEntity<Boolean> checkSession (Long id);
     ResponseEntity<Void> logoff(Long id);
 
     ResponseEntity<Void> likePost(Long id, Long postId);
@@ -33,6 +33,5 @@ public interface UserService {
     ResponseEntity<Void> delete(Long id, String password);
 
     ResponseEntity<String> export();
-    Boolean hasSession (User user);
     ResponseEntity<UserProfileResponse> getProfileById(Long id);
 }
