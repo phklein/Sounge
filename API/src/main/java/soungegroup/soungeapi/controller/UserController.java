@@ -69,7 +69,7 @@ public class UserController {
         return service.login(body);
     }
 
-    @GetMapping("/auth/{id}")
+    @GetMapping("/{id}/auth")
     @Operation(tags = {"Usuários - Autenticação"}, summary = "Verificar se usuário tem sessão",
             description = "Verifica se o usuário possui sessão ativa pelo ID")
     @ApiResponses(value = {
