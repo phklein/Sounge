@@ -1,6 +1,9 @@
 package soungegroup.soungeapi.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +31,10 @@ public class PostController {
     @PostMapping
     @Operation(tags = {"Posts - Criação e edição"}, summary = "Salvar um post",
             description = "Cria um registro de post no banco")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Cadastrado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Informações inválidas", content = @Content)
+    })
     public ResponseEntity<Long> save(@RequestBody @Valid PostSaveRequest body) {
         return service.save(body);
     }
@@ -35,6 +42,11 @@ public class PostController {
     @GetMapping
     @Operation(tags = {"Posts - Consultas"}, summary = "Buscar posts",
             description = "Busca até 50 posts aleatórios. Caso o userId seja passado, realiza um filtro pelo usuário")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
+    })
     public ResponseEntity<List<PostSimpleResponse>> findAll(@RequestParam Optional<Long> userId) {
         return service.findAll(userId);
     }
@@ -42,6 +54,11 @@ public class PostController {
     @PutMapping("/{id}")
     @Operation(tags = {"Posts - Criação e edição"}, summary = "Atualizar um post",
             description = "Atualiza o texto e a mídia de um post")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Informações inválidas"),
+            @ApiResponse(responseCode = "404", description = "Post não encontrado")
+    })
     public ResponseEntity<Void> update(@PathVariable Long id,
                                        @RequestBody @Valid PostUpdateRequest body) {
         return service.update(id, body);
@@ -50,6 +67,10 @@ public class PostController {
     @DeleteMapping("/{id}")
     @Operation(tags = {"Posts - Criação e edição"}, summary = "Deletar um post",
             description = "Deleta um post pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Removido com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Post não encontrado")
+    })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         return service.delete(id);
     }
@@ -58,6 +79,10 @@ public class PostController {
     @PostMapping("/{postId}/comments")
     @Operation(tags = {"Posts - Criação e edição"}, summary = "Criar um comentário em um post",
             description = "Cria um comentário em um post pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Cadastrado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Informações inválidas", content = @Content)
+    })
     public ResponseEntity<Long> saveComment(@PathVariable Long postId,
                                             @RequestBody @Valid CommentSaveRequest body) {
         return commentService.save(postId, body);
@@ -66,6 +91,11 @@ public class PostController {
     @GetMapping("/{postId}/comments")
     @Operation(tags = {"Posts - Consultas"}, summary = "Buscar comentários de um post",
             description = "Busca até 50 comentários de um post pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Post não encontrado", content = @Content)
+    })
     public ResponseEntity<List<CommentSimpleResponse>> findCommentsByPostId(@PathVariable Long postId) {
         return commentService.findByPostId(postId);
     }
@@ -73,6 +103,10 @@ public class PostController {
     @DeleteMapping("/{postId}/comments/{id}")
     @Operation(tags = {"Posts - Criação e edição"}, summary = "Deletar um comentário de um post",
             description = "Deleta um comentário de um post pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Removido com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Post/Comentário não encontrado")
+    })
     public ResponseEntity<Void> deleteComment(@PathVariable Long postId,
                                               @PathVariable Long id) {
         return commentService.delete(postId, id);

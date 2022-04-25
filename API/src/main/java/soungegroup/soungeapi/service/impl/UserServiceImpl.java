@@ -310,7 +310,7 @@ public class UserServiceImpl implements UserService {
                 return ResponseEntity.status(HttpStatus.OK).build();
             }
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -401,7 +401,7 @@ public class UserServiceImpl implements UserService {
                 return ResponseEntity.status(HttpStatus.OK).build();
             }
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
