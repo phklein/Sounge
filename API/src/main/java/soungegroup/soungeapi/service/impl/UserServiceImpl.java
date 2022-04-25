@@ -10,9 +10,7 @@ import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.repository.*;
-import soungegroup.soungeapi.request.UpdateUserProfileRequest;
-import soungegroup.soungeapi.request.UserLoginRequest;
-import soungegroup.soungeapi.request.UserSaveRequest;
+import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserCsvResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
@@ -62,6 +60,17 @@ public class UserServiceImpl implements UserService {
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @Override
+    public ResponseEntity<Boolean> checkSession(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(hasSession(userOptional.get()));
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override
@@ -312,23 +321,23 @@ public class UserServiceImpl implements UserService {
                 return ResponseEntity.status(HttpStatus.OK).build();
             }
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override
-    public ResponseEntity export() {
+    public ResponseEntity<String> export() {
         List<UserCsvResponse> users = repository.findAllCsv();
-        ListaObj<UserCsvResponse> responseObj = new ListaObj<UserCsvResponse>(users.size());
+        ListaObj<UserCsvResponse> responseObj = new ListaObj<>(users.size());
         for (UserCsvResponse csv: users) {
             responseObj.adiciona(csv);
         }
         StringBuilder report = new StringBuilder();
         for (int i = 0; i < responseObj.getTamanho(); i++) {
             UserCsvResponse u = responseObj.getElemento(i);
-            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\r\n",
+            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\r%n",
                     u.getId(), u.getName(), u.getSex(), u.getDescription(),
                     u.getBirthDate(), u.getState(), u.getCity(),
                     u.getLatitude(), u.getLongitude(),
@@ -343,9 +352,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean hasSession(User user) {
+    public ResponseEntity<UserProfileResponse> getProfileById(Long id) {
+        if (repository.existsById(id)){
+            User user =  repository.getById(id);
+            UserProfileResponse response = adapter.toProfileResponse(user);
+            response.setIsOnline(hasSession(user));
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    private Boolean hasSession(User user) {
         for (UserLoginResponse ulr: sessions) {
-            if(ulr.getId().equals(user.getId())){
+            if (ulr.getId().equals(user.getId())){
                 return true;
             }
         }
@@ -353,29 +372,49 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserProfileResponse> getProfileForId(Long id) {
-        if(repository.existsById(id)){
-            User user =  repository.getById(id);
-            UserProfileResponse response = adapter.toProfileResponse(user);
-            response.setIsOnline(hasSession(user));
-            return  ResponseEntity.status(HttpStatus.OK).body(response);
-        }
-        return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    @Override
-    public ResponseEntity<Void> updateProfilePage(Long id, UpdateUserProfileRequest body) {
+    public ResponseEntity<Void> updateProfilePage(Long id, UserProfileUpdateRequest body) {
        Optional<User> userOptional = repository.findById(id);
-       if(userOptional.isPresent()){
+
+       if (userOptional.isPresent()){
            User user = userOptional.get();
            user.setSpotifyID(body.getSpotifyId());
            user.setDescription(body.getDescription());
-           user.setProfilePic(body.getProfilePic());
+           user.setName(body.getName());
            repository.save(user);
            return ResponseEntity.status(HttpStatus.OK).build();
        }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 
+    @Override
+    public ResponseEntity<Void> updatePicture(Long id, PictureUpdateRequest body) {
+        Optional<User> userOptional = repository.findById(id);
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            user.setProfilePic(body.getUrl());
+            repository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> updatePassword(Long id, UserPasswordUpdateRequest body) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+
+            if (body.getOldPassword().equals(user.getPassword())) {
+                user.setPassword(body.getNewPassword());
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
 

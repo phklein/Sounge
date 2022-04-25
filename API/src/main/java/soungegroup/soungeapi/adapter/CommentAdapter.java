@@ -29,7 +29,7 @@ public class CommentAdapter {
 
     public List<CommentSimpleResponse> toSimpleResponse(List<Comment> comments) {
         List<CommentSimpleResponse> responseList = new ArrayList<>();
-        comments.forEach(c -> { responseList.add(toSimpleResponse(c)); });
+        comments.forEach(c -> responseList.add(toSimpleResponse(c)));
         return responseList;
     }
 }

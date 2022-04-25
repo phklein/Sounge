@@ -58,7 +58,7 @@ public class PostAdapter {
 
     public List<PostSimpleResponse> toSimpleResponse(List<Post> posts) {
         List<PostSimpleResponse> responseList = new ArrayList<>();
-        posts.forEach(p -> { responseList.add(toSimpleResponse(p)); });
+        posts.forEach(p -> responseList.add(toSimpleResponse(p)));
         return responseList;
     }
 }
