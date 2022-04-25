@@ -3,7 +3,7 @@ import { Home } from "./pages/Home";
 import { PageNotFound } from "./pages/PageNotFound";
 import { Login } from "./pages/Login";
 import { Profile } from "./pages/profile/Profile"
-import { Register } from "./pages/register/Register"
+import { RegisterConcluid } from "./pages/register/RegisterConcluid"
 import { Premium} from "./pages/Premium"
 
 import { MultiForm } from "./components/MultiForm"

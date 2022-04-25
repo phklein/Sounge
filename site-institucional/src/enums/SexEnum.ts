@@ -10,6 +10,6 @@ export enum SexEnum {
 export const SexEnumDesc = new Map<string, string>([
     [SexEnum.MALE, 'Masculino'],
     [SexEnum.FEMALE, 'Feminino'],
-    [SexEnum.NOT_APPLICABLE, 'Não aplicável'],
-    [SexEnum.NOT_KNOWN, 'Não sei'],
+    [SexEnum.NOT_APPLICABLE, 'Indefinido'],
+    [SexEnum.NOT_KNOWN, 'Não quero informar'],
 ])

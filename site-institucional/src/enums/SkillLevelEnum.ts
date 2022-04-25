@@ -1,5 +1,6 @@
 
 export enum SkillLevelEnum {
+    NULL = 'NULL',
     BEGINNER = 'BEGINNER', 
     INTERMEDIATE = 'INTERMEDIATE',
     ADVANCED = 'ADVANCED', 
@@ -7,8 +8,8 @@ export enum SkillLevelEnum {
 }
 
 export const SkillLevelEnumDesc = new Map<string, string>([
-    [SkillLevelEnum.BEGINNER, 'BEGINNER'],
-    [SkillLevelEnum.INTERMEDIATE, 'INTERMEDIATE'],
-    [SkillLevelEnum.ADVANCED, 'ADVANCED'],
-    [SkillLevelEnum.EXPERT, 'EXPERT']
+    [SkillLevelEnum.BEGINNER, 'Iniciante'],
+    [SkillLevelEnum.INTERMEDIATE, 'Intermediário'],
+    [SkillLevelEnum.ADVANCED, 'Avançado'],
+    [SkillLevelEnum.EXPERT, 'Especialista']
 ])

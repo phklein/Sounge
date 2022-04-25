@@ -20,10 +20,14 @@ export function Login() {
         })
     }
 
+    const navigateToHome = () => {
+        navigate('/')
+    }
+
     return (
         <div className="page-login">
             <section className="login-container">
-                <i className='bx bx-x fechar'></i>
+                <i className='bx bx-right-arrow-alt fechar' onClick={navigateToHome}></i>
                 <div className="titulo">
                     <h1>Entrar</h1>
                 </div>
@@ -36,7 +40,7 @@ export function Login() {
                                     {...register("email")}
                                     type="text" 
                                     placeholder="E-mail" 
-                                    className="campo" 
+                                    className="campo input-all" 
                                 />                                
                             </Form.Group>
                             <Form.Group controlId="formGroupPassword">
@@ -44,7 +48,7 @@ export function Login() {
                                     {...register("password")}
                                     type="password" 
                                     placeholder="Senha" 
-                                    className="campo"
+                                    className="campo input-all"
                                 />                                
                             </Form.Group>
                             <Button type="submit" className="button2">Entrar</Button>

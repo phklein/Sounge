@@ -29,3 +29,34 @@ export enum StateEnum {
     SE = 'SE',
     TO = 'TO'
 }
+
+export const StateEnumDesc = new Map<string, string>([
+    [StateEnum.NULL, 'Não quero informar'],
+    [StateEnum.AC, 'Acre'],
+    [StateEnum.AL, 'Alagoas'],
+    [StateEnum.AP, 'Amapá'],
+    [StateEnum.AM, 'Amazonas'],
+    [StateEnum.BA, 'Bahia'],
+    [StateEnum.CE, 'Ceará'],
+    [StateEnum.DF, 'Distrito Federal'],
+    [StateEnum.ES, 'Espírito Santo'],
+    [StateEnum.GO, 'Goiás'],
+    [StateEnum.MA, 'Maranhão'],
+    [StateEnum.MT, 'Mato Grosso'],
+    [StateEnum.MS, 'Mato Grosso do Sul'],
+    [StateEnum.MG, 'Minas Gerais'],
+    [StateEnum.PA, 'Pará'],
+    [StateEnum.PB, 'Paraíba'],
+    [StateEnum.PR, 'Paraná'],
+    [StateEnum.PE, 'Pernambuco'],
+    [StateEnum.PI, 'Piauí'],
+    [StateEnum.RJ, 'Rio de Janeiro'],
+    [StateEnum.RN, 'Rio Grande do Norte'],
+    [StateEnum.RS, 'Rio Grande do Sul'],
+    [StateEnum.RO, 'Rondônia'],
+    [StateEnum.RR, 'Roraima'],
+    [StateEnum.SC, 'Santa Catarina'],
+    [StateEnum.SP, 'São Paulo'],
+    [StateEnum.SE, 'Sergipe'],
+    [StateEnum.TO, 'Tocantins']
+])

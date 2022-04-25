@@ -1,3 +1,24 @@
+
+.test {
+  display: flex;
+  justify-content: space-between;
+}
+
+.post-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.background-intro {
+  border-radius: 10px;
+}
+
+.background-post {
+  border-radius: 10px;
+}
+
 .background-profile {
   background-color: #0D0C0C;
 }
@@ -14,21 +35,40 @@ ________________________________________________________________________________
   padding: 2%;
 }
 
+.img-guitar {
+  border-radius: 50%;
+}
+
 .profile-container{
-  height: 60%;
   padding-inline: 10%;
 }
 
 .profile-cap {
-  background-color: #757575;
-  height: 336px;
+  background-color: var(--dark-gray);
+  height: 300px;
+  border-radius: 0 0 10px 10px;
 }
 
 .profile-picture {
-  background-image: url("../img/ari-pagodeira.png");
-  width: 260px;
-  height: 260px;
+  background-image: url("../assets/img/ari-pagodeira.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 200px;
+  height: 200px;
   border-radius: 100%;
+  border: 5px solid #0D0C0C;
+  position: relative;
+}
+
+.circle-online {
+  background-color: #20f520;
+  border: 4px solid #0D0C0C;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
 }
 
 .profile-user-name {
@@ -41,13 +81,13 @@ ________________________________________________________________________________
 }
 
 .typography {
-  line-height: 35px;
+  line-height: 10px;
   color: #757575;
   font-weight: 400;
 }
 
 h4 {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 /* Menu
@@ -69,7 +109,7 @@ ________________________________________________________________________________
 }
 
 h5 {
-  font-size: 24px;
+  font-size: 20px;
   margin-inline: 8%;
 }
 

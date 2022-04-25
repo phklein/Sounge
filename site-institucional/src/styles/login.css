@@ -7,39 +7,40 @@
 }
 
 .login-container {
-    background-color: #232323;
+    background-color: var(--dark-gray);
     margin: 0;
-    max-width: 30%;
-    border-radius: 10px;
+    width: 30%;
     color: var(--white);
     padding: 40px;
     position: relative;
+}
+
+.dados {
+    width: 100%;
 }
 
 .corpo {
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-top: 35px;
+    margin-top: 50px;
 }
 
 .fechar{
     position: absolute;
-    right: 25px;
-    top: 25px;
+    right: 30px;
+    top: 30px;
     font-size: 35px;
     cursor: pointer;
 }
-
 
 .titulo {
     display: flex;
     justify-content: space-around;
     position: absolute;
-    left: 25px;
-    top: 25px;
+    left: 40px;
+    top: 30px;
 }
-
 
 .button2 {
     background-color: var(--green);
@@ -49,20 +50,20 @@
     padding: 12px 90px;
     width: 100%; 
     cursor: pointer;
+    margin-top: 10px;
+    text-transform: uppercase;
     transition: ease-in-out .2s;
 }
 .button2:hover{
-    background: green;
+    background: #38d138;
     box-shadow: none;
 }
 
 .campo{
     background-color: var(--black);
     border:0;
-    padding: 10px 40px;
+    padding: 15px 30px;
     margin-bottom: 10px;
-    border-radius: 5px;
     width: 100%;
     color: var(--white);
-   
 }
