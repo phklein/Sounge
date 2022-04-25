@@ -42,14 +42,14 @@ public class UserController {
     }
 
     @PostMapping("/auth")
-    @Operation(tags = {"Usuários - Consultas"}, summary = "Autenticar um usuário (Login)",
+    @Operation(tags = {"Usuários - Autenticação"}, summary = "Autenticar um usuário (Login)",
             description = "Busca o usuário pelo email e senha, e o autentica caso achar")
     public ResponseEntity<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest body) {
         return service.login(body);
     }
 
     @DeleteMapping("/{id}/auth")
-    @Operation(tags = {"Usuários - Consultas"}, summary = "Desautenticar um usuário (Logoff)",
+    @Operation(tags = {"Usuários - Autenticação"}, summary = "Desautenticar um usuário (Logoff)",
             description = "Busca uma sessão de usuário pelo ID, e remove ela caso achar")
     public ResponseEntity<Void> logoff(@PathVariable Long id) {
         return service.logoff(id);
