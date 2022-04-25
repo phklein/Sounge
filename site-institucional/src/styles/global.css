@@ -7,8 +7,24 @@
     text-decoration: none;
 }
 
-body {
+.page-init {
     background: var(--dark-gray);
+}
+
+body {
+    background: var(--black);
+}
+
+body::-webkit-scrollbar {
+    width: 10px;
+}
+  
+body::-webkit-scrollbar-track {
+    background: var(--dark-gray);
+}
+  
+body::-webkit-scrollbar-thumb {
+    background-color: var(--dark-purple);
 }
 
 :root {
@@ -20,6 +36,9 @@ body {
     --light-purple: #6E6FF1;
     --dark-purple: #531693;
     --black-to-gray: linear-gradient(147deg, #000000 0%, #434343 74%);
+    --red: #cc2525;
+    --green: #25CC44;
+    --black-purple: #0D0C0C;
 }
 
 .container {
@@ -36,6 +55,35 @@ body {
     padding: 10px 15px;
 }
 
+.max-width-height {
+    width: 100%;
+    height: 100vh;
+    padding: 5%;
+    display: flex;
+}
+
+.input-all {
+    width: 100%;
+}
+
+.container-input-hlf {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-hlf {
+    width: 49%;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
 /* Component NavBar
 _______________________________________________________________________________________ */
 
@@ -43,6 +91,8 @@ header {
     width: 100%;
     background: var(--black);
     border-bottom: 1px solid var(--dark-gray);
+    position: fixed;
+    z-index: 1000000000;
 }
 
 .navbar {
@@ -211,3 +261,10 @@ ________________________________________________________________________________
     color: var(--dark-gray);
     box-shadow: none;
 }
+
+/* Component Button Sintonizar
+_______________________________________________________________________________________ */
+
+.btn-sintonizar {
+    background: linear-gradient(90deg, rgba(110, 111, 241, 0.82) 0%, rgba(83, 22, 147, 0.82) 99.93%);
+  }

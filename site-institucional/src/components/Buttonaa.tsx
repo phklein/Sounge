@@ -1,8 +1,8 @@
 import { ButtonHTMLAttributes } from 'react'
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>
+type ButtonaaProps = ButtonHTMLAttributes<HTMLButtonElement>
 
-export function Button(props: ButtonProps) {
+export function Buttonaa(props: ButtonaaProps) {
     return (
         <button className="button" {...props} />
     )

@@ -1,24 +1,34 @@
+import React from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+// import Swal from 'sweetalert2'
 
 import '../styles/home.css'
 
+import EventOne from '../assets/img/event-one.png'
+import EventTwo from '../assets/img/event-two.png'
+import EventThree from '../assets/img/event-three.png'
+import PubOne from '../assets/img/pub-one.png'
+import PubTwo from '../assets/img/pub-two.png'
+import PubThree from '../assets/img/pub-three.png'
+
 import { NavBar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
-import { Button } from '../components/Button'
+import { Buttonaa } from '../components/Buttonaa'
 
 const cardStyles = { 
-    publicationStyle1: { background: 'url(https://s3-alpha-sig.figma.com/img/5bdd/3129/8f7dc0725f4efc3daf9b18b0d1e93303?Expires=1647820800&Signature=N8ql0T470F~7gWehiWIuptBvg~q5TiRajyoq3r4LUTKIo0YKBopibruCUSOGCuwK8ZyIzEpkruc5N9MBUN7i1SMt3yoULfbLfLtJ2r3cf8uGSbBF-1zbyzdGG5v4Awo12MgIENSeFJJ675IBrZAedWgeWa0A1jjtqXa94tcrPzDU13pABkt27~85d8rsXLYzu-PQ6n7in--X2mzDziIsqKMQGcrGYXF-iM0EadxTvJ8yxOUvGjDOi-K7nClaZ8v4sdvKwobMLER-nv8r3zZlQ50r6-XdwqWdZ9n~v85VOZX970BPlx~VBBYhowxjkzcsWBUA0J9K7M0GhAYjBLaoQA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)' },
-    publicationStyle2: { background: 'url(https://s3-alpha-sig.figma.com/img/1f69/9ff5/f8d9c435c1258b95b7ea8680c283f9eb?Expires=1647820800&Signature=hH~7gDj6pQsmIPRS3lpDqXIjCgovf-T~Gf-W4mqsHjrUOchN-qDI3fFM6s3ZENRTeqnYMnyvf-PoKbgKB6DvuZd9wk4rli~Ty5~vCSPX50U9q-bJSaQfaZIH51DVBezNRV-S6gHrWBnkXFMnA3Vg1iONGUBdbZafNL3lMwOpkRThscwI-5AD0eSFyAo3IV9~hZhXsyvzTCxjQer-bLsF9U0tS3tTT3EVKIJgnByf48RdJgizmXtbeV-s9QVJxq-8R1qZTV4-09nJngwpCqJwuxUEaIVAPmmxgh1sPESD1iWrakYp96ujgoQ-Y-TC~O7OwV~3adG3RHopdO8b49f3Dg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)' },
-    publicationStyle3: { background: 'url(https://s3-alpha-sig.figma.com/img/6698/f5f7/6b2416b1dd205bc9d60d88ecb8dae7ce?Expires=1647820800&Signature=fbYyJmohH-oTbwoeYTI3mAYGV-sTfQ5zIRxEQUYrz9neMYALDhDO2z0k0~RwDN5K0tt5DDoHcwMjQjOkURSxnhsNZwmoLWnXnLGNdNB9Jo~Rd4DYtJGYW5GPY6i3tSkk~gBTPYVDTizdfFKEi3BlSIeTJ6iEP2YXDEcbJqREbyhhXpB0ei78Zq8pXGEDdxIl5PmYLWygkneMIfLtdUvUmuLHxeLBW80dkQAqqTxqWW276XW-5oQ4ZSHm-wd8iRCUfQECjgkAoyWBFidyMfzqKcM7CPJWhaSl4vS-2eHni~iz~idqVBq4FWb5yixBDhpCCP3x9LfKMaUmoIK8wM~zzQ__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA)' }
+    publicationStyle1: { background: `url(${PubOne})`, backgroundSize: 'cover', backgroundPosition: 'center' },
+    publicationStyle2: { background: `url(${PubTwo})`, backgroundSize: 'cover', backgroundPosition: 'center' },
+    publicationStyle3: { background: `url(${PubThree})`, backgroundSize: 'cover', backgroundPosition: 'center' }
 }
 
 export function Home() {
     return (
-        <div>
+        <div className="page-init">
             <NavBar />
             <section className="banner">
                 <h1>“Tocar uma nota equivocada é insignificante.<br />Tocar sem paixão é imperdoável”</h1>
                 <p>Ludwing Van Beethoven</p>
+                <Link to="/login"><button className="btn-entrar">Entrar</button></Link>   
             </section>
             <section className="player">
                 <h1>Compartilhe <span>seu som!</span></h1>
@@ -28,22 +38,22 @@ export function Home() {
                 <h1>Os eventos mais esperados</h1>
                 <div className="container events-list">
                     <div className="events-item">
-                        <img src="https://s3-alpha-sig.figma.com/img/2354/9cd1/a912ed95b5a7fd23ca621963af2d2a9c?Expires=1647820800&Signature=L6UM0NJRa8ImGKfNj8BoP6bwZHGge26~CpSmLd91-FJyxnVNy3MErcaxZwdQYNnbdsw5R2ed5NHfOvEVbNEN6Ab6QiXzf8~SLIFKTA9j1skqTZvBl3PQQa64C0ud6TpSiSqtxxo-dgYKFstFPF9R~Cb09wD7BgqBZ4o1zC-l6NxA8HtCRTgiHEoszCk4XNiAKLJ9IWCGmnKapMcT15UhhwBanoHOBy3HVAw~KtOyYVWt-l5dOsOZ3yRBbtiETemXMrQxMkTmnynizFLwAQ7xgaOQ4jUMRBJMll33KrlWW29s9gtM7Yqni3NCr4YlblJ8C7I5-VHbZoIzQEi4E0o7WA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" alt="" />
+                        <img src={EventOne} alt="" />
                         <h2>Lollapaloza Brazil</h2>
                         <p>qui., 03 de maio</p>
-                        <Button>rspv</Button>
+                        <Buttonaa>rspv</Buttonaa>
                     </div>
                     <div className="events-item">
-                        <img src="https://s3-alpha-sig.figma.com/img/9360/fd96/ddd1caf453417c91aea0b47d19172dcf?Expires=1647820800&Signature=OMxtAel6JNbicIGSuxJ7fOvMa0gjLGAP38RtuWme~LpQtnqakb50MJhfLMd-WKuzLbYnmbk8Qc7bKR06PXma7zMvKv3Cc~ckafIGK-rKeTEx3CeflOPWrWVAhYjljDYmgtZHFCpBCdLuahYd8TBLDr3kjbxbUkxXkpnCry-qULC4KMbOQoLfyWg6lto1jqciIE77rr-NIU4aOVXx2mXneM5WW8AlM2hdV0CQexUMbXpOm6XJ9i9Pdpun1g5wWmwwc6CcxbA95al1Xg5B-mWsxtAwomdGvIUTEzjkDiXhlEJ17JcJjVfUflXunyCFdR80pbxRei2dToSFl66wuLF5Mg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" alt="" />
+                        <img src={EventTwo} alt="" />
                         <h2>Rock in Rio</h2>
                         <p>sáb., 20 de jan.</p>
-                        <Button>rspv</Button>
+                        <Buttonaa>rspv</Buttonaa>
                     </div>
                     <div className="events-item">
-                        <img src="https://s3-alpha-sig.figma.com/img/04bd/4f56/d5f6610c97d6dba960ed8d232cccfe8e?Expires=1647820800&Signature=HN1M9b2mdFsVW2r-rqPUtR195AKR7o4wXZNcFEzmGFgsfgqpv9KA2rjSAuLTfQr-ctOZo3U-TA4da49eRWRk4LXNqjFGYMtlXlWFBJRpyyoEgIOPXnVe1HGkurAzL5~Rt9POlOW3Y0bSc-tg0bV51xEj9RmwuKJZ9OGVJDIDmR3Fu2O73Wl-mAJckiRFIRLAeFOV0-tOlzFOlG84o0zgBbFhs7zjgNHU6O8NN8sv39tg62nb4BbULzq4ICBzrGvwYk7sB9BasXV-SRBw2iEIQwWjyClqUrij8shplnNYZCdEYO5TngqdwmD8oTK6Aocyir2tqXD1ksbX9VO7JLqLhg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA" alt="" />
+                        <img src={EventThree} alt="" />
                         <h2>Coachella</h2>
                         <p>sáb., 10 de agosto</p>
-                        <Button>rspv</Button>
+                        <Buttonaa>rspv</Buttonaa>
                     </div>
                 </div>
             </section>
