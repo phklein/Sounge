@@ -30,7 +30,7 @@ class RoleRepositoryTest {
 
     @Test
     @DisplayName("Find by name returns empty optional when names don't match")
-    void findByName_ReturnsEmptyOptional_WhenNamesMatch() {
+    void findByName_ReturnsEmptyOptional_WhenNamesDontMatch() {
         Role role = createRole();
         roleRepository.save(role);
 

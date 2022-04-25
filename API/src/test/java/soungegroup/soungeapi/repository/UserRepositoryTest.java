@@ -5,14 +5,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import soungegroup.soungeapi.enums.Sex;
-import soungegroup.soungeapi.enums.SkillLevel;
-import soungegroup.soungeapi.enums.State;
 import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.response.UserCsvResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @DataJpaTest
@@ -77,13 +73,6 @@ class UserRepositoryTest {
         User user = new User();
         user.setEmail("testuser@gmail.com");
         user.setPassword("12345678");
-        user.setName("Test User");
-        user.setSex(Sex.NOT_KNOWN);
-        user.setDescription("Test description");
-        user.setBirthDate(LocalDate.of(2003, 5, 12));
-        user.setState(State.BA);
-        user.setCity("Salvador");
-        user.setSkillLevel(SkillLevel.ADVANCED);
 
         return user;
     }
