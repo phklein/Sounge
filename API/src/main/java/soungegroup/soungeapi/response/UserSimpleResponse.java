@@ -27,5 +27,5 @@ public class UserSimpleResponse {
     private List<RoleSimpleResponse> roles;
     @Schema(description = "Usuário é ou não é líder do grupo em que está",
             example = "true")
-    private boolean leader;
+    private boolean isLeader;
 }

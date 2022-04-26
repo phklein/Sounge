@@ -48,10 +48,6 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    // One user has many schedules
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Schedule> schedules;
-
     // Many users can have one signature
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "signature_fk")

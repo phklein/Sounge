@@ -24,7 +24,7 @@ public class UserProfileResponse {
     private String profilePic;
     @Schema(description = "Usuário é ou não é líder do grupo em que está",
             example = "true")
-    private boolean leader;
+    private boolean isLeader;
     @ArraySchema(uniqueItems = true, arraySchema =
     @Schema(description = "Posts feitos pelo usuário",
             oneOf = PostSimpleResponse.class))
@@ -56,5 +56,5 @@ public class UserProfileResponse {
             example = "23")
     private Integer age;
     @Schema(description = "É ou não é o perfil do visualizador")
-    private boolean viewerProfile;
+    private boolean isViewerProfile;
 }
