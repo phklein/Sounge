@@ -44,6 +44,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "FROM Post p " +
             "WHERE p.user.id = :userId " +
             "ORDER BY p.postDateTime DESC")
-    List<PostSimpleResponse> findByProfileOrdered(Long userId,
-                                                  Pageable pageable);
+    List<PostSimpleResponse> findByUserIdOrdered(Long userId,
+                                                 Pageable pageable);
 }

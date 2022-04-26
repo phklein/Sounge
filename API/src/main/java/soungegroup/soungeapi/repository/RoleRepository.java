@@ -16,5 +16,5 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
             "FROM Role r " +
             "JOIN r.users u " +
             "WHERE u.id = :id")
-    List<RoleSimpleResponse> findByProfile(Long id);
+    List<RoleSimpleResponse> findByUserId(Long id);
 }

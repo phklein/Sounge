@@ -397,11 +397,11 @@ public class UserServiceImpl implements UserService {
             User viewer = viewerOptional.get();
             UserProfileResponse profile = profileOptional.get();
 
-            profile.setPostList(postRepository.findByProfileOrdered(profile.getId(), PAGEABLE));
-            profile.setLikedGenres(genreRepository.findByProfile(profile.getId()));
-            profile.setRoles(roleRepository.findByProfile(profile.getId()));
+            profile.setPostList(postRepository.findByUserIdOrdered(profile.getId(), PAGEABLE));
+            profile.setLikedGenres(genreRepository.findByUserId(profile.getId()));
+            profile.setRoles(roleRepository.findByUserId(profile.getId()));
 
-            Optional<GroupSimpleResponse> groupOptional = groupRepository.findByProfile(profile.getId());
+            Optional<GroupSimpleResponse> groupOptional = groupRepository.findByUserId(profile.getId());
             profile.setGroup(groupOptional.isPresent() ? groupOptional.get() : null);
 
             profile.getPostList().forEach(p -> p.setHasLiked(viewer.getLikedPosts().stream()
@@ -412,6 +412,11 @@ public class UserServiceImpl implements UserService {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<UserMatchResponse>> findMatchList(Long viewerId) {
+        return null;
     }
 
     @Override

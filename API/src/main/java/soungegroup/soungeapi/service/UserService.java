@@ -6,6 +6,7 @@ import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.enums.SignatureType;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserLoginResponse;
+import soungegroup.soungeapi.response.UserMatchResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
 import soungegroup.soungeapi.response.UserSimpleResponse;
 
@@ -40,5 +41,6 @@ public interface UserService {
 
     ResponseEntity<String> export();
     ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id);
+    ResponseEntity<List<UserMatchResponse>> findMatchList(Long viewerId);
     ResponseEntity<List<UserSimpleResponse>> findByName(String nameLike);
 }

@@ -16,11 +16,11 @@ public interface GenreRepository extends JpaRepository<Genre, Long> {
             "FROM Genre g " +
             "JOIN g.usersWhoLike u " +
             "WHERE u.id = :id")
-    List<GenreSimpleResponse> findByProfile(Long id);
+    List<GenreSimpleResponse> findByUserId(Long id);
 
     @Query("SELECT new soungegroup.soungeapi.response.GenreSimpleResponse(g.id, g.name) " +
             "FROM Genre g " +
             "JOIN g.groups gr " +
             "WHERE gr.id = :id")
-    List<GenreSimpleResponse> findByPage(Long id);
+    List<GenreSimpleResponse> findByGroupId(Long id);
 }

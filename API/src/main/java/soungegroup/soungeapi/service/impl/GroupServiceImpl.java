@@ -49,7 +49,7 @@ public class GroupServiceImpl implements GroupService {
         if (pageOptional.isPresent()) {
             GroupPageResponse page = pageOptional.get();
 
-            page.setGenres(genreRepository.findByPage(page.getId()));
+            page.setGenres(genreRepository.findByGroupId(page.getId()));
             page.setUsers(userRepository.findByPage(page.getId()));
 
             return ResponseEntity.status(HttpStatus.OK).body(page);

@@ -27,5 +27,5 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
             "FROM Group g " +
             "JOIN g.users u " +
             "WHERE u.id = :id")
-    Optional<GroupSimpleResponse> findByProfile(Long id);
+    Optional<GroupSimpleResponse> findByUserId(Long id);
 }
