@@ -5,11 +5,15 @@ import soungegroup.soungeapi.request.GroupPageUpdateRequest;
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.request.PictureUpdateRequest;
 import soungegroup.soungeapi.response.GroupPageResponse;
+import soungegroup.soungeapi.response.GroupSimpleResponse;
+
+import java.util.List;
 
 public interface GroupService {
     ResponseEntity<Long> save(GroupSaveRequest body);
 
     ResponseEntity<GroupPageResponse> findById(Long id);
+    ResponseEntity<List<GroupSimpleResponse>> findByName(String nameLike);
     ResponseEntity<String> export();
 
     ResponseEntity<Void> update(Long id, GroupPageUpdateRequest body);

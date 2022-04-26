@@ -1,6 +1,7 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.request.PictureUpdateRequest;
 import soungegroup.soungeapi.response.GroupCsvResponse;
 import soungegroup.soungeapi.response.GroupPageResponse;
+import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 import soungegroup.soungeapi.util.ListaObj;
 
@@ -21,6 +23,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
+    private static final Pageable PAGEABLE = Pageable.ofSize(50);
+
     private final GroupRepository repository;
     private final GroupAdapter adapter;
 
@@ -46,6 +50,15 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public ResponseEntity<List<GroupSimpleResponse>> findByName(String nameLike) {
+        List<GroupSimpleResponse> foundGroups = repository.findByName(nameLike, PAGEABLE);
+
+        return foundGroups.isEmpty() ?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                ResponseEntity.status(HttpStatus.OK).body(foundGroups);
+    }
+
+    @Override
     public ResponseEntity<Void> delete(Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
@@ -57,7 +70,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public ResponseEntity<String> export() {
-        List<GroupCsvResponse> groups = repository.findAllCsv();
+        List<GroupCsvResponse> groups = repository.findAllCsv(PAGEABLE);
         ListaObj<GroupCsvResponse> responseObj = new ListaObj<>(groups.size());
         for (GroupCsvResponse csv: groups) {
             responseObj.adiciona(csv);

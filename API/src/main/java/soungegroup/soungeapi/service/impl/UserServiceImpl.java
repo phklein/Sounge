@@ -331,7 +331,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<String> export() {
-        List<UserCsvResponse> users = repository.findAllCsv();
+        List<UserCsvResponse> users = repository.findAllCsv(PAGEABLE);
         ListaObj<UserCsvResponse> responseObj = new ListaObj<>(users.size());
         for (UserCsvResponse csv: users) {
             responseObj.adiciona(csv);

@@ -28,5 +28,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "u.state, u.city, u.latitude, " +
             "u.longitude, u.leader, u.skillLevel) " +
             "FROM User u")
-    List<UserCsvResponse> findAllCsv();
+    List<UserCsvResponse> findAllCsv(Pageable pageable);
 }
