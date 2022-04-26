@@ -28,8 +28,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT new soungegroup.soungeapi.response.UserSimpleResponse(" +
             "u.id, u.name, u.profilePic, u.leader) " +
             "FROM User u " +
-            "WHERE u.group.id = :id")
-    List<UserSimpleResponse> findByPage(Long id);
+            "JOIN u.group g " +
+            "WHERE g.id = :id")
+    List<UserSimpleResponse> findByGroupId(Long id);
 
     @Query("SELECT new soungegroup.soungeapi.response.UserProfileResponse(" +
             "u.id, u.name, u.profilePic, u.leader, u.spotifyID, u.description, u.skillLevel, u.birthDate) " +
@@ -41,13 +42,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "u.id, u.name, u.profilePic, u.leader, u.spotifyID, u.description, u.skillLevel, u.birthDate AS bd) " +
             "FROM User u " +
             "JOIN Role r " +
-            "WHERE u.id <> :userId " +
+            "WHERE u NOT IN :likedUsers " +
+            "AND u.id <> :userId " +
             "AND bd >= :minBirthDate " +
             "AND bd <= :maxBirthDate " +
             "AND (r.name = :roleName OR :roleName IS NULL) " +
             "AND (u.sex = :sex OR :sex IS NULL) " +
             "AND (u.skillLevel = :skillLevel OR :skillLevel IS NULL)")
     List<UserMatchResponse> findMatchList(Long userId,
+                                          List<User> likedUsers,
                                           LocalDate minBirthDate,
                                           LocalDate maxBirthDate,
                                           RoleName roleName,

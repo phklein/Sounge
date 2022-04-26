@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.GroupAdapter;
 import soungegroup.soungeapi.model.Group;
+import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.repository.GroupRepository;
 import soungegroup.soungeapi.repository.UserRepository;
@@ -33,9 +34,14 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public ResponseEntity<Long> save(GroupSaveRequest body) {
         Group group = adapter.toGroup(body);
+        Optional<User> leaderOptional = userRepository.findById(body.getLeaderId());
 
-        if (group != null) {
+        if (group != null && leaderOptional.isPresent()) {
+            User leader = leaderOptional.get();
             group = repository.save(group);
+            leader.setLeader(true);
+            leader.setGroup(group);
+            userRepository.save(leader);
             return ResponseEntity.status(HttpStatus.CREATED).body(group.getId());
         }
 
@@ -50,7 +56,7 @@ public class GroupServiceImpl implements GroupService {
             GroupPageResponse page = pageOptional.get();
 
             page.setGenres(genreRepository.findByGroupId(page.getId()));
-            page.setUsers(userRepository.findByPage(page.getId()));
+            page.setUsers(userRepository.findByGroupId(page.getId()));
 
             return ResponseEntity.status(HttpStatus.OK).body(page);
         }
@@ -69,8 +75,13 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public ResponseEntity<Void> delete(Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
+        Optional<Group> groupOptional = repository.findById(id);
+
+        if (groupOptional.isPresent()) {
+            Group group = groupOptional.get();
+            group.getUsers().forEach(u -> u.setGroup(null));
+            userRepository.saveAll(group.getUsers());
+            repository.delete(group);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
 

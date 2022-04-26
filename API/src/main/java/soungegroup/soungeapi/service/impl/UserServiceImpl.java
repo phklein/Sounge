@@ -6,9 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.UserAdapter;
-import soungegroup.soungeapi.enums.GenreName;
-import soungegroup.soungeapi.enums.RoleName;
-import soungegroup.soungeapi.enums.SignatureType;
+import soungegroup.soungeapi.enums.*;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.*;
@@ -16,9 +14,11 @@ import soungegroup.soungeapi.response.*;
 import soungegroup.soungeapi.service.UserService;
 import soungegroup.soungeapi.util.ListaObj;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
+    private final SignatureRepository signatureRepository;
     private final UserAdapter adapter;
     private final List<UserLoginResponse> sessions;
 
@@ -136,6 +137,11 @@ public class UserServiceImpl implements UserService {
             if (!liker.getLikedUsers().contains(liked)) {
                 liker.getLikedUsers().add(liked);
                 repository.save(liker);
+
+                if (liked.getLikedUsers().contains(liker)) {
+                    // TODO: Send notification
+                }
+
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
 
@@ -177,10 +183,6 @@ public class UserServiceImpl implements UserService {
                 User user = userOptional.get();
                 user.setGroup(group);
 
-                if (group.getUsers().isEmpty()) {
-                    user.setLeader(true);
-                }
-
                 repository.save(user);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
@@ -197,9 +199,33 @@ public class UserServiceImpl implements UserService {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setGroup(null);
-            repository.save(user);
-            return ResponseEntity.status(HttpStatus.OK).build();
+
+            if (user.isLeader()) {
+                user.setLeader(false);
+                Group group = user.getGroup();
+                user.setGroup(null);
+
+                if (group.getUsers().size() > 1) {
+                    User nextLeader = group.getUsers().stream()
+                            .filter(u -> !u.getId().equals(user.getId()))
+                            .collect(Collectors.toList()).get(0);
+                    nextLeader.setLeader(true);
+                    repository.save(nextLeader);
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                } else {
+                    repository.save(user);
+                    groupRepository.delete(group);
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                }
+            }
+
+            if (user.getGroup() != null) {
+                user.setGroup(null);
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -316,7 +342,6 @@ public class UserServiceImpl implements UserService {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            Signature signature = new Signature();
 
             int months = 1;
 
@@ -331,10 +356,21 @@ public class UserServiceImpl implements UserService {
                     break;
             }
 
-            signature.setSignatureType(signatureType);
-            signature.setExpiryDate(signature.getExpiryDate().plusMonths(months));
+            Signature signature;
+
+            if (user.getSignature() != null) {
+                signature = user.getSignature();
+                signature.setSignatureType(signatureType);
+                signature.setExpiryDate(signature.getExpiryDate().plusMonths(months));
+            } else {
+                signature = new Signature();
+                signature.setSignatureType(signatureType);
+                signature.setExpiryDate(LocalDateTime.now().plusMonths(months));
+                signature = signatureRepository.save(signature);
+            }
 
             user.setSignature(signature);
+            repository.save(user);
 
             return ResponseEntity.status(HttpStatus.OK).build();
         }
@@ -415,8 +451,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<List<UserMatchResponse>> findMatchList(Long viewerId) {
-        return null;
+    public ResponseEntity<List<UserMatchResponse>> findMatchList(Long userId,
+                                                                 Integer minAge,
+                                                                 Integer maxAge,
+                                                                 Optional<RoleName> roleName,
+                                                                 Optional<Sex> sex,
+                                                                 Optional<SkillLevel> skillLevel) {
+        Optional<User> userOptional = repository.findById(userId);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            List<UserMatchResponse> matchList = repository.findMatchList(
+                    user.getId(),
+                    user.getLikedUsers(),
+                    LocalDate.now().minusYears(maxAge),
+                    LocalDate.now().minusYears(minAge),
+                    roleName.orElse(null),
+                    sex.orElse(null),
+                    skillLevel.orElse(null),
+                    PAGEABLE
+            );
+
+            return matchList.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(matchList);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override

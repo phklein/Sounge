@@ -14,7 +14,6 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

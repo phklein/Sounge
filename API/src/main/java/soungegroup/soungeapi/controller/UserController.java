@@ -7,17 +7,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import soungegroup.soungeapi.enums.GenreName;
-import soungegroup.soungeapi.enums.RoleName;
-import soungegroup.soungeapi.enums.SignatureType;
+import soungegroup.soungeapi.enums.*;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserLoginResponse;
+import soungegroup.soungeapi.response.UserMatchResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
 import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -69,6 +69,22 @@ public class UserController {
     public ResponseEntity<UserProfileResponse> getProfileById(@RequestParam Long viewerId,
                                                                @PathVariable Long id){
         return service.getProfileById(viewerId, id);
+    }
+
+    @GetMapping("/match")
+    @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar perfil de usuário pelo ID",
+            description = "Verifica se o usuário existe pelo Id, e retorna o perfil dele")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
+    })
+    public ResponseEntity<List<UserMatchResponse>> findMatchList(@RequestParam Long userId,
+                                                                 @RequestParam Integer minAge,
+                                                                 @RequestParam Integer maxAge,
+                                                                 @RequestParam Optional<RoleName> roleName,
+                                                                 @RequestParam Optional<Sex> sex,
+                                                                 @RequestParam Optional<SkillLevel> skillLevel) {
+        return service.findMatchList(userId, minAge, maxAge, roleName, sex , skillLevel);
     }
 
     @PostMapping("/auth")

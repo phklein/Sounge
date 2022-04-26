@@ -1,9 +1,7 @@
 package soungegroup.soungeapi.service;
 
 import org.springframework.http.ResponseEntity;
-import soungegroup.soungeapi.enums.GenreName;
-import soungegroup.soungeapi.enums.RoleName;
-import soungegroup.soungeapi.enums.SignatureType;
+import soungegroup.soungeapi.enums.*;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserMatchResponse;
@@ -11,6 +9,7 @@ import soungegroup.soungeapi.response.UserProfileResponse;
 import soungegroup.soungeapi.response.UserSimpleResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     ResponseEntity<UserLoginResponse> saveAndLogin(UserSaveRequest body);
@@ -41,6 +40,11 @@ public interface UserService {
 
     ResponseEntity<String> export();
     ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id);
-    ResponseEntity<List<UserMatchResponse>> findMatchList(Long viewerId);
+    ResponseEntity<List<UserMatchResponse>> findMatchList(Long userId,
+                                                          Integer minAge,
+                                                          Integer maxAge,
+                                                          Optional<RoleName> roleName,
+                                                          Optional<Sex> sex,
+                                                          Optional<SkillLevel> skillLevel);
     ResponseEntity<List<UserSimpleResponse>> findByName(String nameLike);
 }
