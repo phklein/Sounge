@@ -5,15 +5,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import soungegroup.soungeapi.enums.GenreName;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
 public class GroupSaveRequest {
+    @NotNull
+    @Positive
+    @Schema(description = "Id do líder do grupo",
+            example = "6")
+    private Long leaderId;
     @NotBlank
     @Schema(description = "Nome do grupo",
             example = "Reborn")

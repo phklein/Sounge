@@ -1,11 +1,15 @@
 package soungegroup.soungeapi.service;
 
 import org.springframework.http.ResponseEntity;
-import soungegroup.soungeapi.enums.GenreName;
-import soungegroup.soungeapi.enums.RoleName;
+import soungegroup.soungeapi.enums.*;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserLoginResponse;
+import soungegroup.soungeapi.response.UserMatchResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
+import soungegroup.soungeapi.response.UserSimpleResponse;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
     ResponseEntity<UserLoginResponse> saveAndLogin(UserSaveRequest body);
@@ -27,11 +31,20 @@ public interface UserService {
     ResponseEntity<Void> removeGenre(Long id, GenreName genreName);
     ResponseEntity<Void> removeRole(Long id, RoleName roleName);
 
+    ResponseEntity<Void> updateSignature(Long id, SignatureType signatureType);
+
     ResponseEntity<Void> updateProfilePage(Long id, UserProfileUpdateRequest body);
     ResponseEntity<Void> updatePicture(Long id, PictureUpdateRequest body);
     ResponseEntity<Void> updatePassword(Long id, UserPasswordUpdateRequest body);
     ResponseEntity<Void> delete(Long id, String password);
 
     ResponseEntity<String> export();
-    ResponseEntity<UserProfileResponse> getProfileById(Long id);
+    ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id);
+    ResponseEntity<List<UserMatchResponse>> findMatchList(Long userId,
+                                                          Integer minAge,
+                                                          Integer maxAge,
+                                                          Optional<RoleName> roleName,
+                                                          Optional<Sex> sex,
+                                                          Optional<SkillLevel> skillLevel);
+    ResponseEntity<List<UserSimpleResponse>> findByName(String nameLike);
 }

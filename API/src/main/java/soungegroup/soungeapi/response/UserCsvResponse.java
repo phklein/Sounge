@@ -44,7 +44,7 @@ public class UserCsvResponse {
     private String longitude;
     @Schema(description = "Usuário é ou não é líder do grupo em que está",
             example = "São Paulo")
-    private boolean leader;
+    private boolean isLeader;
     @Schema(description = "Nível de experiência do usuário com música",
             example = "ADVANCED")
     private SkillLevel skillLevel;

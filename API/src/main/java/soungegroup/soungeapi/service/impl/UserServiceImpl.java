@@ -1,35 +1,37 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.adapter.UserAdapter;
-import soungegroup.soungeapi.enums.GenreName;
-import soungegroup.soungeapi.enums.RoleName;
+import soungegroup.soungeapi.enums.*;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.*;
-import soungegroup.soungeapi.response.UserCsvResponse;
-import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserProfileResponse;
+import soungegroup.soungeapi.response.*;
 import soungegroup.soungeapi.service.UserService;
 import soungegroup.soungeapi.util.ListaObj;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private static final Pageable PAGEABLE = Pageable.ofSize(50);
+
     private final UserRepository repository;
     private final PostRepository postRepository;
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
+    private final SignatureRepository signatureRepository;
     private final UserAdapter adapter;
-    private final PostAdapter postAdapter;
     private final List<UserLoginResponse> sessions;
 
     @Override
@@ -67,7 +69,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = repository.findById(id);
 
         if (userOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(hasSession(userOptional.get()));
+            return ResponseEntity.status(HttpStatus.OK).body(hasSession(userOptional.get().getId()));
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -135,6 +137,11 @@ public class UserServiceImpl implements UserService {
             if (!liker.getLikedUsers().contains(liked)) {
                 liker.getLikedUsers().add(liked);
                 repository.save(liker);
+
+                if (liked.getLikedUsers().contains(liker)) {
+                    // TODO: Send notification
+                }
+
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
 
@@ -176,10 +183,6 @@ public class UserServiceImpl implements UserService {
                 User user = userOptional.get();
                 user.setGroup(group);
 
-                if (group.getUsers().isEmpty()) {
-                    user.setLeader(true);
-                }
-
                 repository.save(user);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
@@ -196,9 +199,33 @@ public class UserServiceImpl implements UserService {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setGroup(null);
-            repository.save(user);
-            return ResponseEntity.status(HttpStatus.OK).build();
+
+            if (user.isLeader()) {
+                user.setLeader(false);
+                Group group = user.getGroup();
+                user.setGroup(null);
+
+                if (group.getUsers().size() > 1) {
+                    User nextLeader = group.getUsers().stream()
+                            .filter(u -> !u.getId().equals(user.getId()))
+                            .collect(Collectors.toList()).get(0);
+                    nextLeader.setLeader(true);
+                    repository.save(nextLeader);
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                } else {
+                    repository.save(user);
+                    groupRepository.delete(group);
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                }
+            }
+
+            if (user.getGroup() != null) {
+                user.setGroup(null);
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -310,6 +337,52 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<Void> updateSignature(Long id, SignatureType signatureType) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            int months = 1;
+
+            switch (signatureType) {
+                case YEARLY:
+                    months = 12;
+                    break;
+                case SEMIANNUAL:
+                    months = 6;
+                    break;
+                default:
+                    break;
+            }
+
+            Signature signature;
+
+            if (user.getSignature() != null) {
+                signature = user.getSignature();
+                signature.setSignatureType(signatureType);
+                signature.setExpiryDate(signature.getExpiryDate().plusMonths(months));
+            } else {
+                signature = new Signature();
+                signature.setSignatureType(signatureType);
+                signature.setExpiryDate(LocalDateTime.now().plusMonths(months));
+                signature = signatureRepository.save(signature);
+            }
+
+            user.setSignature(signature);
+            repository.save(user);
+
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public Boolean checkSignature(User user) {
+            return user.getSignature().getExpiryDate().isBefore(LocalDateTime.now());
+    }
+
+    @Override
     public ResponseEntity<Void> delete(Long id, String password) {
         Optional<User> userOptional = repository.findById(id);
 
@@ -329,7 +402,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<String> export() {
-        List<UserCsvResponse> users = repository.findAllCsv();
+        List<UserCsvResponse> users = repository.findAllCsv(PAGEABLE);
         ListaObj<UserCsvResponse> responseObj = new ListaObj<>(users.size());
         for (UserCsvResponse csv: users) {
             responseObj.adiciona(csv);
@@ -352,19 +425,74 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserProfileResponse> getProfileById(Long id) {
-        if (repository.existsById(id)){
-            User user =  repository.getById(id);
-            UserProfileResponse response = adapter.toProfileResponse(user);
-            response.setIsOnline(hasSession(user));
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+    public ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id) {
+        Optional<User> viewerOptional = repository.findById(viewerId);
+        Optional<UserProfileResponse> profileOptional = repository.findProfile(id);
+
+        if (profileOptional.isPresent() && viewerOptional.isPresent()) {
+            User viewer = viewerOptional.get();
+            UserProfileResponse profile = profileOptional.get();
+
+            profile.setPostList(postRepository.findByUserIdOrdered(profile.getId(), PAGEABLE));
+            profile.setLikedGenres(genreRepository.findByUserId(profile.getId()));
+            profile.setRoles(roleRepository.findByUserId(profile.getId()));
+
+            Optional<GroupSimpleResponse> groupOptional = groupRepository.findByUserId(profile.getId());
+            profile.setGroup(groupOptional.isPresent() ? groupOptional.get() : null);
+
+            profile.getPostList().forEach(p -> p.setHasLiked(viewer.getLikedPosts().stream()
+                    .anyMatch(lp -> lp.getId().equals(p.getId()))));
+            profile.setViewerProfile(viewerId.equals(profile.getId()));
+            profile.setIsOnline(hasSession(profile.getId()));
+            return ResponseEntity.status(HttpStatus.OK).body(profile);
         }
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    private Boolean hasSession(User user) {
+    @Override
+    public ResponseEntity<List<UserMatchResponse>> findMatchList(Long userId,
+                                                                 Integer minAge,
+                                                                 Integer maxAge,
+                                                                 Optional<RoleName> roleName,
+                                                                 Optional<Sex> sex,
+                                                                 Optional<SkillLevel> skillLevel) {
+        Optional<User> userOptional = repository.findById(userId);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            List<UserMatchResponse> matchList = repository.findMatchList(
+                    user.getId(),
+                    user.getLikedUsers(),
+                    LocalDate.now().minusYears(maxAge),
+                    LocalDate.now().minusYears(minAge),
+                    roleName.orElse(null),
+                    sex.orElse(null),
+                    skillLevel.orElse(null),
+                    PAGEABLE
+            );
+
+            return matchList.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(matchList);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<UserSimpleResponse>> findByName(String nameLike) {
+        List<UserSimpleResponse> foundUsers = repository.findByName(nameLike, PAGEABLE);
+
+        return foundUsers.isEmpty() ?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                ResponseEntity.status(HttpStatus.OK).body(foundUsers);
+    }
+
+    private Boolean hasSession(Long id) {
         for (UserLoginResponse ulr: sessions) {
-            if (ulr.getId().equals(user.getId())){
+            if (ulr.getId().equals(id)){
                 return true;
             }
         }

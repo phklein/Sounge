@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserProfileResponse {
+public class UserMatchResponse {
     @Schema(description = "ID do usuário",
             example = "6")
     private Long id;
@@ -53,21 +53,15 @@ public class UserProfileResponse {
     @Schema(description = "Idade do usuário",
             example = "23")
     private Integer age;
-    @Schema(description = "É ou não é o perfil do visualizador")
-    private boolean isViewerProfile;
-    @ArraySchema(uniqueItems = true, arraySchema =
-    @Schema(description = "Posts feitos pelo usuário",
-            oneOf = PostSimpleResponse.class))
-    private List<PostSimpleResponse> postList;
 
-    public UserProfileResponse(Long id,
-                               String name,
-                               String profilePic,
-                               boolean isLeader,
-                               String spotifyID,
-                               String description,
-                               SkillLevel skillLevel,
-                               LocalDate birthDate) {
+    public UserMatchResponse(Long id,
+                             String name,
+                             String profilePic,
+                             boolean isLeader,
+                             String spotifyID,
+                             String description,
+                             SkillLevel skillLevel,
+                             LocalDate birthDate) {
         this.id = id;
         this.name = name;
         this.profilePic = profilePic;

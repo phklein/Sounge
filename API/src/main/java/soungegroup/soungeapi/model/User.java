@@ -39,7 +39,6 @@ public class User {
     @Column(name = "user_photo") private  String profilePic;
     @Column(name = "user_spotify_id") private  String spotifyID;
 
-
     // One user has many posts
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Post> posts;
@@ -47,10 +46,6 @@ public class User {
     // One user has many comments
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
-
-    // One user has many schedules
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Schedule> schedules;
 
     // Many users can have one signature
     @ManyToOne(fetch = FetchType.LAZY)

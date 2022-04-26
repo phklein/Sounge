@@ -52,14 +52,14 @@ public class CommentServiceImpl implements CommentService {
         Optional<Post> postOptional = postRepository.findById(postId);
 
         if (postOptional.isPresent()) {
-            List<Comment> comments = repository.findByPostOrderByCommentDateTimeDesc(
+            List<CommentSimpleResponse> comments = repository.findByPostOrdered(
                     postOptional.get(),
                     Pageable.ofSize(PAGE_SIZE)
             );
 
             return comments.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                    ResponseEntity.status(HttpStatus.OK).body(adapter.toSimpleResponse(comments));
+                    ResponseEntity.status(HttpStatus.OK).body(comments);
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

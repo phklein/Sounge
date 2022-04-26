@@ -31,6 +31,6 @@ public class Group {
     private List<Genre> genres;
 
     // One group can have many users
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<User> users;
 }

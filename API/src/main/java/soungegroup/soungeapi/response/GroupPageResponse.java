@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Data
@@ -35,4 +37,16 @@ public class GroupPageResponse {
     @Schema(description = "URL da foto do grupo",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
     private String pictureUrl;
+
+    public GroupPageResponse(Long id,
+                             String name,
+                             String description,
+                             LocalDate creationDate,
+                             String pictureUrl) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.age = Period.between(creationDate, LocalDate.now()).getYears();
+        this.pictureUrl = pictureUrl;
+    }
 }

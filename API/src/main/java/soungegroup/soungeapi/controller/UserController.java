@@ -7,14 +7,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import soungegroup.soungeapi.enums.GenreName;
-import soungegroup.soungeapi.enums.RoleName;
+import soungegroup.soungeapi.enums.*;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserLoginResponse;
+import soungegroup.soungeapi.response.UserMatchResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
+import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.service.UserService;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -45,6 +48,17 @@ public class UserController {
         return service.export();
     }
 
+    @GetMapping
+    @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar usuários pelo nome",
+            description = "Verifica e retorna usuários com o nome inserido")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content)
+    })
+    public ResponseEntity<List<UserSimpleResponse>> findByName(@RequestParam String nameLike) {
+        return service.findByName(nameLike);
+    }
+
     @GetMapping("/{id}")
     @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar perfil de usuário pelo ID",
             description = "Verifica se o usuário existe pelo Id, e retorna o perfil dele")
@@ -52,8 +66,25 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
     })
-    public  ResponseEntity<UserProfileResponse> getProfileById(@PathVariable Long id){
-        return  service.getProfileById(id);
+    public ResponseEntity<UserProfileResponse> getProfileById(@RequestParam Long viewerId,
+                                                               @PathVariable Long id){
+        return service.getProfileById(viewerId, id);
+    }
+
+    @GetMapping("/match")
+    @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar perfil de usuário pelo ID",
+            description = "Verifica se o usuário existe pelo Id, e retorna o perfil dele")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
+    })
+    public ResponseEntity<List<UserMatchResponse>> findMatchList(@RequestParam Long userId,
+                                                                 @RequestParam Integer minAge,
+                                                                 @RequestParam Integer maxAge,
+                                                                 @RequestParam Optional<RoleName> roleName,
+                                                                 @RequestParam Optional<Sex> sex,
+                                                                 @RequestParam Optional<SkillLevel> skillLevel) {
+        return service.findMatchList(userId, minAge, maxAge, roleName, sex , skillLevel);
     }
 
     @PostMapping("/auth")
@@ -131,6 +162,19 @@ public class UserController {
         return service.updatePassword(id, body);
     }
 
+    @PatchMapping("/{id}/signature")
+    @Operation(tags = {"Usuários - Criação e edição"}, summary = "Atualizar assinatura do usuário",
+            description = "Atualiza a assinatura do usuário")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Informações inválidas"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
+    public ResponseEntity<Void> updateSignature(@PathVariable Long id,
+                                                @RequestParam SignatureType signatureType) {
+        return service.updateSignature(id, signatureType);
+    }
+
     @PostMapping("/{id}/likePost/{postId}")
     @Operation(tags = {"Usuários - Operações"}, summary = "Dar like em um post",
             description = "Adiciona um like à um post, caso ainda não exista")
@@ -204,7 +248,7 @@ public class UserController {
         return service.leaveGroup(id);
     }
 
-    @PostMapping("/{id}/genres/{genreName}")
+    @PostMapping("/{id}/genres")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Adicionar gênero musical aos interesses do usuário",
             description = "Adicionar um gênero musical aos interesses do usuário, caso não exista lá")
     @ApiResponses(value = {
@@ -214,11 +258,11 @@ public class UserController {
             @ApiResponse(responseCode = "405", description = "Gênero já está na lista")
     })
     public ResponseEntity<Void> addGenre(@PathVariable Long id,
-                                         @PathVariable GenreName genreName) {
+                                         @RequestParam GenreName genreName) {
         return service.addGenre(id, genreName);
     }
 
-    @DeleteMapping("/{id}/genres/{genreName}")
+    @DeleteMapping("/{id}/genres")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Remover gênero musical dos interesses do usuário",
             description = "Remove um gênero musical dos interesses do usuário, caso exista lá")
     @ApiResponses(value = {
@@ -227,11 +271,11 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public ResponseEntity<Void> removeGenre(@PathVariable Long id,
-                                            @PathVariable GenreName genreName) {
+                                            @RequestParam GenreName genreName) {
         return service.removeGenre(id, genreName);
     }
 
-    @PostMapping("/{id}/roles/{roleName}")
+    @PostMapping("/{id}/roles")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Adicionar função ao usuário",
             description = "Adicionar uma função ao usuário, caso não exista lá")
     @ApiResponses(value = {
@@ -241,11 +285,11 @@ public class UserController {
             @ApiResponse(responseCode = "405", description = "Função já está na lista")
     })
     public ResponseEntity<Void> addRole(@PathVariable Long id,
-                                        @PathVariable RoleName roleName) {
+                                        @RequestParam RoleName roleName) {
         return service.addRole(id, roleName);
     }
 
-    @DeleteMapping("/{id}/roles/{roleName}")
+    @DeleteMapping("/{id}/roles")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Remover função do usuário",
             description = "Remove uma função do usuário, caso exista lá")
     @ApiResponses(value = {
@@ -254,11 +298,11 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public ResponseEntity<Void> removeRole(@PathVariable Long id,
-                                           @PathVariable RoleName roleName) {
+                                           @RequestParam RoleName roleName) {
         return service.removeRole(id, roleName);
     }
 
-    @DeleteMapping("/{id}/{pwd}")
+    @DeleteMapping("/{id}")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Remover um usuário",
             description = "Remove um usuário pelo ID e senha")
     @ApiResponses(value = {
@@ -267,7 +311,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public ResponseEntity<Void> delete(@PathVariable Long id,
-                                       @PathVariable String pwd) {
+                                       @RequestParam String pwd) {
         return service.delete(id, pwd);
     }
 }
