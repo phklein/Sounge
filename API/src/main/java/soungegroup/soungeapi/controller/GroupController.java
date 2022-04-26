@@ -11,9 +11,11 @@ import soungegroup.soungeapi.request.GroupPageUpdateRequest;
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.request.PictureUpdateRequest;
 import soungegroup.soungeapi.response.GroupPageResponse;
+import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/groups")
@@ -42,6 +44,17 @@ public class GroupController {
     })
     public ResponseEntity<GroupPageResponse> findById(@PathVariable Long id) {
         return service.findById(id);
+    }
+
+    @GetMapping
+    @Operation(tags = {"Grupos - Consultas"}, summary = "Buscar grupos pelo nome",
+            description = "Verifica e retorna grupos com o nome inserido")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content)
+    })
+    public ResponseEntity<List<GroupSimpleResponse>> findByName(@RequestParam String nameLike) {
+        return service.findByName(nameLike);
     }
 
     @GetMapping("/report")

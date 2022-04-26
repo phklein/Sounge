@@ -52,7 +52,7 @@ public class UserController {
             description = "Verifica e retorna usuários com o nome inserido")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
+            @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content)
     })
     public ResponseEntity<List<UserSimpleResponse>> findByName(@RequestParam String nameLike) {
         return service.findByName(nameLike);
