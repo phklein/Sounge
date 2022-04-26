@@ -167,18 +167,15 @@ export function MultiForm() {
                 if (res.status == 201) {
                     console.log(res.data)   
 
-                    // alert('Usuário cadastrado com sucesso!')
                     Swal.fire('Usuário cadastrado com sucesso')
                     handleNextStep()
                 }  
             }).catch(err => {
                 console.log(err)
                 Swal.fire('Erro ao cadastrar')
-                // alert('Erro ao cadastrar')
             })
 
         } else {
-            // alert('Senhas não conferem!')
             Swal.fire('Senhas não conferem')
             
         }
@@ -199,7 +196,7 @@ export function MultiForm() {
         }).catch(err => {
             console.log(err)
             
-            alert('erro ao tentar logar')
+            Swal.fire('erro ao tentar entrar')
         })
     }
 

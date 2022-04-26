@@ -110,7 +110,7 @@ export function Register(props: Iprops) {
                                 <Form.Control 
                                     value={formState.password}
                                     onChange={(event) => handleChange(event.target.value, 'password')}
-                                    type="text" 
+                                    type="password" 
                                     placeholder="Senha" 
                                     className="input-all form-label"
                                 />                            
@@ -119,7 +119,7 @@ export function Register(props: Iprops) {
                                 <Form.Control 
                                     value={formState.confirmPassword} 
                                     onChange={(event) => handleChange(event.target.value, 'confirmPassword')}
-                                    type="text" 
+                                    type="password" 
                                     placeholder="Confirmar Senha" 
                                     className="input-all form-label"
                                 />                            
