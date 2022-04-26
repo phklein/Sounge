@@ -5,8 +5,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.request.CommentSaveRequest;
 import soungegroup.soungeapi.request.PostSaveRequest;
 import soungegroup.soungeapi.request.PostUpdateRequest;
@@ -16,6 +18,7 @@ import soungegroup.soungeapi.service.CommentService;
 import soungegroup.soungeapi.service.PostService;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,8 +50,14 @@ public class PostController {
             @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
     })
-    public ResponseEntity<List<PostSimpleResponse>> findAll(@RequestParam Optional<Long> userId) {
-        return service.findAll(userId);
+    public ResponseEntity<List<PostSimpleResponse>> findAll(@RequestParam Optional<Long> userId,
+                                                            @RequestParam Optional<GenreName> genre,
+                                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                            Optional<LocalDateTime> startDateTime,
+                                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                            Optional<LocalDateTime> endDateTime,
+                                                            @RequestParam Optional<String> textLike) {
+        return service.findAll(userId, genre, startDateTime, endDateTime, textLike);
     }
 
     @Operation(tags = {"Posts - Criação e edição"}, summary = "Atualizar um post",

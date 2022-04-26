@@ -6,8 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.PostAdapter;
+import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.model.Post;
 import soungegroup.soungeapi.model.User;
+import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.repository.PostRepository;
 import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.PostSaveRequest;
@@ -22,10 +24,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
-    private static final int PAGE_SIZE = 50;
+    private static final Pageable PAGEABLE = Pageable.ofSize(50);
 
     private final PostRepository repository;
     private final UserRepository userRepository;
+    private final GenreRepository genreRepository;
     private final PostAdapter adapter;
 
     @Override
@@ -42,9 +45,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<List<PostSimpleResponse>> findAll(Optional<Long> userId) {
-        List<Post> foundPosts;
+    public ResponseEntity<List<PostSimpleResponse>> findAll(Optional<Long> userId,
+                                                            Optional<GenreName> genreName,
+                                                            Optional<LocalDateTime> startDateTime,
+                                                            Optional<LocalDateTime> endDateTime,
+                                                            Optional<String> textLike) {
         Optional<User> userOptional = Optional.empty();
+        List<Post> foundPosts;
 
         if (userId.isPresent()) {
             userOptional = userRepository.findById(userId.get());
@@ -52,15 +59,22 @@ public class PostServiceImpl implements PostService {
             if (userOptional.isPresent()) {
                  User user = userOptional.get();
 
-                foundPosts = repository.findByUserPreferencesOrderByPostDateTimeDesc(
+                foundPosts = repository.findAllFilteredByUserOrdered(
                             user.getLikedGenres(),
                             user.getLikedUsers(),
-                            Pageable.ofSize(PAGE_SIZE));
+                            PAGEABLE
+                );
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
         } else {
-            foundPosts = repository.findByOrderByPostDateTimeDesc(Pageable.ofSize(PAGE_SIZE));
+            foundPosts = repository.findAllFilteredOrdered(
+                    genreName.orElse(null),
+                    startDateTime.orElse(null),
+                    endDateTime.orElse(null),
+                    textLike.orElse(null),
+                    PAGEABLE
+            );
         }
 
         return foundPosts.isEmpty() ?

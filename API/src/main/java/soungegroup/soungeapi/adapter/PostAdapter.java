@@ -50,22 +50,22 @@ public class PostAdapter {
         return post;
     }
 
-    public PostSimpleResponse toSimpleResponse(Post post, Optional<User> userOptional) {
+    public PostSimpleResponse toSimpleResponse(Post post, Optional<User> viewerOptional) {
         PostSimpleResponse response = mapper.map(post, PostSimpleResponse.class);
         response.setLikeCount(post.getUsersWhoLiked().size());
         response.setCommentCount(post.getComments().size());
         response.setHoursPast(Duration.between(post.getPostDateTime(), LocalDateTime.now()).toHours());
-        userOptional.ifPresent(u -> response.setHasLiked(post.getUsersWhoLiked().contains(u)));
+        viewerOptional.ifPresent(u -> response.setHasLiked(post.getUsersWhoLiked().contains(u)));
 
         return response;
     }
 
-    public List<PostSimpleResponse> toSimpleResponse(List<Post> posts, Optional<User> userOptional) {
+    public List<PostSimpleResponse> toSimpleResponse(List<Post> posts, Optional<User> viewerOptional) {
         List<PostSimpleResponse> responseList = new ArrayList<>();
         posts = posts.stream()
                 .sorted(Comparator.comparing(Post::getPostDateTime).reversed())
                 .collect(Collectors.toList());
-        posts.forEach(p -> responseList.add(toSimpleResponse(p, userOptional)));
+        posts.forEach(p -> responseList.add(toSimpleResponse(p, viewerOptional)));
         return responseList;
     }
 }
