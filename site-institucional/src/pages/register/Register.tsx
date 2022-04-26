@@ -110,7 +110,7 @@ export function Register(props: Iprops) {
                                 <Form.Control 
                                     value={formState.password}
                                     onChange={(event) => handleChange(event.target.value, 'password')}
-                                    type="text" 
+                                    type="password" 
                                     placeholder="Senha" 
                                     className="input-all form-label"
                                 />                            
@@ -119,7 +119,7 @@ export function Register(props: Iprops) {
                                 <Form.Control 
                                     value={formState.confirmPassword} 
                                     onChange={(event) => handleChange(event.target.value, 'confirmPassword')}
-                                    type="text" 
+                                    type="password" 
                                     placeholder="Confirmar Senha" 
                                     className="input-all form-label"
                                 />                            
@@ -136,7 +136,7 @@ export function Register(props: Iprops) {
                 <div className="register-container-right">
                     <img src={LogoHorizontal} alt="" />
                     <h1>Crie sua conta<br />aqui agora!</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur incididunt ut labore et dolore magna aliqua.</p>
+                    <p>Tocar uma nota equivocada é insignificante.Tocar sem paixão é imperdoável</p>
                 </div>
             </div>
         </>

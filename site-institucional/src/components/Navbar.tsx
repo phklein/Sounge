@@ -1,6 +1,7 @@
 import { useNavigate, Link } from 'react-router-dom'
 
 import LogoHorizontal from '../assets/img/logo-fundo-escuro-texto-horizontal.png'
+import UserRoute from '../routes/UserRoute';
 
 import { Buttonaa } from './Buttonaa'
 
@@ -10,6 +11,25 @@ interface Iprops {
 
 export function NavBar(props: Iprops) {
     const { isbtnRegisterOff } = props
+
+    const navigate = useNavigate()
+
+    const logout = () => {
+        const queryString = window.location.search
+        const urlParams = new URLSearchParams(queryString)
+        const code = urlParams.get('id')
+        
+        if (code) {
+            UserRoute.logout(code).then(res => {
+                if (res.status === 200) {
+                    navigate('/')
+                }          
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+            
+    }
 
     if (isbtnRegisterOff) {
         return (
@@ -23,6 +43,7 @@ export function NavBar(props: Iprops) {
                         <li><Link to="/page-not-found" className="link-navbar">Membros</Link></li>
                         <li><Link to="/page-not-found" className="link-navbar">Fórum</Link></li>
                     </ul>
+                    <Buttonaa onClick={logout}>Sair</Buttonaa>
                 </nav>
             </header>
         )
