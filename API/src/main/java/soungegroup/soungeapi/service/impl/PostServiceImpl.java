@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
-    private static final Pageable PAGEABLE = Pageable.ofSize(50);
+    private static final Pageable PAGEABLE = Pageable.ofSize(10);
 
     private final PostRepository repository;
     private final UserRepository userRepository;

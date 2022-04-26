@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import soungegroup.soungeapi.enums.SkillLevel;
+import soungegroup.soungeapi.model.Signature;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 
@@ -53,6 +55,15 @@ public class UserMatchResponse {
     @Schema(description = "Idade do usuário",
             example = "23")
     private Integer age;
+    @Schema(description = "Distância do usuário em Km",
+            example = "2.7")
+    private Double distance;
+    @Schema(description = "Relevância do usuário",
+            example = "2.7")
+    private Double relevance;
+    @Schema(description = "Relevância do usuário",
+            example = "2.7")
+    private boolean hasSignature;
 
     public UserMatchResponse(Long id,
                              String name,
@@ -60,6 +71,7 @@ public class UserMatchResponse {
                              boolean isLeader,
                              String spotifyID,
                              String description,
+                             Signature signature,
                              SkillLevel skillLevel,
                              LocalDate birthDate) {
         this.id = id;
@@ -68,6 +80,7 @@ public class UserMatchResponse {
         this.isLeader = isLeader;
         this.spotifyID = spotifyID;
         this.description = description;
+        this.hasSignature = signature.getExpiryDateTime().isAfter(LocalDateTime.now());
         this.skillLevel = skillLevel;
         this.age = Period.between(birthDate, LocalDate.now()).getYears();
     }

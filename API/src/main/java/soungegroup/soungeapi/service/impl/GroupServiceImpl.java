@@ -24,7 +24,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
-    private static final Pageable PAGEABLE = Pageable.ofSize(50);
+    private static final Pageable PAGEABLE = Pageable.ofSize(10);
 
     private final GroupRepository repository;
     private final GenreRepository genreRepository;

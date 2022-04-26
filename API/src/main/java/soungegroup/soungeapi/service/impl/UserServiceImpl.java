@@ -23,14 +23,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private static final Pageable PAGEABLE = Pageable.ofSize(50);
+    private static final Pageable PAGEABLE = Pageable.ofSize(10);
 
     private final UserRepository repository;
     private final PostRepository postRepository;
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
-    private final SignatureRepository signatureRepository;
     private final UserAdapter adapter;
     private final List<UserLoginResponse> sessions;
 
@@ -356,18 +355,12 @@ public class UserServiceImpl implements UserService {
                     break;
             }
 
-            Signature signature;
-
-            if (user.getSignature() != null) {
-                signature = user.getSignature();
-                signature.setSignatureType(signatureType);
-                signature.setExpiryDate(signature.getExpiryDate().plusMonths(months));
-            } else {
-                signature = new Signature();
-                signature.setSignatureType(signatureType);
-                signature.setExpiryDate(LocalDateTime.now().plusMonths(months));
-                signature = signatureRepository.save(signature);
-            }
+            Signature signature = user.getSignature();
+            signature.setSignatureType(signatureType);
+            signature.setExpiryDateTime(signature.isExpired() ?
+                    LocalDateTime.now().plusMonths(months) :
+                    signature.getExpiryDateTime().plusMonths(months)
+            );
 
             user.setSignature(signature);
             repository.save(user);
@@ -376,10 +369,6 @@ public class UserServiceImpl implements UserService {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    public Boolean checkSignature(User user) {
-            return user.getSignature().getExpiryDate().isBefore(LocalDateTime.now());
     }
 
     @Override
@@ -452,8 +441,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<List<UserMatchResponse>> findMatchList(Long userId,
-                                                                 Integer minAge,
-                                                                 Integer maxAge,
+                                                                 Optional<Integer> minAge,
+                                                                 Optional<Integer> maxAge,
                                                                  Optional<RoleName> roleName,
                                                                  Optional<Sex> sex,
                                                                  Optional<SkillLevel> skillLevel) {
@@ -462,16 +451,32 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
+            Optional<LocalDate> minBirthDate = maxAge.isEmpty() ?
+                    Optional.empty() :
+                    Optional.of(LocalDate.now().minusYears(maxAge.get()));
+
+            Optional<LocalDate> maxBirthDate = minAge.isEmpty() ?
+                    Optional.empty() :
+                    Optional.of(LocalDate.now().minusYears(minAge.get()));
+
             List<UserMatchResponse> matchList = repository.findMatchList(
                     user.getId(),
-                    user.getLikedUsers(),
-                    LocalDate.now().minusYears(maxAge),
-                    LocalDate.now().minusYears(minAge),
+                    user.getLikedUsers().isEmpty() ? null : user.getLikedUsers(),
+                    minBirthDate.orElse(null),
+                    maxBirthDate.orElse(null),
                     roleName.orElse(null),
                     sex.orElse(null),
                     skillLevel.orElse(null),
                     PAGEABLE
             );
+
+            matchList.forEach(u -> {
+                u.setGroup(groupRepository.findByUserId(u.getId()).orElse(null));
+                u.setLikedGenres(genreRepository.findByUserId(u.getId()));
+                u.setRoles(roleRepository.findByUserId(u.getId()));
+                u.setIsOnline(hasSession(u.getId()));
+                u.setRelevance(0D);
+            });
 
             return matchList.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :

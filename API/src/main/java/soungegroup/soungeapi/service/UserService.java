@@ -41,8 +41,8 @@ public interface UserService {
     ResponseEntity<String> export();
     ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id);
     ResponseEntity<List<UserMatchResponse>> findMatchList(Long userId,
-                                                          Integer minAge,
-                                                          Integer maxAge,
+                                                          Optional<Integer> minAge,
+                                                          Optional<Integer> maxAge,
                                                           Optional<RoleName> roleName,
                                                           Optional<Sex> sex,
                                                           Optional<SkillLevel> skillLevel);

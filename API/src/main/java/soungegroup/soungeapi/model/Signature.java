@@ -21,9 +21,13 @@ public class Signature {
     @Column(name = "signature_id") private Long id;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "signature_type") private SignatureType signatureType;
-    @Column(name = "signature_expiry_date") private LocalDateTime expiryDate;
+    @Column(name = "signature_expiry_date_time") private LocalDateTime expiryDateTime;
 
     // One signature can belong to many users
     @OneToMany(mappedBy = "signature", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<User> users;
+
+    public boolean isExpired() {
+        return this.expiryDateTime.isBefore(LocalDateTime.now());
+    }
 }

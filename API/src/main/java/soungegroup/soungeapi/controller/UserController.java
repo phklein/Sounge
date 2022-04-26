@@ -79,8 +79,8 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
     })
     public ResponseEntity<List<UserMatchResponse>> findMatchList(@RequestParam Long userId,
-                                                                 @RequestParam Integer minAge,
-                                                                 @RequestParam Integer maxAge,
+                                                                 @RequestParam Optional<Integer> minAge,
+                                                                 @RequestParam Optional<Integer> maxAge,
                                                                  @RequestParam Optional<RoleName> roleName,
                                                                  @RequestParam Optional<Sex> sex,
                                                                  @RequestParam Optional<SkillLevel> skillLevel) {

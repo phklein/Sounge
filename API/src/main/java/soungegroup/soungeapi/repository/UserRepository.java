@@ -19,6 +19,27 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "FROM User u WHERE u.email = :email AND u.password = :password")
     List<UserLoginResponse> findUserByEmailAndPassword(String email, String password);
 
+    @Query("SELECT new soungegroup.soungeapi.response.UserMatchResponse(" +
+            "u.id, u.name, u.profilePic, u.leader, u.spotifyID, u.description, " +
+            "u.signature, u.skillLevel, u.birthDate) " +
+            "FROM User u " +
+            "JOIN u.roles r " +
+            "WHERE u.id != :userId " +
+            "AND (u IN :likedUsers OR :likedUsers IS NULL) " +
+            "AND (u.birthDate >= :minBirthDate OR :minBirthDate IS NUll)  " +
+            "AND (u.birthDate <= :maxBirthDate OR :maxBirthDate IS NUll)  " +
+            "AND (r.name = :roleName OR :roleName IS NULL) " +
+            "AND (u.sex = :sex OR :sex IS NULL) " +
+            "AND (u.skillLevel = :skillLevel OR :skillLevel IS NULL)")
+    List<UserMatchResponse> findMatchList(Long userId,
+                                          List<User> likedUsers,
+                                          LocalDate minBirthDate,
+                                          LocalDate maxBirthDate,
+                                          RoleName roleName,
+                                          Sex sex,
+                                          SkillLevel skillLevel,
+                                          Pageable pageable);
+
     @Query("SELECT new soungegroup.soungeapi.response.UserSimpleResponse(" +
             "u.id, u.name, u.profilePic, u.leader) " +
             "FROM User u " +
@@ -37,25 +58,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "FROM User u " +
             "WHERE u.id = :id")
     Optional<UserProfileResponse> findProfile(Long id);
-
-    @Query("SELECT new soungegroup.soungeapi.response.UserMatchResponse(" +
-            "u.id, u.name, u.profilePic, u.leader, u.spotifyID, u.description, u.skillLevel, u.birthDate AS bd) " +
-            "FROM User u " +
-            "JOIN u.roles r " +
-            "WHERE u NOT IN :likedUsers " +
-            "AND u.id <> :userId " +
-            "AND (bd BETWEEN :minBirthDate AND :maxBirthDate)  " +
-            "AND (r.name = :roleName OR :roleName IS NULL) " +
-            "AND (u.sex = :sex OR :sex IS NULL) " +
-            "AND (u.skillLevel = :skillLevel OR :skillLevel IS NULL)")
-    List<UserMatchResponse> findMatchList(Long userId,
-                                          List<User> likedUsers,
-                                          LocalDate minBirthDate,
-                                          LocalDate maxBirthDate,
-                                          RoleName roleName,
-                                          Sex sex,
-                                          SkillLevel skillLevel,
-                                          Pageable pageable);
 
     @Query("SELECT new soungegroup.soungeapi.response.UserCsvResponse(" +
             "u.id, u.name, u.sex, " +

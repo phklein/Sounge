@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
-    private static final int PAGE_SIZE = 50;
+    private static final Pageable PAGEABLE = Pageable.ofSize(10);
 
     private final CommentRepository repository;
     private final UserRepository userRepository;
@@ -54,7 +54,7 @@ public class CommentServiceImpl implements CommentService {
         if (postOptional.isPresent()) {
             List<CommentSimpleResponse> comments = repository.findByPostOrdered(
                     postOptional.get(),
-                    Pageable.ofSize(PAGE_SIZE)
+                    PAGEABLE
             );
 
             return comments.isEmpty() ?
