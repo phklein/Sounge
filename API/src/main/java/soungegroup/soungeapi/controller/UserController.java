@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
+import soungegroup.soungeapi.enums.SignatureType;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
@@ -145,6 +146,19 @@ public class UserController {
         return service.updatePassword(id, body);
     }
 
+    @PatchMapping("/{id}/signature")
+    @Operation(tags = {"Usuários - Criação e edição"}, summary = "Atualizar assinatura do usuário",
+            description = "Atualiza a assinatura do usuário")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Informações inválidas"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
+    public ResponseEntity<Void> updateSignature(@PathVariable Long id,
+                                                @RequestParam SignatureType signatureType) {
+        return service.updateSignature(id, signatureType);
+    }
+
     @PostMapping("/{id}/likePost/{postId}")
     @Operation(tags = {"Usuários - Operações"}, summary = "Dar like em um post",
             description = "Adiciona um like à um post, caso ainda não exista")
@@ -232,7 +246,7 @@ public class UserController {
         return service.addGenre(id, genreName);
     }
 
-    @DeleteMapping("/{id}/genres}")
+    @DeleteMapping("/{id}/genres")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Remover gênero musical dos interesses do usuário",
             description = "Remove um gênero musical dos interesses do usuário, caso exista lá")
     @ApiResponses(value = {

@@ -3,6 +3,7 @@ package soungegroup.soungeapi.service;
 import org.springframework.http.ResponseEntity;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
+import soungegroup.soungeapi.enums.SignatureType;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
@@ -29,6 +30,8 @@ public interface UserService {
     ResponseEntity<Void> addRole(Long id, RoleName roleName);
     ResponseEntity<Void> removeGenre(Long id, GenreName genreName);
     ResponseEntity<Void> removeRole(Long id, RoleName roleName);
+
+    ResponseEntity<Void> updateSignature(Long id, SignatureType signatureType);
 
     ResponseEntity<Void> updateProfilePage(Long id, UserProfileUpdateRequest body);
     ResponseEntity<Void> updatePicture(Long id, PictureUpdateRequest body);

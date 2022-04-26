@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.UserAdapter;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
+import soungegroup.soungeapi.enums.SignatureType;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.*;
@@ -15,6 +16,7 @@ import soungegroup.soungeapi.response.*;
 import soungegroup.soungeapi.service.UserService;
 import soungegroup.soungeapi.util.ListaObj;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -306,6 +308,42 @@ public class UserServiceImpl implements UserService {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> updateSignature(Long id, SignatureType signatureType) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            Signature signature = new Signature();
+
+            int months = 1;
+
+            switch (signatureType) {
+                case YEARLY:
+                    months = 12;
+                    break;
+                case SEMIANNUAL:
+                    months = 6;
+                    break;
+                default:
+                    break;
+            }
+
+            signature.setSignatureType(signatureType);
+            signature.setExpiryDate(signature.getExpiryDate().plusMonths(months));
+
+            user.setSignature(signature);
+
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    public Boolean checkSignature(User user) {
+            return user.getSignature().getExpiryDate().isBefore(LocalDateTime.now());
     }
 
     @Override
