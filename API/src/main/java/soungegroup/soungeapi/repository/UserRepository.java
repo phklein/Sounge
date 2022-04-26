@@ -41,11 +41,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT new soungegroup.soungeapi.response.UserMatchResponse(" +
             "u.id, u.name, u.profilePic, u.leader, u.spotifyID, u.description, u.skillLevel, u.birthDate AS bd) " +
             "FROM User u " +
-            "JOIN Role r " +
+            "JOIN u.roles r " +
             "WHERE u NOT IN :likedUsers " +
             "AND u.id <> :userId " +
-            "AND bd >= :minBirthDate " +
-            "AND bd <= :maxBirthDate " +
+            "AND (bd BETWEEN :minBirthDate AND :maxBirthDate)  " +
             "AND (r.name = :roleName OR :roleName IS NULL) " +
             "AND (u.sex = :sex OR :sex IS NULL) " +
             "AND (u.skillLevel = :skillLevel OR :skillLevel IS NULL)")
