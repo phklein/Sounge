@@ -33,5 +33,5 @@ public interface UserService {
     ResponseEntity<Void> delete(Long id, String password);
 
     ResponseEntity<String> export();
-    ResponseEntity<UserProfileResponse> getProfileById(Long id);
+    ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id);
 }

@@ -58,10 +58,11 @@ public class UserAdapter {
         return mapper.map(user, UserLoginResponse.class);
     }
 
-    public UserProfileResponse toProfileResponse(User user){
+    public UserProfileResponse toProfileResponse(User viewer, User user){
         UserProfileResponse returnObj = mapper.map(user, UserProfileResponse.class);
         returnObj.setAge(Period.between(user.getBirthDate(), LocalDate.now()).getYears());
-        returnObj.setPostList(postAdapter.toSimpleResponse(user.getPosts()));
+        returnObj.setPostList(postAdapter.toSimpleResponse(user.getPosts(), Optional.of(viewer)));
+        returnObj.setViewerProfile(viewer.equals(user));
         return  returnObj;
     }
 }

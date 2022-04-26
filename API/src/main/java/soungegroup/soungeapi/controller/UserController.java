@@ -45,15 +45,16 @@ public class UserController {
         return service.export();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{viewerId}/{id}")
     @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar perfil de usuário pelo ID",
             description = "Verifica se o usuário existe pelo Id, e retorna o perfil dele")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
     })
-    public  ResponseEntity<UserProfileResponse> getProfileById(@PathVariable Long id){
-        return  service.getProfileById(id);
+    public  ResponseEntity<UserProfileResponse> getProfileById(@PathVariable Long viewerId,
+                                                               @PathVariable Long id){
+        return service.getProfileById(viewerId, id);
     }
 
     @PostMapping("/auth")

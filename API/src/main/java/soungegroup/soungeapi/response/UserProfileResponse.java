@@ -55,4 +55,6 @@ public class UserProfileResponse {
     @Schema(description = "Idade do usuário",
             example = "23")
     private Integer age;
+    @Schema(description = "É ou não é o perfil do visualizador")
+    private boolean viewerProfile;
 }

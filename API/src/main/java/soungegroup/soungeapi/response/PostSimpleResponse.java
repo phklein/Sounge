@@ -30,4 +30,6 @@ public class PostSimpleResponse {
     @Schema(description = "Contagem de comentários do post",
             example = "128")
     private Integer commentCount;
+    @Schema(description = "Usuário deu ou não deu like neste post")
+    private boolean hasLiked;
 }

@@ -44,18 +44,18 @@ public class PostServiceImpl implements PostService {
     @Override
     public ResponseEntity<List<PostSimpleResponse>> findAll(Optional<Long> userId) {
         List<Post> foundPosts;
+        Optional<User> userOptional = Optional.empty();
 
         if (userId.isPresent()) {
-            Optional<User> userOptional = userRepository.findById(userId.get());
+            userOptional = userRepository.findById(userId.get());
 
             if (userOptional.isPresent()) {
-                User user = userOptional.get();
+                 User user = userOptional.get();
 
                 foundPosts = repository.findByUserPreferencesOrderByPostDateTimeDesc(
-                        user.getLikedGenres(),
-                        user.getLikedUsers(),
-                        Pageable.ofSize(PAGE_SIZE)
-                );
+                            user.getLikedGenres(),
+                            user.getLikedUsers(),
+                            Pageable.ofSize(PAGE_SIZE));
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
@@ -65,7 +65,8 @@ public class PostServiceImpl implements PostService {
 
         return foundPosts.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                ResponseEntity.status(HttpStatus.OK).body(adapter.toSimpleResponse(foundPosts));
+                ResponseEntity.status(HttpStatus.OK).body(
+                        adapter.toSimpleResponse(foundPosts, userOptional));
     }
 
     @Override

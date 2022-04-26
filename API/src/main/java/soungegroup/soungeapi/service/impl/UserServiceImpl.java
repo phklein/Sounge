@@ -352,13 +352,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserProfileResponse> getProfileById(Long id) {
-        if (repository.existsById(id)){
-            User user =  repository.getById(id);
-            UserProfileResponse response = adapter.toProfileResponse(user);
+    public ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id) {
+        Optional<User> viewerOptional = repository.findById(viewerId);
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent() && viewerOptional.isPresent()) {
+            User viewer = viewerOptional.get();
+            User user = userOptional.get();
+            UserProfileResponse response = adapter.toProfileResponse(viewer, user);
             response.setIsOnline(hasSession(user));
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
