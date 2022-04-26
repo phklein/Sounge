@@ -6,6 +6,9 @@ import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
+import soungegroup.soungeapi.response.UserSimpleResponse;
+
+import java.util.List;
 
 public interface UserService {
     ResponseEntity<UserLoginResponse> saveAndLogin(UserSaveRequest body);
@@ -34,4 +37,5 @@ public interface UserService {
 
     ResponseEntity<String> export();
     ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id);
+    ResponseEntity<List<UserSimpleResponse>> findByName(String nameLike);
 }

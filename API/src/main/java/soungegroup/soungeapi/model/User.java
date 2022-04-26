@@ -39,7 +39,6 @@ public class User {
     @Column(name = "user_photo") private  String profilePic;
     @Column(name = "user_spotify_id") private  String spotifyID;
 
-
     // One user has many posts
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Post> posts;

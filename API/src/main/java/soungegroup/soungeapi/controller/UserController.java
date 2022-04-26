@@ -12,9 +12,11 @@ import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
+import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.service.UserService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -45,14 +47,25 @@ public class UserController {
         return service.export();
     }
 
-    @GetMapping("/{viewerId}/{id}")
+    @GetMapping
+    @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar usuários pelo nome",
+            description = "Verifica e retorna usuários com o nome inserido")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
+    })
+    public ResponseEntity<List<UserSimpleResponse>> findByName(@RequestParam String nameLike) {
+        return service.findByName(nameLike);
+    }
+
+    @GetMapping("/{id}")
     @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar perfil de usuário pelo ID",
             description = "Verifica se o usuário existe pelo Id, e retorna o perfil dele")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
     })
-    public  ResponseEntity<UserProfileResponse> getProfileById(@PathVariable Long viewerId,
+    public ResponseEntity<UserProfileResponse> getProfileById(@RequestParam Long viewerId,
                                                                @PathVariable Long id){
         return service.getProfileById(viewerId, id);
     }
@@ -259,7 +272,7 @@ public class UserController {
         return service.removeRole(id, roleName);
     }
 
-    @DeleteMapping("/{id}/{pwd}")
+    @DeleteMapping("/{id}")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Remover um usuário",
             description = "Remove um usuário pelo ID e senha")
     @ApiResponses(value = {
@@ -268,7 +281,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public ResponseEntity<Void> delete(@PathVariable Long id,
-                                       @PathVariable String pwd) {
+                                       @RequestParam String pwd) {
         return service.delete(id, pwd);
     }
 }

@@ -107,7 +107,8 @@ public class PostController {
     public ResponseEntity<List<CommentSimpleResponse>> findCommentsByPostId(@PathVariable Long postId) {
         return commentService.findByPostId(postId);
     }
-  
+
+    @DeleteMapping("/{postId}/comments/{id}")
     @Operation(tags = {"Posts - Criação e edição"}, summary = "Deletar um comentário de um post",
             description = "Deleta um comentário de um post pelo ID")
     @ApiResponses(value = {

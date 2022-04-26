@@ -1,10 +1,10 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.adapter.UserAdapter;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
@@ -14,6 +14,7 @@ import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.UserCsvResponse;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.response.UserProfileResponse;
+import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.service.UserService;
 import soungegroup.soungeapi.util.ListaObj;
 
@@ -23,13 +24,14 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private static final Pageable PAGEABLE = Pageable.ofSize(50);
+
     private final UserRepository repository;
     private final PostRepository postRepository;
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
     private final UserAdapter adapter;
-    private final PostAdapter postAdapter;
     private final List<UserLoginResponse> sessions;
 
     @Override
@@ -365,6 +367,15 @@ public class UserServiceImpl implements UserService {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<UserSimpleResponse>> findByName(String nameLike) {
+        List<UserSimpleResponse> foundUsers = repository.findByName(nameLike, PAGEABLE);
+
+        return foundUsers.isEmpty() ?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                ResponseEntity.status(HttpStatus.OK).body(foundUsers);
     }
 
     private Boolean hasSession(User user) {
