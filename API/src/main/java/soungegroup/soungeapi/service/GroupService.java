@@ -12,9 +12,8 @@ import java.util.List;
 public interface GroupService {
     ResponseEntity<Long> save(GroupSaveRequest body);
 
-    ResponseEntity<GroupPageResponse> findById(Long id);
+    ResponseEntity<GroupPageResponse> findPageById(Long id);
     ResponseEntity<List<GroupSimpleResponse>> findByName(String nameLike);
-    ResponseEntity<String> export();
 
     ResponseEntity<Void> update(Long id, GroupPageUpdateRequest body);
     ResponseEntity<Void> updatePicture(Long id, PictureUpdateRequest body);

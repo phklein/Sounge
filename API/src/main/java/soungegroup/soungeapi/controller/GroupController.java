@@ -43,7 +43,7 @@ public class GroupController {
             @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content)
     })
     public ResponseEntity<GroupPageResponse> findById(@PathVariable Long id) {
-        return service.findById(id);
+        return service.findPageById(id);
     }
 
     @GetMapping
@@ -55,17 +55,6 @@ public class GroupController {
     })
     public ResponseEntity<List<GroupSimpleResponse>> findByName(@RequestParam String nameLike) {
         return service.findByName(nameLike);
-    }
-
-    @GetMapping("/report")
-    @Operation(tags = {"Grupos - Consultas"}, summary = "Baixar relatório CSV de grupos",
-            description = "Retorna um arquivo CSV com as informações de todos os grupos")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
-            @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content)
-    })
-    public ResponseEntity<String> getReport() {
-        return service.export();
     }
 
     @PutMapping("/{id}")

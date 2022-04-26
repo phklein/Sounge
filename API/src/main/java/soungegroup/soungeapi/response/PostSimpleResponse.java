@@ -1,13 +1,16 @@
 package soungegroup.soungeapi.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import soungegroup.soungeapi.model.User;
+import soungegroup.soungeapi.util.Mapper;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class PostSimpleResponse {
     @Schema(description = "ID do post",
             example = "7")
@@ -32,4 +35,20 @@ public class PostSimpleResponse {
     private Integer commentCount;
     @Schema(description = "Usuário deu ou não deu like neste post")
     private boolean hasLiked;
+
+    public PostSimpleResponse(Long id,
+                              String text,
+                              String mediaUrl,
+                              LocalDateTime postDateTime,
+                              User user,
+                              Integer likeCount,
+                              Integer commentCount) {
+        this.id = id;
+        this.text = text;
+        this.mediaUrl = mediaUrl;
+        this.hoursPast = Duration.between(postDateTime, LocalDateTime.now()).toHours();
+        this.user = Mapper.INSTANCE.map(user, UserSimpleResponse.class);
+        this.likeCount = likeCount;
+        this.commentCount = commentCount;
+    }
 }

@@ -11,10 +11,7 @@ import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.*;
-import soungegroup.soungeapi.response.UserCsvResponse;
-import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserProfileResponse;
-import soungegroup.soungeapi.response.UserSimpleResponse;
+import soungegroup.soungeapi.response.*;
 import soungegroup.soungeapi.service.UserService;
 import soungegroup.soungeapi.util.ListaObj;
 
@@ -69,7 +66,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = repository.findById(id);
 
         if (userOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(hasSession(userOptional.get()));
+            return ResponseEntity.status(HttpStatus.OK).body(hasSession(userOptional.get().getId()));
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -356,14 +353,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id) {
         Optional<User> viewerOptional = repository.findById(viewerId);
-        Optional<User> userOptional = repository.findById(id);
+        Optional<UserProfileResponse> profileOptional = repository.findProfile(id);
 
-        if (userOptional.isPresent() && viewerOptional.isPresent()) {
+        if (profileOptional.isPresent() && viewerOptional.isPresent()) {
             User viewer = viewerOptional.get();
-            User user = userOptional.get();
-            UserProfileResponse response = adapter.toProfileResponse(viewer, user);
-            response.setIsOnline(hasSession(user));
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            UserProfileResponse profile = profileOptional.get();
+
+            profile.setPostList(postRepository.findByProfileOrdered(profile.getId(), PAGEABLE));
+            profile.setLikedGenres(genreRepository.findByProfile(profile.getId()));
+            profile.setRoles(roleRepository.findByProfile(profile.getId()));
+
+            Optional<GroupSimpleResponse> groupOptional = groupRepository.findByProfile(profile.getId());
+            profile.setGroup(groupOptional.isPresent() ? groupOptional.get() : null);
+
+            profile.getPostList().forEach(p -> p.setHasLiked(viewer.getLikedPosts().stream()
+                    .anyMatch(lp -> lp.getId().equals(p.getId()))));
+            profile.setViewerProfile(viewerId.equals(profile.getId()));
+            profile.setIsOnline(hasSession(profile.getId()));
+            return ResponseEntity.status(HttpStatus.OK).body(profile);
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -378,9 +385,9 @@ public class UserServiceImpl implements UserService {
                 ResponseEntity.status(HttpStatus.OK).body(foundUsers);
     }
 
-    private Boolean hasSession(User user) {
+    private Boolean hasSession(Long id) {
         for (UserLoginResponse ulr: sessions) {
-            if (ulr.getId().equals(user.getId())){
+            if (ulr.getId().equals(id)){
                 return true;
             }
         }

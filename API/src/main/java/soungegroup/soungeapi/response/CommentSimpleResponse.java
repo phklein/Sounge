@@ -4,6 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import soungegroup.soungeapi.model.User;
+import soungegroup.soungeapi.util.Mapper;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -24,4 +29,16 @@ public class CommentSimpleResponse {
     @Schema(description = "Usuário dono do comentário",
             oneOf = UserSimpleResponse.class)
     private UserSimpleResponse user;
+
+    public CommentSimpleResponse(Long id,
+                                 String text,
+                                 String mediaUrl,
+                                 LocalDateTime postDateTime,
+                                 User user) {
+        this.id = id;
+        this.text = text;
+        this.mediaUrl = mediaUrl;
+        this.hoursPast = Duration.between(postDateTime, LocalDateTime.now()).toHours();
+        this.user = Mapper.INSTANCE.map(user, UserSimpleResponse.class);
+    }
 }

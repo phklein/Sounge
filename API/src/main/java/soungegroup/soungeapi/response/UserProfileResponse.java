@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import soungegroup.soungeapi.enums.SkillLevel;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Data
@@ -25,10 +27,6 @@ public class UserProfileResponse {
     @Schema(description = "Usuário é ou não é líder do grupo em que está",
             example = "true")
     private boolean isLeader;
-    @ArraySchema(uniqueItems = true, arraySchema =
-    @Schema(description = "Posts feitos pelo usuário",
-            oneOf = PostSimpleResponse.class))
-    private List<PostSimpleResponse> postList;
     @Schema(description = "ID do spotify do usuário",
             example = "exemplo-id-spotify-123")
     private String spotifyID;
@@ -57,4 +55,26 @@ public class UserProfileResponse {
     private Integer age;
     @Schema(description = "É ou não é o perfil do visualizador")
     private boolean isViewerProfile;
+    @ArraySchema(uniqueItems = true, arraySchema =
+    @Schema(description = "Posts feitos pelo usuário",
+            oneOf = PostSimpleResponse.class))
+    private List<PostSimpleResponse> postList;
+
+    public UserProfileResponse(Long id,
+                               String name,
+                               String profilePic,
+                               boolean isLeader,
+                               String spotifyID,
+                               String description,
+                               SkillLevel skillLevel,
+                               LocalDate birthDate) {
+        this.id = id;
+        this.name = name;
+        this.profilePic = profilePic;
+        this.isLeader = isLeader;
+        this.spotifyID = spotifyID;
+        this.description = description;
+        this.skillLevel = skillLevel;
+        this.age = Period.between(birthDate, LocalDate.now()).getYears();
+    }
 }

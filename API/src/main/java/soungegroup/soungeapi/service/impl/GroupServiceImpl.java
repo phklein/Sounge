@@ -7,15 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.GroupAdapter;
 import soungegroup.soungeapi.model.Group;
+import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.repository.GroupRepository;
+import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.GroupPageUpdateRequest;
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.request.PictureUpdateRequest;
-import soungegroup.soungeapi.response.GroupCsvResponse;
 import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
-import soungegroup.soungeapi.util.ListaObj;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +26,8 @@ public class GroupServiceImpl implements GroupService {
     private static final Pageable PAGEABLE = Pageable.ofSize(50);
 
     private final GroupRepository repository;
+    private final GenreRepository genreRepository;
+    private final UserRepository userRepository;
     private final GroupAdapter adapter;
 
     @Override
@@ -41,12 +43,19 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseEntity<GroupPageResponse> findById(Long id) {
-        Optional<Group> groupOptional = repository.findById(id);
+    public ResponseEntity<GroupPageResponse> findPageById(Long id) {
+        Optional<GroupPageResponse> pageOptional = repository.findPage(id);
 
-        return groupOptional.isPresent() ?
-                ResponseEntity.status(HttpStatus.OK).body(adapter.toPageResponse(groupOptional.get())) :
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (pageOptional.isPresent()) {
+            GroupPageResponse page = pageOptional.get();
+
+            page.setGenres(genreRepository.findByPage(page.getId()));
+            page.setUsers(userRepository.findByPage(page.getId()));
+
+            return ResponseEntity.status(HttpStatus.OK).body(page);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override
@@ -66,27 +75,6 @@ public class GroupServiceImpl implements GroupService {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    @Override
-    public ResponseEntity<String> export() {
-        List<GroupCsvResponse> groups = repository.findAllCsv(PAGEABLE);
-        ListaObj<GroupCsvResponse> responseObj = new ListaObj<>(groups.size());
-        for (GroupCsvResponse csv: groups) {
-            responseObj.adiciona(csv);
-        }
-        StringBuilder report = new StringBuilder();
-        for (int i = 0; i < responseObj.getTamanho(); i++) {
-            GroupCsvResponse g = responseObj.getElemento(i);
-            report.append(String.format("%d;%s;%s;%s\r%n",
-                    g.getId(), g.getName(), g.getDescription(), g.getCreationDate()));
-        }
-        return groups.isEmpty() ?
-                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                ResponseEntity.status(HttpStatus.OK)
-                        .header("content-type", "text/csv")
-                        .header("content-disposition", "filename=\"groups.csv\"")
-                        .body(report.toString());
     }
 
     @Override

@@ -218,7 +218,7 @@ public class UserController {
         return service.leaveGroup(id);
     }
 
-    @PostMapping("/{id}/genres/{genreName}")
+    @PostMapping("/{id}/genres")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Adicionar gênero musical aos interesses do usuário",
             description = "Adicionar um gênero musical aos interesses do usuário, caso não exista lá")
     @ApiResponses(value = {
@@ -228,11 +228,11 @@ public class UserController {
             @ApiResponse(responseCode = "405", description = "Gênero já está na lista")
     })
     public ResponseEntity<Void> addGenre(@PathVariable Long id,
-                                         @PathVariable GenreName genreName) {
+                                         @RequestParam GenreName genreName) {
         return service.addGenre(id, genreName);
     }
 
-    @DeleteMapping("/{id}/genres/{genreName}")
+    @DeleteMapping("/{id}/genres}")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Remover gênero musical dos interesses do usuário",
             description = "Remove um gênero musical dos interesses do usuário, caso exista lá")
     @ApiResponses(value = {
@@ -241,11 +241,11 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public ResponseEntity<Void> removeGenre(@PathVariable Long id,
-                                            @PathVariable GenreName genreName) {
+                                            @RequestParam GenreName genreName) {
         return service.removeGenre(id, genreName);
     }
 
-    @PostMapping("/{id}/roles/{roleName}")
+    @PostMapping("/{id}/roles")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Adicionar função ao usuário",
             description = "Adicionar uma função ao usuário, caso não exista lá")
     @ApiResponses(value = {
@@ -255,11 +255,11 @@ public class UserController {
             @ApiResponse(responseCode = "405", description = "Função já está na lista")
     })
     public ResponseEntity<Void> addRole(@PathVariable Long id,
-                                        @PathVariable RoleName roleName) {
+                                        @RequestParam RoleName roleName) {
         return service.addRole(id, roleName);
     }
 
-    @DeleteMapping("/{id}/roles/{roleName}")
+    @DeleteMapping("/{id}/roles")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Remover função do usuário",
             description = "Remove uma função do usuário, caso exista lá")
     @ApiResponses(value = {
@@ -268,7 +268,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public ResponseEntity<Void> removeRole(@PathVariable Long id,
-                                           @PathVariable RoleName roleName) {
+                                           @RequestParam RoleName roleName) {
         return service.removeRole(id, roleName);
     }
 

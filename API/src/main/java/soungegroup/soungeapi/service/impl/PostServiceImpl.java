@@ -9,7 +9,6 @@ import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.model.Post;
 import soungegroup.soungeapi.model.User;
-import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.repository.PostRepository;
 import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.PostSaveRequest;
@@ -28,7 +27,6 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository repository;
     private final UserRepository userRepository;
-    private final GenreRepository genreRepository;
     private final PostAdapter adapter;
 
     @Override
@@ -50,20 +48,31 @@ public class PostServiceImpl implements PostService {
                                                             Optional<LocalDateTime> startDateTime,
                                                             Optional<LocalDateTime> endDateTime,
                                                             Optional<String> textLike) {
-        Optional<User> userOptional = Optional.empty();
-        List<Post> foundPosts;
+        List<PostSimpleResponse> foundPosts;
 
         if (userId.isPresent()) {
-            userOptional = userRepository.findById(userId.get());
+            Optional<User> userOptional = userRepository.findById(userId.get());
 
             if (userOptional.isPresent()) {
-                 User user = userOptional.get();
+                User user = userOptional.get();
 
-                foundPosts = repository.findAllFilteredByUserOrdered(
-                            user.getLikedGenres(),
-                            user.getLikedUsers(),
-                            PAGEABLE
-                );
+                foundPosts = genreName.isEmpty() && startDateTime.isEmpty() &&
+                        endDateTime.isEmpty() && textLike.isEmpty() ?
+                        repository.findAllFilteredByUserOrdered(
+                                user.getLikedGenres(),
+                                user.getLikedUsers(),
+                                PAGEABLE
+                        ) :
+                        repository.findAllFilteredOrdered(
+                                genreName.orElse(null),
+                                startDateTime.orElse(null),
+                                endDateTime.orElse(null),
+                                textLike.orElse(null),
+                                PAGEABLE
+                        );
+
+                foundPosts.forEach(p -> p.setHasLiked(user.getLikedPosts().stream()
+                        .anyMatch(lp -> lp.getId().equals(p.getId()))));
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
@@ -79,8 +88,7 @@ public class PostServiceImpl implements PostService {
 
         return foundPosts.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                ResponseEntity.status(HttpStatus.OK).body(
-                        adapter.toSimpleResponse(foundPosts, userOptional));
+                ResponseEntity.status(HttpStatus.OK).body(foundPosts);
     }
 
     @Override
