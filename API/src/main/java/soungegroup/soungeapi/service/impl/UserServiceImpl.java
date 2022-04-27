@@ -13,9 +13,11 @@ import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.*;
 import soungegroup.soungeapi.service.UserService;
 import soungegroup.soungeapi.util.ListaObj;
+import soungegroup.soungeapi.util.LocationUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,8 +32,11 @@ public class UserServiceImpl implements UserService {
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
+
     private final UserAdapter adapter;
     private final List<UserLoginResponse> sessions;
+
+    private final LocationUtil locationUtil;
 
     @Override
     public ResponseEntity<UserLoginResponse> saveAndLogin(UserSaveRequest body) {
@@ -456,6 +461,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<List<UserMatchResponse>> findMatchList(Long userId,
+                                                                 Integer maxDistance,
                                                                  Optional<Integer> minAge,
                                                                  Optional<Integer> maxAge,
                                                                  Optional<RoleName> roleName,
@@ -490,8 +496,35 @@ public class UserServiceImpl implements UserService {
                 u.setLikedGenres(genreRepository.findByUserId(u.getId()));
                 u.setRoles(roleRepository.findByUserId(u.getId()));
                 u.setIsOnline(hasSession(u.getId()));
-                u.setRelevance(0D);
+                u.setDistance(locationUtil.distance(
+                        user.getLatitude(), user.getLongitude(),
+                        u.latitude(), u.longitude()
+                ));
+
+                // Calculate relevance, +2 if has signature
+                double relevance = u.isHasSignature() ? 2 : 0;
+
+                // 5 - 0.20 for each km away
+                relevance += (5 - (u.getDistance() * 0.2));
+
+                // +0.5 for each matching genre
+                relevance += 0.5 * u.getLikedGenres().stream().filter(g ->
+                        user.getLikedGenres().stream().anyMatch(ug ->
+                                ug.getId().equals(g.getId()))
+                ).count();
+
+                // +0.5 for each matching roles
+                relevance += 0.25 * u.getRoles().stream().filter(r ->
+                        user.getRoles().stream().anyMatch(ur ->
+                                ur.getId().equals(r.getId()))
+                ).count();
+
+                u.setRelevance(relevance);
             });
+
+            matchList = matchList.stream()
+                    .sorted(Comparator.comparing(UserMatchResponse::getRelevance).reversed())
+                    .collect(Collectors.toList());
 
             return matchList.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :

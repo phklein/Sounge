@@ -4,22 +4,15 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class LatitudeValidator implements
-        ConstraintValidator<Latitude, String> {
+        ConstraintValidator<Latitude, Double> {
 
     @Override
     public void initialize(Latitude latitude) {}
 
     @Override
-    public boolean isValid(String latitude, ConstraintValidatorContext cxt) {
-        double value;
-
+    public boolean isValid(Double latitude, ConstraintValidatorContext cxt) {
         if (latitude != null) {
-            try {
-                value = Double.parseDouble(latitude);
-                return value >= -90 && value <= 90;
-            } catch (NumberFormatException e) {
-                return false;
-            }
+            return latitude >= -90 && latitude <= 90;
         }
 
         return false;

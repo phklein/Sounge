@@ -4,22 +4,15 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class LongitudeValidator implements
-        ConstraintValidator<Longitude, String> {
+        ConstraintValidator<Longitude, Double> {
 
     @Override
     public void initialize(Longitude longitude) {}
 
     @Override
-    public boolean isValid(String longitude, ConstraintValidatorContext cxt) {
-        double value;
-
+    public boolean isValid(Double longitude, ConstraintValidatorContext cxt) {
         if (longitude != null) {
-            try {
-                value = Double.parseDouble(longitude);
-                return value >= -180 && value <= 180;
-            } catch (NumberFormatException e) {
-                return false;
-            }
+            return longitude >= -180 && longitude <= 180;
         }
 
         return false;

@@ -22,6 +22,6 @@ public class Role {
     @Column(name = "role_name") private RoleName name;
 
     // Many roles are associated to many artists
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private List<User> users;
 }

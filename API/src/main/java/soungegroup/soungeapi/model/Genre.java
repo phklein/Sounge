@@ -22,14 +22,14 @@ public class Genre {
     @Column(name = "genre_name") private GenreName name;
 
     // Many genres are liked by many users
-    @ManyToMany(mappedBy = "likedGenres", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "likedGenres", fetch = FetchType.LAZY)
     private List<User> usersWhoLike;
 
     // Many genres are associated to many posts
-    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private List<Post> posts;
 
     // Many genres are associated to many groups
-    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private List<Group> groups;
 }

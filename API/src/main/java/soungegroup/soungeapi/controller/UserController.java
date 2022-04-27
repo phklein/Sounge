@@ -79,12 +79,13 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
     })
     public ResponseEntity<List<UserMatchResponse>> findMatchList(@RequestParam Long userId,
+                                                                 @RequestParam Integer maxDistance,
                                                                  @RequestParam Optional<Integer> minAge,
                                                                  @RequestParam Optional<Integer> maxAge,
                                                                  @RequestParam Optional<RoleName> roleName,
                                                                  @RequestParam Optional<Sex> sex,
                                                                  @RequestParam Optional<SkillLevel> skillLevel) {
-        return service.findMatchList(userId, minAge, maxAge, roleName, sex , skillLevel);
+        return service.findMatchList(userId, maxDistance, minAge, maxAge, roleName, sex , skillLevel);
     }
 
     @PostMapping("/auth")

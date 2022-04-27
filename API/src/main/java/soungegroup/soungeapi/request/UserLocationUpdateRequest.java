@@ -13,10 +13,10 @@ public class UserLocationUpdateRequest {
     @Latitude
     @Schema(description = "Latitude nova",
             example = "-23.558029632001297")
-    private String latitude;
+    private Double latitude;
     @NotNull
     @Longitude
     @Schema(description = "Longitude nova",
             example = "-46.66029420331474")
-    private String longitude;
+    private Double longitude;
 }

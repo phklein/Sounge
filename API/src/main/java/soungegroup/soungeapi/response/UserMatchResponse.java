@@ -10,9 +10,7 @@ import soungegroup.soungeapi.model.Signature;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -72,10 +70,10 @@ public class UserMatchResponse {
     private boolean hasSignature;
 
     @Getter(AccessLevel.NONE)
-    private String latitude;
+    private Double latitude;
 
     @Getter(AccessLevel.NONE)
-    private String longitude;
+    private Double longitude;
 
     public UserMatchResponse(Long id,
                              String name,
@@ -83,8 +81,8 @@ public class UserMatchResponse {
                              boolean isLeader,
                              State state,
                              String city,
-                             String latitude,
-                             String longitude,
+                             Double latitude,
+                             Double longitude,
                              String spotifyID,
                              String description,
                              Signature signature,
@@ -105,11 +103,11 @@ public class UserMatchResponse {
         this.age = Period.between(birthDate, LocalDate.now()).getYears();
     }
 
-    public Map<String, String> coordinates() {
-        HashMap<String, String> coordinates = new HashMap<>();
-        coordinates.put("latitude", this.latitude);
-        coordinates.put("longitude", this.longitude);
-        return coordinates;
+    public Double latitude() {
+        return this.latitude;
     }
 
+    public Double longitude() {
+        return this.longitude;
+    }
 }

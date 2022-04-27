@@ -38,10 +38,10 @@ public class UserCsvResponse {
     private String city;
     @Schema(description = "Latitude do usuário (último registro coletado)",
             example = "-23.55793998778981")
-    private String latitude;
+    private Double latitude;
     @Schema(description = "Longitude do usuário (último registro coletado)",
             example = "-46.66155946066814")
-    private String longitude;
+    private Double longitude;
     @Schema(description = "Usuário é ou não é líder do grupo em que está",
             example = "São Paulo")
     private boolean isLeader;

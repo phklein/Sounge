@@ -31,8 +31,8 @@ public class User {
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "user_state") private State state;
     @Column(name = "user_city") private String city;
-    @Column(name = "user_latitude") private String latitude;
-    @Column(name = "user_longitude") private String longitude;
+    @Column(name = "user_latitude") private Double latitude;
+    @Column(name = "user_longitude") private Double longitude;
     @Column(name = "user_leader") private boolean leader;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "user_skill_level") private SkillLevel skillLevel;
