@@ -504,16 +504,16 @@ public class UserServiceImpl implements UserService {
                 // Calculate relevance, +2 if has signature
                 double relevance = u.isHasSignature() ? 2 : 0;
 
-                // 5 - 0.20 for each km away
-                relevance += (5 - (u.getDistance() * 0.2));
+                // 10 - 0.20 for each km away
+                relevance += (10 - (u.getDistance() * 0.2));
 
                 // +0.5 for each matching genre
                 relevance += 0.5 * u.getLikedGenres().stream().filter(g ->
                         user.getLikedGenres().stream().anyMatch(ug ->
                                 ug.getId().equals(g.getId()))).count();
 
-                // +0.25 for each matching roles
-                relevance += 0.25 * u.getRoles().stream().filter(r ->
+                // +0.5 for each matching roles
+                relevance += 0.5 * u.getRoles().stream().filter(r ->
                         user.getRoles().stream().anyMatch(ur ->
                                 ur.getId().equals(r.getId()))).count();
 

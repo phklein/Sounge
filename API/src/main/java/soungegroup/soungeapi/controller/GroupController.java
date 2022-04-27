@@ -7,15 +7,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import soungegroup.soungeapi.enums.GenreName;
+import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.request.GroupPageUpdateRequest;
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.request.PictureUpdateRequest;
+import soungegroup.soungeapi.response.GroupMatchResponse;
 import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/groups")
@@ -44,6 +48,23 @@ public class GroupController {
     })
     public ResponseEntity<GroupPageResponse> findById(@PathVariable Long id) {
         return service.findPageById(id);
+    }
+
+    @GetMapping("/match")
+    @Operation(tags = {"Grupos - Consultas"}, summary = "Buscar grupos para match",
+            description = "Busca grupos de acordo com os filtros e relevância para o usuário")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
+    })
+    public ResponseEntity<List<GroupMatchResponse>> findMatchList(@RequestParam Long userId,
+                                                                  @RequestParam Integer maxDistance,
+                                                                  @RequestParam Optional<GenreName> genreName,
+                                                                  @RequestParam Optional<Integer> minSize,
+                                                                  @RequestParam Optional<Integer> maxSize,
+                                                                  @RequestParam Optional<RoleName> missingRoleName) {
+        return service.findMatchList(userId, maxDistance, genreName, minSize, maxSize, missingRoleName);
     }
 
     @GetMapping

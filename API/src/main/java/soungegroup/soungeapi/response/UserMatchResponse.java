@@ -46,7 +46,7 @@ public class UserMatchResponse {
     @Schema(description = "Nível de experiência do usuário com música",
             example = "ADVANCED")
     private SkillLevel skillLevel;
-    @Schema(description = "Nível de experiência do usuário com música",
+    @Schema(description = "Grupo do usuário",
             oneOf = GroupSimpleResponse.class)
     private GroupSimpleResponse group;
     @ArraySchema(uniqueItems = true, minItems = 1, arraySchema =

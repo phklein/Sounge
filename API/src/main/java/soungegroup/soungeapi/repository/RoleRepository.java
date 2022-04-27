@@ -17,4 +17,11 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
             "JOIN r.users u " +
             "WHERE u.id = :id")
     List<RoleSimpleResponse> findByUserId(Long id);
+
+    @Query("SELECT new soungegroup.soungeapi.response.RoleSimpleResponse(r.id, r.name) " +
+            "FROM Role r " +
+            "JOIN r.users u " +
+            "JOIN u.group g " +
+            "WHERE g.id = :id")
+    List<RoleSimpleResponse> findByGroupId(Long id);
 }

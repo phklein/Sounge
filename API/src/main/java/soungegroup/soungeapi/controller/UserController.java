@@ -72,10 +72,11 @@ public class UserController {
     }
 
     @GetMapping("/match")
-    @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar perfil de usuário pelo ID",
-            description = "Verifica se o usuário existe pelo Id, e retorna o perfil dele")
+    @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar perfis para match",
+            description = "Busca perfis de acordo com os filtros e relevância para o usuário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
     })
     public ResponseEntity<List<UserMatchResponse>> findMatchList(@RequestParam Long userId,

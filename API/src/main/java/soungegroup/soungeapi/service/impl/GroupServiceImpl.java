@@ -6,20 +6,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.GroupAdapter;
+import soungegroup.soungeapi.enums.GenreName;
+import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.model.Group;
 import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.repository.GroupRepository;
+import soungegroup.soungeapi.repository.RoleRepository;
 import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.GroupPageUpdateRequest;
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.request.PictureUpdateRequest;
+import soungegroup.soungeapi.response.GroupMatchResponse;
 import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
+import soungegroup.soungeapi.util.LocationUtil;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +35,12 @@ public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository repository;
     private final GenreRepository genreRepository;
+    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+
     private final GroupAdapter adapter;
+
+    private final LocationUtil locationUtil;
 
     @Override
     public ResponseEntity<Long> save(GroupSaveRequest body) {
@@ -59,6 +70,68 @@ public class GroupServiceImpl implements GroupService {
             page.setUsers(userRepository.findByGroupId(page.getId()));
 
             return ResponseEntity.status(HttpStatus.OK).body(page);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<GroupMatchResponse>> findMatchList(Long userId,
+                                                                  Integer maxDistance,
+                                                                  Optional<GenreName> genreName,
+                                                                  Optional<Integer> minSize,
+                                                                  Optional<Integer> maxSize,
+                                                                  Optional<RoleName> missingRoleName) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            List<GroupMatchResponse> matchList = repository.findMatchList(
+                    user.getId(),
+                    user.getLikedUsers().isEmpty() ? null : user.getLikedUsers(),
+                    genreName.orElse(null),
+                    minSize.orElse(null),
+                    maxSize.orElse(null),
+                    missingRoleName.orElse(null),
+                    PAGEABLE
+            );
+
+            matchList.forEach(gp -> {
+                gp.setRolesFilled(roleRepository.findByGroupId(gp.getId()));
+                gp.setGenres(genreRepository.findByGroupId(gp.getId()));
+                gp.setLeaderDistance(locationUtil.distance(
+                        user.getLatitude(), user.getLongitude(),
+                        gp.latitude(), gp.longitude()
+                ));
+
+                // Calculate relevance, +2 if has signature
+                double relevance = gp.isLeaderHasSignature() ? 2 : 0;
+
+                // 5 - 0.20 for each km away
+                relevance += (5 - (gp.getLeaderDistance() * 0.2));
+
+                // +0.5 for each matching genre
+                relevance += 0.5 * gp.getGenres().stream().filter(g ->
+                        user.getLikedGenres().stream().anyMatch(ug ->
+                                ug.getId().equals(g.getId()))).count();
+
+                // +0.5 for each missing role that user has
+                relevance += 0.5 * user.getRoles().stream().filter(r ->
+                        gp.getRolesFilled().stream().noneMatch(rf ->
+                                rf.getId().equals(r.getId()))).count();
+
+                gp.setRelevance(relevance);
+            });
+
+            matchList = matchList.stream()
+                    .filter(u -> u.getLeaderDistance() <= maxDistance)
+                    .sorted(Comparator.comparing(GroupMatchResponse::getRelevance).reversed())
+                    .collect(Collectors.toList());
+
+            return matchList.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(matchList);
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
