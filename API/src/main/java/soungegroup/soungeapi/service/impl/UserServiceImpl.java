@@ -510,19 +510,18 @@ public class UserServiceImpl implements UserService {
                 // +0.5 for each matching genre
                 relevance += 0.5 * u.getLikedGenres().stream().filter(g ->
                         user.getLikedGenres().stream().anyMatch(ug ->
-                                ug.getId().equals(g.getId()))
-                ).count();
+                                ug.getId().equals(g.getId()))).count();
 
-                // +0.5 for each matching roles
+                // +0.25 for each matching roles
                 relevance += 0.25 * u.getRoles().stream().filter(r ->
                         user.getRoles().stream().anyMatch(ur ->
-                                ur.getId().equals(r.getId()))
-                ).count();
+                                ur.getId().equals(r.getId()))).count();
 
                 u.setRelevance(relevance);
             });
 
             matchList = matchList.stream()
+                    .filter(u -> u.getDistance() <= maxDistance)
                     .sorted(Comparator.comparing(UserMatchResponse::getRelevance).reversed())
                     .collect(Collectors.toList());
 
