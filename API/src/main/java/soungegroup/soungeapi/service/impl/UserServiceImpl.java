@@ -464,7 +464,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<List<UserMatchResponse>> findMatchList(Long userId,
+    public ResponseEntity<List<UserSimpleResponse>> findContactList(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<UserSimpleResponse> contacts = repository.findContactList(user, PAGEABLE);
+
+            return contacts.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(contacts);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<UserMatchResponse>> findMatchList(Long id,
                                                                  Integer maxDistance,
                                                                  Optional<Integer> minAge,
                                                                  Optional<Integer> maxAge,
@@ -472,7 +488,7 @@ public class UserServiceImpl implements UserService {
                                                                  Optional<RoleName> roleName,
                                                                  Optional<Sex> sex,
                                                                  Optional<SkillLevel> skillLevel) {
-        Optional<User> userOptional = repository.findById(userId);
+        Optional<User> userOptional = repository.findById(id);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();

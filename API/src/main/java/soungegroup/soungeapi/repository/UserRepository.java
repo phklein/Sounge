@@ -47,6 +47,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.UserSimpleResponse(" +
             "u.id, u.name, u.profilePic, u.leader) " +
             "FROM User u " +
+            "WHERE :user IN u.likedUsers " +
+            "AND :user IN u.usersWhoLiked")
+    List<UserSimpleResponse> findContactList(User user, Pageable pageable);
+
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.UserSimpleResponse(" +
+            "u.id, u.name, u.profilePic, u.leader) " +
+            "FROM User u " +
             "WHERE LOWER(u.name) LIKE CONCAT('%', LOWER(:nameLike), '%')")
     List<UserSimpleResponse> findByName(String nameLike, Pageable pageable);
 

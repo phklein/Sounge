@@ -71,7 +71,7 @@ public class UserController {
         return service.getProfileById(viewerId, id);
     }
 
-    @GetMapping("/match")
+    @GetMapping("{id}/match")
     @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar perfis para match",
             description = "Busca perfis de acordo com os filtros e relevância para o usuário")
     @ApiResponses(value = {
@@ -79,7 +79,7 @@ public class UserController {
             @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
     })
-    public ResponseEntity<List<UserMatchResponse>> findMatchList(@RequestParam Long userId,
+    public ResponseEntity<List<UserMatchResponse>> findMatchList(@PathVariable Long id,
                                                                  @RequestParam Integer maxDistance,
                                                                  @RequestParam Optional<Integer> minAge,
                                                                  @RequestParam Optional<Integer> maxAge,
@@ -87,7 +87,19 @@ public class UserController {
                                                                  @RequestParam Optional<RoleName> roleName,
                                                                  @RequestParam Optional<Sex> sex,
                                                                  @RequestParam Optional<SkillLevel> skillLevel) {
-        return service.findMatchList(userId, maxDistance, minAge, maxAge, genreName, roleName, sex , skillLevel);
+        return service.findMatchList(id, maxDistance, minAge, maxAge, genreName, roleName, sex , skillLevel);
+    }
+
+    @GetMapping("{id}/contacts")
+    @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar contatos (matches) do usuário",
+            description = "Busca os usuários que deram match")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
+    })
+    public ResponseEntity<List<UserSimpleResponse>> findContactList(@PathVariable Long id) {
+        return service.findContactList(id);
     }
 
     @PostMapping("/auth")
