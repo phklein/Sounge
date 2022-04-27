@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,9 @@ public class UserServiceImpl implements UserService {
         User user = adapter.toUser(body);
 
         if (user != null) {
+            Map<String, Double> coordinates = locationUtil.coordinates(user.getCity(), user.getState());
+            user.setLatitude(coordinates.get("lat"));
+            user.setLongitude(coordinates.get("lon"));
             user = repository.save(user);
             UserLoginResponse loginResponse = adapter.toLoginResponse(user);
 

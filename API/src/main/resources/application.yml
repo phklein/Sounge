@@ -16,3 +16,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+open-cage:
+  api-key: f71f69803a90499d86766b5e246b5072
