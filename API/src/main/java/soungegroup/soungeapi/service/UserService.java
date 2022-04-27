@@ -45,6 +45,7 @@ public interface UserService {
                                                           Integer maxDistance,
                                                           Optional<Integer> minAge,
                                                           Optional<Integer> maxAge,
+                                                          Optional<GenreName> genreName,
                                                           Optional<RoleName> roleName,
                                                           Optional<Sex> sex,
                                                           Optional<SkillLevel> skillLevel);

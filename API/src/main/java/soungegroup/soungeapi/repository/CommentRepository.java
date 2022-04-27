@@ -10,7 +10,7 @@ import soungegroup.soungeapi.response.CommentSimpleResponse;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    @Query("SELECT new soungegroup.soungeapi.response.CommentSimpleResponse(" +
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.CommentSimpleResponse(" +
             "c.id, c.text, c.mediaUrl, c.commentDateTime, c.user) " +
             "FROM Comment c " +
             "WHERE c.post = :post " +

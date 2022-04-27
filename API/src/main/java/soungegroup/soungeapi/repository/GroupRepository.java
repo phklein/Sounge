@@ -15,15 +15,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GroupRepository extends JpaRepository<Group, Long> {
-    @Query("SELECT new soungegroup.soungeapi.response.GroupMatchResponse(" +
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.GroupMatchResponse(" +
             "gp.id, l.id, gp.name, gp.profilePic, l.state, l.city, l.latitude, l.longitude, " +
-            "gp.description, l.signature, gp.creationDate) " +
+            "gp.description, SIZE(u), l.signature, gp.creationDate) " +
             "FROM Group gp " +
             "JOIN gp.genres g " +
             "JOIN gp.users l ON l.leader = TRUE " +
             "JOIN gp.users u " +
             "JOIN u.roles r " +
-            "WHERE l.id != :userId " +
+            "WHERE u.id <> :userId " +
             "AND (l NOT IN :likedUsers OR :likedUsers IS NULL) " +
             "AND (g.name = :genreName OR :genreName IS NUll)  " +
             "AND (SIZE(u) >= :minSize OR :minSize IS NUll)  " +
@@ -37,19 +37,19 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
                                            RoleName missingRoleName,
                                            Pageable pageable);
 
-    @Query("SELECT new soungegroup.soungeapi.response.GroupSimpleResponse(" +
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.GroupSimpleResponse(" +
             "g.id, g.name, g.profilePic) " +
             "FROM Group g " +
             "WHERE LOWER(g.name) LIKE CONCAT('%', LOWER(:nameLike), '%')")
     List<GroupSimpleResponse> findByName(String nameLike, Pageable pageable);
 
-    @Query("SELECT new soungegroup.soungeapi.response.GroupPageResponse(" +
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.GroupPageResponse(" +
             "g.id, g.name, g.description, g.creationDate, g.profilePic, g.banner) " +
             "FROM Group g " +
             "WHERE g.id = :id")
     Optional<GroupPageResponse> findPage(Long id);
 
-    @Query("SELECT new soungegroup.soungeapi.response.GroupSimpleResponse(" +
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.GroupSimpleResponse(" +
             "g.id, g.name, g.profilePic) " +
             "FROM Group g " +
             "JOIN g.users u " +

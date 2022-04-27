@@ -12,13 +12,13 @@ import java.util.Optional;
 public interface GenreRepository extends JpaRepository<Genre, Long> {
     Optional<Genre> findByName(GenreName name);
 
-    @Query("SELECT new soungegroup.soungeapi.response.GenreSimpleResponse(g.id, g.name) " +
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.GenreSimpleResponse(g.id, g.name) " +
             "FROM Genre g " +
             "JOIN g.usersWhoLike u " +
             "WHERE u.id = :id")
     List<GenreSimpleResponse> findByUserId(Long id);
 
-    @Query("SELECT new soungegroup.soungeapi.response.GenreSimpleResponse(g.id, g.name) " +
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.GenreSimpleResponse(g.id, g.name) " +
             "FROM Genre g " +
             "JOIN g.groups gr " +
             "WHERE gr.id = :id")

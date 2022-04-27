@@ -3,6 +3,7 @@ package soungegroup.soungeapi.response;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import soungegroup.soungeapi.enums.Sex;
 import soungegroup.soungeapi.enums.SkillLevel;
 import soungegroup.soungeapi.enums.State;
 import soungegroup.soungeapi.model.Signature;
@@ -25,9 +26,11 @@ public class UserMatchResponse {
     @Schema(description = "URL da foto do usuário",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
     private String profilePic;
-    @Schema(description = "Usuário é ou não é líder do grupo em que está",
-            example = "true")
+    @Schema(description = "Usuário é ou não é líder do grupo em que está")
     private boolean isLeader;
+    @Schema(description = "Sexo do usuário",
+            example = "MALE")
+    private Sex sex;
     @Schema(description = "Estado de residência do usuário",
             example = "SP")
     private State state;
@@ -79,6 +82,7 @@ public class UserMatchResponse {
                              String name,
                              String profilePic,
                              boolean isLeader,
+                             Sex sex,
                              State state,
                              String city,
                              Double latitude,
@@ -92,6 +96,7 @@ public class UserMatchResponse {
         this.name = name;
         this.profilePic = profilePic;
         this.isLeader = isLeader;
+        this.sex = sex;
         this.state = state;
         this.city = city;
         this.latitude = latitude;

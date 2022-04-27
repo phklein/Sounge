@@ -40,6 +40,9 @@ public class GroupMatchResponse {
     @Schema(description = "Gêneros musicais relacionados à banda",
             oneOf = GenreSimpleResponse.class))
     private List<GenreSimpleResponse> genres;
+    @Schema(description = "Tamanho da banda (quantidade de pessoas)",
+            example = "5")
+    private Integer size;
     @ArraySchema(uniqueItems = true, minItems = 1, arraySchema =
     @Schema(description = "Funções que a banda já possui",
             oneOf = RoleSimpleResponse.class))
@@ -71,6 +74,7 @@ public class GroupMatchResponse {
                               Double leaderLatitude,
                               Double leaderLongitude,
                               String description,
+                              Integer size,
                               Signature signature,
                               LocalDate creationDate) {
         this.id = id;
@@ -82,6 +86,7 @@ public class GroupMatchResponse {
         this.leaderLatitude = leaderLatitude;
         this.leaderLongitude = leaderLongitude;
         this.description = description;
+        this.size = size;
         this.leaderHasSignature = signature.getExpiryDateTime().isAfter(LocalDateTime.now());
         this.age = Period.between(creationDate, LocalDate.now()).getYears();
     }

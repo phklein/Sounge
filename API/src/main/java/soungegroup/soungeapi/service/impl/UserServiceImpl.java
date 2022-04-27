@@ -464,6 +464,7 @@ public class UserServiceImpl implements UserService {
                                                                  Integer maxDistance,
                                                                  Optional<Integer> minAge,
                                                                  Optional<Integer> maxAge,
+                                                                 Optional<GenreName> genreName,
                                                                  Optional<RoleName> roleName,
                                                                  Optional<Sex> sex,
                                                                  Optional<SkillLevel> skillLevel) {
@@ -485,6 +486,7 @@ public class UserServiceImpl implements UserService {
                     user.getLikedUsers().isEmpty() ? null : user.getLikedUsers(),
                     minBirthDate.orElse(null),
                     maxBirthDate.orElse(null),
+                    genreName.orElse(null),
                     roleName.orElse(null),
                     sex.orElse(null),
                     skillLevel.orElse(null),

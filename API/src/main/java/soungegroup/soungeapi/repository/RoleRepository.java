@@ -12,13 +12,13 @@ import java.util.Optional;
 public interface RoleRepository extends JpaRepository<Role, Long> {
     Optional<Role> findByName(RoleName name);
 
-    @Query("SELECT new soungegroup.soungeapi.response.RoleSimpleResponse(r.id, r.name) " +
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.RoleSimpleResponse(r.id, r.name) " +
             "FROM Role r " +
             "JOIN r.users u " +
             "WHERE u.id = :id")
     List<RoleSimpleResponse> findByUserId(Long id);
 
-    @Query("SELECT new soungegroup.soungeapi.response.RoleSimpleResponse(r.id, r.name) " +
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.RoleSimpleResponse(r.id, r.name) " +
             "FROM Role r " +
             "JOIN r.users u " +
             "JOIN u.group g " +

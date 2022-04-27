@@ -83,10 +83,11 @@ public class UserController {
                                                                  @RequestParam Integer maxDistance,
                                                                  @RequestParam Optional<Integer> minAge,
                                                                  @RequestParam Optional<Integer> maxAge,
+                                                                 @RequestParam Optional<GenreName> genreName,
                                                                  @RequestParam Optional<RoleName> roleName,
                                                                  @RequestParam Optional<Sex> sex,
                                                                  @RequestParam Optional<SkillLevel> skillLevel) {
-        return service.findMatchList(userId, maxDistance, minAge, maxAge, roleName, sex , skillLevel);
+        return service.findMatchList(userId, maxDistance, minAge, maxAge, genreName, roleName, sex , skillLevel);
     }
 
     @PostMapping("/auth")

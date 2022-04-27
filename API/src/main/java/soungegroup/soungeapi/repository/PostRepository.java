@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    @Query("SELECT new soungegroup.soungeapi.response.PostSimpleResponse(" +
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse(" +
             "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
             "FROM Post p " +
             "JOIN p.genres g " +
@@ -24,7 +24,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                                                           List<User> users,
                                                           Pageable pageable);
 
-    @Query("SELECT new soungegroup.soungeapi.response.PostSimpleResponse( " +
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse( " +
             "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
             "FROM Post p " +
             "JOIN p.genres g " +
@@ -39,7 +39,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                                                     String textLike,
                                                     Pageable pageable);
 
-    @Query("SELECT new soungegroup.soungeapi.response.PostSimpleResponse(" +
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse(" +
             "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
             "FROM Post p " +
             "WHERE p.user.id = :userId " +
