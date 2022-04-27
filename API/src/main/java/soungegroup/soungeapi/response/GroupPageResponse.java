@@ -37,16 +37,21 @@ public class GroupPageResponse {
     @Schema(description = "URL da foto do grupo",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
     private String pictureUrl;
+    @Schema(description = "URL da foto do banner",
+            example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
+    private String banner;
 
     public GroupPageResponse(Long id,
                              String name,
                              String description,
                              LocalDate creationDate,
-                             String pictureUrl) {
+                             String pictureUrl,
+                             String banner) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.age = Period.between(creationDate, LocalDate.now()).getYears();
         this.pictureUrl = pictureUrl;
+        this.banner = banner;
     }
 }

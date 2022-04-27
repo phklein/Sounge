@@ -12,18 +12,19 @@ import java.util.Optional;
 
 public interface GroupRepository extends JpaRepository<Group, Long> {
     @Query("SELECT new soungegroup.soungeapi.response.GroupSimpleResponse(" +
-            "g.id, g.name, g.pictureUrl) " +
+            "g.id, g.name, g.profilePic) " +
             "FROM Group g " +
             "WHERE LOWER(g.name) LIKE CONCAT('%', LOWER(:nameLike), '%')")
     List<GroupSimpleResponse> findByName(String nameLike, Pageable pageable);
 
     @Query("SELECT new soungegroup.soungeapi.response.GroupPageResponse(" +
-            "g.id, g.name, g.description, g.creationDate, g.pictureUrl) " +
+            "g.id, g.name, g.description, g.creationDate, g.profilePic, g.banner) " +
             "FROM Group g " +
             "WHERE g.id = :id")
     Optional<GroupPageResponse> findPage(Long id);
 
-    @Query("SELECT new soungegroup.soungeapi.response.GroupSimpleResponse(g.id, g.name, g.pictureUrl) " +
+    @Query("SELECT new soungegroup.soungeapi.response.GroupSimpleResponse(" +
+            "g.id, g.name, g.profilePic) " +
             "FROM Group g " +
             "JOIN g.users u " +
             "WHERE u.id = :id")

@@ -32,6 +32,7 @@ public interface UserService {
     ResponseEntity<Void> removeRole(Long id, RoleName roleName);
 
     ResponseEntity<Void> updateSignature(Long id, SignatureType signatureType);
+    ResponseEntity<Void> updateLocation(Long id, UserLocationUpdateRequest body);
 
     ResponseEntity<Void> updateProfilePage(Long id, UserProfileUpdateRequest body);
     ResponseEntity<Void> updatePicture(Long id, PictureUpdateRequest body);

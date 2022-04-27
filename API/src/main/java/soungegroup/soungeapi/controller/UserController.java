@@ -148,6 +148,19 @@ public class UserController {
         return service.updatePicture(id, body);
     }
 
+    @PatchMapping("/{id}/location")
+    @Operation(tags = {"Usuários - Criação e edição"}, summary = "Atualizar localização do usuário",
+            description = "Atualiza a latitude e longitude do usuário")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Informações inválidas"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
+    public ResponseEntity<Void> updateLocation(@PathVariable Long id,
+                                               @RequestBody @Valid UserLocationUpdateRequest body) {
+        return service.updateLocation(id, body);
+    }
+
     @PatchMapping("/{id}/password")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Atualizar senha do usuário",
             description = "Atualiza a senha do usuário")

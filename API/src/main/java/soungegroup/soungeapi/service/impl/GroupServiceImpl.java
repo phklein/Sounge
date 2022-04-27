@@ -109,7 +109,8 @@ public class GroupServiceImpl implements GroupService {
 
         if (groupOptional.isPresent()) {
             Group group = groupOptional.get();
-            group.setPictureUrl(body.getUrl());
+            group.setProfilePic(body.getProfilePic());
+            group.setBanner(body.getBanner());
             repository.save(group);
             return ResponseEntity.status(HttpStatus.OK).build();
         }

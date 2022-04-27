@@ -20,8 +20,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<UserLoginResponse> findUserByEmailAndPassword(String email, String password);
 
     @Query("SELECT new soungegroup.soungeapi.response.UserMatchResponse(" +
-            "u.id, u.name, u.profilePic, u.leader, u.spotifyID, u.description, " +
-            "u.signature, u.skillLevel, u.birthDate) " +
+            "u.id, u.name, u.profilePic, u.leader, u.state, u.city, u.latitude, u.longitude, " +
+            "u.spotifyID, u.description, u.signature, u.skillLevel, u.birthDate) " +
             "FROM User u " +
             "JOIN u.roles r " +
             "WHERE u.id != :userId " +
@@ -54,7 +54,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<UserSimpleResponse> findByGroupId(Long id);
 
     @Query("SELECT new soungegroup.soungeapi.response.UserProfileResponse(" +
-            "u.id, u.name, u.profilePic, u.leader, u.spotifyID, u.description, u.skillLevel, u.birthDate) " +
+            "u.id, u.name, u.profilePic, u.banner, u.leader, u.spotifyID, " +
+            "u.description, u.skillLevel, u.birthDate) " +
             "FROM User u " +
             "WHERE u.id = :id")
     Optional<UserProfileResponse> findProfile(Long id);

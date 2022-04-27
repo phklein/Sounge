@@ -16,5 +16,5 @@ public class UserProfileUpdateRequest {
     private String description;
     @Schema(description = "ID do spotify a ser inserido",
             example = "exemplo-id-spotify-123")
-    private String spotifyId;
+    private String spotifyID;
 }

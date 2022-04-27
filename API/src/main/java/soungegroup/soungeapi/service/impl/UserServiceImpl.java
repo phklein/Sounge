@@ -372,6 +372,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<Void> updateLocation(Long id, UserLocationUpdateRequest body) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            user.setLatitude(body.getLatitude());
+            user.setLongitude(body.getLongitude());
+            repository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
     public ResponseEntity<Void> delete(Long id, String password) {
         Optional<User> userOptional = repository.findById(id);
 
@@ -510,21 +525,24 @@ public class UserServiceImpl implements UserService {
 
        if (userOptional.isPresent()){
            User user = userOptional.get();
-           user.setSpotifyID(body.getSpotifyId());
+           user.setSpotifyID(body.getSpotifyID());
            user.setDescription(body.getDescription());
            user.setName(body.getName());
            repository.save(user);
            return ResponseEntity.status(HttpStatus.OK).build();
        }
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override
     public ResponseEntity<Void> updatePicture(Long id, PictureUpdateRequest body) {
         Optional<User> userOptional = repository.findById(id);
+
         if (userOptional.isPresent()){
             User user = userOptional.get();
-            user.setProfilePic(body.getUrl());
+            user.setProfilePic(body.getProfilePic());
+            user.setBanner(body.getBanner());
             repository.save(user);
             return ResponseEntity.status(HttpStatus.OK).build();
         }

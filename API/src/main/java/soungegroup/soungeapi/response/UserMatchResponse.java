@@ -2,16 +2,17 @@ package soungegroup.soungeapi.response;
 
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import soungegroup.soungeapi.enums.SkillLevel;
+import soungegroup.soungeapi.enums.State;
 import soungegroup.soungeapi.model.Signature;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -29,6 +30,12 @@ public class UserMatchResponse {
     @Schema(description = "Usuário é ou não é líder do grupo em que está",
             example = "true")
     private boolean isLeader;
+    @Schema(description = "Estado de residência do usuário",
+            example = "SP")
+    private State state;
+    @Schema(description = "Cidade de residência do usuário",
+            example = "São Paulo")
+    private String city;
     @Schema(description = "ID do spotify do usuário",
             example = "exemplo-id-spotify-123")
     private String spotifyID;
@@ -61,14 +68,23 @@ public class UserMatchResponse {
     @Schema(description = "Relevância do usuário",
             example = "2.7")
     private Double relevance;
-    @Schema(description = "Relevância do usuário",
-            example = "2.7")
+    @Schema(description = "Usuário tem ou não tem assinatura")
     private boolean hasSignature;
+
+    @Getter(AccessLevel.NONE)
+    private String latitude;
+
+    @Getter(AccessLevel.NONE)
+    private String longitude;
 
     public UserMatchResponse(Long id,
                              String name,
                              String profilePic,
                              boolean isLeader,
+                             State state,
+                             String city,
+                             String latitude,
+                             String longitude,
                              String spotifyID,
                              String description,
                              Signature signature,
@@ -78,10 +94,22 @@ public class UserMatchResponse {
         this.name = name;
         this.profilePic = profilePic;
         this.isLeader = isLeader;
+        this.state = state;
+        this.city = city;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.spotifyID = spotifyID;
         this.description = description;
         this.hasSignature = signature.getExpiryDateTime().isAfter(LocalDateTime.now());
         this.skillLevel = skillLevel;
         this.age = Period.between(birthDate, LocalDate.now()).getYears();
     }
+
+    public Map<String, String> coordinates() {
+        HashMap<String, String> coordinates = new HashMap<>();
+        coordinates.put("latitude", this.latitude);
+        coordinates.put("longitude", this.longitude);
+        return coordinates;
+    }
+
 }
