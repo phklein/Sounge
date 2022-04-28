@@ -26,13 +26,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private static final Pageable PAGEABLE = Pageable.ofSize(10);
+    private static final Pageable PAGEABLE = Pageable.ofSize(30);
 
     private final UserRepository repository;
     private final PostRepository postRepository;
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
+    private final NotificationRepository notificationRepository;
 
     private final UserAdapter adapter;
     private final List<UserLoginResponse> sessions;
@@ -102,8 +103,17 @@ public class UserServiceImpl implements UserService {
             Post post = postOptional.get();
 
             if (!user.getLikedPosts().contains(post)) {
-                user.getLikedPosts().add(postOptional.get());
+                user.getLikedPosts().add(post);
                 repository.save(user);
+
+                Notification notification = new Notification();
+                notification.setType(NotificationType.LIKE);
+                notification.setSender(user);
+                notification.setReceiver(post.getUser());
+                notification.setCreationDateTime(LocalDateTime.now());
+                notification.setText(String.format("%s deu like em seu post", user.getName()));
+                notificationRepository.save(notification);
+
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
 
@@ -147,7 +157,24 @@ public class UserServiceImpl implements UserService {
                 repository.save(liker);
 
                 if (liked.getLikedUsers().contains(liker)) {
-                    // TODO: Send notification
+                    Notification likedNotification = new Notification();
+                    likedNotification.setType(NotificationType.MATCH);
+                    likedNotification.setSender(liker);
+                    likedNotification.setReceiver(liked);
+                    likedNotification.setCreationDateTime(LocalDateTime.now());
+                    likedNotification.setText(String.format("Você sintonizou com %s", liker.getName()));
+
+                    Notification likerNotification = new Notification();
+                    likerNotification.setType(NotificationType.MATCH);
+                    likerNotification.setSender(liked);
+                    likerNotification.setReceiver(liker);
+                    likerNotification.setCreationDateTime(LocalDateTime.now());
+                    likerNotification.setText(String.format("Você sintonizou com %s", liked.getName()));
+
+                    notificationRepository.save(likedNotification);
+                    notificationRepository.save(likerNotification);
+
+                    // TODO: Send notification to liker and liked users
                 }
 
                 return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -474,6 +501,25 @@ public class UserServiceImpl implements UserService {
             return contacts.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                     ResponseEntity.status(HttpStatus.OK).body(contacts);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<NotificationSimpleResponse>> findNotifications(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<NotificationSimpleResponse> notifications =
+                    notificationRepository.findByUser(user, PAGEABLE);
+
+            notificationRepository.setViewedByUser(user);
+
+            return notifications.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(notifications);
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

@@ -18,4 +18,7 @@ public class UserLoginResponse {
     @Schema(description = "URL da foto do usuário",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
     private String profilePic;
+    @Schema(description = "Quantidade de notificações novas",
+            example = "10")
+    private Integer newNotifications;
 }

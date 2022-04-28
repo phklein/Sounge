@@ -89,4 +89,12 @@ public class User {
     // Many users are liked by many users
     @ManyToMany(mappedBy = "likedUsers", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<User> usersWhoLiked;
+
+    // One user may receive many notifications
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Notification> notificationsReceived;
+
+    // One user may send many notifications
+    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Notification> notificationsSent;
 }

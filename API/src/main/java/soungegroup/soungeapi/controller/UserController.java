@@ -9,10 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soungegroup.soungeapi.enums.*;
 import soungegroup.soungeapi.request.*;
-import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserMatchResponse;
-import soungegroup.soungeapi.response.UserProfileResponse;
-import soungegroup.soungeapi.response.UserSimpleResponse;
+import soungegroup.soungeapi.response.*;
 import soungegroup.soungeapi.service.UserService;
 
 import javax.validation.Valid;
@@ -100,6 +97,18 @@ public class UserController {
     })
     public ResponseEntity<List<UserSimpleResponse>> findContactList(@PathVariable Long id) {
         return service.findContactList(id);
+    }
+
+    @GetMapping("{id}/notifications")
+    @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar notificações do usuário",
+            description = "Busca as notificações recebidas pelo usuário")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
+    })
+    public ResponseEntity<List<NotificationSimpleResponse>> findNotifications(@PathVariable Long id) {
+        return service.findNotifications(id);
     }
 
     @PostMapping("/auth")
