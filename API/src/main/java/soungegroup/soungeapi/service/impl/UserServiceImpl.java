@@ -498,6 +498,8 @@ public class UserServiceImpl implements UserService {
             User user = userOptional.get();
             List<UserSimpleResponse> contacts = repository.findContactList(user, PAGEABLE);
 
+            notificationRepository.setMatchesViewedByUser(user);
+
             return contacts.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                     ResponseEntity.status(HttpStatus.OK).body(contacts);

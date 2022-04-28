@@ -16,9 +16,10 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.UserLoginResponse(" +
-            "u.id, u.name, u.profilePic, SIZE(n)) " +
+            "u.id, u.name, u.profilePic, u.leader, SIZE(n), SIZE(m)) " +
             "FROM User u " +
-            "LEFT JOIN u.notificationsReceived n ON n.viewed = FALSE " +
+            "LEFT JOIN u.notificationsReceived n ON n.viewed = FALSE AND n.type <> 0 " +
+            "LEFT JOIN u.notificationsReceived m ON n.viewed = FALSE AND n.type = 0 " +
             "WHERE u.email = :email AND u.password = :password")
     List<UserLoginResponse> findUserByEmailAndPassword(String email, String password);
 

@@ -57,8 +57,6 @@ public class UserAdapter {
     }
 
     public UserLoginResponse toLoginResponse(User user) {
-        UserLoginResponse response =  Mapper.INSTANCE.map(user, UserLoginResponse.class);
-        response.setNewNotifications(user.getNotificationsReceived().size());
-        return response;
+        return Mapper.INSTANCE.map(user, UserLoginResponse.class);
     }
 }
