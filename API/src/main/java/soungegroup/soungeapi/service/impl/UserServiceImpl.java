@@ -26,13 +26,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private static final Pageable PAGEABLE = Pageable.ofSize(10);
+    private static final Pageable PAGEABLE = Pageable.ofSize(30);
 
     private final UserRepository repository;
     private final PostRepository postRepository;
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
+    private final NotificationRepository notificationRepository;
 
     private final UserAdapter adapter;
     private final List<UserLoginResponse> sessions;
@@ -49,6 +50,8 @@ public class UserServiceImpl implements UserService {
             user.setLongitude(coordinates.get("lon"));
             user = repository.save(user);
             UserLoginResponse loginResponse = adapter.toLoginResponse(user);
+            loginResponse.setNewNotifications(notificationRepository.countNewByUserId(user.getId()));
+            loginResponse.setNewMatches(notificationRepository.countNewMatchesByUserId(user.getId()));
 
             sessions.add(loginResponse);
             return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
@@ -64,6 +67,8 @@ public class UserServiceImpl implements UserService {
         if (foundUsers.size() == 1) {
             UserLoginResponse user = foundUsers.get(0);
             sessions.add(user);
+            user.setNewNotifications(notificationRepository.countNewByUserId(user.getId()));
+            user.setNewMatches(notificationRepository.countNewMatchesByUserId(user.getId()));
             return ResponseEntity.status(HttpStatus.OK).body(user);
         } else if (foundUsers.size() > 1) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -102,8 +107,17 @@ public class UserServiceImpl implements UserService {
             Post post = postOptional.get();
 
             if (!user.getLikedPosts().contains(post)) {
-                user.getLikedPosts().add(postOptional.get());
+                user.getLikedPosts().add(post);
                 repository.save(user);
+
+                Notification notification = new Notification();
+                notification.setType(NotificationType.LIKE);
+                notification.setSender(user);
+                notification.setReceiver(post.getUser());
+                notification.setCreationDateTime(LocalDateTime.now());
+                notification.setText(String.format("%s deu like em seu post", user.getName()));
+                notificationRepository.save(notification);
+
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
 
@@ -147,7 +161,24 @@ public class UserServiceImpl implements UserService {
                 repository.save(liker);
 
                 if (liked.getLikedUsers().contains(liker)) {
-                    // TODO: Send notification
+                    Notification likedNotification = new Notification();
+                    likedNotification.setType(NotificationType.MATCH);
+                    likedNotification.setSender(liker);
+                    likedNotification.setReceiver(liked);
+                    likedNotification.setCreationDateTime(LocalDateTime.now());
+                    likedNotification.setText(String.format("Você sintonizou com %s", liker.getName()));
+
+                    Notification likerNotification = new Notification();
+                    likerNotification.setType(NotificationType.MATCH);
+                    likerNotification.setSender(liked);
+                    likerNotification.setReceiver(liker);
+                    likerNotification.setCreationDateTime(LocalDateTime.now());
+                    likerNotification.setText(String.format("Você sintonizou com %s", liked.getName()));
+
+                    notificationRepository.save(likedNotification);
+                    notificationRepository.save(likerNotification);
+
+                    // TODO: Send notification to liker and liked users
                 }
 
                 return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -471,9 +502,30 @@ public class UserServiceImpl implements UserService {
             User user = userOptional.get();
             List<UserSimpleResponse> contacts = repository.findContactList(user, PAGEABLE);
 
+            notificationRepository.setMatchesViewedByUser(user);
+
             return contacts.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                     ResponseEntity.status(HttpStatus.OK).body(contacts);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<NotificationSimpleResponse>> findNotifications(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<NotificationSimpleResponse> notifications =
+                    notificationRepository.findByUser(user, PAGEABLE);
+
+            notificationRepository.setViewedByUser(user);
+
+            return notifications.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(notifications);
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

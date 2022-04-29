@@ -3,10 +3,7 @@ package soungegroup.soungeapi.service;
 import org.springframework.http.ResponseEntity;
 import soungegroup.soungeapi.enums.*;
 import soungegroup.soungeapi.request.*;
-import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserMatchResponse;
-import soungegroup.soungeapi.response.UserProfileResponse;
-import soungegroup.soungeapi.response.UserSimpleResponse;
+import soungegroup.soungeapi.response.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +39,7 @@ public interface UserService {
     ResponseEntity<String> export();
     ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id);
     ResponseEntity<List<UserSimpleResponse>> findContactList(Long id);
+    ResponseEntity<List<NotificationSimpleResponse>> findNotifications(Long id);
     ResponseEntity<List<UserMatchResponse>> findMatchList(Long id,
                                                           Integer maxDistance,
                                                           Optional<Integer> minAge,
