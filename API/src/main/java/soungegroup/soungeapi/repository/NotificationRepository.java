@@ -20,6 +20,22 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
             "ORDER BY n.creationDateTime DESC")
     List<NotificationSimpleResponse> findByUser(User user, Pageable pageable);
 
+    @Query("SELECT DISTINCT COUNT(n) " +
+            "FROM Notification n " +
+            "JOIN n.receiver u " +
+            "WHERE n.viewed = FALSE " +
+            "AND u.id = :id " +
+            "AND n.type <> 0")
+    long countNewByUserId(Long id);
+
+    @Query("SELECT DISTINCT COUNT(n) " +
+            "FROM Notification n " +
+            "JOIN n.receiver u " +
+            "WHERE n.viewed = FALSE " +
+            "AND u.id = :id " +
+            "AND n.type = 0")
+    long countNewMatchesByUserId(Long id);
+
     @Modifying
     @Transactional
     @Query("UPDATE Notification n " +

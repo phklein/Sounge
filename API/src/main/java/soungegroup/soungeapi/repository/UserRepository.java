@@ -16,10 +16,8 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.UserLoginResponse(" +
-            "u.id, u.name, u.profilePic, u.leader, SIZE(n), SIZE(m)) " +
+            "u.id, u.name, u.profilePic, u.leader) " +
             "FROM User u " +
-            "LEFT JOIN u.notificationsReceived n ON n.viewed = FALSE AND n.type <> 0 " +
-            "LEFT JOIN u.notificationsReceived m ON n.viewed = FALSE AND n.type = 0 " +
             "WHERE u.email = :email AND u.password = :password")
     List<UserLoginResponse> findUserByEmailAndPassword(String email, String password);
 
@@ -31,8 +29,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "JOIN u.likedGenres g " +
             "WHERE u.id <> :userId " +
             "AND (u NOT IN :likedUsers OR :likedUsers IS NULL) " +
-            "AND (u.birthDate >= :minBirthDate OR :minBirthDate IS NUll)  " +
-            "AND (u.birthDate <= :maxBirthDate OR :maxBirthDate IS NUll)  " +
+            "AND (u.birthDate >= :minBirthDate OR :minBirthDate IS NUll) " +
+            "AND (u.birthDate <= :maxBirthDate OR :maxBirthDate IS NUll) " +
             "AND (r.name = :roleName OR :roleName IS NULL) " +
             "AND (g.name = :genreName OR :genreName IS NULL) " +
             "AND (u.sex = :sex OR :sex IS NULL) " +

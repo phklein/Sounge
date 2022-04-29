@@ -50,6 +50,8 @@ public class UserServiceImpl implements UserService {
             user.setLongitude(coordinates.get("lon"));
             user = repository.save(user);
             UserLoginResponse loginResponse = adapter.toLoginResponse(user);
+            loginResponse.setNewNotifications(notificationRepository.countNewByUserId(user.getId()));
+            loginResponse.setNewMatches(notificationRepository.countNewMatchesByUserId(user.getId()));
 
             sessions.add(loginResponse);
             return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
@@ -65,6 +67,8 @@ public class UserServiceImpl implements UserService {
         if (foundUsers.size() == 1) {
             UserLoginResponse user = foundUsers.get(0);
             sessions.add(user);
+            user.setNewNotifications(notificationRepository.countNewByUserId(user.getId()));
+            user.setNewMatches(notificationRepository.countNewMatchesByUserId(user.getId()));
             return ResponseEntity.status(HttpStatus.OK).body(user);
         } else if (foundUsers.size() > 1) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();

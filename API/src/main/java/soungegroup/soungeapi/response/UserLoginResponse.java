@@ -22,8 +22,15 @@ public class UserLoginResponse {
     private boolean leader;
     @Schema(description = "Quantidade de notificações comuns novas",
             example = "10")
-    private int newNotifications;
+    private long newNotifications;
     @Schema(description = "Quantidade de matches novos",
             example = "10")
-    private int newMatches;
+    private long newMatches;
+
+    public UserLoginResponse(Long id, String name, String profilePic, boolean leader) {
+        this.id = id;
+        this.name = name;
+        this.profilePic = profilePic;
+        this.leader = leader;
+    }
 }
