@@ -17,12 +17,12 @@ export function NavBar(props: Iprops) {
     const logout = () => {
         const queryString = window.location.search
         const urlParams = new URLSearchParams(queryString)
-        const code = urlParams.get('id')
+        const code = urlParams.get('viewerId')
         
         if (code) {
             UserRoute.logout(code).then(res => {
                 if (res.status === 200) {
-                    navigate('/')
+                    navigate('/login')
                 }          
             }).catch(err => {
                 console.log(err)

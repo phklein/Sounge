@@ -1,4 +1,4 @@
-import IUserSimpleResponseDto from "./IUserSimpleResponseDto";
+import IUserSimpleResponseDto from "./UserSimpleResponseDto";
 
 export default interface IPostListResponseDto {
     id: number,

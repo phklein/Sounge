@@ -1,14 +1,15 @@
 
-import { SkillLevelEnum } from '../enums/SkillLevelEnum'
-import IPostListResponseDto from './IPostListResponseDto'
-import IGroupSimpleResponseDto from './IGroupSimpleResponseDto'
-import IGenreSimpleResponseDto from './IGenreSimpleResponseDto'
-import IRoleSimpleResponseDto from './IRoleSimpleResponseDto'
+import { SkillLevelEnum } from '../../enums/SkillLevelEnum'
+import IPostListResponseDto from './PostListResponseDto'
+import IGroupSimpleResponseDto from './GroupSimpleResponseDto'
+import IGenreSimpleResponseDto from './GenreSimpleResponseDto'
+import IRoleSimpleResponseDto from './RoleSimpleResponseDto'
 
 export default interface IUserProfileResponseDto {
     id: number,
     name: string,
     profilePic: string,
+    banner: string,
     leader: boolean,
     postList: IPostListResponseDto[],
     spotifyID: string,

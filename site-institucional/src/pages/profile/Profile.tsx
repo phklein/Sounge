@@ -1,33 +1,45 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Button, Form } from 'react-bootstrap'
 import { usePromiseTracker } from "react-promise-tracker"
+import {useParams} from "react-router-dom"
+// import { ImgurClient } from 'imgur'
+import axios from "axios"
 
 import "../../styles/profile.css"
 
 import UserRoute from "../../routes/UserRoute"
 
-import IUserProfileResponseDto from "../../dto/IUserProfileResponseDto"
+import PictureUpdateRequestDto from "../../dto/request/PictureUpdateRequestDto"
+import UserProfileResponseDto from "../../dto/response/UserProfileResponseDto"
 
 import { NavBar } from "../../components/Navbar"
 import { BtnSintonizar } from "../../components/BtnSintonizar"
 import { PageIntroduction } from "../../components/PageIntroduction"
 import { PostPage } from "../../components/PostPage"
 
-
 export function Profile() {
+  // const { ImgurClient } = require('imgur')
+  // const client = new ImgurClient({ clientId: 'c10e4a345abd5fe' });
+
   const { promiseInProgress } = usePromiseTracker()
-  const [userProfile, setUserProfile] = useState<IUserProfileResponseDto>()
+
+  const [userProfile, setUserProfile] = useState<UserProfileResponseDto | undefined>()
+  const {id} = useParams()
+
+  // const newBanner = document.getElementById('banner') as HTMLInputElement 
+  // const newPictureUrl = document.getElementById('pictureUrl') as HTMLInputElement
 
   useEffect(() => {
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)
-    const code = urlParams.get('id')
-    
-    if (code) {
-      UserRoute.getProfileForId(code).then(res => {
+
+    const viewerId = urlParams.get('viewerId')
+
+    if (viewerId) {
+      UserRoute.getProfileForId(id, viewerId).then(res => {
         if (res.status === 200) {
           setUserProfile(res.data)
-          console.log(res.data)
+          // console.log(res.data)
         }          
       }).catch(err => {
         console.log(err)
@@ -35,15 +47,125 @@ export function Profile() {
     }
   }, [])
 
+  // newPictureUrl.onchange = (event) => {
+  //   const target = event.target as HTMLInputElement
+
+  //   if (target.files && target.files.length) {
+  //     const file = target.files[0]
+      
+  //     postImage(file).then(url => {
+  //       console.log(url)
+
+  //       const request: PictureUpdateRequestDto = {
+  //         profilePic: url,
+  //         banner: `${userProfile?.profilePic}`
+  //       }
+    
+  //       UserRoute.updatePicture(id, request).then(res => {
+  //         if (res.status === 200) {
+  //           alert('Foto de perfil atualizada com sucesso!')
+  //         }
+  //       }).catch(err => {
+  //         console.log(err)
+  //       })
+  //     })
+  //   }
+  // }
+
+  // newBanner.onchange = (event) => {
+  //   const target = event.target as HTMLInputElement
+
+  //   if (target.files && target.files.length) {
+  //     const file = target.files[0]
+      
+  //     postImage(file).then(url => {
+  //       console.log(url)
+
+  //       const request: PictureUpdateRequestDto = {
+  //         profilePic: `${userProfile?.profilePic}`,
+  //         banner: url
+  //       }
+    
+  //       UserRoute.updatePicture(id, request).then(res => {
+  //         if (res.status === 200) {
+  //           alert('Banner atualizado com sucesso!')
+  //         }
+  //       }).catch(err => {
+  //         console.log(err)
+  //       })
+  //     })
+  //   }
+  // }
+
+  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement
+    
+    if (target.files && target.files.length) {
+      const file = target.files[0]
+
+      console.log(file)
+      
+      postImage(file).then(url => {
+        console.log(url)
+
+        const request: PictureUpdateRequestDto = {
+          profilePic: `${userProfile?.profilePic}`,
+          banner: url
+        }
+    
+        UserRoute.updatePicture(id, request).then(res => {
+          if (res.status === 200) {
+            alert('Banner atualizado com sucesso!')
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      })
+    }
+  }
+
+// axios.create({
+//     baseURL: "https://api.imgur.com/3/image/",
+//     headers: {
+//         "Access-Control-Allow-Origin": "*",
+//         "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, PATCH, DELETE" ,
+//         "Content-Type": "application/json;charset=UTF-8"   
+//     }
+// })
+
+  const postImage = async (file: File) => {
+    const formData = new FormData()
+    formData.append('image', file)
+
+    console.log(formData)
+
+    const response = await fetch('https://api.imgur.com/3/image/', {
+      method: 'POST',
+      headers: {
+          Authorization: 'Client-ID c10e4a345abd5fe',
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+      },
+      body: formData
+    })
+    
+    const json = await response.json()
+
+    console.log(json)
+    return json.data.link
+  }
+
   return (
     <>
       <NavBar isbtnRegisterOff />
       <div className="background-profile">
         <div className="container">
         <div className="profile-container">
-          <div className="profile-cap"></div>
+          <div className="profile-cap" style={{backgroundSize: 'cover', backgroundPosition: 'center' ,backgroundImage: `url(${userProfile?.banner})`}}>
+            <div className="btn-update-picture">aaaaaaa</div>
+          </div>
           <div className="profile-details">
-            <div className="profile-picture">
+            <div className="profile-picture" style={{backgroundImage: `url(${userProfile?.profilePic})`}}>
               <div className="circle-online"></div>
             </div>
             <h2 className="profile-user-name">{userProfile?.name}</h2>
@@ -56,7 +178,7 @@ export function Profile() {
                 <h5 className="typography">Vídeos</h5>
                 <h5 className="typography">Playlist</h5>
                 <h5 className="typography">Mais</h5>
-                <i className="bx bxs-down-arrow seta-baixo "></i>
+                <i className="bx bxs-down-arrow seta-baixo"></i>
               </div>
             <div className="btn-space">
               <BtnSintonizar />
@@ -65,6 +187,13 @@ export function Profile() {
         </div>
         </div>
       </div>
+      <input 
+        type="file"
+        name="banner" 
+        id="banner" 
+        accept="image/png, image/jpeg"
+        onChange={onChange}
+      />
       <div className="container">
         <div className="profile-container">
           <div className="test">
@@ -74,7 +203,7 @@ export function Profile() {
                 {
                   userProfile?.roles.map(skill => (
                     <PageIntroduction
-                      id={skill.id}
+                      key={skill.id}
                       name={skill.name}
                     />
                   ))
@@ -92,7 +221,7 @@ export function Profile() {
               {
                 userProfile?.postList.map(post => (
                   <PostPage
-                    id={post.id}
+                    key={post.id}
                     text={post.text}
                     mediaUrl={post.mediaUrl}
                     hoursPast={post.hoursPast}

@@ -47,10 +47,15 @@ ________________________________________________________________________________
   background-color: var(--dark-gray);
   height: 300px;
   border-radius: 0 0 10px 10px;
+  width: 100%;
+}
+
+.btn-update-picture {
+  background-color: red;
 }
 
 .profile-picture {
-  background-image: url("../assets/img/ari-pagodeira.png");
+  background-color: var(--black);
   background-repeat: no-repeat;
   background-size: cover;
   width: 200px;
@@ -59,6 +64,7 @@ ________________________________________________________________________________
   border: 5px solid #0D0C0C;
   position: relative;
 }
+
 
 .circle-online {
   background-color: #20f520;

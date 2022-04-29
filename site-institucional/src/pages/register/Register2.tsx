@@ -8,7 +8,7 @@ import LogoHorizontal from '../../assets/img/logo-fundo-escuro-texto-horizontal.
 
 import { IFormUserState, IListGenreName, IListRoleName } from '../../components/MultiForm'
 
-import IUserRequestDto from '../../dto/IUserRequestDto'
+import IUserRequestDto from '../../dto/request/UserRequestDto'
 
 import { GenreNameEnum, GenreNameEnumDesc } from '../../enums/GenreNameEnum'
 import { RoleNameEnum, RoleNameEnumDesc } from '../../enums/RoleNameEnum'

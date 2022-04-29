@@ -1,9 +1,8 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home } from "./pages/Home";
-import { PageNotFound } from "./pages/PageNotFound";
-import { Login } from "./pages/Login";
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { Home } from "./pages/Home"
+import { PageNotFound } from "./pages/PageNotFound"
+import { Login } from "./pages/Login"
 import { Profile } from "./pages/profile/Profile"
-import { RegisterConcluid } from "./pages/register/RegisterConcluid"
 import { Premium} from "./pages/Premium"
 
 import { MultiForm } from "./components/MultiForm"
@@ -16,11 +15,13 @@ function App() {
         <Route path="/page-not-found" element={<PageNotFound />} />
         <Route path="/register" element={<MultiForm />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:id" element={<Profile />} />
         <Route path="/premium" element={<Premium />} />
       </Routes>
     </BrowserRouter>
   );
 }
+
+
 
 export default App;

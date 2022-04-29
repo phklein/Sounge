@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 // import Swal from 'sweetalert2'
 
@@ -22,6 +22,11 @@ const cardStyles = {
 }
 
 export function Home() {
+
+    useEffect(() => {
+        console.log(cardStyles)
+    }, [])
+
     return (
         <div className="page-init">
             <NavBar />

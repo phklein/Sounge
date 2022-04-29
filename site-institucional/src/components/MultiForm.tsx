@@ -11,15 +11,15 @@ import { Register } from '../pages/register/Register'
 import { Register2 } from '../pages/register/Register2'
 import { RegisterConcluid } from '../pages/register/RegisterConcluid'
 
-import IUserResponseDto from '../dto/IUserResponseDto'
-import IUserRequestDto from '../dto/IUserRequestDto'
+import IUserResponseDto from '../dto/response/UserResponseDto'
+import IUserRequestDto from '../dto/request/UserRequestDto'
 
 import { StateEnum } from '../enums/StateEnum'
 import { GenreNameEnum } from '../enums/GenreNameEnum'
 import { RoleNameEnum } from '../enums/RoleNameEnum'
 import { SkillLevelEnum } from '../enums/SkillLevelEnum'
 import { SexEnum } from '../enums/SexEnum'
-import IUserLoginRequestDto from '../dto/IUserLoginRequestDto'
+import IUserLoginRequestDto from '../dto/request/UserLoginRequestDto'
 
 export interface IFormUserState {
     step: number;
@@ -78,7 +78,6 @@ export function MultiForm() {
 
     const MySwal = withReactContent(Swal)
 
-    const [userResponse, setUserResponse] = useState<IUserResponseDto>()
     const [formUserState, setFormState] = useState<IFormUserState>(defaultUserValue)
 
     const [listGenreName, setListGenreName] = useState<IListGenreName>(defaultListGenreNameValue)
@@ -166,18 +165,16 @@ export function MultiForm() {
             UserService.saveAndLogin(user).then(res => {
                 if (res.status == 201) {
                     console.log(res.data)   
-
                     Swal.fire('Usuário cadastrado com sucesso')
                     handleNextStep()
                 }  
             }).catch(err => {
                 console.log(err)
-                Swal.fire('Erro ao cadastrar')
+                Swal.fire('Erro ao cadastrar usuário')
             })
 
         } else {
-            Swal.fire('Senhas não conferem')
-            
+            Swal.fire('Senhas não conferem') 
         }
     }
 
@@ -190,9 +187,9 @@ export function MultiForm() {
         console.log(userLoginRequest)
 
         UserService.login(userLoginRequest).then(res => {
-            alert('logando')
-
-            navigate(`/profile?id=${res.data.id}`)
+            if (res.status == 200) {
+                navigate(`/profile/${res.data.id}?viewerId=${res.data.id}`)
+            }
         }).catch(err => {
             console.log(err)
             

@@ -1,5 +1,5 @@
 
-import { GenreNameEnum } from '../enums/GenreNameEnum'
+import { GenreNameEnum } from '../../enums/GenreNameEnum'
 
 export default interface IGroupRequestDto {
     name: string,

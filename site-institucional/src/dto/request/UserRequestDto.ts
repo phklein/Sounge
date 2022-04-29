@@ -1,9 +1,9 @@
 
-import { StateEnum } from '../enums/StateEnum';
-import { SexEnum } from '../enums/SexEnum';
-import { GenreNameEnum } from '../enums/GenreNameEnum';
-import { RoleNameEnum } from '../enums/RoleNameEnum';
-import { SkillLevelEnum } from '../enums/SkillLevelEnum';
+import { StateEnum } from '../../enums/StateEnum';
+import { SexEnum } from '../../enums/SexEnum';
+import { GenreNameEnum } from '../../enums/GenreNameEnum';
+import { RoleNameEnum } from '../../enums/RoleNameEnum';
+import { SkillLevelEnum } from '../../enums/SkillLevelEnum';
 
 export default interface IUserRequestDto {
     email: string,

@@ -1,17 +1,18 @@
 
 import http from '../http-commn'
 
-import IUserRequestDto from '../dto/IUserRequestDto'
-import IUserLoginRequestDto from '../dto/IUserLoginRequestDto'
-import IUserResponseDto from '../dto/IUserResponseDto'
-import IUserProfileResponseDto from '../dto/IUserProfileResponseDto'
+import IUserRequestDto from '../dto/request/UserRequestDto'
+import IUserLoginRequestDto from '../dto/request/UserLoginRequestDto'
+import IUserResponseDto from '../dto/response/UserResponseDto'
+import IUserProfileResponseDto from '../dto/response/UserProfileResponseDto'
+import PictureUpdateRequestDto from '../dto/request/PictureUpdateRequestDto'
 
 const saveAndLogin = (data: IUserRequestDto) => {
     return http.post<IUserResponseDto>("/users", data)
 }
 
 const login = (data: IUserLoginRequestDto) => {
-    return http.post<IUserResponseDto>("/users/auth", data)
+    return http.post<IUserResponseDto>(`/users/auth`, data)
 }
 
 const joinGroup = (idUser: any, idGroup: any) => {
@@ -22,14 +23,17 @@ const leaveGroup = (idUser: any, idGroup: any) => {
     return http.delete<void>(`/users/${idUser}/group/${idGroup}`)
 }
 
-const getProfileForId = (idUser: any) => {
-    return http.get<IUserProfileResponseDto>(`/users/${idUser}`)
+const getProfileForId = (idUser: any, viewerId: any) => {
+    return http.get<IUserProfileResponseDto>(`/users/${idUser}?viewerId=${viewerId}`)
 }
 
 const logout = (idUser: any) => {
     return http.delete<void>(`/users/${idUser}/auth`)
 }
 
+const updatePicture = (id: any, data: PictureUpdateRequestDto) => {
+    return http.patch<void>(`/users/${id}/picture`, data)
+}
 
 
 
@@ -91,7 +95,8 @@ const UserRoute = {
     joinGroup,
     leaveGroup,
     getProfileForId,
-    logout
+    logout,
+    updatePicture
 }
   
 export default UserRoute;

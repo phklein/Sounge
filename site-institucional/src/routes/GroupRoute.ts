@@ -1,7 +1,7 @@
 
 import http from '../http-commn'
 
-import IGroupRequestDto from '../dto/IGroupRequestDto'
+import IGroupRequestDto from '../dto/request/GroupRequestDto'
 
 const save = (data: IGroupRequestDto) => {
     return http.post<any>("/groups", data)

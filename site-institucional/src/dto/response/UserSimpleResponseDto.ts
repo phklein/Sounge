@@ -1,4 +1,4 @@
-import IRoleSimpleResponseDto from "./IRoleSimpleResponseDto";
+import IRoleSimpleResponseDto from "./RoleSimpleResponseDto";
 
 export default interface IUserSimpleResponseDto {
     id: number,

@@ -1,22 +1,32 @@
+import { useForm, SubmitHandler } from "react-hook-form"
 import { Button, Form } from 'react-bootstrap'
 import { useNavigate, Link } from 'react-router-dom'
-import IUserLoginRequestDto from '../dto/IUserLoginRequestDto'
-import UserRoute from '../routes/UserRoute'
-
-import { useForm, SubmitHandler } from "react-hook-form"
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 import '../styles/login.css'
 
+import UserRoute from '../routes/UserRoute'
+
+import IUserLoginRequestDto from '../dto/request/UserLoginRequestDto'
+
 export function Login() {
+
     const navigate = useNavigate()
+
+    const MySwal = withReactContent(Swal)
 
     const { register, handleSubmit } = useForm<IUserLoginRequestDto>()
 
     const onSubmit: SubmitHandler<IUserLoginRequestDto> = data => {
         UserRoute.login(data).then(res => {
-            navigate(`/profile?id=${res.data.id}`)
-        }).catch(error => {
-            console.log(error)
+            if (res.status == 200) {
+                navigate(`/profile/${res.data.id}?viewerId=${res.data.id}`)
+            }
+        }).catch(err => {
+            console.log(err)
+            
+            Swal.fire('erro ao tentar entrar')
         })
     }
 
