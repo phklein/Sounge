@@ -13,11 +13,15 @@ import java.util.List;
 
 @Data
 public class PostSaveRequest {
-    @NotNull
+
     @Positive
     @Schema(description = "ID do usuário dono do post",
             example = "6")
     private Long userId;
+    @Positive
+    @Schema(description = "ID da banda dona do post",
+            example = "6")
+    private Long groupId;
     @Schema(description = "Texto do post",
             example = "O que acham dessa banda?")
     private String text;
