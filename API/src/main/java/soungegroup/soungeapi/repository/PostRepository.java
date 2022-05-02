@@ -46,4 +46,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "ORDER BY p.postDateTime DESC")
     List<PostSimpleResponse> findByUserIdOrdered(Long userId,
                                                  Pageable pageable);
-}
+@Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse(" +
+        "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
+        "FROM Post p " +
+        "WHERE p.user.id = :userId " +
+        "ORDER BY p.postDateTime DESC")
+    List<PostSimpleResponse> findByGroupIdOrdered(Long userId,
+        Pageable pageable);
+        };
