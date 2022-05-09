@@ -25,7 +25,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                                                           Pageable pageable);
 
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse( " +
-            "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
+            "p.id, p.text, p.mediaUrl, p.postDateTime, p.user,p.group, SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
             "FROM Post p " +
             "JOIN p.genres g " +
             "WHERE (g.name = :genreName OR :genreName IS NULL) " +
@@ -40,17 +40,17 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                                                     Pageable pageable);
 
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse(" +
-            "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
+            "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, p.group,SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
             "FROM Post p " +
             "WHERE p.user.id = :userId " +
             "ORDER BY p.postDateTime DESC")
     List<PostSimpleResponse> findByUserIdOrdered(Long userId,
                                                  Pageable pageable);
 @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse(" +
-        "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
+        "p.id, p.text, p.mediaUrl, p.postDateTime, p.user,p.group, SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
         "FROM Post p " +
         "WHERE p.user.id = :userId " +
         "ORDER BY p.postDateTime DESC")
     List<PostSimpleResponse> findByGroupIdOrdered(Long userId,
         Pageable pageable);
-        };
+        }

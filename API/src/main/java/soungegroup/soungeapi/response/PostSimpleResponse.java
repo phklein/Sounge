@@ -46,7 +46,6 @@ public class PostSimpleResponse {
                               String mediaUrl,
                               LocalDateTime postDateTime,
                               User user,
-                              Group group,
                               Integer likeCount,
                               Integer commentCount) {
         this.id = id;
@@ -54,8 +53,24 @@ public class PostSimpleResponse {
         this.mediaUrl = mediaUrl;
         this.hoursPast = Duration.between(postDateTime, LocalDateTime.now()).toHours();
         this.user = Mapper.INSTANCE.map(user, UserSimpleResponse.class);
+        this.likeCount = likeCount;
+        this.commentCount = commentCount;
+    }
+
+    public PostSimpleResponse(Long id,
+                              String text,
+                              String mediaUrl,
+                              LocalDateTime postDateTime,
+                              Group group,
+                              Integer likeCount,
+                              Integer commentCount) {
+        this.id = id;
+        this.text = text;
+        this.mediaUrl = mediaUrl;
+        this.hoursPast = Duration.between(postDateTime, LocalDateTime.now()).toHours();
         this.group = Mapper.INSTANCE.map(group, GroupSimpleResponse.class);
         this.likeCount = likeCount;
         this.commentCount = commentCount;
     }
+
 }

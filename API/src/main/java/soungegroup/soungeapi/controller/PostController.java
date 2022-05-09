@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +25,16 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/posts")
-@RequiredArgsConstructor
 @CrossOrigin
 public class PostController {
     private final PostService service;
     private final CommentService commentService;
+
+    @Autowired
+    public PostController(PostService service, CommentService commentService) {
+        this.service = service;
+        this.commentService = commentService;
+    }
 
     // Posts
     @PostMapping
