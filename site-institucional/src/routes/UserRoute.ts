@@ -1,18 +1,19 @@
 
 import http from '../http-commn'
 
-import IUserRequestDto from '../dto/request/UserRequestDto'
-import IUserLoginRequestDto from '../dto/request/UserLoginRequestDto'
-import IUserResponseDto from '../dto/response/UserResponseDto'
-import IUserProfileResponseDto from '../dto/response/UserProfileResponseDto'
+import { UserMatchResponseDto } from './../dto/response/UserMatchResponseDto';
+import UserRequestDto from '../dto/request/UserRequestDto'
+import UserLoginRequestDto from '../dto/request/UserLoginRequestDto'
+import UserResponseDto from '../dto/response/UserResponseDto'
+import UserProfileResponseDto from '../dto/response/UserProfileResponseDto'
 import PictureUpdateRequestDto from '../dto/request/PictureUpdateRequestDto'
 
-const saveAndLogin = (data: IUserRequestDto) => {
-    return http.post<IUserResponseDto>("/users", data)
+const saveAndLogin = (data: UserRequestDto) => {
+    return http.post<UserResponseDto>("/users", data)
 }
 
-const login = (data: IUserLoginRequestDto) => {
-    return http.post<IUserResponseDto>(`/users/auth`, data)
+const login = (data: UserLoginRequestDto) => {
+    return http.post<UserResponseDto>(`/users/auth`, data)
 }
 
 const joinGroup = (idUser: any, idGroup: any) => {
@@ -24,69 +25,33 @@ const leaveGroup = (idUser: any, idGroup: any) => {
 }
 
 const getProfileForId = (idUser: any, viewerId: any) => {
-    return http.get<IUserProfileResponseDto>(`/users/${idUser}?viewerId=${viewerId}`)
+    return http.get<UserProfileResponseDto>(`/users/${idUser}`, {
+        params: {
+            viewerId: `${viewerId}`
+        }
+    })
 }
 
 const logout = (idUser: any) => {
     return http.delete<void>(`/users/${idUser}/auth`)
 }
 
+const getSimplePicture = (id: any) => {
+    return http.get<PictureUpdateRequestDto>(`/users/${id}/picture`)
+}
+
+const updateSimplePicture = (id: any, data: PictureUpdateRequestDto) => {
+    return http.patch<void>(`/users/${id}/picture`, data)
+}
+
 const updatePicture = (id: any, data: PictureUpdateRequestDto) => {
     return http.patch<void>(`/users/${id}/picture`, data)
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const getAllArtist = () => {
-    return http.get<Array<IUserRequestDto>>('/users/artists')
-}
-
-const getArtistById = (id: any) => {
-    return http.get<IUserRequestDto>(`/users/artists/${id}`)
-}
-
-const createArtist = (data: IUserRequestDto) => {
-    return http.post<IUserRequestDto>("/users/artists", data)
-}
-  
-const updateArtistById = (id: any, data: IUserRequestDto) => {
-    return http.put<any>(`/users/artists/${id}`, data)
-}
-  
-const removeArtistById = (id: any) => {
-    return http.delete<any>(`/users/artists/${id}`)
+const getMatchList = (parameters: any) => {
+    return http.get<Array<UserMatchResponseDto>>(`/users/${parameters.id}/match`, { 
+        params: parameters
+    })
 }
 
 const UserRoute = {
@@ -96,7 +61,10 @@ const UserRoute = {
     leaveGroup,
     getProfileForId,
     logout,
-    updatePicture
+    getSimplePicture,
+    updateSimplePicture,
+    updatePicture,
+    getMatchList
 }
   
 export default UserRoute;
