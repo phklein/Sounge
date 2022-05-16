@@ -72,37 +72,49 @@ export function MatchMock() {
     return (
         <>
             <div className="container-match">
-                <div className="tinderCards">
-                    <div className="tinderCards_cardContainer">
-                        {
-                            aaa?.map((match, index) => {
-                                return (
-                                    <TinderCard
-                                        ref={childRefs[index]}
-                                        className="swipe"
-                                        key={match.key}
-                                        preventSwipe={["up", "down"]}
-                                        onSwipe={(dir) => swiped(dir, match.name, index)}
-                                        onCardLeftScreen={() => outOfFrame(match.name, index)}
+                <div className="item-match">
+                    <nav className="nav-match">
+
+                    </nav>
+                </div>
+                <div className="item-match">
+                    {
+                        aaa?.map((match, index) => {
+                            return (
+                                <TinderCard
+                                    ref={childRefs[index]}
+                                    className="swipe"
+                                    key={match.key}
+                                    preventSwipe={["up", "down"]}
+                                    onSwipe={(dir) => swiped(dir, match.name, index)}
+                                    onCardLeftScreen={() => outOfFrame(match.name, index)}
+                                >
+                                    <div
+                                        style={{ backgroundImage: `url(${match.profilePic})` }}
+                                        className="card"
                                     >
-                                        <div
-                                            style={{ backgroundImage: `url(${match.profilePic})` }}
-                                            className="card"
-                                        >
-                                            <h3>{match.name}</h3>
-                                        </div>
-                                    </TinderCard>
-                                )
-                            })
-                        }
+                                        <h3>{match.name}</h3>
+                                    </div>
+                                </TinderCard>
+                            )
+                        })
+                    } 
+
+                    {
+                      currentIndexRef.current < 0 ? (
+                        <div className="no-more-cards">
+                            <h1>No more cards</h1>
+                        </div>
+                      ) : null
+                    }
+                    <div className='buttons'>
+                        <button onClick={() => swipe('left')}><i className='bx bx-x'></i></button>
+                        <button onClick={() => goBack()}><i className='bx bx-undo'></i></button>
+                        <button onClick={() => swipe('right')}><i className='bx bxs-heart'></i></button>
                     </div>
-                </div>  
-                <div className='buttons'>
-                    <button style={{ backgroundColor: '#c3c4d3' }} onClick={() => swipe('left')}>Swipe left!</button>
-                    <button style={{ backgroundColor: '#c3c4d3' }} onClick={() => goBack()}>Undo swipe!</button>
-                    <button style={{ backgroundColor: '#c3c4d3' }} onClick={() => swipe('right')}>Swipe right!</button>
                 </div>
             </div>
+                
         {/* {lastDirection ? (
             <h2 key={lastDirection} className='infoText'>
             You swiped {lastDirection}

@@ -38,6 +38,8 @@ body::-webkit-scrollbar-thumb {
     --black-to-gray: linear-gradient(147deg, #000000 0%, #434343 74%);
     --red: #cc2525;
     --green: #25CC44;
+    --blue: #257ecc;
+    --yellow: #ccbe25;
     --black-purple: #0D0C0C;
 }
 
