@@ -6,6 +6,7 @@ import { Profile } from "./pages/profile/Profile"
 import { Premium} from "./pages/Premium"
 
 import { MultiForm } from "./components/MultiForm"
+import { Interaction } from "./components/Interaction"
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/profile/:id" element={<Profile />} />
         <Route path="/premium" element={<Premium />} />
+        <Route path="/interaction" element={<Interaction />} />
       </Routes>
     </BrowserRouter>
   );
