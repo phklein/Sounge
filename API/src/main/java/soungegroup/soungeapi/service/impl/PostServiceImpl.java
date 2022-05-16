@@ -48,7 +48,8 @@ public class PostServiceImpl implements PostService {
                                                             Optional<LocalDateTime> startDateTime,
                                                             Optional<LocalDateTime> endDateTime,
                                                             Optional<String> textLike) {
-        List<PostSimpleResponse> foundPosts;
+        List<Post> foundPosts;
+        List<PostSimpleResponse> response;
 
         if (userId.isPresent()) {
             Optional<User> userOptional = userRepository.findById(userId.get());
@@ -70,8 +71,8 @@ public class PostServiceImpl implements PostService {
                                 textLike.orElse(null),
                                 PAGEABLE
                         );
-
-                foundPosts.forEach(p -> p.setHasLiked(user.getLikedPosts().stream()
+                    response = adapter.toSimpleResponseList(foundPosts);
+                response.forEach(p -> p.setHasLiked(user.getLikedPosts().stream()
                         .anyMatch(lp -> lp.getId().equals(p.getId()))));
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -84,11 +85,12 @@ public class PostServiceImpl implements PostService {
                     textLike.orElse(null),
                     PAGEABLE
             );
+            response = adapter.toSimpleResponseList(foundPosts);
         }
 
-        return foundPosts.isEmpty() ?
+        return response.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                ResponseEntity.status(HttpStatus.OK).body(foundPosts);
+                ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override

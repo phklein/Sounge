@@ -13,19 +13,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse(" +
-            "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
+    @Query("SELECT p " +
             "FROM Post p " +
             "JOIN p.genres g " +
             "WHERE g IN :genres " +
             "OR p.user IN :users " +
             "ORDER BY p.postDateTime DESC")
-    List<PostSimpleResponse> findAllFilteredByUserOrdered(List<Genre> genres,
+    List<Post> findAllFilteredByUserOrdered(List<Genre> genres,
                                                           List<User> users,
                                                           Pageable pageable);
 
-    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse( " +
-            "p.id, p.text, p.mediaUrl, p.postDateTime, p.user,p.group, SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
+    @Query("SELECT p "+
             "FROM Post p " +
             "JOIN p.genres g " +
             "WHERE (g.name = :genreName OR :genreName IS NULL) " +
@@ -33,24 +31,22 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "AND (p.postDateTime <= :endDateTime OR :endDateTime IS NULL) " +
             "AND (LOWER(p.text) LIKE CONCAT('%', LOWER(:textLike), '%') OR :textLike IS NULL) " +
             "ORDER BY p.postDateTime DESC")
-    List<PostSimpleResponse> findAllFilteredOrdered(GenreName genreName,
+    List<Post> findAllFilteredOrdered(GenreName genreName,
                                                     LocalDateTime startDateTime,
                                                     LocalDateTime endDateTime,
                                                     String textLike,
                                                     Pageable pageable);
 
-    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse(" +
-            "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, p.group,SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
+    @Query("SELECT p " +
             "FROM Post p " +
             "WHERE p.user.id = :userId " +
             "ORDER BY p.postDateTime DESC")
-    List<PostSimpleResponse> findByUserIdOrdered(Long userId,
+    List<Post> findByUserIdOrdered(Long userId,
                                                  Pageable pageable);
-@Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse(" +
-        "p.id, p.text, p.mediaUrl, p.postDateTime, p.user,p.group, SIZE(p.usersWhoLiked), SIZE(p.comments)) " +
+@Query("SELECT p " +
         "FROM Post p " +
-        "WHERE p.user.id = :userId " +
+        "WHERE p.group.id = :userId " +
         "ORDER BY p.postDateTime DESC")
-    List<PostSimpleResponse> findByGroupIdOrdered(Long userId,
+    List<Post> findByGroupIdOrdered(Long userId,
         Pageable pageable);
         }
