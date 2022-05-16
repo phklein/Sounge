@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.enums.GenreName;
+import soungegroup.soungeapi.model.Group;
 import soungegroup.soungeapi.model.Post;
 import soungegroup.soungeapi.model.User;
+import soungegroup.soungeapi.repository.GroupRepository;
 import soungegroup.soungeapi.repository.PostRepository;
 import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.PostSaveRequest;
@@ -28,6 +30,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository repository;
     private final UserRepository userRepository;
     private final PostAdapter adapter;
+    private final GroupRepository groupRepository;
 
     @Override
     public ResponseEntity<Long> save(PostSaveRequest body) {
@@ -44,6 +47,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<List<PostSimpleResponse>> findAll(Optional<Long> userId,
+                                                            Optional<Long> groupId,
                                                             Optional<GenreName> genreName,
                                                             Optional<LocalDateTime> startDateTime,
                                                             Optional<LocalDateTime> endDateTime,
@@ -77,7 +81,28 @@ public class PostServiceImpl implements PostService {
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
-        } else {
+        }else if (groupId.isPresent()) {
+            Optional<Group> groupOptional = groupRepository.findById(groupId.get());
+            if (groupOptional.isPresent()) {
+                Group group = groupOptional.get();
+                foundPosts = genreName.isEmpty() && startDateTime.isEmpty() &&
+                        endDateTime.isEmpty() && textLike.isEmpty() ?
+                      repository.findByGroupIdOrdered(group.getId(), PAGEABLE) :
+
+                        repository.findAllFilteredOrdered(
+                                genreName.orElse(null),
+                                startDateTime.orElse(null),
+                                endDateTime.orElse(null),
+                                textLike.orElse(null),
+                                PAGEABLE
+                        );
+                response = adapter.toSimpleResponseList(foundPosts);
+            }else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+        }
+        else {
             foundPosts = repository.findAllFilteredOrdered(
                     genreName.orElse(null),
                     startDateTime.orElse(null),
