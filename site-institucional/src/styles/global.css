@@ -324,6 +324,7 @@ ________________________________________________________________________________
 .interaction-icon i {
     color: var(--light-gray);
     font-size: 31px;
+    transition: 0.s;
 
 }
 .interaction-icon h3 {
@@ -333,5 +334,10 @@ ________________________________________________________________________________
     font-size: 17px;
 }
 
+.interaction-icon i:nth-child(1):hover{
+   color: #531693;
+}
+
+/*https://css-tricks.com/recreating-the-twitter-heart-animation/*/
 
 
