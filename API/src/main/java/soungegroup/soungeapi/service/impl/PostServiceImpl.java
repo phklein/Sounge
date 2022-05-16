@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.enums.GenreName;
+import soungegroup.soungeapi.model.Group;
 import soungegroup.soungeapi.model.Post;
 import soungegroup.soungeapi.model.User;
+import soungegroup.soungeapi.repository.GroupRepository;
 import soungegroup.soungeapi.repository.PostRepository;
 import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.PostSaveRequest;
@@ -28,6 +30,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository repository;
     private final UserRepository userRepository;
     private final PostAdapter adapter;
+    private final GroupRepository groupRepository;
 
     @Override
     public ResponseEntity<Long> save(PostSaveRequest body) {
@@ -44,11 +47,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<List<PostSimpleResponse>> findAll(Optional<Long> userId,
+                                                            Optional<Long> groupId,
                                                             Optional<GenreName> genreName,
                                                             Optional<LocalDateTime> startDateTime,
                                                             Optional<LocalDateTime> endDateTime,
                                                             Optional<String> textLike) {
-        List<PostSimpleResponse> foundPosts;
+        List<Post> foundPosts;
+        List<PostSimpleResponse> response;
 
         if (userId.isPresent()) {
             Optional<User> userOptional = userRepository.findById(userId.get());
@@ -70,13 +75,34 @@ public class PostServiceImpl implements PostService {
                                 textLike.orElse(null),
                                 PAGEABLE
                         );
-
-                foundPosts.forEach(p -> p.setHasLiked(user.getLikedPosts().stream()
+                    response = adapter.toSimpleResponseList(foundPosts);
+                response.forEach(p -> p.setHasLiked(user.getLikedPosts().stream()
                         .anyMatch(lp -> lp.getId().equals(p.getId()))));
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
-        } else {
+        }else if (groupId.isPresent()) {
+            Optional<Group> groupOptional = groupRepository.findById(groupId.get());
+            if (groupOptional.isPresent()) {
+                Group group = groupOptional.get();
+                foundPosts = genreName.isEmpty() && startDateTime.isEmpty() &&
+                        endDateTime.isEmpty() && textLike.isEmpty() ?
+                      repository.findByGroupIdOrdered(group.getId(), PAGEABLE) :
+
+                        repository.findAllFilteredOrdered(
+                                genreName.orElse(null),
+                                startDateTime.orElse(null),
+                                endDateTime.orElse(null),
+                                textLike.orElse(null),
+                                PAGEABLE
+                        );
+                response = adapter.toSimpleResponseList(foundPosts);
+            }else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+        }
+        else {
             foundPosts = repository.findAllFilteredOrdered(
                     genreName.orElse(null),
                     startDateTime.orElse(null),
@@ -84,11 +110,12 @@ public class PostServiceImpl implements PostService {
                     textLike.orElse(null),
                     PAGEABLE
             );
+            response = adapter.toSimpleResponseList(foundPosts);
         }
 
-        return foundPosts.isEmpty() ?
+        return response.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                ResponseEntity.status(HttpStatus.OK).body(foundPosts);
+                ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override

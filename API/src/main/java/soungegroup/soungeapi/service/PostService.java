@@ -13,7 +13,8 @@ import java.util.Optional;
 public interface PostService {
     ResponseEntity<Long> save(PostSaveRequest body);
 
-    ResponseEntity<List<PostSimpleResponse>> findAll(Optional<Long> userId, 
+    ResponseEntity<List<PostSimpleResponse>> findAll(Optional<Long> userId,
+                                                     Optional<Long> groupId,
                                                      Optional<GenreName> genreName,
                                                      Optional<LocalDateTime> startDate,
                                                      Optional<LocalDateTime> endDate,

@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +25,16 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/posts")
-@RequiredArgsConstructor
 @CrossOrigin
 public class PostController {
     private final PostService service;
     private final CommentService commentService;
+
+    @Autowired
+    public PostController(PostService service, CommentService commentService) {
+        this.service = service;
+        this.commentService = commentService;
+    }
 
     // Posts
     @PostMapping
@@ -51,13 +57,14 @@ public class PostController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
     })
     public ResponseEntity<List<PostSimpleResponse>> findAll(@RequestParam Optional<Long> userId,
+                                                            @RequestParam Optional<Long> groupId,
                                                             @RequestParam Optional<GenreName> genre,
                                                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                             Optional<LocalDateTime> startDateTime,
                                                             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                             Optional<LocalDateTime> endDateTime,
                                                             @RequestParam Optional<String> textLike) {
-        return service.findAll(userId, genre, startDateTime, endDateTime, textLike);
+        return service.findAll(userId,groupId,genre, startDateTime, endDateTime, textLike);
     }
 
     @Operation(tags = {"Posts - Criação e edição"}, summary = "Atualizar um post",

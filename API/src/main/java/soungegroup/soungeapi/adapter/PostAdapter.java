@@ -9,6 +9,9 @@ import soungegroup.soungeapi.model.User;
 import soungegroup.soungeapi.repository.GenreRepository;
 import soungegroup.soungeapi.repository.UserRepository;
 import soungegroup.soungeapi.request.PostSaveRequest;
+import soungegroup.soungeapi.response.GroupSimpleResponse;
+import soungegroup.soungeapi.response.PostSimpleResponse;
+import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.util.Mapper;
 
 import java.util.ArrayList;
@@ -42,4 +45,19 @@ public class PostAdapter {
 
         return post;
     }
+
+    public List<PostSimpleResponse> toSimpleResponseList(List<Post> foundPosts) {
+       List<PostSimpleResponse> aux = new ArrayList<>();
+       foundPosts.forEach(post -> {
+           PostSimpleResponse postSimpleResponse = Mapper.INSTANCE.map(post, PostSimpleResponse.class);
+           if(post.getUser() != null) {
+               postSimpleResponse.setUser(Mapper.INSTANCE.map(post.getUser(), UserSimpleResponse.class));
+           }else{
+               postSimpleResponse.setGroup(Mapper.INSTANCE.map(post.getGroup(), GroupSimpleResponse.class));
+           }
+           aux.add(postSimpleResponse);
+       });
+       return aux;
+    }
+
 }
