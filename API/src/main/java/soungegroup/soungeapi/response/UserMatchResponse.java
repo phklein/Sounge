@@ -25,7 +25,7 @@ public class UserMatchResponse {
     private String name;
     @Schema(description = "URL da foto do usuário",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private String profilePic;
+    private byte[] profilePic;
     @Schema(description = "Usuário é ou não é líder do grupo em que está")
     private boolean isLeader;
     @Schema(description = "Sexo do usuário",
@@ -80,7 +80,7 @@ public class UserMatchResponse {
 
     public UserMatchResponse(Long id,
                              String name,
-                             String profilePic,
+                             byte[] profilePic,
                              boolean isLeader,
                              Sex sex,
                              State state,

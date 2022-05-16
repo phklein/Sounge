@@ -26,7 +26,7 @@ public class GroupMatchResponse {
     private String name;
     @Schema(description = "URL da foto do grupo",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private String profilePic;
+    private byte[] profilePic;
     @Schema(description = "Estado de residência do líder do grupo",
             example = "SP")
     private State leaderState;
@@ -68,7 +68,7 @@ public class GroupMatchResponse {
     public GroupMatchResponse(Long id,
                               Long leaderId,
                               String name,
-                              String profilePic,
+                              byte[] profilePic,
                               State leaderState,
                               String leaderCity,
                               Double leaderLatitude,

@@ -17,5 +17,5 @@ public class GroupSimpleResponse {
     private String name;
     @Schema(description = "URL da foto do grupo",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private String profilePic;
+    private byte[] profilePic;
 }
