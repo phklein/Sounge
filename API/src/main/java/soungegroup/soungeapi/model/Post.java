@@ -23,10 +23,13 @@ public class Post {
     @Column(name = "post_date_time") private LocalDateTime postDateTime;
 
     // Many posts belong to one user
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "user_fk")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "group_fk")
+    private Group group;
     // One post has many comments
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;

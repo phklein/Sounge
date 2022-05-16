@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.adapter.UserAdapter;
 import soungegroup.soungeapi.enums.*;
 import soungegroup.soungeapi.model.*;
@@ -36,6 +37,7 @@ public class UserServiceImpl implements UserService {
     private final NotificationRepository notificationRepository;
 
     private final UserAdapter adapter;
+    private final PostAdapter postAdapter;
     private final List<UserLoginResponse> sessions;
 
     private final LocationUtil locationUtil;
@@ -473,11 +475,12 @@ public class UserServiceImpl implements UserService {
         Optional<User> viewerOptional = repository.findById(viewerId);
         Optional<UserProfileResponse> profileOptional = repository.findProfile(id);
 
+
         if (profileOptional.isPresent() && viewerOptional.isPresent()) {
             User viewer = viewerOptional.get();
             UserProfileResponse profile = profileOptional.get();
 
-            profile.setPostList(postRepository.findByUserIdOrdered(profile.getId(), PAGEABLE));
+            profile.setPostList(postAdapter.toSimpleResponseList(postRepository.findByUserIdOrdered(profile.getId(), PAGEABLE)));
             profile.setLikedGenres(genreRepository.findByUserId(profile.getId()));
             profile.setRoles(roleRepository.findByUserId(profile.getId()));
 
