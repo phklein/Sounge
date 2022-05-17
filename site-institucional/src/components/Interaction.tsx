@@ -8,7 +8,7 @@ export function Interaction() {
             <div className="interaction-barr">
             
                 <div className="interaction-icon">
-                    <i className='bx bxs-heart'></i>
+                    <i id="coracao"className='bx bxs-heart'></i>
                     <h3>Curtir</h3>
                 </div>
                 <div className="interaction-icon">

@@ -5,6 +5,7 @@ import { Button, Form } from 'react-bootstrap'
 import CommentSaveRequestDto from "../dto/request/CommentSaveResquestDto";
 import PostRoute from "../routes/PostRoute";
 
+/*
 export function Comment() {
     const { register, handleSubmit } = useForm<CommentSaveRequestDto>()
 
@@ -28,4 +29,4 @@ export function Comment() {
             <input className="comment" type="text" />
         </div>
     )
-}
+} */

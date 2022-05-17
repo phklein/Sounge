@@ -1,5 +1,5 @@
 import { useNavigate, Link } from 'react-router-dom'
-import { Comment } from '../components/Comment'
+
 import { Interaction } from '../components/Interaction'
 
 import { NavBar } from '../components/Navbar'
@@ -15,7 +15,7 @@ export function PageNotFound() {
                 <h1>Página não encontrada</h1>
                 <div className="imagem"></div>
             </section>
-            <Comment />
+  
         </div>
     )
-}
+} 
