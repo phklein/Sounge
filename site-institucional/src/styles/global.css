@@ -324,7 +324,7 @@ ________________________________________________________________________________
 .interaction-icon i {
     color: var(--light-gray);
     font-size: 31px;
-    transition: 0.s;
+    transition: 0.5s;
 
 }
 .interaction-icon h3 {
@@ -334,20 +334,33 @@ ________________________________________________________________________________
     font-size: 17px;
 }
 
-@keyframes heart {
-    0%, 17.5%{
-        font-size: 0;
-    }
-}
 .interaction-icon:nth-child(1) i:hover{
     color: #e2264d;
-    
+    animation: pulse 1s linear infinite;
+    transform: scale(1);
 }
 
-.interaction-icon:nth-child(1) i:active{
-    will-change: font-size;
-    animation: heart 1s cubic-bezier(.17, .89, .32, 1.49 );
+@keyframes pulse {
+    0%{
+        transform: scale(1);
+    }
+    10%{
+        transform: scale(1.1);
+    
+    }
+    20%{
+        transform: scale(0.9);
+    }
+    30%{
+        transform: scale(1.2);
+
+    }
+    40%{
+        transform: scale(0.9);
+    }
+
 }
+
 
 
 /*https://css-tricks.com/recreating-the-twitter-heart-animation/*/
