@@ -1,7 +1,7 @@
 
 import { RoleNameEnum } from "../../enums/RoleNameEnum";
 
-export default interface IRoleSimpleResponseDto {
+export default interface RoleSimpleResponseDto {
     id: number,
     name: RoleNameEnum
 }

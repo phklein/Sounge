@@ -19,7 +19,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id") private Long id;
     @Column(name = "post_text") private String text;
-    @Column(name = "post_media_url") private String mediaUrl;
+    @Column(name = "post_media_url") private byte[] mediaUrl;
     @Column(name = "post_date_time") private LocalDateTime postDateTime;
 
     // Many posts belong to one user

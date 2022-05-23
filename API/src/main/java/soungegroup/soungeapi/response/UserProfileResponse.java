@@ -23,10 +23,10 @@ public class UserProfileResponse {
     private String name;
     @Schema(description = "URL da foto do usuário",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private String profilePic;
+    private byte[] profilePic;
     @Schema(description = "URL da foto do banner",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private String banner;
+    private byte[] banner;
     @Schema(description = "Usuário é ou não é líder do grupo em que está",
             example = "true")
     private boolean isLeader;
@@ -65,8 +65,8 @@ public class UserProfileResponse {
 
     public UserProfileResponse(Long id,
                                String name,
-                               String profilePic,
-                               String banner,
+                               byte[] profilePic,
+                               byte[] banner,
                                boolean isLeader,
                                String spotifyID,
                                String description,

@@ -22,7 +22,7 @@ public class CommentSimpleResponse {
     private String text;
     @Schema(description = "URL da mídia do comentário",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private String mediaUrl;
+    private byte[] mediaUrl;
     @Schema(description = "Horas desde a postagem do comentário",
             example = "17")
     private Long hoursPast;
@@ -32,7 +32,7 @@ public class CommentSimpleResponse {
 
     public CommentSimpleResponse(Long id,
                                  String text,
-                                 String mediaUrl,
+                                 byte[] mediaUrl,
                                  LocalDateTime postDateTime,
                                  User user) {
         this.id = id;

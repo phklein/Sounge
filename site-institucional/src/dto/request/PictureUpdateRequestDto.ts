@@ -1,5 +1,5 @@
 
 export default interface PictureUpdateRequestDto {
-    profilePic: string,
-    banner: string
+    profilePic: ArrayBuffer | undefined,
+    banner: ArrayBuffer | undefined
 }
