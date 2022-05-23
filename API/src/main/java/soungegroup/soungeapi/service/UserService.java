@@ -49,4 +49,6 @@ public interface UserService {
                                                           Optional<Sex> sex,
                                                           Optional<SkillLevel> skillLevel);
     ResponseEntity<List<UserSimpleResponse>> findByName(String nameLike);
+
+    ResponseEntity<UserSimpleResponse>roolbackLike(Long id, Long idLike );
 }

@@ -13,6 +13,7 @@ import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.*;
 import soungegroup.soungeapi.service.UserService;
+import soungegroup.soungeapi.util.Fila;
 import soungegroup.soungeapi.util.ListaObj;
 import soungegroup.soungeapi.util.LocationUtil;
 
@@ -22,6 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -160,6 +162,7 @@ public class UserServiceImpl implements UserService {
 
             if (!liker.getLikedUsers().contains(liked)) {
                 liker.getLikedUsers().add(liked);
+                liker.getRecentLikes().push(liked);
                 repository.save(liker);
 
                 if (liked.getLikedUsers().contains(liker)) {
@@ -601,6 +604,11 @@ public class UserServiceImpl implements UserService {
                     .filter(u -> u.getDistance() <= maxDistance)
                     .sorted(Comparator.comparing(UserMatchResponse::getRelevance).reversed())
                     .collect(Collectors.toList());
+            Fila<UserMatchResponse> fila = new Fila<>(matchList.size());
+            for (UserMatchResponse userAux :
+                 matchList) {
+                fila.insert(userAux);
+            }
 
             return matchList.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
@@ -676,5 +684,25 @@ public class UserServiceImpl implements UserService {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
+    @Override
+
+    public ResponseEntity<UserSimpleResponse> roolbackLike(Long id, Long idLike) {
+        unlikeUser(id,idLike);
+        Optional<User> userOptional = repository.findById(id);
+        AtomicReference<User> returnUser = null;
+        if (userOptional.get() != null){
+             sessions.forEach(userLoginResponse -> {
+                 if (userLoginResponse.getId().equals(id)) {
+                    returnUser.set(userOptional.get().getRecentLikes().pop());
+                 }
+             });
+        } else {
+                 return  ResponseEntity.status(404).build();
+            }
+            UserSimpleResponse response = adapter.toUserSimpleResponse(returnUser.get());
+            return ResponseEntity.status(200).body(response);
+        }
 }
+
 

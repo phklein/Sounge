@@ -7,6 +7,7 @@ import lombok.Setter;
 import soungegroup.soungeapi.enums.Sex;
 import soungegroup.soungeapi.enums.SkillLevel;
 import soungegroup.soungeapi.enums.State;
+import soungegroup.soungeapi.util.PilhaObj;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -39,6 +40,7 @@ public class User {
     @Column(name = "user_photo") private byte[] profilePic;
     @Column(name = "user_banner") private byte[] banner;
     @Column(name = "user_spotify_id") private  String spotifyID;
+    @Transient private PilhaObj<User> recentLikes = new PilhaObj<User>(1) ;
 
     // One user has many posts
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -97,4 +99,6 @@ public class User {
     // One user may send many notifications
     @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Notification> notificationsSent;
+
+
 }
