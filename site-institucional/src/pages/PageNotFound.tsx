@@ -1,6 +1,5 @@
 import { useNavigate, Link } from 'react-router-dom'
 
-import { Interaction } from '../components/Interaction'
 
 import { NavBar } from '../components/Navbar'
 

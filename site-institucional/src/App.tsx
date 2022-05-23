@@ -7,6 +7,7 @@ import { Premium} from "./pages/Premium"
 
 import { MultiForm } from "./components/MultiForm"
 import { Interaction } from "./components/Interaction"
+import { Comment } from "./components/Comment"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/profile/:id" element={<Profile />} />
         <Route path="/premium" element={<Premium />} />
         <Route path="/interaction" element={<Interaction />} />
+        <Route path="/comment" element={<Comment />} />
       </Routes>
     </BrowserRouter>
   );

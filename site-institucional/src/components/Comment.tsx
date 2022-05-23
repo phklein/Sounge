@@ -1,23 +1,30 @@
 import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form"
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, FormGroup } from 'react-bootstrap'
 import CommentSaveRequestDto from "../dto/request/CommentSaveResquestDto";
 import PostRoute from "../routes/PostRoute";
+import withReactContent from "sweetalert2-react-content";
+import Swal from 'sweetalert2'
 
-/*
+
 export function Comment() {
+
+    const navigate = useNavigate();
+
+    const MySwal = withReactContent(Swal)
+
     const { register, handleSubmit } = useForm<CommentSaveRequestDto>()
 
-    const onSubmit: SubmitHandler<CommentSaveRequestDto> = body => {
-        PostRoute.saveComment(body).then(res => {
+    const onSubmit: SubmitHandler<CommentSaveRequestDto> = postId => {
+        PostRoute.saveComment(any, CommentSaveRequestDto).then(res => {
             if (res.status == 200) {
-                navigate(`/profile/${res.data.id}?viewerId=${res.data.id}`)
+                navigate(`/posts/${postId}/comments}`, body);
             }
         }).catch(err => {
             console.log(err)
-            
-            Swal.fire('erro ao tentar entrar')
+
+            Swal.fire('erro ao comentar')
         })
     }
 
@@ -26,7 +33,17 @@ export function Comment() {
             <div className="comment-usuario">
                 <h3 className="comment-usuarioName">Bruna Yumi Sato</h3>
             </div>
-            <input className="comment" type="text" />
+            <Form onSubmit={handleSubmit(onSubmit)}>
+                <Form.Group controlId="formGroupComment">
+                    <Form.Control
+                        {...register("text")}
+                        type="text"
+                        placeholder="Comentário"
+                        className="comment"
+                    />
+                </Form.Group>
+            </Form>
+
         </div>
     )
-} */
+}
