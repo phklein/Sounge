@@ -13,65 +13,11 @@
     justify-content: center;
 }
 
-.profileHighlightWrapper{
-    /* border: 1px solid white; */
-    width: 100%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-.profileHighlightWrapper::after{
-    content: "''";
-    width: 100%;
-    height: 2px;
-    background-color: gray;
-}
-
-.profileHighlightBanner{
-    /* border: 1px dashed red; */
-    background-color: black;
-    border-radius: 0 0 8px 8px;
-    height: 240px;
-    margin: 0 16px;
-    width: 100%;
-    object-fit: contain;
-}
-
-.profileHighlightUser{
-    /* border: 1px dashed turquoise; */
-    height: 240px;
-    margin-top: -128px;
-    margin-bottom: 16px;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
-}
-
-.profileHighlightUser > h3{
-    font-size: 1.3rem;
-}
-
-.profileHighlightUser > span{
-    font-size: 1.1rem;
-    color: gray;
-}
-
-.profileHighlightUser_pic{
-    /* border: 1px dashed orange; */
-    width: 180px;
-    height: 180px;
-    border-radius: 100%;
-    object-fit: cover;
-}
-
 .profileTabs{
     color: gray;
 }
 
-.profileTabsNavigation{
+.profileLists{
     margin: 0;
     padding: 0;
     list-style-type: none;
@@ -79,31 +25,6 @@
     display: flex;
 }
 
-.profileTabsNavigation > li{
-    margin-right: 32px;
-    display: flex;
-    flex-direction: column;
-}
-
-.profileTabsNavigation > li > a{
-    padding: 24px 12px;
-    cursor: pointer;
-}
-
-.profileTabsNavigation > li > a:hover, 
-.profileTabsNavigation > .active > a:hover{
-    color: #8181eb;
-}
-
-.profileTabsNavigation > .active{
-    color: #6e6ef1;
-}
-
-.profileTabsNavigation > .active::after{
-    content: "";
-    height: 3px;
-    background-color: #6e6ef1;
-}
 
 .profileShowcaseWrapper{
     /* border: 1px solid orange; */
@@ -125,23 +46,16 @@
     display: flex;
     flex-direction: column;
 }
-.profileShowcasePost{
-    /* border: 1px solid yellow; */
-    width: 60%;
+
+.profileShowcaseIntroItens{
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    font-size: 20px;
 }
-.profileShowcaseWrite{
-    /* border: 1px solid red; */
-    background-color: #1c1c1c;
-    height: 200px;
-    border-radius: 4px;
+
+.profileShowcaseIntroItens > div{
+    height: 32px;
+    width: 32px;
+    margin-right: 16px;
     margin-bottom: 8px;
-}
-.profileShowcasePosts{
-    /* border: 1px solid blue; */
-    background-color: #1c1c1c;
-    height: 200px;
-    border-radius: 4px;
-    margin: 8px 0;
 }

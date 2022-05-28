@@ -1,0 +1,53 @@
+.profileHighlightWrapper{
+    /* border: 1px solid white; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.profileHighlightWrapper::after{
+    content: "''";
+    width: 100%;
+    height: 2px;
+    background-color: gray;
+}
+
+.profileHighlightBanner{
+    /* border: 1px dashed red; */
+    background-color: black;
+    border-radius: 0 0 8px 8px;
+    height: 240px;
+    margin: 0 16px;
+    width: 100%;
+    object-fit: contain;
+}
+
+.profileHighlightUser{
+    /* border: 1px dashed turquoise; */
+    height: 240px;
+    margin-top: -128px;
+    margin-bottom: 16px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.profileHighlightUser > h3{
+    font-size: 1.3rem;
+}
+
+.profileHighlightUser > span{
+    font-size: 1.1rem;
+    color: gray;
+}
+
+.profileHighlightUser_pic{
+    /* border: 1px dashed orange; */
+    width: 180px;
+    height: 180px;
+    border-radius: 100%;
+    object-fit: cover;
+}

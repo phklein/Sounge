@@ -1,4 +1,5 @@
 import React from "react"
+import './ProfilePost.style.css'
 
 const ProfilePost = () => {
 	return (

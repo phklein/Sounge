@@ -1,4 +1,5 @@
 import React from "react"
+import "./ProfileHighlight.style.css"
 
 const ProfileHighlight = ({
 	bannerSrc = 'https://i.pinimg.com/originals/70/c3/26/70c326bf1a4214a492a69d4a7f6d91b8.jpg',
