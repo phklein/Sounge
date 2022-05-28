@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Home } from "./pages/Home"
 import { PageNotFound } from "./pages/PageNotFound"
 import { Login } from "./pages/Login"
-import { Profile } from "./pages/profile/Profile"
+import Profile from "./pages/profile/NewProfile"
 import { Match } from "./pages/match/Match"
 import { Premium} from "./pages/Premium"
 

@@ -93,7 +93,7 @@ header {
     width: 100%;
     background: var(--black);
     border-bottom: 1px solid var(--dark-gray);
-    position: fixed;
+    position: sticky;
     z-index: 1000000000;
 }
 
