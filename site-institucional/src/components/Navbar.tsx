@@ -43,7 +43,7 @@ export function NavBar(props: Iprops) {
                         <li><Link to="/page-not-found" className="link-navbar">Membros</Link></li>
                         <li><Link to="/page-not-found" className="link-navbar">Fórum</Link></li>
                     </ul>
-                    <Buttonaa onClick={logout}>Sair</Buttonaa>
+                    <Link to="/"><Buttonaa onClick={logout}>Sair</Buttonaa></Link>
                 </nav>
             </header>
         )
