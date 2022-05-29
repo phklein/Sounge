@@ -1,7 +1,8 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form"
 import Swal from "sweetalert2"
+import { format } from 'date-fns'
 import withReactContent from "sweetalert2-react-content"
 
 import UserService from "../routes/UserRoute"
@@ -37,7 +38,7 @@ export interface IFormUserState {
 }
 
 export interface IListGenreName {
-    size: number,
+	size: number
 	genres: GenreNameEnum[]
 }
 
@@ -63,7 +64,7 @@ const defaultUserValue: IFormUserState = {
 }
 
 const defaultListGenreNameValue: IListGenreName = {
-    size: 0,
+	size: 0,
 	genres: [],
 }
 
@@ -76,69 +77,62 @@ export function MultiForm() {
 	const navigate = useNavigate()
 	const MySwal = withReactContent(Swal)
 
-	const [formUserState, setFormState] = useState<IFormUserState>(defaultUserValue)
-
+	const [formUserState, setFormUserState] = useState<IFormUserState>(defaultUserValue)
 	const [listGenreName, setListGenreName] = useState<IListGenreName>(defaultListGenreNameValue)
 	const [listRoleName, setListRoleName] = useState<IListRoleName>(defaultListRoleNameValue)
 
 	const handleAddFromListChangeGenre = (value: GenreNameEnum) => {
-		const newListGenre = { size: Object.values(listGenreName).length, genres: [...listGenreName.genres, value]}
-        
-		setListGenreName(newListGenre)
-		console.log(newListGenre)
+		const newListGenreName = {
+			size: Object.values(listGenreName.genres).length + 1,
+			genres: [...listGenreName.genres, value],
+		}
+		setListGenreName(newListGenreName)
 	}
-    
-	const handleAddFromListChangeRole = (value: RoleNameEnum) => {
-        const newListRoleName = { size: Object.values(listRoleName).length, roles: [...listRoleName.roles, value]}
 
+	const handleAddFromListChangeRole = (value: RoleNameEnum) => {
+		const newListRoleName = {
+			size: Object.values(listRoleName.roles).length + 1,
+			roles: [...listRoleName.roles, value],
+		}
 		setListRoleName(newListRoleName)
-		console.log(listRoleName)
 	}
 
 	const handleRemoveFromListChangeGenre = (value: GenreNameEnum) => {
-		const index = listGenreName.genres.indexOf(value)
-		listGenreName.size = listGenreName.size - 1
-
-		listGenreName.genres.splice(index, 1)
-
-		setListGenreName(listGenreName)
-		console.log(listGenreName)
+		const newListGenreName = {
+			size: Object.values(listGenreName.genres).length - 1,
+			genres: listGenreName.genres.filter(genre => genre !== value),
+		}
+		setListGenreName(newListGenreName)
 	}
 
 	const handleRemoveFromListChangeRole = (value: RoleNameEnum) => {
-		const index = listRoleName.roles.indexOf(value)
-		listRoleName.size = listRoleName.size - 1
-
-		listRoleName.roles.splice(index, 1)
-
-		setListRoleName(listRoleName)
-		console.log(listRoleName)
+		const newListRoleName = {
+			size: Object.values(listRoleName.roles).length - 1,
+			roles: listRoleName.roles.filter(role => role !== value),
+		}
+		setListRoleName(newListRoleName)
 	}
 
 	const handleSaveFromListChange = () => {
-		formUserState.likedGenres = listGenreName.genres
-		formUserState.roles = listRoleName.roles
-
-		console.log(listGenreName.genres)
-		console.log(listRoleName.roles)
+		setFormUserState({...formUserState, likedGenres: listGenreName.genres, roles: listRoleName.roles})
 	}
 
 	const handleFieldChange = (value: any, fieldName: string) => {
-		setFormState({
+		setFormUserState({
 			...formUserState,
 			[fieldName]: value,
 		})
 	}
 
 	const handleNextStep = () => {
-		setFormState({
+		setFormUserState({
 			...formUserState,
 			step: formUserState.step + 1,
 		})
 	}
 
 	const handlePreviousStep = () => {
-		setFormState({
+		setFormUserState({
 			...formUserState,
 			step: formUserState.step - 1,
 		})
@@ -152,7 +146,7 @@ export function MultiForm() {
 				name: formUserState.name,
 				sex: formUserState.sex,
 				description: formUserState.description,
-				birthDate: formUserState.birthDate,
+				birthDate: format(new Date(formUserState.birthDate), 'dd/MM/yyyy'),
 				state: formUserState.state,
 				city: formUserState.city,
 				likedGenres: formUserState.likedGenres,
@@ -197,6 +191,10 @@ export function MultiForm() {
 				Swal.fire("erro ao tentar entrar")
 			})
 	}
+
+	useEffect(() => {
+		handleSaveFromListChange()
+	}, [listGenreName, listRoleName])
 
 	const renderForms = () => {
 		if (formUserState.step === 1) {
