@@ -1,5 +1,4 @@
 .profileHighlightWrapper{
-    /* border: 1px solid white; */
     width: 100%;
     display: flex;
     align-items: center;
@@ -7,15 +6,14 @@
 }
 
 .profileHighlightWrapper::after{
-    content: "''";
+    content: "";
     width: 100%;
     height: 2px;
-    background-color: gray;
+    background-color: var(--gray);
 }
 
 .profileHighlightBanner{
-    /* border: 1px dashed red; */
-    background-color: black;
+    background-color: var(--black);
     border-radius: 0 0 8px 8px;
     height: 240px;
     margin: 0 16px;
@@ -24,11 +22,10 @@
 }
 
 .profileHighlightUser{
-    /* border: 1px dashed turquoise; */
     height: 240px;
     margin-top: -128px;
     margin-bottom: 16px;
-    color: white;
+    color: var(--white);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -41,11 +38,10 @@
 
 .profileHighlightUser > span{
     font-size: 1.1rem;
-    color: gray;
+    color: var(--gray);
 }
 
 .profileHighlightUser_pic{
-    /* border: 1px dashed orange; */
     width: 180px;
     height: 180px;
     border-radius: 100%;

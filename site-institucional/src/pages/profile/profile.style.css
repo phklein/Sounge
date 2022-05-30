@@ -1,10 +1,5 @@
-.profilePageWrapper{
-    /* border: 1px solid aqua; */
-    /* margin-top: 32px; */
-}
-
 .profileTopic{
-    background-color: #1c1c1c;
+    background-color: var(--dark-gray);
     width: 100%;
     margin: 0 auto;
     padding: 0 15%;
@@ -14,7 +9,7 @@
 }
 
 .profileTabs{
-    color: gray;
+    color: var(--gray);
 }
 
 .profileLists{
@@ -25,37 +20,31 @@
     display: flex;
 }
 
-
 .profileShowcaseWrapper{
-    /* border: 1px solid orange; */
     display: flex;
     margin: 24px auto;
     padding: 0 15%;
     justify-content: space-between;
 }
-.profileShowcaseIntro{
-    /* border: 1px solid orange; */
-    background-color: #1c1c1c;
-    color: white;
-    border-radius: 4px;
-    padding: 12px;
-    width: 35%;
+
+.form-label {
+    z-index: 1000;
+    background: var(--black);
+    color: var(--light-gray);
+    border: none;
+    outline: none;
+    padding: 15px 20px;
+    margin: 5px 0;
+    resize: none;
 }
-.profileShowcaseIntro > ul{
-    margin-top: 24px;
+
+.registerBandDialog .MuiDialog-paper{
+    color: var(--white);
+    background-color: var(--dark-gray);
+    border: 1px solid var(--dark-purple);
+}
+
+.registerBandDialogContent{
     display: flex;
     flex-direction: column;
-}
-
-.profileShowcaseIntroItens{
-    display: flex;
-    align-items: center;
-    font-size: 20px;
-}
-
-.profileShowcaseIntroItens > div{
-    height: 32px;
-    width: 32px;
-    margin-right: 16px;
-    margin-bottom: 8px;
 }
