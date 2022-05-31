@@ -13,6 +13,7 @@
 
 body {
     background: var(--black);
+    width: 100vw;
 }
 
 body::-webkit-scrollbar {
@@ -94,6 +95,7 @@ header {
     background: var(--black);
     border-bottom: 1px solid var(--dark-gray);
     position: sticky;
+    top: 0;
     z-index: 1000000000;
 }
 

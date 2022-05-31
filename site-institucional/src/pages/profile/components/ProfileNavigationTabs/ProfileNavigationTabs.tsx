@@ -9,7 +9,7 @@ const ProfileNavigatorTabs = ({ options = [] }: { options?: any[] }) => {
 			<ul className='profileTabsNavigation profileLists'>
 				{options.map((option, index) =>
 					typeof option.CustomOption !== "function" ? (
-						<li className={currentTab === index ? "profileTabsOption--active" : ""}>
+						<li key={`${currentTab}-${option.label}`} className={currentTab === index ? "profileTabsOption--active" : ""}>
 							<a
 								onClick={() => {
 									setCurrentTab(index)
@@ -20,7 +20,7 @@ const ProfileNavigatorTabs = ({ options = [] }: { options?: any[] }) => {
 							</a>
 						</li>
 					) : (
-						<li className={currentTab === index ? "profileTabsOption--active" : ""}>
+						<li key={`${currentTab}-${option.label}`} className={currentTab === index ? "profileTabsOption--active" : ""}>
 							<option.CustomOption currentTab={index} handleChangeTab={setCurrentTab} />
 						</li>
 					)

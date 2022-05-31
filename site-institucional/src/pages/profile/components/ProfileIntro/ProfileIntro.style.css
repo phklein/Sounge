@@ -6,13 +6,23 @@
     color: var(--white);
     border-radius: 4px;
     padding: 12px;
+    height: 100%;
     width: 35%;
 }
+
 .profileShowcaseIntro > ul{
-    margin-top: 24px;
+    margin-top: 12px;
     display: flex;
     flex-basis: 8px;
     flex-direction: column;
+}
+
+.profileShowcaseIntro > ul::after{
+    content: "";
+    height: 1px;
+    margin-bottom: 14px;
+    margin-top: 8px;
+    background-color: var(--gray);
 }
 
 .profileShowcaseIntroSkill{

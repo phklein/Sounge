@@ -30,7 +30,7 @@ const ProfileBandInfo = ({
 }) => {
 	return (
 		<li className='profileShowcaseIntroBandWrapper'>
-			<a className='profileShowcaseIntroBand'>
+			<a className='profileShowcaseIntroBand' onClick={() => handleClick()}>
 				<img src={imageSrc} />
 				<div className='profileShowcaseIntroBandInfo'>
 					<span className='profileShowcaseIntroBandInfoName'>
@@ -49,20 +49,60 @@ const ProfileBandInfo = ({
 	)
 }
 
-const ProfileIntro = ({ infos = [], type = PROFILE_TYPE.USER }: { infos: any[]; type: number }) => {
+const ProfileIntro = ({
+	infos = {},
+	type = PROFILE_TYPE.USER,
+	handleClick = undefined,
+}: {
+	infos: { skills?: any[]; bands?: any[]; members?: any[] }
+	type: number
+	handleClick?: any
+}) => {
 	return (
 		<div className='profileShowcaseIntro'>
-			<h2>Intro</h2>
-			<ul className='profileLists'>
-				{infos.map((info) => {
-					return type === PROFILE_TYPE.USER ? (
-						<ProfileSkillInfo label={info.label} Icon={info.icon} />
-					) : (
-						<ProfileBandInfo imageSrc={info.imageSrc} name={info.name} role={info.role} leader={info.leader} />
-					)
-				})}
-				<li></li>
-			</ul>
+			{type === PROFILE_TYPE.USER ? (
+				<>
+					<h2>Intro</h2>
+					<ul className='profileLists'>
+						{infos?.skills?.map((info, index) => {
+							return <ProfileSkillInfo key={`${info.label}-index`} label={info.label} Icon={info.icon} />
+						})}
+					</ul>
+					<h2>Banda</h2>
+					<ul className='profileLists'>
+						{infos?.bands?.map((info) => {
+							return (
+								<ProfileBandInfo
+									key={`${info.name}-index`}
+									imageSrc={info.imageSrc}
+									name={info.name}
+									role={info.role}
+									leader={info.leader}
+									handleClick={() => handleClick && handleClick(info.bandId)}
+								/>
+							)
+						})}
+					</ul>
+				</>
+			) : (
+				<>
+					<h2>Intro</h2>
+					<ul className='profileLists'>
+						{infos?.members?.map((info) => {
+							return (
+								<ProfileBandInfo
+									key={`${info.name}-index`}
+									imageSrc={info.imageSrc}
+									name={info.name}
+									role={info.role}
+									leader={info.leader}
+									handleClick={() => handleClick && handleClick(info.userId)}
+								/>
+							)
+						})}
+					</ul>
+				</>
+			)}
 		</div>
 	)
 }

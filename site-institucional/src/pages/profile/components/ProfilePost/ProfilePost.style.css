@@ -1,18 +1,15 @@
 .profileShowcasePost{
-    /* border: 1px solid yellow; */
     width: 60%;
     display: flex;
     flex-direction: column;
 }
 .profileShowcaseWrite{
-    /* border: 1px solid red; */
     background-color: #1c1c1c;
     height: 200px;
     border-radius: 4px;
     margin-bottom: 8px;
 }
 .profileShowcasePosts{
-    /* border: 1px solid blue; */
     background-color: #1c1c1c;
     height: 200px;
     border-radius: 4px;
