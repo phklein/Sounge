@@ -13,12 +13,12 @@ public class UserSimpleResponse {
     private String name;
     @Schema(description = "URL da foto do usuário",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private byte[] profilePic;
+    private String profilePic;
     @Schema(description = "Usuário é ou não é líder do grupo em que está",
             example = "true")
     private boolean isLeader;
 
-    public UserSimpleResponse(Long id, String name, byte[] profilePic, boolean isLeader) {
+    public UserSimpleResponse(Long id, String name, String profilePic, boolean isLeader) {
         this.id = id;
         this.name = name;
         this.profilePic = profilePic;
@@ -44,11 +44,11 @@ public class UserSimpleResponse {
         this.name = name;
     }
 
-    public byte[] getProfilePic() {
+    public String getProfilePic() {
         return profilePic;
     }
 
-    public void setProfilePic(byte[] profilePic) {
+    public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
     }
 

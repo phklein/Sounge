@@ -23,6 +23,8 @@ import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 import soungegroup.soungeapi.util.LocationUtil;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;

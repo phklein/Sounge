@@ -21,6 +21,9 @@ export function Login() {
     const onSubmit: SubmitHandler<IUserLoginRequestDto> = data => {
         UserRoute.login(data).then(res => {
             if (res.status == 200) {
+                // sessionStorage.setItem('id', res.data.id as any)
+                // sessionStorage.setItem('viewerId', res.data.id as any)
+
                 navigate(`/profile/${res.data.id}?viewerId=${res.data.id}`)
             }
         }).catch(err => {

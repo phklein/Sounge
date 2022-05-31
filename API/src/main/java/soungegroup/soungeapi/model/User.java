@@ -36,8 +36,8 @@ public class User {
     @Column(name = "user_leader") private boolean leader;
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "user_skill_level") private SkillLevel skillLevel;
-    @Column(name = "user_photo") private byte[] profilePic;
-    @Column(name = "user_banner") private byte[] banner;
+    @Column(name = "user_photo") private String profilePic;
+    @Column(name = "user_banner") private String banner;
     @Column(name = "user_spotify_id") private  String spotifyID;
 
     // One user has many posts

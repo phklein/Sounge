@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { usePromiseTracker } from "react-promise-tracker"
 import {useParams} from "react-router-dom"
 
 import "../../styles/profile.css"
@@ -15,74 +14,59 @@ import { PageIntroduction } from "../../components/PageIntroduction"
 import { PostPage } from "../../components/PostPage"
 
 export function Profile() {
-  const { promiseInProgress } = usePromiseTracker()
-
-  const [userProfile, setUserProfile] = useState<UserProfileResponseDto | undefined>()
+  const [userProfile, setUserProfile] = useState<UserProfileResponseDto>()
   const {id} = useParams()
 
-  useEffect(() => {
-    const queryString = window.location.search
-    const urlParams = new URLSearchParams(queryString)
+  const convertImageToByteArray = (image: any) => {
+    let reader = new FileReader()
 
-    const viewerId = urlParams.get('viewerId')
+    let fileByArray: any[] = []
 
-    if (viewerId) {
-      UserRoute.getProfileForId(id, viewerId).then(res => {
-        if (res.status === 200) {
-          setUserProfile(res.data)
-        }          
-      }).catch(err => {
-        console.log(err)
-      })
-    }
-  }, [])
+    reader.readAsArrayBuffer(image)
 
-  // const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-  //   const target = e.target as HTMLInputElement
-    
-  //   if (target.files && target.files.length) {
-  //     const file = target.files[0]
+    reader.onload = (e) => {
+      if (e.target?.readyState == FileReader.DONE) {
+        let arrayBuffer = (e.target as FileReader).result as ArrayBuffer
+        let array = new Uint8Array(arrayBuffer)
 
-  //     console.log(file)
+        for (let i = 0; i < array.length; i++) {
+          fileByArray.push(array[i])
+        }
+      }
       
-  //     postImage(file).then(url => {
-  //       console.log(url)
+      const reader = new FileReader()
 
-  //       const request: PictureUpdateRequestDto = {
-  //         profilePic: `${userProfile?.profilePic}`,
-  //         banner: url
-  //       }
-    
-  //       UserRoute.updatePicture(id, request).then(res => {
-  //         if (res.status === 200) {
-  //           alert('Banner atualizado com sucesso!')
-  //         }
-  //       }).catch(err => {
-  //         console.log(err)
-  //       })
-  //     })
-  //   }
-  // }
+      reader.readAsDataURL(image)
+      reader.onload = () => {
+        console.log(reader.result)
 
-  // const postImage = async (file: File) => {
-  //   const formData = new FormData()
-  //   formData.append('image', file)
+        // TODO: BRUNA
+        const request: PictureUpdateRequestDto = {
+          profilePic: reader.result,
+          banner: userProfile?.banner
+        }
 
-  //   console.log(formData)
+        UserRoute.updateSimplePicture(id, request).then(res => {
+          if (res.status === 200) {
+            alert('Banner atualizado com sucesso!')
+            window.location.reload()
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }
+    } 
+  }
 
-  //   const response = await fetch('https://api.imgur.com/3/image/', {
-  //     method: 'POST',
-  //     headers: {
-  //         Authorization: 'Client-ID c10e4a345abd5fe'
-  //     },
-  //     body: formData
-  //   })
-    
-  //   const json = await response.json()
-
-  //   console.log(json)
-  //   return json.data.link
-  // }
+  function _base64ToArrayBuffer(base64: string) {
+    var binary_string = window.atob(base64);
+    var len = binary_string.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
 
   const onChange = async (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement
@@ -92,20 +76,33 @@ export function Profile() {
 
       console.log(file)
 
-      const request: PictureUpdateRequestDto = {
-        profilePic: userProfile?.profilePic,
-        banner: await file.arrayBuffer()
-      }
-    
-      UserRoute.updateSimplePicture(id, request).then(res => {
-        if (res.status === 200) {
-          alert('Banner atualizado com sucesso!')
-        }
-      }).catch(err => {
-        console.log(err)
-      })
+      convertImageToByteArray(file)
     }
   }
+
+  useEffect(() => {
+    const getUserProfile = async () => {
+      const queryString = window.location.search
+      const urlParams = new URLSearchParams(queryString)
+
+      const viewerId = urlParams.get('viewerId')
+
+      if (viewerId) {
+        await UserRoute.getProfileForId(id, viewerId).then(res => {
+          if (res.status === 200) {
+            console.log(res.data)
+            setUserProfile(res.data)
+          }          
+        }).catch(err => {
+          console.log(err)
+        })
+
+        console.log(userProfile)
+      }
+    }
+
+    getUserProfile()
+  }, [])
 
   return (
     <>
@@ -162,14 +159,6 @@ export function Profile() {
                 }
             </div>
             <div className="post-container">
-              {/* <Form className="post-add">
-                <Form.Group controlId="newPost">
-                  <Form.Control type="text" placeholder="O que você está pensando?" />
-                </Form.Group>
-                <Form.Group controlId="">
-                  <Button variant="primary" type="submit">Publicar</Button>
-                </Form.Group>
-              </Form> */}
               {
                 userProfile?.postList.map(post => (
                   <PostPage
