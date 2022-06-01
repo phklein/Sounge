@@ -72,9 +72,10 @@ export function Profile() {
 
   useEffect(() => {
     const getUserProfile = async () => {
+      
+      // TODO: BRUNA
       const queryString = window.location.search
       const urlParams = new URLSearchParams(queryString)
-
       const viewerId = urlParams.get('viewerId')
 
       if (viewerId) {
