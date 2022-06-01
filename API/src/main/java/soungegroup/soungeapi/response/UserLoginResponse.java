@@ -17,7 +17,7 @@ public class UserLoginResponse {
     private String name;
     @Schema(description = "URL da foto do usuário",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private byte[] profilePic;
+    private String profilePic;
     @Schema(description = "Usuário é ou não é líder de banda")
     private boolean leader;
     @Schema(description = "Quantidade de notificações comuns novas",
@@ -27,7 +27,7 @@ public class UserLoginResponse {
             example = "10")
     private long newMatches;
 
-    public UserLoginResponse(Long id, String name, byte[] profilePic, boolean leader) {
+    public UserLoginResponse(Long id, String name, String profilePic, boolean leader) {
         this.id = id;
         this.name = name;
         this.profilePic = profilePic;

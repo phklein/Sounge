@@ -7,8 +7,8 @@ import lombok.Data;
 public class PictureUpdateRequest {
     @Schema(description = "URL da nova foto de perfil",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private byte[] profilePic;
+    private String profilePic;
     @Schema(description = "URL da nova foto do banner",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private byte[] banner;
+    private String banner;
 }

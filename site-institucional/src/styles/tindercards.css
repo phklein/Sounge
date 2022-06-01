@@ -28,12 +28,107 @@ body {
 
 .nav-match {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 80px;
-    background: linear-gradient(to right, #531693, #6E6FF1);
+    background: linear-gradient(to right, #722fb9, #6E6FF1, #6c3ed8);
     z-index: 10001;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+.nav-item:first-of-type {
+    justify-content: space-around;
+    padding: 0 0 0 10px;
+}
+
+.nav-item:last-of-type {
+    justify-content: flex-end;
+    padding: 0 10px 0 0;
+}
+
+.nav-item:first-of-type p {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.nav-item:last-of-type i {
+    color: #fff;
+    font-size: 35px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: .2s ease-in-out;
+}
+
+.nav-item:last-of-type i:hover {
+    transform: translateX(-5px);
+}
+
+.img-perfil {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 2px solid #fff;
+}
+
+.match-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: calc(100% - 80px);
+}
+
+.match-nav {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 20px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #383838;
+}
+
+.match-nav p {
+    color: var(--white);
+    font-size: 15px;
+    border-bottom: 2px solid #6b58cc;
+    padding-bottom: 3px;
+    margin-right: 5px;
+}
+
+.match-li {
+    display: flex;
+}
+
+.match-li:not(:last-of-type) {
+    margin-right: 30px;
+}
+
+.number-match-nav {
+    background: #722fb9;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .item-match:last-child {
@@ -115,10 +210,10 @@ body {
     transition: .4s ease-in-out;
 }
 
-.buttons button:first-child { border: 1px solid var(--red); }
+.buttons button:first-child { border: 1px solid #fc0335; }
 .buttons button:first-child:hover { 
     box-shadow: none;
-    background: var(--red);
+    background: #fc0335;
 }
 
 .buttons button:nth-child(2) { 
@@ -131,7 +226,7 @@ body {
     background: var(--yellow);
 }
 
-.buttons button:last-child { border: 1px solid var(--green); }
+.buttons button:last-child { border: 1px solid #03fc6f; }
 .buttons button:last-child:hover { 
     box-shadow: none;
     background: var(--green);
@@ -142,11 +237,53 @@ body {
     transition: .4s ease-in-out;
 }
 
-.buttons button:first-child > i { color: var(--red);}
+.buttons button:first-child > i { color: #fc0335;}
 .buttons button:first-child:hover > i { color: var(--white); }
 
 .buttons button:nth-child(2) > i { color: var(--yellow); }
 .buttons button:nth-child(2):hover > i { color: var(--white); }
   
-.buttons button:last-child > i { color: var(--green);}
+.buttons button:last-child > i { color: #03fc6f;}
 .buttons button:last-child:hover > i { color: var(--white); }
+
+.container-matchs {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 20px;
+    padding: 15px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.container-matchs::-webkit-scrollbar {
+    width: 10px;
+}
+
+.container-matchs::-webkit-scrollbar-track {
+    background: #242424;
+}
+  
+.container-matchs::-webkit-scrollbar-thumb {
+    background-color: var(--dark-purple);
+}
+
+.item-match-nav {
+    width: 90px;
+    height: 100px;
+    background: blue;
+    margin: 0 5px 0;
+    position: relative;
+    border-radius: 3px;
+}
+
+.item-match-nav p {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px;
+}

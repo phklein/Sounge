@@ -8,8 +8,8 @@ import IRoleSimpleResponseDto from './RoleSimpleResponseDto'
 export default interface IUserProfileResponseDto {
     id: number,
     name: string,
-    profilePic: ArrayBuffer,
-    banner: ArrayBuffer,
+    profilePic: string,
+    banner: string | ArrayBuffer | null,
     leader: boolean,
     postList: IPostListResponseDto[],
     spotifyID: string,

@@ -10,7 +10,7 @@ import { StateEnum } from "../../enums/StateEnum"
 export interface UserMatchResponseDto {
     id: number;
     name: string;
-    profilePic: ArrayBuffer | string;
+    profilePic: string;
     isLeader: boolean;
     sex: SexEnum;
     state: StateEnum;

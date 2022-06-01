@@ -18,6 +18,7 @@ function App() {
         <Route path="/page-not-found" element={<PageNotFound />} />
         <Route path="/register" element={<MultiForm />} />
         <Route path="/login" element={<Login />} />
+        {/* TODO: Bruna */}
         <Route path="/profile/:id" element={<Profile />} />
         <Route path="/match/:id" element={<Match />} />
         <Route path="/match-mock" element={<MatchMock />} />

@@ -21,6 +21,7 @@ export function Login() {
     const onSubmit: SubmitHandler<IUserLoginRequestDto> = data => {
         UserRoute.login(data).then(res => {
             if (res.status == 200) {
+                // TODO: Bruna
                 navigate(`/profile/${res.data.id}?viewerId=${res.data.id}`)
             }
         }).catch(err => {
