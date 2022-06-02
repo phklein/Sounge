@@ -48,7 +48,7 @@ public class UserAdapter {
         }
 
         Signature signature = new Signature();
-        signature.setExpiryDateTime(LocalDateTime.now());
+//        signature.setExpiryDateTime(LocalDateTime.now());
 
         user.setLikedGenres(genres);
         user.setRoles(roles);

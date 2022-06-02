@@ -87,7 +87,7 @@ public class GroupMatchResponse {
         this.leaderLongitude = leaderLongitude;
         this.description = description;
         this.size = size;
-        this.leaderHasSignature = signature.getExpiryDateTime().isAfter(LocalDateTime.now());
+        this.leaderHasSignature = signature.isExpired();
         this.age = Period.between(creationDate, LocalDate.now()).getYears();
     }
 

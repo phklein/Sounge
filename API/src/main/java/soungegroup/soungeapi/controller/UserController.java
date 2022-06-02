@@ -356,4 +356,8 @@ public class UserController {
                                        @RequestParam String pwd) {
         return service.delete(id, pwd);
     }
+    @GetMapping("/download/{id}")
+    public  ResponseEntity download(@PathVariable Long id){
+        return service.download(id);
+    }
 }
