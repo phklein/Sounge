@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TinderCard from 'react-tinder-card'
@@ -55,6 +56,7 @@ export function MatchMock() {
         console.log(direction)
         setLastDirection(direction)
         updateCurrentIndex(index - 1)
+        console.log(currentIndexRef.current)
     }
   
     const outOfFrame = (name: any, idx: any) => {
@@ -64,6 +66,7 @@ export function MatchMock() {
   
     const swipe = async (dir: any) => {
         if (canSwipe && currentIndex < users.length) {
+            console.log(currentIndex)
             await childRefs[currentIndex].current.swipe(dir)
         }
     }
@@ -80,6 +83,8 @@ export function MatchMock() {
     }
 
     useEffect(() => {
+        console.log(currentIndex)
+
         onkeyup = (e: any) => {
             if (e.keyCode === 37) {
                 console.log('key left')
@@ -126,10 +131,7 @@ export function MatchMock() {
                         {
                             isContainerMatchesVisible ? (
                                 <div className="container-matchs">
-                                    <UserMatchSideNav />
-                                    <UserMatchSideNav />
-                                    <UserMatchSideNav />
-                                    <UserMatchSideNav />
+                                    {/* <UserMatchSideNav /> */}
                                 </div>
                             ) : (
                                 <ContainerMessage />

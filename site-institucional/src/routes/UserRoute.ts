@@ -7,6 +7,7 @@ import UserLoginRequestDto from '../dto/request/UserLoginRequestDto'
 import UserResponseDto from '../dto/response/UserResponseDto'
 import UserProfileResponseDto from '../dto/response/UserProfileResponseDto'
 import PictureUpdateRequestDto from '../dto/request/PictureUpdateRequestDto'
+import UserSimpleResponseDto from '../dto/response/UserSimpleResponseDto';
 
 const saveAndLogin = (data: UserRequestDto) => {
     return http.post<UserResponseDto>("/users", data)
@@ -54,6 +55,10 @@ const getMatchList = (parameters: any) => {
     })
 }
 
+const getContactList = (id: any) => {
+    return http.get<Array<UserSimpleResponseDto>>(`/users/${id}/contacts`)
+}
+
 const UserRoute = {
     saveAndLogin,
     login,
@@ -64,7 +69,8 @@ const UserRoute = {
     getSimplePicture,
     updateSimplePicture,
     updatePicture,
-    getMatchList
+    getMatchList,
+    getContactList
 }
   
 export default UserRoute;

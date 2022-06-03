@@ -1,6 +1,7 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.TypeToken;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import soungegroup.soungeapi.response.*;
 import soungegroup.soungeapi.service.UserService;
 import soungegroup.soungeapi.util.ListaObj;
 import soungegroup.soungeapi.util.LocationUtil;
+import soungegroup.soungeapi.util.Mapper;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
