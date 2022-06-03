@@ -114,4 +114,9 @@ public class GroupController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         return service.delete(id);
     }
+
+    @PostMapping(value ="/upload/{id}", consumes = "plain/text")
+    public  ResponseEntity<Long> upload(@PathVariable Long id, String file) {
+        return service.upload(file);
+    }
 }

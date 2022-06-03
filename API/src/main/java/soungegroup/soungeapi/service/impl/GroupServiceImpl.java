@@ -23,11 +23,8 @@ import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 import soungegroup.soungeapi.util.LocationUtil;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -191,5 +188,19 @@ public class GroupServiceImpl implements GroupService {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Long> upload(String file) {
+        GroupSaveRequest group = new GroupSaveRequest();
+        group.setName(file.substring(0,9));
+        group.setDescription(file.substring(10,20));
+        group.setCreationDate(LocalDate.now());
+        List<GenreName> genres = new ArrayList<>();
+        genres.add(GenreName.valueOf(file.substring(21,25)));
+        group.setGenres(genres);
+        return this.save(group);
+
+
     }
 }
