@@ -17,6 +17,7 @@ import soungegroup.soungeapi.service.UserService;
 import soungegroup.soungeapi.util.Fila;
 import soungegroup.soungeapi.util.ListaObj;
 import soungegroup.soungeapi.util.LocationUtil;
+import soungegroup.soungeapi.util.Mapper;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
