@@ -45,12 +45,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
                                           SkillLevel skillLevel,
                                           Pageable pageable);
 
-    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.UserSimpleResponse(" +
-            "u.id, u.name, u.profilePic, u.leader) " +
-            "FROM User u " +
-            "WHERE :user IN u.likedUsers " +
-            "AND :user IN u.usersWhoLiked")
-    List<UserSimpleResponse> findContactList(User user, Pageable pageable);
+    @Query(value = ";with usuarios_seguidos (liker_fk, liked_fk) as(\n" +
+            "    SELECT *\n" +
+            "    FROM tb_user_likes_user\n" +
+            "    WHERE liker_fk = :userId\n" +
+            ")\n" +
+            "SELECT user_id, user_name, user_photo, user_leader\n" +
+            "FROM tb_user_likes_user u1\n" +
+            "JOIN usuarios_seguidos u2 ON u1.liker_fk = u2.liked_fk\n" +
+            "JOIN tb_user ON u1.liker_fk = tb_user.user_id\n" +
+            "WHERE u1.liked_fk = :userId", nativeQuery = true)
+    List<UserContactResponse> findContactList(Long userId);
 
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.UserSimpleResponse(" +
             "u.id, u.name, u.profilePic, u.leader) " +
