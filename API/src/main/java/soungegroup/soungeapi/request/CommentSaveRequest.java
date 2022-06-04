@@ -18,5 +18,5 @@ public class CommentSaveRequest {
     private String text;
     @Schema(description = "URL da mídia do comentário",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private byte[] mediaUrl;
+    private String mediaUrl;
 }

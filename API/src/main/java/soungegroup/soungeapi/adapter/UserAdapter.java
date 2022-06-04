@@ -11,6 +11,7 @@ import soungegroup.soungeapi.repository.RoleRepository;
 import soungegroup.soungeapi.repository.SignatureRepository;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
+import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.util.Mapper;
 
 import java.time.LocalDateTime;
@@ -47,13 +48,16 @@ public class UserAdapter {
         }
 
         Signature signature = new Signature();
-        signature.setExpiryDateTime(LocalDateTime.now());
+//        signature.setExpiryDateTime(LocalDateTime.now());
 
         user.setLikedGenres(genres);
         user.setRoles(roles);
         user.setSignature(signatureRepository.save(signature));
 
         return user;
+    }
+    public UserSimpleResponse toUserSimpleResponse (User user){
+        return Mapper.INSTANCE.map(user, UserSimpleResponse.class);
     }
 
     public UserLoginResponse toLoginResponse(User user) {

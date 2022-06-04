@@ -7,6 +7,7 @@ import UserLoginRequestDto from '../dto/request/UserLoginRequestDto'
 import UserResponseDto from '../dto/response/UserResponseDto'
 import UserProfileResponseDto from '../dto/response/UserProfileResponseDto'
 import PictureUpdateRequestDto from '../dto/request/PictureUpdateRequestDto'
+import UserSimpleResponseDto from '../dto/response/UserSimpleResponseDto';
 
 const saveAndLogin = (data: UserRequestDto) => {
     return http.post<UserResponseDto>("/users", data)
@@ -41,17 +42,21 @@ const getSimplePicture = (id: any) => {
 }
 
 const updateSimplePicture = (id: any, data: PictureUpdateRequestDto) => {
-    return http.patch<void>(`/users/${id}/picture`, data)
+    return http.patch<void>(`/users/${id}/photo`, data)
 }
 
 const updatePicture = (id: any, data: PictureUpdateRequestDto) => {
-    return http.patch<void>(`/users/${id}/picture`, data)
+    return http.patch<void>(`/users/${id}/photo`, data)
 }
 
 const getMatchList = (parameters: any) => {
     return http.get<Array<UserMatchResponseDto>>(`/users/${parameters.id}/match`, { 
         params: parameters
     })
+}
+
+const getContactList = (id: any) => {
+    return http.get<Array<UserSimpleResponseDto>>(`/users/${id}/contacts`)
 }
 
 const UserRoute = {
@@ -64,7 +69,8 @@ const UserRoute = {
     getSimplePicture,
     updateSimplePicture,
     updatePicture,
-    getMatchList
+    getMatchList,
+    getContactList
 }
   
 export default UserRoute;

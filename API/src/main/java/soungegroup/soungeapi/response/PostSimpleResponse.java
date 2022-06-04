@@ -21,7 +21,7 @@ public class PostSimpleResponse {
     private String text;
     @Schema(description = "URL da mídia do post",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private byte[] mediaUrl;
+    private String mediaUrl;
     @Schema(description = "Horas desde a postagem do post",
             example = "17")
     private Long hoursPast;
@@ -43,7 +43,7 @@ public class PostSimpleResponse {
 
     public PostSimpleResponse(Long id,
                               String text,
-                              byte[] mediaUrl,
+                              String mediaUrl,
                               LocalDateTime postDateTime,
                               User user,
                               Integer likeCount,
@@ -59,7 +59,7 @@ public class PostSimpleResponse {
 
     public PostSimpleResponse(Long id,
                               String text,
-                              byte[] mediaUrl,
+                              String mediaUrl,
                               LocalDateTime postDateTime,
                               Group group,
                               Integer likeCount,

@@ -30,4 +30,36 @@ public class Signature {
     public boolean isExpired() {
         return this.expiryDateTime.isBefore(LocalDateTime.now());
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public SignatureType getSignatureType() {
+        return signatureType;
+    }
+
+    public void setSignatureType(SignatureType signatureType) {
+        this.signatureType = signatureType;
+    }
+
+    public LocalDateTime getExpiryDateTime() {
+        return expiryDateTime;
+    }
+
+    public void setExpiryDateTime(LocalDateTime expiryDateTime) {
+        this.expiryDateTime = expiryDateTime;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 }

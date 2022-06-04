@@ -36,17 +36,17 @@ public class GroupPageResponse {
     private List<UserSimpleResponse> users;
     @Schema(description = "URL da foto do grupo",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private byte[] pictureUrl;
+    private String pictureUrl;
     @Schema(description = "URL da foto do banner",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private byte[] banner;
+    private String banner;
 
     public GroupPageResponse(Long id,
                              String name,
                              String description,
                              LocalDate creationDate,
-                             byte[] pictureUrl,
-                             byte[] banner) {
+                             String pictureUrl,
+                             String banner) {
         this.id = id;
         this.name = name;
         this.description = description;

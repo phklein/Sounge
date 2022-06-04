@@ -1,6 +1,7 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +14,17 @@ import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.*;
 import soungegroup.soungeapi.service.UserService;
+import soungegroup.soungeapi.util.Fila;
 import soungegroup.soungeapi.util.ListaObj;
 import soungegroup.soungeapi.util.LocationUtil;
+import soungegroup.soungeapi.util.Mapper;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -164,6 +167,7 @@ public class UserServiceImpl implements UserService {
 
             if (!liker.getLikedUsers().contains(liked)) {
                 liker.getLikedUsers().add(liked);
+                liker.getRecentLikes().push(liked);
                 repository.save(liker);
 
                 if (liked.getLikedUsers().contains(liker)) {
@@ -624,6 +628,11 @@ public class UserServiceImpl implements UserService {
                     .filter(u -> u.getDistance() <= maxDistance)
                     .sorted(Comparator.comparing(UserMatchResponse::getRelevance).reversed())
                     .collect(Collectors.toList());
+            Fila<UserMatchResponse> fila = new Fila<>(matchList.size());
+            for (UserMatchResponse userAux :
+                 matchList) {
+                fila.insert(userAux);
+            }
 
             return matchList.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
@@ -699,5 +708,75 @@ public class UserServiceImpl implements UserService {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
+    @Override
+
+    public ResponseEntity<UserSimpleResponse> roolbackLike(Long id, Long idLike) {
+        unlikeUser(id,idLike);
+        Optional<User> userOptional = repository.findById(id);
+        AtomicReference<User> returnUser = null;
+        if (userOptional.get() != null){
+             sessions.forEach(userLoginResponse -> {
+                 if (userLoginResponse.getId().equals(id)) {
+                    returnUser.set(userOptional.get().getRecentLikes().pop());
+                 }
+             });
+        } else {
+                 return  ResponseEntity.status(404).build();
+            }
+            UserSimpleResponse response = adapter.toUserSimpleResponse(returnUser.get());
+            return ResponseEntity.status(200).body(response);
+        }
+
+    @Override
+    public ResponseEntity download(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        String body = "";
+        String finalString = "";
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            String header = "00USERS2022";
+            header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-mm-yyyy HH:mm:ss"));
+            header += "00USERS2022";
+            finalString += header;
+            body += "02";
+            body += String.format("%-100.100s", user.getEmail());
+            body += String.format("%-45.45s", user.getPassword());
+            body += String.format("%-100.100s", user.getName());
+            body += String.format("%-3.3s", user.getSex().name());
+            body += String.format("%-256.256s", user.getDescription());
+            body += String.format("%-10.10s", user.getBirthDate().toString());
+            body += String.format("%-2.2s", user.getState().name());
+            body += String.format("%-100.100s", user.getCity());
+            body += String.format("%020.20f", user.getLatitude());
+            body += String.format("%020.20f", user.getLongitude());
+            body += String.format("%-5.5s", Boolean.toString(user.isLeader()));
+            body += String.format("%-12.12s", user.getSkillLevel().name());
+            body += "\n";
+            if (user.getGroup() != null) {
+             Optional<Group> groupOptional = groupRepository.findById(user.getGroup().getId());
+                if (groupOptional.isPresent()) {
+                    Group group = groupOptional.get();
+                    body += "03";
+                    body += String.format("%-45.45s", group.getName());
+                    body += String.format("%-45.45", group.getDescription());
+                    body += String.format("%-10.10s", group.getCreationDate().toString());
+                    body += String.format("%-10.10s", group.getGenres().stream().findFirst().get().getName());
+                }
+            }
+            finalString += body;
+            String trailer = "01";
+            trailer += "02";
+            finalString += trailer;
+            return ResponseEntity.ok()
+                    .header("Content-Disposition", "attachment; filename=\"" + "user" + ".txt\"")
+                    .header("Content-Type", "text/plain")
+                    .body(finalString);
+        }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+    }
 }
+
 
