@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
             loginResponse.setNewNotifications(notificationRepository.countNewByUserId(user.getId()));
             loginResponse.setNewMatches(notificationRepository.countNewMatchesByUserId(user.getId()));
 
-            sessions.add(loginResponse);
+            pushSession(loginResponse);
             return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
         }
 
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
         if (foundUsers.size() == 1) {
             UserLoginResponse user = foundUsers.get(0);
-            sessions.add(user);
+            pushSession(user);
             user.setNewNotifications(notificationRepository.countNewByUserId(user.getId()));
             user.setNewMatches(notificationRepository.countNewMatchesByUserId(user.getId()));
             return ResponseEntity.status(HttpStatus.OK).body(user);
@@ -80,6 +80,10 @@ public class UserServiceImpl implements UserService {
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    public void pushSession(UserLoginResponse user) {
+        sessions.add(user);
     }
 
     @Override
@@ -502,12 +506,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<List<UserSimpleResponse>> findContactList(Long id) {
+    public ResponseEntity<List<UserContactResponse>> findContactList(Long id) {
         Optional<User> userOptional = repository.findById(id);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            List<UserSimpleResponse> contacts = repository.findContactList(user, PAGEABLE);
+            List<UserContactResponse> contacts = repository.findContactList(user.getId());
 
             notificationRepository.setMatchesViewedByUser(user);
 
@@ -533,6 +537,25 @@ public class UserServiceImpl implements UserService {
             return notifications.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                     ResponseEntity.status(HttpStatus.OK).body(notifications);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<NotificationSimpleResponse>> checkNewMatches(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<NotificationSimpleResponse> newMatches =
+                    notificationRepository.findNewMatchesByUser(user, PAGEABLE);
+
+            notificationRepository.setMatchesViewedByUser(user);
+
+            return newMatches.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(newMatches);
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
