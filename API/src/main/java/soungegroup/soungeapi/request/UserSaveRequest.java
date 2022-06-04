@@ -65,4 +65,7 @@ public class UserSaveRequest {
     @Schema(description = "Nível de experiência do usuário com música",
             example = "ADVANCED")
     private SkillLevel skillLevel;
+    @Schema(description = "Telefone do usuário",
+            example = "11999999999")
+    private String phone;
 }

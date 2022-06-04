@@ -41,6 +41,7 @@ public class User {
     @Column(name = "user_banner") private String banner;
     @Column(name = "user_spotify_id") private  String spotifyID;
     @Transient private PilhaObj<User> recentLikes = new PilhaObj<User>(1) ;
+    @Column(name = "user_phone_number") private String phoneNumber;
 
     // One user has many posts
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -11,4 +11,6 @@ public interface UserContactResponse {
     String getProfilePic();
     @Value("#{target.user_leader}")
     Boolean getLeader();
+    @Value("#{target.user_phone_number}")
+     String getPhoneNumber();
 }

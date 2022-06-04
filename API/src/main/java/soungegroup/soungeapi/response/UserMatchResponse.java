@@ -71,6 +71,8 @@ public class UserMatchResponse {
     private Double relevance;
     @Schema(description = "Usuário tem ou não tem assinatura")
     private boolean hasSignature;
+    @Schema(description = "telefone do usuário")
+    private String phone;
 
     @Getter(AccessLevel.NONE)
     private Double latitude;

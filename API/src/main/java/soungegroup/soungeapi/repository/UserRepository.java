@@ -50,7 +50,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "    FROM tb_user_likes_user\n" +
             "    WHERE liker_fk = :userId\n" +
             ")\n" +
-            "SELECT user_id, user_name, user_photo, user_leader\n" +
+            "SELECT user_id, user_name, user_photo, user_leader, user_phone_number\n" +
             "FROM tb_user_likes_user u1\n" +
             "JOIN usuarios_seguidos u2 ON u1.liker_fk = u2.liked_fk\n" +
             "JOIN tb_user ON u1.liker_fk = tb_user.user_id\n" +
