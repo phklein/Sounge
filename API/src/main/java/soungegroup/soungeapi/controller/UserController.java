@@ -99,6 +99,18 @@ public class UserController {
         return service.findContactList(id);
     }
 
+    @GetMapping("{id}/newMatches")
+    @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar novos matches do usuário",
+            description = "Busca registros de novos matches para esse usuário")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
+    })
+    public ResponseEntity<List<NotificationSimpleResponse>> checkNewMatches(@PathVariable Long id) {
+        return service.checkNewMatches(id);
+    }
+
     @GetMapping("{id}/notifications")
     @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar notificações do usuário",
             description = "Busca as notificações recebidas pelo usuário")

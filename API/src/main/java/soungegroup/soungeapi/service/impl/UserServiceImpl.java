@@ -539,6 +539,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<List<NotificationSimpleResponse>> checkNewMatches(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<NotificationSimpleResponse> newMatches =
+                    notificationRepository.findNewMatchesByUser(user, PAGEABLE);
+
+            notificationRepository.setMatchesViewedByUser(user);
+
+            return newMatches.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(newMatches);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
     public ResponseEntity<List<UserMatchResponse>> findMatchList(Long id,
                                                                  Integer maxDistance,
                                                                  Optional<Integer> minAge,

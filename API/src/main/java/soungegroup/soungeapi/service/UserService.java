@@ -41,6 +41,7 @@ public interface UserService {
     ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id);
     ResponseEntity<List<UserContactResponse>> findContactList(Long id);
     ResponseEntity<List<NotificationSimpleResponse>> findNotifications(Long id);
+    ResponseEntity<List<NotificationSimpleResponse>> checkNewMatches(Long id);
     ResponseEntity<List<UserMatchResponse>> findMatchList(Long id,
                                                           Integer maxDistance,
                                                           Optional<Integer> minAge,
