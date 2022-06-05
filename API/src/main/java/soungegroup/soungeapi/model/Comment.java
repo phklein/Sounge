@@ -18,7 +18,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id") private Long id;
     @Column(name = "comment_text") private String text;
-    @Column(name = "comment_media_url") private byte[] mediaUrl;
+    @Column(name = "comment_media_url") private String mediaUrl;
     @Column(name = "comment_date_time") private LocalDateTime commentDateTime;
 
     // Many comments belong to one post

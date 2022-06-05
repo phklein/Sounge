@@ -29,4 +29,6 @@ public interface GroupService {
     ResponseEntity<Void> updatePicture(Long id, PictureUpdateRequest body);
 
     ResponseEntity<Void> delete(Long id);
+
+    ResponseEntity<Long> upload(String file);
 }

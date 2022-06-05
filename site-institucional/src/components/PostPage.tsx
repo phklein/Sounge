@@ -6,7 +6,7 @@ import { useEffect } from "react";
 interface Iprops {
   key: number;
   text: string;
-  mediaUrl?: ArrayBuffer;
+  mediaUrl?: string;
   hoursPast: number;
   user: IUserSimpleResponseDto;
   likeCount: number;

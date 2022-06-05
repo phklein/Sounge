@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface UserService {
     ResponseEntity<UserLoginResponse> saveAndLogin(UserSaveRequest body);
     ResponseEntity<UserLoginResponse> login(UserLoginRequest body);
+    void pushSession (UserLoginResponse user);
     ResponseEntity<Boolean> checkSession (Long id);
     ResponseEntity<Void> logoff(Long id);
 
@@ -38,8 +39,9 @@ public interface UserService {
 
     ResponseEntity<String> export();
     ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id);
-    ResponseEntity<List<UserSimpleResponse>> findContactList(Long id);
+    ResponseEntity<List<UserContactResponse>> findContactList(Long id);
     ResponseEntity<List<NotificationSimpleResponse>> findNotifications(Long id);
+    ResponseEntity<List<NotificationSimpleResponse>> checkNewMatches(Long id);
     ResponseEntity<List<UserMatchResponse>> findMatchList(Long id,
                                                           Integer maxDistance,
                                                           Optional<Integer> minAge,
@@ -49,4 +51,8 @@ public interface UserService {
                                                           Optional<Sex> sex,
                                                           Optional<SkillLevel> skillLevel);
     ResponseEntity<List<UserSimpleResponse>> findByName(String nameLike);
+
+    ResponseEntity<UserSimpleResponse>roolbackLike(Long id, Long idLike );
+
+    ResponseEntity download(Long id);
 }

@@ -1,5 +1,10 @@
-import React, { useState, useMemo, useRef } from 'react'
+
+import React, { useState, useMemo, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import TinderCard from 'react-tinder-card'
+
+import { ContainerMessage } from '../../components/ContainerMessage'
+import { UserMatchSideNav } from '../../components/UserMatchSideNav'
 
 import './../../styles/tindercards.css'
 
@@ -22,16 +27,18 @@ const user2: teste = {
 }
 
 export function MatchMock() {    
-    const [aaa, setAaa] = useState<teste[]>([user1, user2])
+    const navigate = useNavigate()
 
-    const [currentIndex, setCurrentIndex] = useState(aaa.length - 1)
+    const [users, setUsers] = useState<teste[]>([user1, user2])
+
+    const [currentIndex, setCurrentIndex] = useState(users.length - 1)
     const [lastDirection, setLastDirection] = useState()
 
     const currentIndexRef = useRef(currentIndex)
   
     const childRefs: any = useMemo(
         () =>
-            Array(aaa.length)
+            Array(users.length)
             .fill(0)
             .map((i) => React.createRef()),
         []
@@ -42,13 +49,14 @@ export function MatchMock() {
         currentIndexRef.current = val
     }
     
-    const canGoBack = currentIndex < aaa.length - 1
+    const canGoBack = currentIndex < users.length - 1
     const canSwipe = currentIndex >= 0
     
     const swiped = (direction: any, nameToDelete: any, index: any) => {
         console.log(direction)
         setLastDirection(direction)
         updateCurrentIndex(index - 1)
+        console.log(currentIndexRef.current)
     }
   
     const outOfFrame = (name: any, idx: any) => {
@@ -57,7 +65,8 @@ export function MatchMock() {
     }
   
     const swipe = async (dir: any) => {
-        if (canSwipe && currentIndex < aaa.length) {
+        if (canSwipe && currentIndex < users.length) {
+            console.log(currentIndex)
             await childRefs[currentIndex].current.swipe(dir)
         }
     }
@@ -69,17 +78,70 @@ export function MatchMock() {
         await childRefs[newIndex].current.restoreCard()
     }
 
+    const goToBackPage = () => {
+        navigate(-1)
+    }
+
+    useEffect(() => {
+        console.log(currentIndex)
+
+        onkeyup = (e: any) => {
+            if (e.keyCode === 37) {
+                console.log('key left')
+                swipe('left')
+            } else if (e.keyCode === 39) {
+                console.log('key right')
+                swipe('right')
+            }
+        }
+    }, [])
+
+    let isContainerMatchesVisible: boolean = true
+
+    const replaceMatchContent = (name: string) => {
+        if (name === 'match') {
+            isContainerMatchesVisible = true            
+        } else if (name === 'userMatchPost') {
+            isContainerMatchesVisible = false
+        }
+    }
+
     return (
         <>
             <div className="container-match">
                 <div className="item-match">
                     <nav className="nav-match">
-
+                        <div className="nav-item">
+                            <div className="img-perfil" style={{ backgroundImage: `url(${user1.profilePic})` }} />
+                            <p>Meu Perfil</p>
+                        </div>
+                        <div className="nav-item">
+                            <i className='bx bxs-chevron-left' onClick={() => goToBackPage()}></i>
+                        </div>
                     </nav>
+                    <div className="match-content">
+                        <div className="match-nav">
+                            <div className="match-li" onClick={() => replaceMatchContent('match')}>
+                                <p>Matches</p><div className="number-match-nav">0</div>
+                            </div>
+                            {/* <div className="match-li" onClick={() => replaceMatchContent('userMatchPost')}>
+                                <p>Mensagens</p><div className="number-match-nav">25</div>
+                            </div> */}
+                        </div>
+                        {
+                            isContainerMatchesVisible ? (
+                                <div className="container-matchs">
+                                    {/* <UserMatchSideNav /> */}
+                                </div>
+                            ) : (
+                                <ContainerMessage />
+                            )
+                        }
+                    </div>
                 </div>
                 <div className="item-match">
                     {
-                        aaa?.map((match, index) => {
+                        users?.map((match, index) => {
                             return (
                                 <TinderCard
                                     ref={childRefs[index]}

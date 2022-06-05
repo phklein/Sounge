@@ -3,6 +3,8 @@ package soungegroup.soungeapi.request;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import soungegroup.soungeapi.enums.*;
 
@@ -11,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@Getter @Setter
 public class UserSaveRequest {
     @Email
     @NotBlank
@@ -62,4 +65,7 @@ public class UserSaveRequest {
     @Schema(description = "Nível de experiência do usuário com música",
             example = "ADVANCED")
     private SkillLevel skillLevel;
+    @Schema(description = "Telefone do usuário",
+            example = "11999999999")
+    private String phone;
 }

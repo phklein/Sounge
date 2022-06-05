@@ -25,7 +25,7 @@ public class UserMatchResponse {
     private String name;
     @Schema(description = "URL da foto do usuário",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
-    private byte[] profilePic;
+    private String profilePic;
     @Schema(description = "Usuário é ou não é líder do grupo em que está")
     private boolean isLeader;
     @Schema(description = "Sexo do usuário",
@@ -71,6 +71,8 @@ public class UserMatchResponse {
     private Double relevance;
     @Schema(description = "Usuário tem ou não tem assinatura")
     private boolean hasSignature;
+    @Schema(description = "telefone do usuário")
+    private String phone;
 
     @Getter(AccessLevel.NONE)
     private Double latitude;
@@ -80,7 +82,7 @@ public class UserMatchResponse {
 
     public UserMatchResponse(Long id,
                              String name,
-                             byte[] profilePic,
+                             String profilePic,
                              boolean isLeader,
                              Sex sex,
                              State state,
@@ -103,7 +105,7 @@ public class UserMatchResponse {
         this.longitude = longitude;
         this.spotifyID = spotifyID;
         this.description = description;
-        this.hasSignature = signature.getExpiryDateTime().isAfter(LocalDateTime.now());
+        this.hasSignature = false;
         this.skillLevel = skillLevel;
         this.age = Period.between(birthDate, LocalDate.now()).getYears();
     }

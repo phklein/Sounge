@@ -95,8 +95,20 @@ public class UserController {
             @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
     })
-    public ResponseEntity<List<UserSimpleResponse>> findContactList(@PathVariable Long id) {
+    public ResponseEntity<List<UserContactResponse>> findContactList(@PathVariable Long id) {
         return service.findContactList(id);
+    }
+
+    @GetMapping("{id}/newMatches")
+    @Operation(tags = {"Usuários - Consultas"}, summary = "Buscar novos matches do usuário",
+            description = "Busca registros de novos matches para esse usuário")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Encontrado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
+    })
+    public ResponseEntity<List<NotificationSimpleResponse>> checkNewMatches(@PathVariable Long id) {
+        return service.checkNewMatches(id);
     }
 
     @GetMapping("{id}/notifications")
@@ -261,7 +273,11 @@ public class UserController {
                                            @PathVariable Long likedId) {
         return service.unlikeUser(id, likedId);
     }
+    @DeleteMapping("/roolback/{id}/{likeid}")
+    public ResponseEntity<UserSimpleResponse> rollbackLike(@PathVariable Long id, @PathVariable Long likeId){
+        return service.roolbackLike(id,likeId);
 
+    }
     @PostMapping("/{id}/group/{groupId}")
     @Operation(tags = {"Usuários - Operações"}, summary = "Entrar em um grupo",
             description = "Relaciona o usuário à um grupo pelo ID, caso seja o primeiro a entrar, se torna líder")
@@ -347,8 +363,14 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Usuário não autenticado"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
+
     public ResponseEntity<Void> delete(@PathVariable Long id,
                                        @RequestParam String pwd) {
         return service.delete(id, pwd);
     }
+    @GetMapping("/download/{id}")
+    public  ResponseEntity download(@PathVariable Long id){
+        return service.download(id);
+    }
+
 }

@@ -27,7 +27,6 @@ export function Login() {
       })
       .catch((err) => {
         console.log(err);
-
         Swal.fire("erro ao tentar entrar");
       });
   };

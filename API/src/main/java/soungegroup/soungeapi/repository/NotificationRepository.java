@@ -20,6 +20,15 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
             "ORDER BY n.creationDateTime DESC")
     List<NotificationSimpleResponse> findByUser(User user, Pageable pageable);
 
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.NotificationSimpleResponse(" +
+            "n.id, n.text, n.type, n.creationDateTime, n.sender) " +
+            "FROM Notification n " +
+            "WHERE n.receiver = :user " +
+            "AND n.type = 0 " +
+            "AND n.viewed = FALSE " +
+            "ORDER BY n.creationDateTime DESC")
+    List<NotificationSimpleResponse> findNewMatchesByUser(User user, Pageable pageable);
+
     @Query("SELECT DISTINCT COUNT(n) " +
             "FROM Notification n " +
             "JOIN n.receiver u " +

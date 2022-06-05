@@ -1,15 +1,15 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { Home } from "./pages/Home"
-import { PageNotFound } from "./pages/PageNotFound"
-import { Login } from "./pages/Login"
-import UserProfile from "./pages/profile/UserProfile"
-import BandProfile from "./pages/profile/BandProfile"
-import { Match } from "./pages/match/Match"
-import { Premium} from "./pages/Premium"
+import { Home } from "./pages/Home";
+import { PageNotFound } from "./pages/PageNotFound";
+import { Login } from "./pages/Login";
+import UserProfile from "./pages/profile/UserProfile";
+import BandProfile from "./pages/profile/BandProfile";
+import { Match } from "./pages/match/Match";
+import { Premium } from "./pages/Premium";
 
-import { MultiForm } from "./components/MultiForm"
-import { MatchMock } from "./pages/match/MatchMock"
+import { MultiForm } from "./components/MultiForm";
+import { MatchMock } from "./pages/match/MatchMock";
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
         <Route path="/premium" element={<Premium />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
 export default App;
