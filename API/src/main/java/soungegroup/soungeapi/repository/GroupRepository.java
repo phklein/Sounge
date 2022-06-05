@@ -24,7 +24,7 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
             "JOIN gp.users u " +
             "JOIN u.roles r " +
             "WHERE u.id <> :userId " +
-            "AND (l NOT IN :likedUsers OR :likedUsers IS NULL) " +
+            "AND l NOT IN :likedUsers " +
             "AND (g.name = :genreName OR :genreName IS NUll)  " +
             "AND (SIZE(u) >= :minSize OR :minSize IS NUll)  " +
             "AND (SIZE(u) <= :maxSize OR :maxSize IS NUll)  " +
