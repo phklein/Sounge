@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import React from "react";
 import "./ProfileHighlight.style.css";
 
@@ -6,24 +7,55 @@ const ProfileHighlight = ({
   avatarSrc = "https://agenciauva.files.wordpress.com/2018/08/otakus-features-origin-and-types.jpg",
   userInfo = { name: "Elvis Presley", description: "Rei do Rock'n'Roll" },
   handleAvatarChange = () => {},
+  handleBannerChange = () => {},
+  loadingAvatar = false,
+  loadingBanner = false,
 }: {
   bannerSrc: string;
   avatarSrc: string;
   userInfo: any;
   handleAvatarChange?: any;
+  handleBannerChange?: any;
+  loadingAvatar?: boolean;
+  loadingBanner?: boolean;
 }) => {
   return (
     <div className="profileHighlightWrapper">
-      <img className="profileHighlightBanner" src={bannerSrc} />
+      <div className="profileHighlightBannerWrapper">
+        {loadingBanner ? (
+          <CircularProgress />
+        ) : (
+          <>
+            <input
+              id="banner-upload"
+              type="file"
+              accept="image/png, image/jpeg"
+              onChange={(event) => handleBannerChange(event.target)}
+            />
+            <label htmlFor="banner-upload"></label>
+            <img
+              className="profileHighlightBanner"
+              src={`data:image/png;base64,${bannerSrc}`}
+            />
+          </>
+        )}
+      </div>
       <div className="profileHighlightUser">
         <div className="profileHighlightUserImg">
-          <input
-            id="file-upload"
-            type="file"
-            onChange={(event) => handleAvatarChange(event.target)}
-          />
-          <label htmlFor="file-upload"></label>
-          <img src={avatarSrc} />
+          {loadingAvatar ? (
+            <CircularProgress />
+          ) : (
+            <>
+              <input
+                id="avatar-upload"
+                type="file"
+                accept="image/png, image/jpeg"
+                onChange={(event) => handleAvatarChange(event.target)}
+              />
+              <label htmlFor="avatar-upload"></label>
+              <img src={`data:image/png;base64,${avatarSrc}`} />
+            </>
+          )}
         </div>
         <h3>{userInfo.name}</h3>
         <span>{userInfo.description}</span>

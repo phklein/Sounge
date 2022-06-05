@@ -27,6 +27,17 @@ import ProfileIntro, {
 import "./profile.style.css";
 import PictureUpdateRequestDto from "../../dto/request/PictureUpdateRequestDto";
 
+const toBase64 = (file: any) =>
+  new Promise((resolve, reject) => {
+    const reader: any = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      resolve(
+        reader.result && reader.result.replace("data:", "").replace(/^.+,/, "")
+      );
+    };
+    reader.onerror = (error: any) => reject(error);
+  });
 interface IUserPageData {
   id: number;
   profileHighlight: {
@@ -240,9 +251,9 @@ const Popover = ({
 
 const UserProfile = () => {
   const [currentShowcasePage, setCurrentShowcasePage] = useState(0);
-  const [userProfileData, setUserProfileData] = useState<
-    IUserProfileResponseDto | any
-  >(undefined);
+  const [userProfileData, setUserProfileData] = useState<IUserPageData | any>(
+    undefined
+  );
   const [registerBandDialogVisibility, setRegisterBandDialogVisibility] =
     useState(false);
   const [registerBandForm, setRegisterBandForm] = useState({
@@ -253,6 +264,8 @@ const UserProfile = () => {
   });
 
   const [loadingProfielUserData, setLoadingProfielUserData] = useState(false);
+  const [loadingAvatar, setLoadingAvatar] = useState(false);
+  const [loadingBanner, setLoadingBanner] = useState(false);
   const [loadingRegisterBandConfirm, setLoadingRegisterBandConfirm] =
     useState(false);
   const location = useLocation();
@@ -324,36 +337,70 @@ const UserProfile = () => {
   };
 
   const updateAvatar = async (input: any) => {
+    setLoadingAvatar(true);
     const viewerId = localStorage.getItem("viewerId") || null;
     if (input.files && input.files.length) {
       const file = input.files[0];
-
-      console.log(file);
+      const formatedFile = await toBase64(file);
+      console.log(formatedFile);
 
       const request: PictureUpdateRequestDto = {
-        profilePic: await file.arrayBuffer(),
-        banner: userProfileData.banner,
+        profilePic: formatedFile,
+        banner: userProfileData.profileHighlight.bannerSrc,
       };
 
       console.log(request);
 
-      // UserRoute.updatePicture(viewerId, request)
-      //   .then((res) => {
-      //     if (res.status === 200) {
-      //       console.log(res);
-      //       setUserProfileData({
-      //         ...userProfileData,
-      //         profileHighlight: {
-      //           ...userProfileData.profileHighlight,
-      //           // avatarSrc?: res.data.
-      //           // bannerSrc?: res.data.
-      //         },
-      //       });
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      try {
+        const response = await UserRoute.updatePicture(viewerId, request);
+        if (response.status === 200) {
+          setUserProfileData({
+            ...userProfileData,
+            profileHighlight: {
+              ...userProfileData.profileHighlight,
+              avatarSrc: formatedFile,
+            },
+          });
+        }
+      } catch (err: any) {
+        console.log(err);
+      } finally {
+        setLoadingAvatar(false);
+      }
+    }
+  };
+
+  const updateBanner = async (input: any) => {
+    setLoadingBanner(true);
+    const viewerId = localStorage.getItem("viewerId") || null;
+    if (input.files && input.files.length) {
+      const file = input.files[0];
+      const formatedFile = await toBase64(file);
+      console.log(formatedFile);
+
+      const request: PictureUpdateRequestDto = {
+        banner: formatedFile,
+        profilePic: userProfileData.profileHighlight.avatarSrc,
+      };
+
+      console.log(request);
+
+      try {
+        const response = await UserRoute.updatePicture(viewerId, request);
+        if (response.status === 200) {
+          setUserProfileData({
+            ...userProfileData,
+            profileHighlight: {
+              ...userProfileData.profileHighlight,
+              bannerSrc: formatedFile,
+            },
+          });
+        }
+      } catch (err: any) {
+        console.log(err);
+      } finally {
+        setLoadingBanner(false);
+      }
     }
   };
 
@@ -582,6 +629,9 @@ const UserProfile = () => {
                 avatarSrc={userProfileData?.profileHighlight.avatarSrc}
                 userInfo={userProfileData?.profileHighlight.userInfo}
                 handleAvatarChange={updateAvatar}
+                handleBannerChange={updateBanner}
+                loadingAvatar={loadingAvatar}
+                loadingBanner={loadingBanner}
               />
               <ProfileNavigatorTabs options={PROFILE_NAVIGATION_OPTIONS} />
             </div>

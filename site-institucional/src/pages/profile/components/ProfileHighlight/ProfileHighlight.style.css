@@ -16,7 +16,6 @@
     background-color: var(--black);
     border-radius: 0 0 8px 8px;
     height: 240px;
-    margin: 0 16px;
     width: 100%;
     object-fit: cover;
 }
@@ -45,21 +44,42 @@
     width: 180px;
     height: 180px;
     border-radius: 100%;
-    object-fit: cover;
-    border: 1px solid red;
+    background: rgba(0,0,0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
 }
 
-.profileHighlightUserImg > input{
+.profileHighlightBannerWrapper {
+    width: 100%;
+    height: 240px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.profileHighlightBannerWrapper > label{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: flex-end;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.profileHighlightUserImg > input,
+.profileHighlightBannerWrapper > input{
     display: none;
 }
 
 .profileHighlightUserImg > img{
-    /* width: 180px;
-    height: 180px; */
+    width: 180px;
+    height: 180px;
     border-radius: 100%;
     object-fit: cover;
-    position: absolute;
 }
 
 .profileHighlightUserImg > label{
@@ -67,4 +87,28 @@
     height: 180px;
     border-radius: 100%;
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.profileHighlightUserImg > label:hover,
+.profileHighlightBannerWrapper > label:hover{
+    background-color: rgba(0,0,0,0.5);
+}
+
+.profileHighlightUserImg > label:hover::after{
+    content: 'Editar avatar';
+}
+
+.profileHighlightBannerWrapper > label:hover::after{
+    color: white;
+    content: 'Editar banner';
+}
+
+.profileHighlightUserImg > span,
+.profileHighlightBannerWrapper > span{
+    color: var(--light-purple);
+    margin: 8px;
 }
