@@ -270,4 +270,108 @@ ________________________________________________________________________________
 
 .btn-sintonizar {
     background: linear-gradient(90deg, rgba(110, 111, 241, 0.82) 0%, rgba(83, 22, 147, 0.82) 99.93%);
-  }
+}
+
+/* Component Modal Match
+_______________________________________________________________________________________ */
+
+.container-modal-match {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #5216932a;
+    position: absolute;
+    z-index: 1000000000;
+    transition: ease-in-out .4s;
+}
+
+.modal-match {
+    width: 400px;
+    height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    background: var(--black-purple);
+    border-radius: 4px;
+    position: relative;
+}
+
+.modal-match p:first-of-type {
+    font-size: 70px;
+    font-weight: 400;
+    color: var(--dark-purple);
+    font-family: 'Qwigley', cursive;
+}
+
+.modal-match p {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--light-gray);
+}
+
+.modal-match-picture {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.img-modal-match {
+    width: 100px;
+    height: 100px;
+    background: #712abd;
+    border-radius: 50%;
+}
+
+.modal-match button {
+    background: var(--dark-purple);
+    box-shadow: inset 0 0 20px #712abd;
+    color: var(--light-gray);
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 5px;
+    border: none;
+    width: 100%;
+    padding: 15px 30px;
+    cursor: pointer;
+    transition: ease-in-out .3s;
+}
+
+.modal-match button:hover { 
+    background: var(--light-gray);
+    color: var(--dark-gray);
+    box-shadow: none;
+}
+
+.modal-match button:last-of-type {
+    background: none;
+    box-shadow: inset 0 0 3px #f3f3f375;
+    border: 1px solid var(--white);
+}
+
+.modal-match button:last-of-type:hover {
+    background: var(--white);
+    color: var(--dark-gray);
+}
+
+.btn-close-modal-match {
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--white);
+    font-size: 30px;
+    transition: ease-in-out .3s;
+}
+
+.btn-close-modal-match:hover {
+    color: var(--dark-purple);
+}

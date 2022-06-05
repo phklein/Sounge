@@ -17,7 +17,7 @@ const deleteGroupById = (idGroup: number) => {
 }
 
 const getMatchList = (parameters: any) => {
-    return http.get<Array<GroupMatchResponseDto>>(`/groups/${parameters.id}/match`, {
+    return http.get<Array<GroupMatchResponseDto>>(`/groups/match`, {
         params: parameters
     })
 }

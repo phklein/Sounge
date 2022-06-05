@@ -1,13 +1,14 @@
 
 import http from '../http-commn'
 
-import { UserMatchResponseDto } from './../dto/response/UserMatchResponseDto';
 import UserRequestDto from '../dto/request/UserRequestDto'
 import UserLoginRequestDto from '../dto/request/UserLoginRequestDto'
 import UserResponseDto from '../dto/response/UserResponseDto'
 import UserProfileResponseDto from '../dto/response/UserProfileResponseDto'
 import PictureUpdateRequestDto from '../dto/request/PictureUpdateRequestDto'
-import UserSimpleResponseDto from '../dto/response/UserSimpleResponseDto';
+import UserSimpleResponseDto from '../dto/response/UserSimpleResponseDto'
+import { UserMatchResponseDto } from './../dto/response/UserMatchResponseDto'
+import NotificationSimpleResponseDto from './../dto/response/NotificationSimpleResponseDto'
 
 const saveAndLogin = (data: UserRequestDto) => {
     return http.post<UserResponseDto>("/users", data)
@@ -59,6 +60,14 @@ const getContactList = (id: any) => {
     return http.get<Array<UserSimpleResponseDto>>(`/users/${id}/contacts`)
 }
 
+const checkNewMatches = (id: any) => {
+    return http.get<Array<NotificationSimpleResponseDto>>(`/users/${id}/newMatches`)
+}
+
+const likeUser = (id: any, likedId: any) => {
+    return http.post<void>(`/users/${id}/likeUser/${likedId}`)
+}
+
 const UserRoute = {
     saveAndLogin,
     login,
@@ -70,7 +79,9 @@ const UserRoute = {
     updateSimplePicture,
     updatePicture,
     getMatchList,
-    getContactList
+    getContactList,
+    checkNewMatches,
+    likeUser
 }
   
-export default UserRoute;
+export default UserRoute
