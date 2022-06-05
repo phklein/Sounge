@@ -39,6 +39,7 @@ const toBase64 = (file: any) =>
     };
     reader.onerror = (error: any) => reject(error);
   });
+  
 interface IUserPageData {
   id: number;
   profileHighlight: {

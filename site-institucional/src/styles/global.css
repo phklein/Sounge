@@ -273,3 +273,101 @@ ________________________________________________________________________________
 .btn-sintonizar {
     background: linear-gradient(90deg, rgba(110, 111, 241, 0.82) 0%, rgba(83, 22, 147, 0.82) 99.93%);
   }
+
+
+/* Component comment-bar
+_______________________________________________________________________________________ */
+.comment-bar{
+    background-color: #111111;
+    border-radius: 7px;
+    padding: 30px 40px 20px 40px;
+   
+}
+
+.comment{
+    background-color:#333333;
+    border:0;
+    padding: 13px 15px;
+    margin-bottom: 10px;
+    width: 100%;
+    color: var(--white);
+    border-radius: 5px;
+}
+
+.comment-usuarioName{
+    color: var(--light-purple);
+    /*font-weight: 100;*/
+    font-size: 15px;
+}
+
+
+/* Component Interaction
+_______________________________________________________________________________________ */
+.interaction{
+    background-color: #111111;
+    width: 620px;
+    height: 115px;
+    border-radius: 0 0 7px 7px;
+}
+
+.interaction-barr{
+    border-bottom: solid 1px #757575;
+    display: flex;
+    padding: 20px;
+    
+}
+
+.interaction-icon{
+    display: flex;
+    padding-right: 20px;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+.interaction-icon i {
+    color: var(--light-gray);
+    font-size: 31px;
+    transition: 0.5s;
+
+}
+.interaction-icon h3 {
+    color: var(--light-gray);
+    font-weight: 380;
+    padding-left: 8px;
+    font-size: 17px;
+}
+
+.interaction-icon:nth-child(1) i:hover{
+    color: #e2264d;
+    animation: pulse 1s linear infinite;
+    transform: scale(1);
+}
+
+@keyframes pulse {
+    0%{
+        transform: scale(1);
+    }
+    10%{
+        transform: scale(1.1);
+    
+    }
+    20%{
+        transform: scale(0.9);
+    }
+    30%{
+        transform: scale(1.2);
+
+    }
+    40%{
+        transform: scale(0.9);
+    }
+
+}
+
+
+
+/*https://css-tricks.com/recreating-the-twitter-heart-animation/*/
+
+

@@ -51,20 +51,20 @@ const REOL_BAND_PROFILE_PAGE_MOCK: IBandPageData = {
 			role: "Vocalista",
 			leader: true,
 		},
-		{
-			imageSrc: "https://lastfm.freetls.fastly.net/i/u/ar0/e63de329c7db8ddccd1a1b0ee9ba5d67.jpg",
-			userId: 2,
-			name: "Giga",
-			role: "Produtor",
-			leader: false,
-		},
-		{
-			imageSrc: "https://pm1.narvii.com/6314/ea5666b0d0583fef6c5ed8a06207e0b9bf1dfb7a_hq.jpg",
-			userId: 3,
-			name: "Okiku",
-			role: "Designer",
-			leader: false,
-		},
+		// {
+		// 	imageSrc: "https://lastfm.freetls.fastly.net/i/u/ar0/e63de329c7db8ddccd1a1b0ee9ba5d67.jpg",
+		// 	userId: 2,
+		// 	name: "Giga",
+		// 	role: "Produtor",
+		// 	leader: false,
+		// },
+		// {
+		// 	imageSrc: "https://pm1.narvii.com/6314/ea5666b0d0583fef6c5ed8a06207e0b9bf1dfb7a_hq.jpg",
+		// 	userId: 3,
+		// 	name: "Okiku",
+		// 	role: "Designer",
+		// 	leader: false,
+		// },
 	],
 }
 

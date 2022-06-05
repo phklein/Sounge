@@ -10,6 +10,7 @@ import { Premium } from "./pages/Premium";
 
 import { MultiForm } from "./components/MultiForm";
 import { MatchMock } from "./pages/match/MatchMock";
+import { Interaction } from "./components/Interaction"
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/match/:id" element={<Match />} />
         <Route path="/match-mock" element={<MatchMock />} />
         <Route path="/premium" element={<Premium />} />
+        <Route path="/interaction" element={<Interaction />} />
       </Routes>
     </BrowserRouter>
   );
