@@ -26,6 +26,7 @@ import ProfileIntro, {
 } from "./components/ProfileIntro/ProfileIntro";
 import "./profile.style.css";
 import PictureUpdateRequestDto from "../../dto/request/PictureUpdateRequestDto";
+import Swal from "sweetalert2";
 
 const toBase64 = (file: any) =>
   new Promise((resolve, reject) => {
@@ -266,6 +267,7 @@ const UserProfile = () => {
   const [loadingProfielUserData, setLoadingProfielUserData] = useState(false);
   const [loadingAvatar, setLoadingAvatar] = useState(false);
   const [loadingBanner, setLoadingBanner] = useState(false);
+  const [loadingImportGroup, setLoadingImportGroup] = useState(false);
   const [loadingRegisterBandConfirm, setLoadingRegisterBandConfirm] =
     useState(false);
   const location = useLocation();
@@ -404,6 +406,31 @@ const UserProfile = () => {
     }
   };
 
+  const importBandTxt = async (input: any) => {
+    const viewerId = localStorage.getItem("viewerId") || null;
+    if (input.files && input.files.length) {
+      const file = input.files[0];
+      console.log(file);
+      const formatedFile = await toBase64(file);
+      console.log(formatedFile);
+
+      try {
+        setLoadingImportGroup(true);
+        const response = await UserRoute.importGroupText(
+          viewerId,
+          "aerojnghbaingóriaghnaROCK"
+        );
+        if (response.status === 200) {
+          Swal.fire("Importado com Sucesso!");
+        }
+      } catch (err: any) {
+        console.log(err);
+      } finally {
+        setLoadingImportGroup(false);
+      }
+    }
+  };
+
   useEffect(() => {
     const profilePageId: string[] = location.pathname.match(/\d+$/) || ["-1"];
     getProfileUserData(Number.parseInt(profilePageId[0]));
@@ -444,6 +471,7 @@ const UserProfile = () => {
           handleChangeTab: Function;
         }) => {
           const [menuVisibility, setMenuVisibility] = useState(false);
+
           return (
             <div>
               <ClickAwayListener onClickAway={() => setMenuVisibility(false)}>
@@ -598,21 +626,47 @@ const UserProfile = () => {
             >
               Cancelar
             </Button>
-            <Button
-              variant="contained"
-              sx={{
-                width: 100,
-                backgroundColor: "var(--dark-purple)",
-                "&:hover": { backgroundColor: "var(--light-purple)" },
-              }}
-              onClick={() => registerNewBand()}
-            >
-              {loadingRegisterBandConfirm ? (
-                <CircularProgress size={24} />
-              ) : (
-                "Próximo"
-              )}
-            </Button>
+            <div>
+              <Button
+                variant="contained"
+                sx={{
+                  width: 100,
+                  margin: "0 8px",
+                  color: "var(--black)",
+                  backgroundColor: "var(--white)",
+                  "&:hover": { backgroundColor: "var(--gray)" },
+                }}
+                component="label"
+              >
+                {loadingImportGroup ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  <>
+                    <input
+                      type="file"
+                      hidden
+                      onChange={(event) => importBandTxt(event.target)}
+                    />
+                    Importar
+                  </>
+                )}
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  width: 100,
+                  backgroundColor: "var(--dark-purple)",
+                  "&:hover": { backgroundColor: "var(--light-purple)" },
+                }}
+                onClick={() => registerNewBand()}
+              >
+                {loadingRegisterBandConfirm ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  "Próximo"
+                )}
+              </Button>
+            </div>
           </DialogActions>
         </DialogContent>
       </Dialog>

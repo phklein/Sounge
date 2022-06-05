@@ -30,5 +30,5 @@ public interface GroupService {
 
     ResponseEntity<Void> delete(Long id);
 
-    ResponseEntity<Long> upload(String file);
+    ResponseEntity<Long> upload(Long id, String file);
 }
