@@ -1,6 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
+//componente de interação
+//contem uma url na app.tsx
+//o componente de interação não está terminado pois não consegui arrumar o código estranho
+//no componente de interação precisa conenctar ao back
+//o css de component e comment estão no global
 
 export function Interaction() {
     return (

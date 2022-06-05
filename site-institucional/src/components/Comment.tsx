@@ -10,7 +10,7 @@ import Swal from 'sweetalert2'
 
 export function Comment() {
 
-    const navigate = useNavigate();
+   /* const navigate = useNavigate();
 
     const MySwal = withReactContent(Swal)
 
@@ -45,5 +45,5 @@ export function Comment() {
             </Form>
 
         </div>
-    )
+    ) */
 }
