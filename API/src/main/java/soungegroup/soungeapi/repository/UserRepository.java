@@ -28,7 +28,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "JOIN u.roles r " +
             "JOIN u.likedGenres g " +
             "WHERE u.id <> :userId " +
-            "AND (u NOT IN :likedUsers OR :likedUsers IS NULL) " +
+            "AND u NOT IN :likedUsers " +
             "AND (u.birthDate >= :minBirthDate OR :minBirthDate IS NUll) " +
             "AND (u.birthDate <= :maxBirthDate OR :maxBirthDate IS NUll) " +
             "AND (r.name = :roleName OR :roleName IS NULL) " +
