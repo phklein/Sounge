@@ -41,9 +41,30 @@
     color: var(--gray);
 }
 
-.profileHighlightUser_pic{
+.profileHighlightUserImg{
     width: 180px;
     height: 180px;
     border-radius: 100%;
     object-fit: cover;
+    border: 1px solid red;
+    position: relative;
+}
+
+.profileHighlightUserImg > input{
+    display: none;
+}
+
+.profileHighlightUserImg > img{
+    /* width: 180px;
+    height: 180px; */
+    border-radius: 100%;
+    object-fit: cover;
+    position: absolute;
+}
+
+.profileHighlightUserImg > label{
+    width: 180px;
+    height: 180px;
+    border-radius: 100%;
+    position: absolute;
 }

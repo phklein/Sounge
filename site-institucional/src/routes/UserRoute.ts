@@ -45,7 +45,7 @@ const updateSimplePicture = (id: any, data: PictureUpdateRequestDto) => {
 }
 
 const updatePicture = (id: any, data: PictureUpdateRequestDto) => {
-    return http.patch<void>(`/users/${id}/picture`, data)
+    return http.patch<void>(`/users/${id}/photo`, data)
 }
 
 const getMatchList = (parameters: any) => {
