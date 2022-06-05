@@ -88,7 +88,7 @@ public class GroupServiceImpl implements GroupService {
 
             List<GroupMatchResponse> matchList = repository.findMatchList(
                     user.getId(),
-                    user.getLikedUsers().isEmpty() ? null : user.getLikedUsers(),
+                    user.getLikedUsers(),
                     genreName.orElse(null),
                     minSize.orElse(null),
                     maxSize.orElse(null),

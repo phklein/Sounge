@@ -585,7 +585,7 @@ public class UserServiceImpl implements UserService {
 
             List<UserMatchResponse> matchList = repository.findMatchList(
                     user.getId(),
-                    user.getLikedUsers().isEmpty() ? null : user.getLikedUsers(),
+                    user.getLikedUsers(),
                     minBirthDate.orElse(null),
                     maxBirthDate.orElse(null),
                     genreName.orElse(null),
