@@ -59,6 +59,12 @@ const getContactList = (id: any) => {
     return http.get<Array<UserSimpleResponseDto>>(`/users/${id}/contacts`)
 }
 
+const getUsersByName = (viewerId: any, name: any) => {
+    return http.get<any>(`/users`, {
+        params: {viewerId, nameLike: name}
+    })
+}
+
 const importGroupText = (id: any, data: any) => {
     return http.post<void>(`/groups/upload/${id}`, data)
 }
@@ -75,7 +81,8 @@ const UserRoute = {
     updatePicture,
     getMatchList,
     getContactList,
-    importGroupText
+    importGroupText,
+    getUsersByName
 }
   
 export default UserRoute;

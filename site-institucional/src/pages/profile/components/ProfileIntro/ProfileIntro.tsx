@@ -34,7 +34,7 @@ const ProfileBandInfo = ({
   return (
     <li className="profileShowcaseIntroBandWrapper">
       <a className="profileShowcaseIntroBand" onClick={() => handleClick()}>
-        <img src={imageSrc} />
+        <img src={`data:image/png;base64,${imageSrc}`} />
         <div className="profileShowcaseIntroBandInfo">
           <span className="profileShowcaseIntroBandInfoName">
             {leader ? (
@@ -82,6 +82,7 @@ const ProfileIntro = ({
             })}
           </ul>
           <h2>Banda</h2>
+          {console.log(infos)}
           <ul className="profileLists">
             <ProfileBandInfo
               key={`${infos.bands?.name}`}

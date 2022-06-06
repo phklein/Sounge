@@ -27,6 +27,8 @@ import ProfileIntro, {
 import "./profile.style.css";
 import PictureUpdateRequestDto from "../../dto/request/PictureUpdateRequestDto";
 import Swal from "sweetalert2";
+import GroupService from "../../routes/GroupRoute";
+import IGroupRequestDto from "../../dto/request/GroupRequestDto";
 
 const toBase64 = (file: any) =>
   new Promise((resolve, reject) => {
@@ -39,7 +41,7 @@ const toBase64 = (file: any) =>
     };
     reader.onerror = (error: any) => reject(error);
   });
-  
+
 interface IUserPageData {
   id: number;
   profileHighlight: {
@@ -258,11 +260,11 @@ const UserProfile = () => {
   );
   const [registerBandDialogVisibility, setRegisterBandDialogVisibility] =
     useState(false);
-  const [registerBandForm, setRegisterBandForm] = useState({
+  const [registerBandForm, setRegisterBandForm] = useState<IGroupRequestDto>({
     name: "",
-    date: "",
+    creationDate: "",
     description: "",
-    genre: "",
+    genres: ["ROCK"],
   });
 
   const [loadingProfielUserData, setLoadingProfielUserData] = useState(false);
@@ -301,10 +303,11 @@ const UserProfile = () => {
             profileIntroBands: {
               bandId: response?.data?.group?.id,
               name: response?.data?.group?.name,
-              imageSrc: response?.data?.group?.pictureUrl,
+              imageSrc: response?.data?.group?.profilePic,
               leader: response?.data?.leader,
             },
             profileIntroSkills: formatedIntroSkills,
+            profileShowcasePosts: response.data.postList,
           };
           console.log(formatResponse, "<><><>");
           setUserProfileData(formatResponse);
@@ -326,16 +329,25 @@ const UserProfile = () => {
     try {
       setLoadingRegisterBandConfirm(true);
 
-      // Trocar pela request API puxando os dados do Perfil da Banda
-      // const response = REOL_USER_PROFILE_PAGE_MOCK
-      // setUserProfileData(response)
+      const viewerId = localStorage.getItem("viewerId") || null;
+      if (viewerId) {
+        // Trocar pela request API puxando os dados do Perfil da Banda
+        const response = await GroupService.save({
+          ...registerBandForm,
+          leaderId: Number.parseInt(viewerId),
+        });
+        console.log(response);
+        // const response = REOL_USER_PROFILE_PAGE_MOCK
+        // setUserProfileData(response)
+        Swal.fire("Banda criada com sucesso!");
+      }
     } catch {
       // Validar erros da request
+      Swal.fire("Erro ao criar a banda!");
     } finally {
       // Remover Timeout
-      setTimeout(() => {
-        setLoadingRegisterBandConfirm(false);
-      }, 500);
+      setRegisterBandDialogVisibility(false);
+      setLoadingRegisterBandConfirm(false);
     }
   };
 
@@ -556,9 +568,12 @@ const UserProfile = () => {
             dateAdapter={AdapterDateFns}
           >
             <DatePicker
-              value={registerBandForm.date}
+              value={registerBandForm.creationDate}
               onChange={(dateTime: any) =>
-                setRegisterBandForm({ ...registerBandForm, date: dateTime })
+                setRegisterBandForm({
+                  ...registerBandForm,
+                  creationDate: dateTime,
+                })
               }
               renderInput={({ inputRef, inputProps, InputProps }) => (
                 <Box
@@ -597,11 +612,11 @@ const UserProfile = () => {
             className="form-label"
             type="text"
             placeholder="Vamos categorizar o gênero da Banda?"
-            value={registerBandForm.genre}
+            value={registerBandForm.genres}
             onChange={(event) =>
               setRegisterBandForm({
                 ...registerBandForm,
-                genre: event.target.value,
+                genres: [...registerBandForm.genres, event.target.value],
               })
             }
           />
@@ -619,9 +634,9 @@ const UserProfile = () => {
                 setRegisterBandDialogVisibility(false);
                 setRegisterBandForm({
                   name: "",
-                  date: "",
+                  creationDate: "",
                   description: "",
-                  genre: "",
+                  genres: [],
                 });
               }}
             >
