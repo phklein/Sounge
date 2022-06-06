@@ -127,11 +127,10 @@ class UserServiceImplTest {
     @Test
     void findContactList() {
         User user = mock(User.class);
-        UserSimpleResponse userSimple = mock(UserSimpleResponse.class);
+        UserContactResponse contactResponse = mock(UserContactResponse.class);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-//        when(userRepository.findContactList(user, mock(Pageable.class)))
-//                .thenReturn(List.of(userSimple));
+        when(userRepository.findContactList(any())).thenReturn(List.of(contactResponse));
 
         doNothing().when(notificationRepository).setMatchesViewedByUser(user);
 
@@ -146,8 +145,7 @@ class UserServiceImplTest {
         User user = mock(User.class);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-//        when(userRepository.findContactList(user, mock(Pageable.class)))
-//                .thenReturn(List.of());
+        when(userRepository.findContactList(1L)).thenReturn(List.of());
 
         doNothing().when(notificationRepository).setMatchesViewedByUser(user);
 
@@ -166,9 +164,7 @@ class UserServiceImplTest {
         userMatch.setLongitude(user.getLongitude());
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(userRepository.findMatchList(1L, null,
-                null, null, null, null,
-                null, null, mock(Pageable.class)))
+        when(userRepository.findMatchList(any(), any(), any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn(List.of(userMatch));
 
         ResponseEntity<List<UserMatchResponse>> response = userService.findMatchList(
@@ -191,9 +187,7 @@ class UserServiceImplTest {
         UserMatchResponse userMatch = mock(UserMatchResponse.class);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(userRepository.findMatchList(1L, null,
-                null, null, null, null,
-                null, null, mock(Pageable.class)))
+        when(userRepository.findMatchList(any(), any(), any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn(List.of());
 
         ResponseEntity<List<UserMatchResponse>> response = userService.findMatchList(
