@@ -44,7 +44,8 @@
 }
 
 
-.profileShowcaseIntroBand > img{
+.profileShowcaseIntroBand > img,
+.profileShowcaseIntroBand svg {
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -55,7 +56,8 @@
     color: var(--light-purple);
 }
 
-.profileShowcaseIntroBand:hover > img{
+.profileShowcaseIntroBand:hover > img,
+.profileShowcaseIntroBand:hover svg{
     outline: 2px solid var(--light-purple);
 }
 

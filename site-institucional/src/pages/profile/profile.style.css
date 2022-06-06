@@ -19,6 +19,21 @@
     justify-content: center;
 }
 
+.profileNavigation{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profileNavigation > a{
+    color: white;
+    cursor: pointer;
+    padding: 8px 24px;
+    border-radius: 8px;
+    background-image: linear-gradient(100deg, #af26ef, var(--light-purple));
+}
+
 .profileTabs{
     color: var(--gray);
 }
@@ -134,7 +149,8 @@
     padding: 2px 1px;
 }
 
-.profileBand > img{
+.profileBand > img,
+.profileBand svg{
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -145,7 +161,8 @@
     color: var(--light-purple);
 }
 
-.profileBand:hover > img{
+.profileBand:hover > img,
+.profileBand:hover svg{
     outline: 2px solid var(--light-purple);
 }
 

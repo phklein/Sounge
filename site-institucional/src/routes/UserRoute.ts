@@ -22,8 +22,8 @@ const joinGroup = (idUser: any, idGroup: any) => {
     return http.post<void>(`/users/${idUser}/group/${idGroup}`)
 }
 
-const leaveGroup = (idUser: any, idGroup: any) => {
-    return http.delete<void>(`/users/${idUser}/group/${idGroup}`)
+const leaveGroup = (idUser: any) => {
+    return http.delete<void>(`/users/${idUser}/group`)
 }
 
 const getProfileForId = (idUser: any, viewerId: any) => {
@@ -78,7 +78,12 @@ const likeUser = (id: any, likedId: any) => {
     return http.post<void>(`/users/${id}/likeUser/${likedId}`)
 }
 
+const exportDownload = (id: any) => {
+    return http.get<any>(`/users/download/${id}`)
+}
+
 const UserRoute = {
+    exportDownload,
     saveAndLogin,
     login,
     joinGroup,

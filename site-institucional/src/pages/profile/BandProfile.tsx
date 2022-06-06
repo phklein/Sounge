@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
+import Swal from "sweetalert2";
 import { withStyles } from "@mui/styles";
-import { ArrowDropDown } from "@mui/icons-material";
+import { ArrowDropDown, AccountCircle } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Autocomplete,
@@ -11,16 +12,16 @@ import {
   TextField,
 } from "@mui/material";
 import useDebounce from "./useDebounce";
+import UserRoute from "../../routes/UserRoute";
 import { NavBar } from "../../components/Navbar";
+import GroupService from "../../routes/GroupRoute";
 import ProfilePost from "./components/ProfilePost/ProfilePost";
 import ProfileHighlight from "./components/ProfileHighlight/ProfileHighlight";
+import ProfileNavigatorTabs from "./components/ProfileNavigationTabs/ProfileNavigationTabs";
 import ProfileIntro, {
   PROFILE_TYPE,
 } from "./components/ProfileIntro/ProfileIntro";
-import ProfileNavigatorTabs from "./components/ProfileNavigationTabs/ProfileNavigationTabs";
 import "./profile.style.css";
-import GroupService from "../../routes/GroupRoute";
-import UserRoute from "../../routes/UserRoute";
 
 const toBase64 = (file: any) =>
   new Promise((resolve, reject) => {
@@ -46,16 +47,6 @@ interface IBandPageData {
     role: string;
     leader: boolean;
     userId: number;
-  }[];
-}
-
-interface ISearchUsers {
-  users: {
-    imageSrc: string;
-    userId: number;
-    name: string;
-    role: string;
-    leader: boolean;
   }[];
 }
 
@@ -179,7 +170,6 @@ interface ISearchUsers {
 //   );
 // };
 
-const CURRENT_USER = 1;
 // MOCK -------------------
 
 const ProfileBandMemberFormInfo = ({
@@ -208,7 +198,18 @@ const ProfileBandMemberFormInfo = ({
       }`}
     >
       <a className="profileBand">
-        <img src={imageSrc} />
+        {imageSrc ? (
+          <img
+            style={{
+              background: `url('${imageSrc}') center no-repeat`,
+              backgroundSize: "48px 48px",
+            }}
+            alt="."
+            src={`data:image/png;base64,${imageSrc}`}
+          />
+        ) : (
+          <AccountCircle fontSize="large" />
+        )}
         <div className="profileBandInfo">
           <span className="profileBandInfoName">
             {leader ? (
@@ -286,6 +287,8 @@ const Popover = ({
 };
 
 const BandProfile = () => {
+  const [currentUser, setCurrentUser] = useState(-1);
+  const [searchedUsers, setSearchedUsers] = useState<any>([]);
   const [bandMemberSearch, setBandMemberSearch] = useState("");
   const [currentShowcasePage, setCurrentShowcasePage] = useState(0);
   const [bandMemberForm, setBandMemberForm] = useState<{
@@ -295,10 +298,11 @@ const BandProfile = () => {
     member: { name: "" },
     role: "",
   });
-  const [searchedUsers, setSearchedUsers] = useState<any>([]);
   const [profileBandData, setProfileBandData] = useState<IBandPageData | any>(
     undefined
   );
+  const [loadingAvatar, setLoadingAvatar] = useState(false);
+  const [loadingBanner, setLoadingBanner] = useState(false);
   const [loadingProfileBandData, setLoadingProfileBandData] = useState(false);
   const [loadingProfileBandMember, setLoadingProfileBandMember] =
     useState(false);
@@ -306,8 +310,6 @@ const BandProfile = () => {
     useState(false);
   const [loadingProfileBandMemberDelete, setLoadingProfileBandMemberDelete] =
     useState(false);
-  const [loadingAvatar, setLoadingAvatar] = useState(false);
-  const [loadingBanner, setLoadingBanner] = useState(false);
   const autocompleteBandMemberValue = useDebounce(bandMemberSearch, 500);
   const location = useLocation();
   const navigate = useNavigate();
@@ -315,19 +317,20 @@ const BandProfile = () => {
   const getProfileBandData = async (bandId: number) => {
     try {
       setLoadingProfileBandData(true);
-      // Trocar pela request API puxando os dados do Perfil da Banda
       const response = await GroupService.getGroupPageById(bandId);
-      // const response = MOCK_GET_PROFILE_USER_DATA(bandId);
-      // if (response === undefined) navigate("/")
-      const formatedProfileIntroMembers = response.data.users.map(
-        (user: any) => ({
+      const formatedProfileIntroMembers = response.data.users
+        .map((user: any) => ({
           imageSrc: user.profilePic,
           name: user.name,
           role: "",
           leader: user.leader,
           userId: user.id,
-        })
-      );
+        }))
+        .sort((a: any, b: any) => {
+          if (a.leader < b.leader) return 1;
+          if (a.leader > b.leader) return -1;
+          if (a.leader === b.leader) return 0;
+        });
       setProfileBandData({
         profileHighlight: {
           bannerSrc: response.data.banner,
@@ -340,10 +343,9 @@ const BandProfile = () => {
         profileIntroMembers: formatedProfileIntroMembers,
         groupId: response.data.id,
       });
-    } catch {
-      // Validar erros da request
+    } catch (err: any) {
+      console.log(err);
     } finally {
-      // Remover Timeout
       setLoadingProfileBandData(false);
     }
   };
@@ -351,17 +353,12 @@ const BandProfile = () => {
   const getSearchedUsers = async (searchUser: string) => {
     try {
       setLoadingProfileBandMember(true);
-      // const search = new RegExp(searchUser, "gi");
       const viewerId = localStorage.getItem("viewerId") || null;
       if (viewerId) {
         const response = await UserRoute.getUsersByName(
           Number.parseInt(viewerId),
           searchUser
         );
-        // Trocar pela request API de pesquisa pelos usuários
-        // const response = USERS_MOCK.users?.filter((user) => {
-        //   return user.name.match(search);
-        // });
         const uniqueUsers = response.data.filter(
           (value: any, index: any, self: any) =>
             index ===
@@ -371,10 +368,9 @@ const BandProfile = () => {
         );
         setSearchedUsers([...uniqueUsers]);
       }
-    } catch {
-      // Validar erros da request
+    } catch (err: any) {
+      console.log(err);
     } finally {
-      // Remover Timeout
       setLoadingProfileBandMember(false);
     }
   };
@@ -386,44 +382,66 @@ const BandProfile = () => {
         selectedMember.member.id,
         profileBandData.groupId
       );
-      console.log(response);
+      if (response.status === 201) {
+        setProfileBandData({
+          ...profileBandData,
+          profileIntroMembers: [
+            ...profileBandData.profileIntroMembers,
+            {
+              imageSrc: selectedMember.member.profilePic,
+              name: selectedMember.member.name,
+              userId: selectedMember.member.id,
+            },
+          ],
+        });
+        Swal.fire("Membro cadastrado com sucesso!");
+      }
       setBandMemberForm({ member: "", role: "" });
-    } catch {
-      // Validar erros da request
+    } catch (err: any) {
+      console.log(err);
+      Swal.fire("Erro ao cadastrar novo membro");
     } finally {
-      // Remover Timeout
-      setTimeout(() => {
-        setLoadingProfileBandMemberSave(false);
-      }, 500);
+      setLoadingProfileBandMemberSave(false);
     }
   };
 
   const deleteMemberFromBand = async (selectedMember: any) => {
     try {
       setLoadingProfileBandMemberDelete(true);
-      // Trocar pela request API de remover um membro da banda
-      // Remover Timeout
-      setTimeout(() => {
+      const response = await UserRoute.leaveGroup(selectedMember.userId);
+      if (response.status === 200) {
         setProfileBandData({
           ...profileBandData,
           profileIntroMembers: profileBandData.profileIntroMembers.filter(
             (member: any) => member.userId !== selectedMember.userId
           ),
         });
-      }, 500);
-    } catch {
+        Swal.fire("Membro removido com sucesso!");
+      }
+    } catch (err: any) {
+      console.log(err);
       // Validar erros da request
+      Swal.fire("Erro ao remover membro!");
     } finally {
-      // Remover Timeout
-      setTimeout(() => {
-        setProfileBandData({
-          ...profileBandData,
-          profileIntroMembers: profileBandData.profileIntroMembers.filter(
-            (member: any) => member.userId !== selectedMember.userId
-          ),
-        });
-        setLoadingProfileBandMemberDelete(false);
-      }, 500);
+      setLoadingProfileBandMemberDelete(false);
+    }
+  };
+
+  const deleteGroup = async () => {
+    try {
+      setLoadingProfileBandMemberDelete(true);
+      const response = await GroupService.deleteGroupById(
+        profileBandData.groupId
+      );
+      if (response.status === 200) {
+        Swal.fire("Banda deletada.");
+        navigate("/profile/" + currentUser);
+      }
+    } catch (err: any) {
+      console.log(err);
+      Swal.fire("Erro ao deletar banda.");
+    } finally {
+      setLoadingProfileBandMemberDelete(false);
     }
   };
 
@@ -432,15 +450,10 @@ const BandProfile = () => {
     if (input.files && input.files.length) {
       const file = input.files[0];
       const formatedFile = await toBase64(file);
-      console.log(formatedFile);
-
       const request = {
         profilePic: formatedFile,
         banner: profileBandData.profileHighlight.bannerSrc,
       };
-
-      console.log(request);
-
       try {
         const response = await GroupService.changeGroupImages(
           profileBandData.groupId,
@@ -468,15 +481,10 @@ const BandProfile = () => {
     if (input.files && input.files.length) {
       const file = input.files[0];
       const formatedFile = await toBase64(file);
-      console.log(formatedFile);
-
       const request = {
         banner: formatedFile,
         profilePic: profileBandData.profileHighlight.avatarSrc,
       };
-
-      console.log(request);
-
       try {
         const response = await GroupService.changeGroupImages(
           profileBandData.groupId,
@@ -504,8 +512,14 @@ const BandProfile = () => {
   }, [autocompleteBandMemberValue]);
 
   useEffect(() => {
-    const groupPageId: string[] = location.pathname.match(/\d+$/) || ["-1"];
-    getProfileBandData(Number.parseInt(groupPageId[0]));
+    const viewerId = localStorage.getItem("viewerId") || null;
+    if (viewerId) {
+      const groupPageId: string[] = location.pathname.match(/\d+$/) || ["-1"];
+      setCurrentUser(Number.parseInt(viewerId));
+      getProfileBandData(Number.parseInt(groupPageId[0]));
+    } else {
+      navigate("/");
+    }
   }, []);
 
   const PROFILE_NAVIGATION_OPTIONS = useMemo(
@@ -684,13 +698,17 @@ const BandProfile = () => {
                 (member: any, index: number) => (
                   <ProfileBandMemberFormInfo
                     key={`${member.name}-${index}`}
-                    isCurrentUser={member?.userId === CURRENT_USER}
+                    isCurrentUser={member?.userId === currentUser}
                     disabled={loadingProfileBandMemberDelete}
                     name={member?.name}
                     role={member?.role}
                     leader={member?.leader}
                     imageSrc={member?.imageSrc}
-                    handleClick={() => deleteMemberFromBand(member)}
+                    handleClick={() =>
+                      member?.userId === currentUser
+                        ? deleteGroup()
+                        : deleteMemberFromBand(member)
+                    }
                   />
                 )
               )}
@@ -726,6 +744,7 @@ const BandProfile = () => {
           <>
             <div className="profileTopic">
               <ProfileHighlight
+                canEdit
                 userInfo={profileBandData?.profileHighlight.userInfo}
                 avatarSrc={profileBandData?.profileHighlight.avatarSrc}
                 bannerSrc={profileBandData?.profileHighlight.bannerSrc}

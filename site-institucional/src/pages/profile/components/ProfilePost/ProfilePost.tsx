@@ -89,7 +89,7 @@ const FORM_DEFAULT_VALUES = {
   genres: [],
 };
 
-const ProfilePost = () => {
+const ProfilePost = ({ canEdit = false }) => {
   const [unselectedGenres, setUnselectedGenres] = useState<any>(
     Array.from(GenreNameEnumDesc.keys())
   );
@@ -101,9 +101,9 @@ const ProfilePost = () => {
     genres: any;
   }>(FORM_DEFAULT_VALUES);
 
-  useEffect(() => {
-    console.log(formValues);
-  }, [formValues]);
+  // useEffect(() => {
+  //   console.log(formValues);
+  // }, [formValues]);
 
   useEffect(() => {
     if (formValues.text) {
@@ -129,7 +129,7 @@ const ProfilePost = () => {
       }
     } catch (err) {
       console.log(err);
-      Swal.fire("erro ao tentar realizar o post");
+      Swal.fire("Erro ao tentar realizar o post");
     } finally {
       setUnselectedGenres(Array.from(GenreNameEnumDesc.keys()));
       setFormValues(FORM_DEFAULT_VALUES);
@@ -161,105 +161,106 @@ const ProfilePost = () => {
     if (input.files && input.files.length) {
       const file = input.files[0];
       const formatedFile = await toBase64(file);
-      console.log(formatedFile);
       setFormValues({ ...formValues, mediaUrl: formatedFile });
     }
   };
 
   return (
     <div className="profileShowcasePostWrapper">
-      <div className="profileShowcaseWrite">
-        <img
-          className={
-            formValues.mediaUrl
-              ? "profileShowcaseWriteImage--visible"
-              : "profileShowcaseWriteImage--invisible"
-          }
-          src={`data:image/png;base64,${formValues.mediaUrl}`}
-        />
-        <Form onSubmit={submitPost}>
-          <Form.Group
-            className="profileShowcaseWriteInput"
-            controlId="formGroupText"
-          >
-            <CustomTextField
-              fullWidth
-              multiline
-              rows={6}
-              variant="outlined"
-              label="No que você está pensando?"
-              value={formValues.text}
-              onChange={(event: any) =>
-                setFormValues({ ...formValues, text: event.target.value })
-              }
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <label htmlFor="add-post-img">+</label>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <input
-              id="add-post-img"
-              type="file"
-              accept="image/png, image/jpeg"
-              onChange={(event) => {
-                handlePostImg(event.target);
-              }}
-            />
-          </Form.Group>
-          <Form.Group controlId="formGroupGenres">
-            <Autocomplete
-              autoSelect
-              id="profileBandMemberFormInputMember"
-              className=""
-              noOptionsText="Nenhum gênero selecionável"
-              options={unselectedGenres}
-              getOptionLabel={(option: string) =>
-                GenreNameEnumDesc.get(option) || ""
-              }
-              isOptionEqualToValue={(option: string) =>
-                option === GenreNameEnumDesc.get(option)
-              }
-              onChange={(_, newSelectedGenre) => {
-                newSelectedGenre && handleGenreChange(newSelectedGenre, true);
-              }}
-              renderInput={(params) => (
-                <CustomTextField
-                  {...params}
-                  label="Adicionar gêneros musicais"
-                  size="small"
-                />
-              )}
-            />
-            <Stack sx={{ padding: "4px", flexWrap: "wrap" }} direction="row">
-              {formValues.genres.map((genre: any, index: number) => (
-                <Chip
-                  key={`${genre}-${index}`}
-                  sx={{
-                    backgroundColor: "var(--dark-purple)",
-                    color: "var(--white)",
-                    margin: "2px 4px 2px 4px",
-                    "&:hover": { backgroundColor: "var(--black-purple)" },
-                  }}
-                  label={GenreNameEnumDesc.get(genre)}
-                  onClick={() => handleGenreChange(genre, false)}
-                />
-              ))}
-            </Stack>
-          </Form.Group>
+      {canEdit ? (
+        <div className="profileShowcaseWrite">
+          <img
+            className={
+              formValues.mediaUrl
+                ? "profileShowcaseWriteImage--visible"
+                : "profileShowcaseWriteImage--invisible"
+            }
+            src={`data:image/png;base64,${formValues.mediaUrl}`}
+          />
+          <Form onSubmit={submitPost}>
+            <Form.Group
+              className="profileShowcaseWriteInput"
+              controlId="formGroupText"
+            >
+              <CustomTextField
+                fullWidth
+                multiline
+                rows={6}
+                variant="outlined"
+                label="No que você está pensando?"
+                value={formValues.text}
+                onChange={(event: any) =>
+                  setFormValues({ ...formValues, text: event.target.value })
+                }
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <label htmlFor="add-post-img">+</label>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <input
+                id="add-post-img"
+                type="file"
+                accept="image/png, image/jpeg"
+                onChange={(event) => {
+                  handlePostImg(event.target);
+                }}
+              />
+            </Form.Group>
+            <Form.Group controlId="formGroupGenres">
+              <Autocomplete
+                autoSelect
+                id="profileBandMemberFormInputMember"
+                className=""
+                noOptionsText="Nenhum gênero selecionável"
+                options={unselectedGenres}
+                getOptionLabel={(option: string) =>
+                  GenreNameEnumDesc.get(option) || ""
+                }
+                isOptionEqualToValue={(option: string) =>
+                  option === GenreNameEnumDesc.get(option)
+                }
+                onChange={(_, newSelectedGenre) => {
+                  newSelectedGenre && handleGenreChange(newSelectedGenre, true);
+                }}
+                renderInput={(params) => (
+                  <CustomTextField
+                    {...params}
+                    label="Adicionar gêneros musicais"
+                    size="small"
+                  />
+                )}
+              />
+              <Stack sx={{ padding: "4px", flexWrap: "wrap" }} direction="row">
+                {formValues.genres.map((genre: any, index: number) => (
+                  <Chip
+                    key={`${genre}-${index}`}
+                    sx={{
+                      backgroundColor: "var(--dark-purple)",
+                      color: "var(--white)",
+                      margin: "2px 4px 2px 4px",
+                      "&:hover": { backgroundColor: "var(--black-purple)" },
+                    }}
+                    label={GenreNameEnumDesc.get(genre)}
+                    onClick={() => handleGenreChange(genre, false)}
+                  />
+                ))}
+              </Stack>
+            </Form.Group>
 
-          <CustomButton
-            disabled={disabledSubmit || loadingPostSubmit}
-            variant="contained"
-            color="success"
-            type="submit"
-          >
-            {loadingPostSubmit ? <CircularProgress size={24} /> : "Publicar"}
-          </CustomButton>
-        </Form>
-      </div>
+            <CustomButton
+              disabled={disabledSubmit || loadingPostSubmit}
+              variant="contained"
+              color="success"
+              type="submit"
+            >
+              {loadingPostSubmit ? <CircularProgress size={24} /> : "Publicar"}
+            </CustomButton>
+          </Form>
+        </div>
+      ) : null}
       <div className="profileShowcasePosts">
         <div className="profileShowcasePost">
           <PostPage
@@ -268,10 +269,8 @@ const ProfilePost = () => {
             hoursPast={12}
             commentCount={1}
             mediaUrl={img}
-            user={{ id: 1, name: "string", profilePic: img, leader: false }}
-            text={
-              "post.textwepognaweóignweaoi nwaeoignawe oíagwoingweoi newaoinaweion aoewgnaewoignweoigaongoeiwngowingwoagoiweangowienga"
-            }
+            user={{ id: 1, name: "Rodrigo", profilePic: img, leader: false }}
+            text={"Post de apreciação a arte"}
           />
         </div>
       </div>

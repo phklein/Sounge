@@ -3,6 +3,7 @@ import MusicNote from "@mui/icons-material/MusicNote";
 import "./ProfileIntro.style.css";
 import { RoleNameEnumDesc } from "../../../../enums/RoleNameEnum";
 import { SkillLevelEnumDesc } from "../../../../enums/SkillLevelEnum";
+import { AccountCircle } from "@mui/icons-material";
 
 export const PROFILE_TYPE = {
   USER: 0,
@@ -34,7 +35,18 @@ const ProfileBandInfo = ({
   return (
     <li className="profileShowcaseIntroBandWrapper">
       <a className="profileShowcaseIntroBand" onClick={() => handleClick()}>
-        <img src={`data:image/png;base64,${imageSrc}`} />
+        {imageSrc ? (
+          <img
+            style={{
+              background: `url('${imageSrc}') center no-repeat`,
+              backgroundSize: "48px 48px",
+            }}
+            alt="."
+            src={`data:image/png;base64,${imageSrc}`}
+          />
+        ) : (
+          <AccountCircle fontSize="large" />
+        )}
         <div className="profileShowcaseIntroBandInfo">
           <span className="profileShowcaseIntroBandInfoName">
             {leader ? (
@@ -81,20 +93,23 @@ const ProfileIntro = ({
               );
             })}
           </ul>
-          <h2>Banda</h2>
-          {console.log(infos)}
-          <ul className="profileLists">
-            <ProfileBandInfo
-              key={`${infos.bands?.name}`}
-              imageSrc={infos.bands?.imageSrc}
-              name={infos.bands?.name}
-              role={infos.bands?.role}
-              leader={infos.bands?.leader}
-              handleClick={() =>
-                handleClick && handleClick(infos.bands?.bandId)
-              }
-            />
-          </ul>
+          {infos.bands?.bandId ? (
+            <>
+              <h2>Banda</h2>
+              <ul className="profileLists">
+                <ProfileBandInfo
+                  key={`${infos.bands?.name}`}
+                  imageSrc={infos.bands?.imageSrc}
+                  name={infos.bands?.name}
+                  role={infos.bands?.role}
+                  leader={infos.bands?.leader}
+                  handleClick={() =>
+                    handleClick && handleClick(infos.bands?.bandId)
+                  }
+                />
+              </ul>
+            </>
+          ) : null}
         </>
       ) : (
         <>

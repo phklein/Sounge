@@ -64,179 +64,179 @@ interface IUserPageData {
 }
 
 // Dados mockados da Página
-const REOL_USER_PROFILE_PAGE_MOCK: IUserPageData = {
-  id: 1,
-  profileHighlight: {
-    userInfo: {
-      name: "Reol",
-      description: "RAINHA DEUSA PERFEITA NUNCA ERROU MELHOR DE TODAS",
-    },
-    avatarSrc:
-      "https://i.pinimg.com/736x/82/92/b8/8292b855a223d714cf1975e50f3b0ed5.jpg",
-    bannerSrc:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4CJ-_M93XzMWK2K27WvbxPWvNgA9PGtkr1suJhyrg7dvibiHSE9SHdBq4plRT1UMKcbs&usqp=CAU",
-  },
-  profileIntroSkills: [
-    {
-      id: 1,
-      label: "Expert",
-      skillLevel: "Expert",
-    },
-    {
-      id: 2,
-      label: "Cantor",
-      skillLevel: "Expert",
-    },
-    {
-      id: 3,
-      label: "Pianista",
-      skillLevel: "Expert",
-    },
-  ],
-  profileIntroBands: {
-    bandId: 1,
-    name: "Reol",
-    leader: true,
-    role: "Vocalista",
-    imageSrc:
-      "https://i.pinimg.com/736x/82/92/b8/8292b855a223d714cf1975e50f3b0ed5.jpg",
-  },
-};
+// const REOL_USER_PROFILE_PAGE_MOCK: IUserPageData = {
+//   id: 1,
+//   profileHighlight: {
+//     userInfo: {
+//       name: "Reol",
+//       description: "RAINHA DEUSA PERFEITA NUNCA ERROU MELHOR DE TODAS",
+//     },
+//     avatarSrc:
+//       "https://i.pinimg.com/736x/82/92/b8/8292b855a223d714cf1975e50f3b0ed5.jpg",
+//     bannerSrc:
+//       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4CJ-_M93XzMWK2K27WvbxPWvNgA9PGtkr1suJhyrg7dvibiHSE9SHdBq4plRT1UMKcbs&usqp=CAU",
+//   },
+//   profileIntroSkills: [
+//     {
+//       id: 1,
+//       label: "Expert",
+//       skillLevel: "Expert",
+//     },
+//     {
+//       id: 2,
+//       label: "Cantor",
+//       skillLevel: "Expert",
+//     },
+//     {
+//       id: 3,
+//       label: "Pianista",
+//       skillLevel: "Expert",
+//     },
+//   ],
+//   profileIntroBands: {
+//     bandId: 1,
+//     name: "Reol",
+//     leader: true,
+//     role: "Vocalista",
+//     imageSrc:
+//       "https://i.pinimg.com/736x/82/92/b8/8292b855a223d714cf1975e50f3b0ed5.jpg",
+//   },
+// };
 
-const SUMETAL_USER_PROFILE_PAGE_MOCK: IUserPageData = {
-  id: 2,
-  profileHighlight: {
-    userInfo: { name: "Suzuka Nakamoto", description: "😗🤘 Megitsune-🦊" },
-    avatarSrc: "https://images.moviefit.me/p/o/135051-suzuka-nakamoto.jpg",
-    bannerSrc:
-      "https://media.gettyimages.com/photos/sumetal-of-babymetal-performs-on-day-3-of-the-leeds-festival-at-park-picture-id486026350?s=612x612",
-  },
-  profileIntroSkills: [
-    {
-      id: 1,
-      label: "Expert",
-      skillLevel: "Expert",
-    },
-    {
-      id: 2,
-      label: "Cantor",
-      skillLevel: "Expert",
-    },
-    {
-      id: 3,
-      label: "Pianista",
-      skillLevel: "Expert",
-    },
-  ],
-  profileIntroBands: {
-    bandId: 2,
-    name: "BABYMETAL",
-    leader: true,
-    role: "Vocalista",
-    imageSrc:
-      "https://studiosol-a.akamaihd.net/uploadfile/letras/albuns/9/4/0/2/381521408793193.jpg",
-  },
-};
+// const SUMETAL_USER_PROFILE_PAGE_MOCK: IUserPageData = {
+//   id: 2,
+//   profileHighlight: {
+//     userInfo: { name: "Suzuka Nakamoto", description: "😗🤘 Megitsune-🦊" },
+//     avatarSrc: "https://images.moviefit.me/p/o/135051-suzuka-nakamoto.jpg",
+//     bannerSrc:
+//       "https://media.gettyimages.com/photos/sumetal-of-babymetal-performs-on-day-3-of-the-leeds-festival-at-park-picture-id486026350?s=612x612",
+//   },
+//   profileIntroSkills: [
+//     {
+//       id: 1,
+//       label: "Expert",
+//       skillLevel: "Expert",
+//     },
+//     {
+//       id: 2,
+//       label: "Cantor",
+//       skillLevel: "Expert",
+//     },
+//     {
+//       id: 3,
+//       label: "Pianista",
+//       skillLevel: "Expert",
+//     },
+//   ],
+//   profileIntroBands: {
+//     bandId: 2,
+//     name: "BABYMETAL",
+//     leader: true,
+//     role: "Vocalista",
+//     imageSrc:
+//       "https://studiosol-a.akamaihd.net/uploadfile/letras/albuns/9/4/0/2/381521408793193.jpg",
+//   },
+// };
 
-const MOAMETAL_USER_PROFILE_PAGE_MOCK: IUserPageData = {
-  id: 3,
-  profileHighlight: {
-    userInfo: {
-      name: "Moa Kikuchi",
-      description: "🤘 Cadê minhas irmã gêmea mãe ?",
-    },
-    avatarSrc:
-      "https://i.pinimg.com/originals/ac/60/c4/ac60c4a8383950f04fefaf3d0900192c.jpg",
-    bannerSrc:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Babymetal_-_2018152162203_2018-06-01_Rock_am_Ring_-_1D_X_MK_II_-_0347_-_B70I0418.jpg/1200px-Babymetal_-_2018152162203_2018-06-01_Rock_am_Ring_-_1D_X_MK_II_-_0347_-_B70I0418.jpg",
-  },
-  profileIntroSkills: [
-    {
-      id: 1,
-      label: "Expert",
-      skillLevel: "Expert",
-    },
-    {
-      id: 2,
-      label: "Cantor",
-      skillLevel: "Expert",
-    },
-    {
-      id: 3,
-      label: "Pianista",
-      skillLevel: "Expert",
-    },
-  ],
-  profileIntroBands: {
-    bandId: 2,
-    name: "BABYMETAL",
-    leader: false,
-    role: "Vocal",
-    imageSrc:
-      "https://studiosol-a.akamaihd.net/uploadfile/letras/albuns/9/4/0/2/381521408793193.jpg",
-  },
-};
+// const MOAMETAL_USER_PROFILE_PAGE_MOCK: IUserPageData = {
+//   id: 3,
+//   profileHighlight: {
+//     userInfo: {
+//       name: "Moa Kikuchi",
+//       description: "🤘 Cadê minhas irmã gêmea mãe ?",
+//     },
+//     avatarSrc:
+//       "https://i.pinimg.com/originals/ac/60/c4/ac60c4a8383950f04fefaf3d0900192c.jpg",
+//     bannerSrc:
+//       "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Babymetal_-_2018152162203_2018-06-01_Rock_am_Ring_-_1D_X_MK_II_-_0347_-_B70I0418.jpg/1200px-Babymetal_-_2018152162203_2018-06-01_Rock_am_Ring_-_1D_X_MK_II_-_0347_-_B70I0418.jpg",
+//   },
+//   profileIntroSkills: [
+//     {
+//       id: 1,
+//       label: "Expert",
+//       skillLevel: "Expert",
+//     },
+//     {
+//       id: 2,
+//       label: "Cantor",
+//       skillLevel: "Expert",
+//     },
+//     {
+//       id: 3,
+//       label: "Pianista",
+//       skillLevel: "Expert",
+//     },
+//   ],
+//   profileIntroBands: {
+//     bandId: 2,
+//     name: "BABYMETAL",
+//     leader: false,
+//     role: "Vocal",
+//     imageSrc:
+//       "https://studiosol-a.akamaihd.net/uploadfile/letras/albuns/9/4/0/2/381521408793193.jpg",
+//   },
+// };
 
-const YUIMETAL_USER_PROFILE_PAGE_MOCK: IUserPageData = {
-  id: 4,
-  profileHighlight: {
-    userInfo: { name: "Yui Mizuno", description: "Saiu da banda 😭" },
-    avatarSrc:
-      "https://4.bp.blogspot.com/-Bel3Lb_a1H8/W7fgAzWXPwI/AAAAAAAABD4/2QFXrSiDbmIndQv8mYAhd_uON5LeG5C_ACEwYBhgL/s1600/DoA81Y-XcAAiPa5.jpg",
-    bannerSrc:
-      "https://pm1.narvii.com/6348/c5994923f8975f312f51769f78779a6c0072dfb7_hq.jpg",
-  },
-  profileIntroSkills: [
-    {
-      id: 1,
-      label: "Expert",
-      skillLevel: "Expert",
-    },
-    {
-      id: 2,
-      label: "Cantor",
-      skillLevel: "Expert",
-    },
-    {
-      id: 3,
-      label: "Pianista",
-      skillLevel: "Expert",
-    },
-  ],
-  profileIntroBands: {
-    bandId: 2,
-    name: "BABYMETAL",
-    leader: false,
-    role: "Vocal",
-    imageSrc:
-      "https://studiosol-a.akamaihd.net/uploadfile/letras/albuns/9/4/0/2/381521408793193.jpg",
-  },
-};
+// const YUIMETAL_USER_PROFILE_PAGE_MOCK: IUserPageData = {
+//   id: 4,
+//   profileHighlight: {
+//     userInfo: { name: "Yui Mizuno", description: "Saiu da banda 😭" },
+//     avatarSrc:
+//       "https://4.bp.blogspot.com/-Bel3Lb_a1H8/W7fgAzWXPwI/AAAAAAAABD4/2QFXrSiDbmIndQv8mYAhd_uON5LeG5C_ACEwYBhgL/s1600/DoA81Y-XcAAiPa5.jpg",
+//     bannerSrc:
+//       "https://pm1.narvii.com/6348/c5994923f8975f312f51769f78779a6c0072dfb7_hq.jpg",
+//   },
+//   profileIntroSkills: [
+//     {
+//       id: 1,
+//       label: "Expert",
+//       skillLevel: "Expert",
+//     },
+//     {
+//       id: 2,
+//       label: "Cantor",
+//       skillLevel: "Expert",
+//     },
+//     {
+//       id: 3,
+//       label: "Pianista",
+//       skillLevel: "Expert",
+//     },
+//   ],
+//   profileIntroBands: {
+//     bandId: 2,
+//     name: "BABYMETAL",
+//     leader: false,
+//     role: "Vocal",
+//     imageSrc:
+//       "https://studiosol-a.akamaihd.net/uploadfile/letras/albuns/9/4/0/2/381521408793193.jpg",
+//   },
+// };
 
-const MOCK_GET_PROFILE_USER_DATA = (userId: number) => {
-  const MOCK_DATABASE_USERS = [
-    {
-      id: 1,
-      data: REOL_USER_PROFILE_PAGE_MOCK,
-    },
-    {
-      id: 2,
-      data: SUMETAL_USER_PROFILE_PAGE_MOCK,
-    },
-    {
-      id: 3,
-      data: MOAMETAL_USER_PROFILE_PAGE_MOCK,
-    },
-    {
-      id: 4,
-      data: YUIMETAL_USER_PROFILE_PAGE_MOCK,
-    },
-  ];
+// const MOCK_GET_PROFILE_USER_DATA = (userId: number) => {
+//   const MOCK_DATABASE_USERS = [
+//     {
+//       id: 1,
+//       data: REOL_USER_PROFILE_PAGE_MOCK,
+//     },
+//     {
+//       id: 2,
+//       data: SUMETAL_USER_PROFILE_PAGE_MOCK,
+//     },
+//     {
+//       id: 3,
+//       data: MOAMETAL_USER_PROFILE_PAGE_MOCK,
+//     },
+//     {
+//       id: 4,
+//       data: YUIMETAL_USER_PROFILE_PAGE_MOCK,
+//     },
+//   ];
 
-  return (
-    MOCK_DATABASE_USERS.find((user) => user.id === userId)?.data || undefined
-  );
-};
+//   return (
+//     MOCK_DATABASE_USERS.find((user) => user.id === userId)?.data || undefined
+//   );
+// };
 // MOCK ------------------
 
 const Popover = ({
@@ -254,6 +254,8 @@ const Popover = ({
 };
 
 const UserProfile = () => {
+  const [currentUser, setCurrentUser] = useState(-1);
+  const [canEdit, setCanEdit] = useState(false);
   const [currentShowcasePage, setCurrentShowcasePage] = useState(0);
   const [userProfileData, setUserProfileData] = useState<IUserPageData | any>(
     undefined
@@ -267,10 +269,10 @@ const UserProfile = () => {
     genres: ["ROCK"],
   });
 
-  const [loadingProfielUserData, setLoadingProfielUserData] = useState(false);
   const [loadingAvatar, setLoadingAvatar] = useState(false);
   const [loadingBanner, setLoadingBanner] = useState(false);
   const [loadingImportGroup, setLoadingImportGroup] = useState(false);
+  const [loadingProfielUserData, setLoadingProfielUserData] = useState(false);
   const [loadingRegisterBandConfirm, setLoadingRegisterBandConfirm] =
     useState(false);
   const location = useLocation();
@@ -279,7 +281,6 @@ const UserProfile = () => {
   const getProfileUserData = async (userId: number) => {
     try {
       setLoadingProfielUserData(true);
-      // Trocar pela request API puxando os dados do Perfil do Usuário
       const viewerId = localStorage.getItem("viewerId") || null;
       if (viewerId) {
         const response = await UserRoute.getProfileForId(userId, viewerId);
@@ -309,43 +310,32 @@ const UserProfile = () => {
             profileIntroSkills: formatedIntroSkills,
             profileShowcasePosts: response.data.postList,
           };
-          console.log(formatResponse, "<><><>");
           setUserProfileData(formatResponse);
         }
       }
-      // const response = MOCK_GET_PROFILE_USER_DATA(userId)
-      // setUserProfileData(response)
     } catch (err) {
       console.log(err);
     } finally {
-      // Remover Timeout
-      setTimeout(() => {
-        setLoadingProfielUserData(false);
-      }, 500);
+      setLoadingProfielUserData(false);
     }
   };
 
   const registerNewBand = async () => {
     try {
       setLoadingRegisterBandConfirm(true);
-
       const viewerId = localStorage.getItem("viewerId") || null;
       if (viewerId) {
-        // Trocar pela request API puxando os dados do Perfil da Banda
         const response = await GroupService.save({
           ...registerBandForm,
           leaderId: Number.parseInt(viewerId),
         });
-        console.log(response);
-        // const response = REOL_USER_PROFILE_PAGE_MOCK
-        // setUserProfileData(response)
-        Swal.fire("Banda criada com sucesso!");
+        if (response.status === 201) {
+          Swal.fire("Banda criada com sucesso!");
+        }
       }
     } catch {
-      // Validar erros da request
       Swal.fire("Erro ao criar a banda!");
     } finally {
-      // Remover Timeout
       setRegisterBandDialogVisibility(false);
       setLoadingRegisterBandConfirm(false);
     }
@@ -357,15 +347,10 @@ const UserProfile = () => {
     if (input.files && input.files.length) {
       const file = input.files[0];
       const formatedFile = await toBase64(file);
-      console.log(formatedFile);
-
       const request: PictureUpdateRequestDto = {
         profilePic: formatedFile,
         banner: userProfileData.profileHighlight.bannerSrc,
       };
-
-      console.log(request);
-
       try {
         const response = await UserRoute.updatePicture(viewerId, request);
         if (response.status === 200) {
@@ -391,15 +376,10 @@ const UserProfile = () => {
     if (input.files && input.files.length) {
       const file = input.files[0];
       const formatedFile = await toBase64(file);
-      console.log(formatedFile);
-
       const request: PictureUpdateRequestDto = {
         banner: formatedFile,
         profilePic: userProfileData.profileHighlight.avatarSrc,
       };
-
-      console.log(request);
-
       try {
         const response = await UserRoute.updatePicture(viewerId, request);
         if (response.status === 200) {
@@ -423,10 +403,7 @@ const UserProfile = () => {
     const viewerId = localStorage.getItem("viewerId") || null;
     if (input.files && input.files.length) {
       const file = input.files[0];
-      console.log(file);
       const formatedFile = await toBase64(file);
-      console.log(formatedFile);
-
       try {
         setLoadingImportGroup(true);
         const response = await UserRoute.importGroupText(
@@ -444,21 +421,46 @@ const UserProfile = () => {
     }
   };
 
+  const handleExport = async () => {
+    const downloadTxtFile = (text: string) => {
+      const element = document.createElement("a");
+      const file = new Blob([text], {
+        type: "text/plain",
+      });
+      element.href = URL.createObjectURL(file);
+      element.download = "myFile.txt";
+      document.body.appendChild(element);
+      element.click();
+    };
+
+    const viewerId = localStorage.getItem("viewerId") || null;
+    try {
+      const response = await UserRoute.exportDownload(viewerId);
+      if (response.status === 200) {
+        downloadTxtFile(response.data);
+      }
+      console.log(response);
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    const profilePageId: string[] = location.pathname.match(/\d+$/) || ["-1"];
-    getProfileUserData(Number.parseInt(profilePageId[0]));
+    const viewerId = localStorage.getItem("viewerId") || "";
+    const userPageId: string[] = location.pathname.match(/\d+$/) || ["-1"];
+    if (viewerId) {
+      setCurrentUser(Number.parseInt(viewerId));
+      setCanEdit(Number.parseInt(viewerId) === Number.parseInt(userPageId[0]));
+      getProfileUserData(Number.parseInt(userPageId[0]));
+    } else {
+      navigate("/");
+    }
   }, []);
 
   const PROFILE_NAVIGATION_OPTIONS = useMemo(
     () => [
       {
         label: "Feed",
-        handleClick: (tab: number) => {
-          setCurrentShowcasePage(tab);
-        },
-      },
-      {
-        label: "Sobre",
         handleClick: (tab: number) => {
           setCurrentShowcasePage(tab);
         },
@@ -477,9 +479,11 @@ const UserProfile = () => {
       },
       {
         CustomOption: ({
+          canEdit,
           currentTab,
           handleChangeTab,
         }: {
+          canEdit: boolean;
           currentTab: number;
           handleChangeTab: Function;
         }) => {
@@ -504,12 +508,21 @@ const UserProfile = () => {
                         <a>Chat</a>
                       </li>
                       <li>
-                        <a
-                          onClick={() => setRegisterBandDialogVisibility(true)}
-                        >
-                          Criar uma banda
+                        <a onClick={() => handleExport()} download>
+                          Exportar
                         </a>
                       </li>
+                      {canEdit ? (
+                        <li>
+                          <a
+                            onClick={() =>
+                              setRegisterBandDialogVisibility(true)
+                            }
+                          >
+                            Criar uma banda
+                          </a>
+                        </li>
+                      ) : null}
                     </ul>
                   </Popover>
                 </div>
@@ -525,7 +538,7 @@ const UserProfile = () => {
   const PROFILE_SHOWCASE_PAGES = [
     {
       page: 0,
-      renderPage: () => (
+      renderPage: (canEdit: boolean) => (
         <>
           <ProfileIntro
             infos={{
@@ -535,7 +548,7 @@ const UserProfile = () => {
             type={PROFILE_TYPE.USER}
             handleClick={(id: number) => navigate("/band/" + id)}
           />
-          <ProfilePost />
+          <ProfilePost canEdit={canEdit} />
         </>
       ),
     },
@@ -695,6 +708,7 @@ const UserProfile = () => {
           <>
             <div className="profileTopic">
               <ProfileHighlight
+                canEdit={canEdit}
                 bannerSrc={userProfileData?.profileHighlight.bannerSrc}
                 avatarSrc={userProfileData?.profileHighlight.avatarSrc}
                 userInfo={userProfileData?.profileHighlight.userInfo}
@@ -703,12 +717,20 @@ const UserProfile = () => {
                 loadingAvatar={loadingAvatar}
                 loadingBanner={loadingBanner}
               />
-              <ProfileNavigatorTabs options={PROFILE_NAVIGATION_OPTIONS} />
+              <div className="profileNavigation">
+                <ProfileNavigatorTabs
+                  canEdit={canEdit}
+                  options={PROFILE_NAVIGATION_OPTIONS}
+                />
+                {canEdit ? (
+                  <a href={`/match/${currentUser}`}>Sintonizar</a>
+                ) : null}
+              </div>
             </div>
             <div className="profileShowcaseWrapper">
               {PROFILE_SHOWCASE_PAGES.find(
                 (showcase) => showcase.page === currentShowcasePage
-              )?.renderPage()}
+              )?.renderPage(canEdit)}
             </div>
           </>
         )}
