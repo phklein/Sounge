@@ -5,6 +5,6 @@ export default interface IGroupRequestDto {
     name: string,
     description: string,
     creationDate: string,
-    genres: GenreNameEnum[]
+    genres: any[]
 }
 

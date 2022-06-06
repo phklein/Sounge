@@ -191,8 +191,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseEntity<Long> upload(String file) {
+    public ResponseEntity<Long> upload(Long id, String file) {
         GroupSaveRequest group = new GroupSaveRequest();
+        group.setLeaderId(id);
         group.setName(file.substring(0,9));
         group.setDescription(file.substring(10,20));
         group.setCreationDate(LocalDate.now());
@@ -200,7 +201,5 @@ public class GroupServiceImpl implements GroupService {
         genres.add(GenreName.valueOf(file.substring(21,25)));
         group.setGenres(genres);
         return this.save(group);
-
-
     }
 }

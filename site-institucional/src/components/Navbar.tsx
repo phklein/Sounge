@@ -35,15 +35,15 @@ export function NavBar(props: Iprops) {
         return (
             <header>
                 <nav className="container navbar">
-                    <img src={LogoHorizontal} alt="" />
+                    <li><Link to="/" className="link-navbar"><img src={LogoHorizontal} alt="" /></Link></li>
                     <ul>
-                        <li><Link to="/page-not-found" className="link-navbar">Inicio</Link></li>
+                        <li><Link to="/" className="link-navbar">Inicio</Link></li>
                         <li><Link to="/page-not-found" className="link-navbar">Blog</Link></li>
                         <li><Link to="/page-not-found" className="link-navbar">Sobre</Link></li>
                         <li><Link to="/page-not-found" className="link-navbar">Membros</Link></li>
                         <li><Link to="/page-not-found" className="link-navbar">Fórum</Link></li>
                     </ul>
-                    <Buttonaa onClick={logout}>Sair</Buttonaa>
+                    <Link to="/"><Buttonaa onClick={logout}>Sair</Buttonaa></Link>
                 </nav>
             </header>
         )
@@ -51,9 +51,9 @@ export function NavBar(props: Iprops) {
         return (
             <header>
                 <nav className="container navbar">
-                    <img src={LogoHorizontal} alt="" />
+                <li><Link to="/" className="link-navbar"><img src={LogoHorizontal} alt="" /></Link></li>
                     <ul>
-                        <li><Link to="/page-not-found" className="link-navbar">Inicio</Link></li>
+                        <li><Link to="/" className="link-navbar">Inicio</Link></li>
                         <li><Link to="/page-not-found" className="link-navbar">Blog</Link></li>
                         <li><Link to="/page-not-found" className="link-navbar">Sobre</Link></li>
                         <li><Link to="/page-not-found" className="link-navbar">Membros</Link></li>

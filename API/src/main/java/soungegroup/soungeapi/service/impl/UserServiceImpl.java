@@ -760,7 +760,7 @@ public class UserServiceImpl implements UserService {
                     Group group = groupOptional.get();
                     body += "03";
                     body += String.format("%-45.45s", group.getName());
-                    body += String.format("%-45.45", group.getDescription());
+                    body += String.format("%-45.45s", group.getDescription());
                     body += String.format("%-10.10s", group.getCreationDate().toString());
                     body += String.format("%-10.10s", group.getGenres().stream().findFirst().get().getName());
                 }

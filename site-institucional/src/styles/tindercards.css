@@ -97,7 +97,7 @@ body {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 0 20px;
+    padding: 15px 28px;
     flex-wrap: wrap;
     border-bottom: 1px solid #383838;
 }
@@ -153,10 +153,20 @@ body {
   }
 
 .no-more-cards {
-    background: red;
-    width: 28%;
+    width: 100%;
     height: 100%;
     max-width: 50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-more-cards h1 {
+    color: var(--dark-purple);
+    font-size: 80px;
+    font-weight: 400;
+    font-family: 'Qwigley', cursive;
+    transition: ease-in-out .3s;
 }
 
 .swipe {
@@ -198,6 +208,9 @@ body {
     padding: 40px;
     border-radius: 0 0 15px 15px;
     background: #000;
+    opacity: 0;
+    pointer-events: none;
+    transition: .4s ease-in-out;
 }
 
 .buttons button {
@@ -249,9 +262,10 @@ body {
 .container-matchs {
     width: 100%;
     height: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-gap: 20px;
+    display: flex;
+    justify-content: center;    
+    align-items: flex-start;
+    flex-wrap: wrap;
     padding: 15px;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -270,12 +284,13 @@ body {
 }
 
 .item-match-nav {
-    width: 90px;
-    height: 100px;
+    width: 130px;
+    height: 150px;
     background: blue;
-    margin: 0 5px 0;
     position: relative;
-    border-radius: 3px;
+    border-radius: 5px;
+    margin: 0 10px 30px;
+    transition: .4s ease-in-out;
 }
 
 .item-match-nav p {
@@ -284,6 +299,28 @@ body {
     left: 0;
     color: var(--white);
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 700;
     padding: 10px;
+    width: 100%;
+    height: 60px;
+    background-color: #0000006b;
+    transition: .4s ease-in-out;
+}
+
+.item-match-nav:hover p {
+    height: 100%;
+    background-color: #000000d2;
+}
+
+.item-match-nav:hover p h3 {
+    opacity: 1;
+    margin-top: 20px;
+}
+
+.item-match-nav p h3 {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--light-gray);
+    opacity: 0;
+    transition: .4s ease-in-out;
 }

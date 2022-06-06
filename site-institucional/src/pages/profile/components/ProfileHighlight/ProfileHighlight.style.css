@@ -1,0 +1,114 @@
+.profileHighlightWrapper{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.profileHighlightWrapper::after{
+    content: "";
+    width: 100%;
+    height: 2px;
+    background-color: var(--gray);
+}
+
+.profileHighlightBanner{
+    background-color: var(--black);
+    border-radius: 0 0 8px 8px;
+    height: 240px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.profileHighlightUser{
+    height: 240px;
+    margin-top: -128px;
+    margin-bottom: 16px;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.profileHighlightUser > h3{
+    font-size: 1.3rem;
+}
+
+.profileHighlightUser > span{
+    font-size: 1.1rem;
+    color: var(--gray);
+}
+
+.profileHighlightUserImg{
+    width: 180px;
+    height: 180px;
+    border-radius: 100%;
+    background: rgba(0,0,0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.profileHighlightBannerWrapper {
+    width: 100%;
+    height: 240px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.profileHighlightBannerWrapper > label{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: flex-end;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.profileHighlightUserImg > input,
+.profileHighlightBannerWrapper > input{
+    display: none;
+}
+
+.profileHighlightUserImg > img{
+    width: 180px;
+    height: 180px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.profileHighlightUserImg > label{
+    width: 180px;
+    height: 180px;
+    border-radius: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.profileHighlightUserImg > label:hover,
+.profileHighlightBannerWrapper > label:hover{
+    background-color: rgba(0,0,0,0.5);
+}
+
+.profileHighlightUserImg > label:hover::after{
+    content: 'Editar avatar';
+}
+
+.profileHighlightBannerWrapper > label:hover::after{
+    color: white;
+    content: 'Editar banner';
+}
+
+.profileHighlightUserImg > span,
+.profileHighlightBannerWrapper > span{
+    color: var(--light-purple);
+    margin: 8px;
+}

@@ -83,7 +83,7 @@ export function MatchMock() {
     }
 
     useEffect(() => {
-        console.log(currentIndex)
+        const buttons = document.getElementsByClassName('buttons')
 
         onkeyup = (e: any) => {
             if (e.keyCode === 37) {
@@ -94,6 +94,17 @@ export function MatchMock() {
                 swipe('right')
             }
         }
+
+        if (users.length > 0) {
+            for (let i = 0; i < buttons.length; i++) {
+                const button = buttons[i] as HTMLElement
+                button.style.opacity = '1'
+                button.style.pointerEvents = 'auto'
+            }
+        }
+
+        console.log(currentIndex)
+        console.log(childRefs)
     }, [])
 
     let isContainerMatchesVisible: boolean = true
@@ -105,6 +116,22 @@ export function MatchMock() {
             isContainerMatchesVisible = false
         }
     }
+
+    const returnNoMoreCards = () => {
+        const btnHeart = document.getElementsByClassName('bxs-heart')
+
+        for (let i = 0; i < btnHeart.length; i++) {
+            const btnHrt = btnHeart[i] as HTMLElement
+            btnHrt.style.opacity = '0.3'
+        }
+
+        return (
+            <div className="no-more-cards">
+                <h1>No more cards</h1>
+            </div>
+        )
+    }
+
 
     return (
         <>
@@ -161,14 +188,7 @@ export function MatchMock() {
                             )
                         })
                     } 
-
-                    {
-                      currentIndexRef.current < 0 ? (
-                        <div className="no-more-cards">
-                            <h1>No more cards</h1>
-                        </div>
-                      ) : null
-                    }
+                    { currentIndexRef.current < 0 ? returnNoMoreCards() : null }
                     <div className='buttons'>
                         <button onClick={() => swipe('left')}><i className='bx bx-x'></i></button>
                         <button onClick={() => goBack()}><i className='bx bx-undo'></i></button>
