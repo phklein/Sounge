@@ -1,6 +1,6 @@
-import IRoleSimpleResponseDto from "./RoleSimpleResponseDto";
+import RoleSimpleResponseDto from "./RoleSimpleResponseDto"
 
-export default interface IUserSimpleResponseDto {
+export default interface UserSimpleResponseDto {
     id: number,
     name: string,
     profilePic: string,
