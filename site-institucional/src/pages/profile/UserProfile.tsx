@@ -408,7 +408,7 @@ const UserProfile = () => {
         setLoadingImportGroup(true);
         const response = await UserRoute.importGroupText(
           viewerId,
-          "aerojnghbaingóriaghnaROCK"
+          "Flork     BandaDaora ROCK"
         );
         if (response.status === 200) {
           Swal.fire("Importado com Sucesso!");
