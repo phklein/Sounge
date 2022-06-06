@@ -1,10 +1,7 @@
 .background-post {
-  width: 100vh;
-  height: 100%;
-  margin-bottom: 4%;
+  width: 100%;
   background-color: #0D0C0C;
   color: white;
-  float: right;
 }
 
 .profile-details-post {
@@ -39,8 +36,7 @@
 }
 
 .background-post-wrapper {
-  margin: 2% 4%;
-  padding: 2% 0;
+  padding: 8px;
   color: white;
   border-radius: 5px;
   display: flex;
@@ -55,9 +51,11 @@
 }
 
 .profile-image-post {
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  width: 100%;
+  object-fit: cover;
 }
 
+.profileShowcaseIcon {
+  display: flex;
+  align-items: center;
+}
