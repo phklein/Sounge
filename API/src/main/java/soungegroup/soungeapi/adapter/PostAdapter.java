@@ -25,7 +25,10 @@ public class PostAdapter {
     private final UserRepository userRepository;
 
     public Post toPost(PostSaveRequest postSaveRequest) {
-        Post post = Mapper.INSTANCE.map(postSaveRequest, Post.class);
+        Post post = Post.builder()
+                .text(postSaveRequest.getText())
+                .mediaUrl(postSaveRequest.getMediaUrl())
+                .build();
 
         List<Genre> genres = new ArrayList<>();
 

@@ -1,9 +1,6 @@
 package soungegroup.soungeapi.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +9,7 @@ import java.util.List;
 @Entity(name = "Post")
 @Table(name = "tb_post")
 @Getter @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post {

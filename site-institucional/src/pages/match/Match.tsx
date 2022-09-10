@@ -240,8 +240,8 @@ export function Match() {
       const urlParams = new URLSearchParams(queryString);
       const viewerId = urlParams.get("viewerId");
 
-      if (viewerId) {
-        await UserRoute.getProfileForId(id, viewerId)
+      if (!id) {
+        await UserRoute.getProfileForId(id, id)
           .then((res) => {
             if (res.status === 200) {
               setUserProfile(res.data);
