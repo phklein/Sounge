@@ -1,4 +1,5 @@
 server:
+  port: 8082
   error:
     include-stacktrace: ON_PARAM
 

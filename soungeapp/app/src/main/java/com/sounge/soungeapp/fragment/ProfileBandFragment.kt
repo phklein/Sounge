@@ -6,12 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sounge.soungeapp.R
+import com.sounge.soungeapp.databinding.FragmentProfileBandBinding
+import com.sounge.soungeapp.databinding.FragmentProfileBinding
 
 class ProfileBandFragment : Fragment() {
+    private lateinit var binding: FragmentProfileBandBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_profile_band, container, false)
+        binding = FragmentProfileBandBinding.inflate(inflater, container, false)
+        return binding.root
     }
 }

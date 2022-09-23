@@ -1,8 +1,9 @@
-package com.sounge.soungeapp
+package com.sounge.soungeapp.actitivy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.sounge.soungeapp.R
 import com.sounge.soungeapp.fragment.ProfileFragment
 import com.sounge.soungeapp.databinding.ActivityMainBinding
 

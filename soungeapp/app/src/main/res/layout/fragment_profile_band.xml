@@ -23,6 +23,8 @@
             android:layout_height="64dp"
             android:contentDescription="@string/profile_picture_description"
             android:src="@drawable/example_profile_picture"
+            app:civ_border_color="@color/dark_gray"
+            app:civ_border_width="2dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -82,7 +84,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:padding="2.5dp"
             android:text="@string/not_in_band"
             android:textAlignment="center"
