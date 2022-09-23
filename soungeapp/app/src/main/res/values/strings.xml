@@ -12,4 +12,5 @@
     <string name="post_image_description">Imagem do post</string>
     <string name="like_icon_description">Ícone de like</string>
     <string name="comment_icon_description">Ícone de comentários</string>
+    <string name="not_in_band">Nenhuma banda para mostrar</string>
 </resources>
