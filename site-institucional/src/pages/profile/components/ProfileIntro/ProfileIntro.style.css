@@ -1,0 +1,100 @@
+.profileShowcaseIntroBandWrapper{
+    margin: 4px 0;
+}
+.profileShowcaseIntro{
+    background-color: var(--dark-gray);
+    color: var(--white);
+    border-radius: 4px;
+    padding: 12px;
+    height: 100%;
+    width: 35%;
+}
+
+.profileShowcaseIntro > ul{
+    margin-top: 12px;
+    display: flex;
+    flex-basis: 8px;
+    flex-direction: column;
+}
+
+.profileShowcaseIntro > ul::after{
+    content: "";
+    height: 1px;
+    margin-bottom: 14px;
+    margin-top: 8px;
+    background-color: var(--gray);
+}
+
+.profileShowcaseIntroSkill{
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.profileShowcaseIntroSkill > span{
+    margin: 0 8px;
+}
+
+.profileShowcaseIntroBand{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 2px 1px;
+}
+
+
+.profileShowcaseIntroBand > img,
+.profileShowcaseIntroBand svg {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profileShowcaseIntroBand:hover{
+    color: var(--light-purple);
+}
+
+.profileShowcaseIntroBand:hover > img,
+.profileShowcaseIntroBand:hover svg{
+    outline: 2px solid var(--light-purple);
+}
+
+.profileShowcaseIntroBand:active > img{
+    outline: none;
+}
+
+.profileShowcaseIntroBand:active .profileShowcaseIntroBandInfoRole{
+    color: var(--dark-purple);
+}
+
+.profileShowcaseIntroBand:active{
+    background-color: var(--light-purple);
+    border-radius: 8px;
+    color: var(--white);
+}
+
+
+.profileShowcaseIntroBandInfo{
+    display: flex;
+    flex-direction: column;
+    margin: 0 8px;
+    font-size: 16px;
+}
+
+.profileShowcaseIntroBandInfoName > span{
+    display: flex;
+    align-items: center;
+}
+
+.profileShowcaseIntroBandInfoLeader{
+    margin: 0 8px;
+    padding-bottom: 4px;
+    font-size: 14px;
+}
+
+.profileShowcaseIntroBandInfoRole{
+    font-size: 12px;
+    color: var(--gray);
+}

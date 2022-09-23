@@ -1,0 +1,64 @@
+.profileShowcasePostWrapper{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+.profileShowcaseWrite{
+    background-color: #1c1c1c;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    padding: 4px;
+}
+
+.profileShowcaseWrite > form{
+    display: flex;
+    flex-direction: column;
+}
+
+.profileShowcaseWriteImage--visible{
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.profileShowcaseWriteImage--invisible{
+    display: none;
+}
+
+.profileShowcaseWriteInput > div > div > div > label{
+    color: var(--white);
+    padding: 32px 8px 32px 10px;
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.profileShowcaseWriteInput > input{
+    display: none;
+}
+
+.post-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.profileShowcasePost{
+    background-color: #1c1c1c;
+    height: 100%;
+    color: var(--white);
+    border-radius: 4px;
+    margin: 8px 0;
+    padding: 4px;
+}
+
+.profileShowcasePostImage{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.background-post {
+
+}

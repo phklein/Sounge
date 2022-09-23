@@ -1,48 +1,64 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.adapter.UserAdapter;
-import soungegroup.soungeapi.enums.GenreName;
-import soungegroup.soungeapi.enums.RoleName;
+import soungegroup.soungeapi.enums.*;
 import soungegroup.soungeapi.model.*;
 import soungegroup.soungeapi.repository.*;
-import soungegroup.soungeapi.request.PasswordChangeRequest;
-import soungegroup.soungeapi.request.UserLoginRequest;
-import soungegroup.soungeapi.request.UserSaveRequest;
-import soungegroup.soungeapi.response.PostSimpleResponse;
-import soungegroup.soungeapi.response.UserCsvResponse;
-import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserPageResponse;
+import soungegroup.soungeapi.request.*;
+import soungegroup.soungeapi.response.*;
 import soungegroup.soungeapi.service.UserService;
+import soungegroup.soungeapi.util.Fila;
+import soungegroup.soungeapi.util.ListaObj;
+import soungegroup.soungeapi.util.LocationUtil;
+import soungegroup.soungeapi.util.Mapper;
 
-import java.util.List;
-import java.util.Optional;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private static final Pageable PAGEABLE = Pageable.ofSize(30);
+
     private final UserRepository repository;
     private final PostRepository postRepository;
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
+    private final NotificationRepository notificationRepository;
+
     private final UserAdapter adapter;
     private final PostAdapter postAdapter;
     private final List<UserLoginResponse> sessions;
+
+    private final LocationUtil locationUtil;
 
     @Override
     public ResponseEntity<UserLoginResponse> saveAndLogin(UserSaveRequest body) {
         User user = adapter.toUser(body);
 
         if (user != null) {
+            Map<String, Double> coordinates = locationUtil.coordinates(user.getCity(), user.getState());
+            user.setLatitude(coordinates.get("lat"));
+            user.setLongitude(coordinates.get("lon"));
             user = repository.save(user);
             UserLoginResponse loginResponse = adapter.toLoginResponse(user);
+            loginResponse.setNewNotifications(notificationRepository.countNewByUserId(user.getId()));
+            loginResponse.setNewMatches(notificationRepository.countNewMatchesByUserId(user.getId()));
 
-            sessions.add(loginResponse);
+            pushSession(loginResponse);
             return ResponseEntity.status(HttpStatus.CREATED).body(loginResponse);
         }
 
@@ -55,13 +71,30 @@ public class UserServiceImpl implements UserService {
 
         if (foundUsers.size() == 1) {
             UserLoginResponse user = foundUsers.get(0);
-            sessions.add(user);
+            pushSession(user);
+            user.setNewNotifications(notificationRepository.countNewByUserId(user.getId()));
+            user.setNewMatches(notificationRepository.countNewMatchesByUserId(user.getId()));
             return ResponseEntity.status(HttpStatus.OK).body(user);
         } else if (foundUsers.size() > 1) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    public void pushSession(UserLoginResponse user) {
+        sessions.add(user);
+    }
+
+    @Override
+    public ResponseEntity<Boolean> checkSession(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(hasSession(userOptional.get().getId()));
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override
@@ -83,8 +116,17 @@ public class UserServiceImpl implements UserService {
             Post post = postOptional.get();
 
             if (!user.getLikedPosts().contains(post)) {
-                user.getLikedPosts().add(postOptional.get());
+                user.getLikedPosts().add(post);
                 repository.save(user);
+
+                Notification notification = new Notification();
+                notification.setType(NotificationType.LIKE);
+                notification.setSender(user);
+                notification.setReceiver(post.getUser());
+                notification.setCreationDateTime(LocalDateTime.now());
+                notification.setText(String.format("%s deu like em seu post", user.getName()));
+                notificationRepository.save(notification);
+
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
 
@@ -125,7 +167,30 @@ public class UserServiceImpl implements UserService {
 
             if (!liker.getLikedUsers().contains(liked)) {
                 liker.getLikedUsers().add(liked);
+                liker.getRecentLikes().push(liked);
                 repository.save(liker);
+
+                if (liked.getLikedUsers().contains(liker)) {
+                    Notification likedNotification = new Notification();
+                    likedNotification.setType(NotificationType.MATCH);
+                    likedNotification.setSender(liker);
+                    likedNotification.setReceiver(liked);
+                    likedNotification.setCreationDateTime(LocalDateTime.now());
+                    likedNotification.setText(String.format("Você sintonizou com %s", liker.getName()));
+
+                    Notification likerNotification = new Notification();
+                    likerNotification.setType(NotificationType.MATCH);
+                    likerNotification.setSender(liked);
+                    likerNotification.setReceiver(liker);
+                    likerNotification.setCreationDateTime(LocalDateTime.now());
+                    likerNotification.setText(String.format("Você sintonizou com %s", liked.getName()));
+
+                    notificationRepository.save(likedNotification);
+                    notificationRepository.save(likerNotification);
+
+                    // TODO: Send notification to liker and liked users
+                }
+
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
 
@@ -167,10 +232,6 @@ public class UserServiceImpl implements UserService {
                 User user = userOptional.get();
                 user.setGroup(group);
 
-                if (group.getUsers().isEmpty()) {
-                    user.setLeader(true);
-                }
-
                 repository.save(user);
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
@@ -187,9 +248,33 @@ public class UserServiceImpl implements UserService {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setGroup(null);
-            repository.save(user);
-            return ResponseEntity.status(HttpStatus.OK).build();
+
+            if (user.isLeader()) {
+                user.setLeader(false);
+                Group group = user.getGroup();
+                user.setGroup(null);
+
+                if (group.getUsers().size() > 1) {
+                    User nextLeader = group.getUsers().stream()
+                            .filter(u -> !u.getId().equals(user.getId()))
+                            .collect(Collectors.toList()).get(0);
+                    nextLeader.setLeader(true);
+                    repository.save(nextLeader);
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                } else {
+                    repository.save(user);
+                    groupRepository.delete(group);
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                }
+            }
+
+            if (user.getGroup() != null) {
+                user.setGroup(null);
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -301,19 +386,51 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Void> changePassword(Long id, PasswordChangeRequest body) {
+    public ResponseEntity<Void> updateSignature(Long id, SignatureType signatureType) {
         Optional<User> userOptional = repository.findById(id);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
-            if (user.getPassword().equals(body.getOldPassword())) {
-                user.setPassword(body.getNewPassword());
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.OK).build();
+            int months = 1;
+
+            switch (signatureType) {
+                case YEARLY:
+                    months = 12;
+                    break;
+                case SEMIANNUAL:
+                    months = 6;
+                    break;
+                default:
+                    break;
             }
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            Signature signature = user.getSignature();
+            signature.setSignatureType(signatureType);
+            signature.setExpiryDateTime(signature.isExpired() ?
+                    LocalDateTime.now().plusMonths(months) :
+                    signature.getExpiryDateTime().plusMonths(months)
+            );
+
+            user.setSignature(signature);
+            repository.save(user);
+
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> updateLocation(Long id, UserLocationUpdateRequest body) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            user.setLatitude(body.getLatitude());
+            user.setLongitude(body.getLongitude());
+            repository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -331,43 +448,23 @@ public class UserServiceImpl implements UserService {
                 return ResponseEntity.status(HttpStatus.OK).build();
             }
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @Override
-    public ResponseEntity<UserPageResponse> findById(Long id) {
-        Optional<User> userOptional = repository.findById(id);
-
-        return userOptional.isPresent() ?
-                ResponseEntity.status(HttpStatus.OK).body(adapter.toPageResponse(userOptional.get())) :
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
-    }
-
-    @Override
-    public ResponseEntity<List<PostSimpleResponse>> findPostsById(Long id) {
-        Optional<User> userOptional = repository.findById(id);
-
-        if (userOptional.isPresent()) {
-            List<Post> foundPosts = postRepository.findTop50ByUserOrderByPostDateTimeDesc(userOptional.get());
-
-            return foundPosts.isEmpty() ?
-                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                    ResponseEntity.status(HttpStatus.OK).body(postAdapter.toSimpleResponse(foundPosts));
+    public ResponseEntity<String> export() {
+        List<UserCsvResponse> users = repository.findAllCsv(PAGEABLE);
+        ListaObj<UserCsvResponse> responseObj = new ListaObj<>(users.size());
+        for (UserCsvResponse csv: users) {
+            responseObj.adiciona(csv);
         }
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    @Override
-    public ResponseEntity export() {
-        List<UserCsvResponse> users = repository.findAllCsv();
         StringBuilder report = new StringBuilder();
-        for (UserCsvResponse u : users) {
-            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\r\n",
+        for (int i = 0; i < responseObj.getTamanho(); i++) {
+            UserCsvResponse u = responseObj.getElemento(i);
+            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\r%n",
                     u.getId(), u.getName(), u.getSex(), u.getDescription(),
                     u.getBirthDate(), u.getState(), u.getCity(),
                     u.getLatitude(), u.getLongitude(),
@@ -380,4 +477,306 @@ public class UserServiceImpl implements UserService {
                 .header("content-disposition", "filename=\"users.csv\"")
                 .body(report.toString());
     }
+
+    @Override
+    public ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id) {
+        Optional<User> viewerOptional = repository.findById(viewerId);
+        Optional<UserProfileResponse> profileOptional = repository.findProfile(id);
+
+
+        if (profileOptional.isPresent() && viewerOptional.isPresent()) {
+            User viewer = viewerOptional.get();
+            UserProfileResponse profile = profileOptional.get();
+
+            profile.setPostList(postAdapter.toSimpleResponseList(postRepository.findByUserIdOrdered(profile.getId(), PAGEABLE)));
+            profile.setLikedGenres(genreRepository.findByUserId(profile.getId()));
+            profile.setRoles(roleRepository.findByUserId(profile.getId()));
+
+            Optional<GroupSimpleResponse> groupOptional = groupRepository.findByUserId(profile.getId());
+            profile.setGroup(groupOptional.isPresent() ? groupOptional.get() : null);
+
+            profile.getPostList().forEach(p -> p.setHasLiked(viewer.getLikedPosts().stream()
+                    .anyMatch(lp -> lp.getId().equals(p.getId()))));
+            profile.setViewerProfile(viewerId.equals(profile.getId()));
+            profile.setIsOnline(hasSession(profile.getId()));
+            return ResponseEntity.status(HttpStatus.OK).body(profile);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<UserContactResponse>> findContactList(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<UserContactResponse> contacts = repository.findContactList(user.getId());
+
+            notificationRepository.setMatchesViewedByUser(user);
+
+            return contacts.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(contacts);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<NotificationSimpleResponse>> findNotifications(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<NotificationSimpleResponse> notifications =
+                    notificationRepository.findByUser(user, PAGEABLE);
+
+            notificationRepository.setViewedByUser(user);
+
+            return notifications.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(notifications);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<NotificationSimpleResponse>> checkNewMatches(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<NotificationSimpleResponse> newMatches =
+                    notificationRepository.findNewMatchesByUser(user, PAGEABLE);
+
+            notificationRepository.setMatchesViewedByUser(user);
+
+            return newMatches.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(newMatches);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<UserMatchResponse>> findMatchList(Long id,
+                                                                 Integer maxDistance,
+                                                                 Optional<Integer> minAge,
+                                                                 Optional<Integer> maxAge,
+                                                                 Optional<GenreName> genreName,
+                                                                 Optional<RoleName> roleName,
+                                                                 Optional<Sex> sex,
+                                                                 Optional<SkillLevel> skillLevel) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            Optional<LocalDate> minBirthDate = maxAge.isEmpty() ?
+                    Optional.empty() :
+                    Optional.of(LocalDate.now().minusYears(maxAge.get()));
+
+            Optional<LocalDate> maxBirthDate = minAge.isEmpty() ?
+                    Optional.empty() :
+                    Optional.of(LocalDate.now().minusYears(minAge.get()));
+
+            List<UserMatchResponse> matchList = repository.findMatchList(
+                    user.getId(),
+                    user.getLikedUsers(),
+                    minBirthDate.orElse(null),
+                    maxBirthDate.orElse(null),
+                    genreName.orElse(null),
+                    roleName.orElse(null),
+                    sex.orElse(null),
+                    skillLevel.orElse(null),
+                    PAGEABLE
+            );
+
+            matchList.forEach(u -> {
+                u.setGroup(groupRepository.findByUserId(u.getId()).orElse(null));
+                u.setLikedGenres(genreRepository.findByUserId(u.getId()));
+                u.setRoles(roleRepository.findByUserId(u.getId()));
+                u.setIsOnline(hasSession(u.getId()));
+                u.setDistance(locationUtil.distance(
+                        user.getLatitude(), user.getLongitude(),
+                        u.latitude(), u.longitude()
+                ));
+
+                // Calculate relevance, +2 if has signature
+                double relevance = u.isHasSignature() ? 2 : 0;
+
+                // 10 - 0.20 for each km away
+                relevance += (10 - (u.getDistance() * 0.2));
+
+                // +0.5 for each matching genre
+                relevance += 0.5 * u.getLikedGenres().stream().filter(g ->
+                        user.getLikedGenres().stream().anyMatch(ug ->
+                                ug.getId().equals(g.getId()))).count();
+
+                // +0.5 for each matching roles
+                relevance += 0.5 * u.getRoles().stream().filter(r ->
+                        user.getRoles().stream().anyMatch(ur ->
+                                ur.getId().equals(r.getId()))).count();
+
+                u.setRelevance(relevance);
+            });
+
+            matchList = matchList.stream()
+                    .filter(u -> u.getDistance() <= maxDistance)
+                    .sorted(Comparator.comparing(UserMatchResponse::getRelevance).reversed())
+                    .collect(Collectors.toList());
+            Fila<UserMatchResponse> fila = new Fila<>(matchList.size());
+            for (UserMatchResponse userAux :
+                 matchList) {
+                fila.insert(userAux);
+            }
+
+            return matchList.isEmpty() ?
+                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                    ResponseEntity.status(HttpStatus.OK).body(matchList);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<List<UserSimpleResponse>> findByName(String nameLike) {
+        List<UserSimpleResponse> foundUsers = repository.findByName(nameLike, PAGEABLE);
+
+        return foundUsers.isEmpty() ?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                ResponseEntity.status(HttpStatus.OK).body(foundUsers);
+    }
+
+    private Boolean hasSession(Long id) {
+        for (UserLoginResponse ulr: sessions) {
+            if (ulr.getId().equals(id)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public ResponseEntity<Void> updateProfilePage(Long id, UserProfileUpdateRequest body) {
+       Optional<User> userOptional = repository.findById(id);
+
+       if (userOptional.isPresent()){
+           User user = userOptional.get();
+           user.setSpotifyID(body.getSpotifyID());
+           user.setDescription(body.getDescription());
+           user.setName(body.getName());
+           repository.save(user);
+           return ResponseEntity.status(HttpStatus.OK).build();
+       }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> updatePicture(Long id, PictureUpdateRequest body) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            user.setProfilePic(body.getProfilePic());
+            user.setBanner(body.getBanner());
+            repository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> updatePassword(Long id, UserPasswordUpdateRequest body) {
+        Optional<User> userOptional = repository.findById(id);
+
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+
+            if (body.getOldPassword().equals(user.getPassword())) {
+                user.setPassword(body.getNewPassword());
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+
+    public ResponseEntity<UserSimpleResponse> roolbackLike(Long id, Long idLike) {
+        unlikeUser(id,idLike);
+        Optional<User> userOptional = repository.findById(id);
+        AtomicReference<User> returnUser = null;
+        if (userOptional.get() != null){
+             sessions.forEach(userLoginResponse -> {
+                 if (userLoginResponse.getId().equals(id)) {
+                    returnUser.set(userOptional.get().getRecentLikes().pop());
+                 }
+             });
+        } else {
+                 return  ResponseEntity.status(404).build();
+            }
+            UserSimpleResponse response = adapter.toUserSimpleResponse(returnUser.get());
+            return ResponseEntity.status(200).body(response);
+        }
+
+    @Override
+    public ResponseEntity download(Long id) {
+        Optional<User> userOptional = repository.findById(id);
+
+        String body = "";
+        String finalString = "";
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            String header = "00USERS2022";
+            header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-mm-yyyy HH:mm:ss"));
+            header += "00USERS2022";
+            finalString += header;
+            body += "02";
+            body += String.format("%-100.100s", user.getEmail());
+            body += String.format("%-45.45s", user.getPassword());
+            body += String.format("%-100.100s", user.getName());
+            body += String.format("%-3.3s", user.getSex().name());
+            body += String.format("%-256.256s", user.getDescription());
+            body += String.format("%-10.10s", user.getBirthDate().toString());
+            body += String.format("%-2.2s", user.getState().name());
+            body += String.format("%-100.100s", user.getCity());
+            body += String.format("%020.20f", user.getLatitude());
+            body += String.format("%020.20f", user.getLongitude());
+            body += String.format("%-5.5s", Boolean.toString(user.isLeader()));
+            body += String.format("%-12.12s", user.getSkillLevel().name());
+            body += "\n";
+            if (user.getGroup() != null) {
+             Optional<Group> groupOptional = groupRepository.findById(user.getGroup().getId());
+                if (groupOptional.isPresent()) {
+                    Group group = groupOptional.get();
+                    body += "03";
+                    body += String.format("%-45.45s", group.getName());
+                    body += String.format("%-45.45s", group.getDescription());
+                    body += String.format("%-10.10s", group.getCreationDate().toString());
+                    body += String.format("%-10.10s", group.getGenres().stream().findFirst().get().getName());
+                }
+            }
+            finalString += body;
+            String trailer = "01";
+            trailer += "02";
+            finalString += trailer;
+            return ResponseEntity.ok()
+                    .header("Content-Disposition", "attachment; filename=\"" + "user" + ".txt\"")
+                    .header("Content-Type", "text/plain")
+                    .body(finalString);
+        }else{
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+    }
 }
+
+

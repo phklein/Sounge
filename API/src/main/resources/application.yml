@@ -12,7 +12,11 @@ spring:
     hibernate:
       ddl-auto: update
       dialect: org.hibernate.dialect.SQLServer2012Dialect
+      globally_quoted_identifiers: true
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+
+open-cage:
+  api-key: f71f69803a90499d86766b5e246b5072
