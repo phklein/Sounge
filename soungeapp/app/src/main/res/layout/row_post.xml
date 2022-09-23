@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dark_gray"
+    android:paddingBottom="24dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_post_owner_picture"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/dark_gray"
+        app:civ_shadow="true"
+        app:civ_shadow_radius="10"
+        app:civ_shadow_color="@color/black"
+        android:contentDescription="@string/profile_picture_description"
+        android:src="@drawable/example_profile_picture" />
+
+    <TextView
+        android:id="@+id/tv_post_owner_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/iv_post_owner_picture"
+        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        android:textFontWeight="900"
+        android:text="Matheus Correia da Silva" />
+
+    <TextView
+        android:id="@+id/tv_post_text"
+        android:layout_width="wrap_content"
+        android:maxWidth="280dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_post_owner_name"
+        app:layout_constraintLeft_toRightOf="@id/iv_post_owner_picture"
+        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/dark_white"
+        android:textFontWeight="400"
+        android:text="Apaixonado por ROCK!!!Apaixonado por ROCK!!!Apaixonado por ROCK!!!Apaixonado por ROCK!!!Apaixonado por ROCK!!!Apaixonado por ROCK!!!Apaixonado por ROCK!!!Apaixonado por ROCK!!!" />
+
+    <ImageView
+        android:id="@+id/iv_post_media"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_post_text"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/post_image_description"
+        android:src="@drawable/example_banner_picture" />
+    
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_post_media"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="8dp"
+        android:padding="5dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
+            
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_like"
+                android:contentDescription="@string/like_icon_description" />
+
+            <TextView
+                android:id="@+id/tv_like_amount"
+                android:layout_width="wrap_content"
+                android:maxWidth="280dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_post_owner_name"
+                app:layout_constraintLeft_toRightOf="@id/iv_post_owner_picture"
+                android:padding="5dp"
+                android:textAlignment="textStart"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/dark_white"
+                android:textFontWeight="400"
+                android:text="12345678" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical" >
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_comment"
+                android:contentDescription="@string/comment_icon_description" />
+
+            <TextView
+                android:id="@+id/tv_comment_amount"
+                android:layout_width="wrap_content"
+                android:maxWidth="280dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_post_owner_name"
+                app:layout_constraintLeft_toRightOf="@id/iv_post_owner_picture"
+                android:padding="5dp"
+                android:textAlignment="textStart"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/dark_white"
+                android:textFontWeight="400"
+                android:text="25" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_share" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>
