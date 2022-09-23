@@ -6,114 +6,108 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ProfileFragment"
     android:background="@color/dark_gray" >
-    
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/iv_profile_banner"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="160dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/banner_content_description"
+            android:scaleType="centerCrop"
+            android:src="@drawable/example_banner_picture"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:contentDescription="@string/banner_content_description"
-            android:src="@drawable/example_banner_picture"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile_picture"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="100dp"
+            android:contentDescription="@string/profile_picture_description"
+            android:src="@drawable/example_profile_picture"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="120dp"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@color/dark_gray"
-            app:civ_shadow="true"
-            app:civ_shadow_radius="10"
-            app:civ_shadow_color="@color/black"
-            android:contentDescription="@string/profile_picture_description"
-            android:src="@drawable/example_profile_picture" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_profile_info"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            app:layout_constraintTop_toBottomOf="@id/iv_profile_banner"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-            
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_profile_banner">
+
             <Button
                 android:id="@+id/bt_edit_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bg_purple_outline_button"
+                android:layout_marginEnd="10dp"
+                android:background="@android:color/transparent"
                 android:text="@string/edit_button"
                 android:textColor="@color/main_purple"
-                android:textSize="14sp" />
+                android:textSize="12sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_profile_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="64dp"
                 android:padding="5dp"
+                android:text="Matheus Correia da Silva"
                 android:textAlignment="center"
                 android:textSize="16sp"
-                android:textFontWeight="900"
-                android:text="Matheus Correia da Silva" />
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_profile_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_profile_name"
+                android:fontFamily="sans-serif"
+                android:padding="5dp"
+                android:text="Apaixonado por ROCK!!!"
+                android:textAlignment="center"
+                android:textColor="@color/dark_white"
+                android:textSize="16sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:padding="5dp"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:fontFamily="sans-serif"
-                android:textColor="@color/dark_white"
-                android:textFontWeight="400"
-                android:text="Apaixonado por ROCK!!!" />
-            
+                app:layout_constraintTop_toBottomOf="@id/tv_profile_name" />
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginBottom="24dp">
-                
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/ll_posts_option"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_weight="1" >
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_posts_option"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/posts"
+                        android:textAlignment="center"
                         android:textColor="@color/main_purple"
                         android:textSize="16sp"
-                        android:textFontWeight="500"
-                        android:textAlignment="center" />
+                        android:textStyle="bold" />
 
                     <View
                         android:id="@+id/v_posts_option_underline"
@@ -128,18 +122,18 @@
                     android:id="@+id/ll_talents_option"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_weight="1" >
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_talents_option"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/talents"
+                        android:textAlignment="center"
                         android:textSize="16sp"
-                        android:textFontWeight="500"
-                        android:textAlignment="center" />
+                        android:textStyle="bold" />
 
                     <View
                         android:id="@+id/v_talents_option_underline"
@@ -155,18 +149,18 @@
                     android:id="@+id/ll_band_option"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_weight="1" >
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_band_option"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/band"
+                        android:textAlignment="center"
                         android:textSize="16sp"
-                        android:textFontWeight="500"
-                        android:textAlignment="center" />
+                        android:textStyle="bold" />
 
                     <View
                         android:id="@+id/v_band_option_underline"
@@ -177,20 +171,20 @@
                         android:visibility="invisible" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
-                
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        
+
         <FrameLayout
             android:id="@+id/fl_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/cl_profile_info"
+            android:padding="24dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:padding="24dp" />
-        
+            app:layout_constraintTop_toBottomOf="@+id/cl_profile_info" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
