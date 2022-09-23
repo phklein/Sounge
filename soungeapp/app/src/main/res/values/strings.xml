@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">soungeapp</string>
+    <string name="banner_content_description">Imagem de fundo de perfil</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit_button">Editar</string>
+    <string name="posts">Posts</string>
+    <string name="talents">Talentos</string>
+    <string name="band">Banda</string>
+    <string name="fab_post_description">Botão para criar post</string>
+    <string name="profile_picture_description">Foto de perfil</string>
+    <string name="post_image_description">Imagem do post</string>
+    <string name="like_icon_description">Ícone de like</string>
+    <string name="comment_icon_description">Ícone de comentários</string>
+    <string name="not_in_band">Nenhuma banda para mostrar</string>
+</resources>
