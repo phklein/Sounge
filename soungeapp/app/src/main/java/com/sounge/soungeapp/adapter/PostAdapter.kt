@@ -4,23 +4,22 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.NonNull
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.data.PostSimple
+import com.sounge.soungeapp.fragment.PostRelated
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.squareup.picasso.Picasso
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-// TODO: Trocar paramentro itemList para o tipo do post
-internal class PostAdapter(private val itemsList: List<PostSimple>, private val context: Context) :
+internal class PostAdapter(private val itemsList: List<PostSimple>,
+                           private val context: Context,
+                           private val fragment: PostRelated) :
     RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     internal inner class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -56,16 +55,30 @@ internal class PostAdapter(private val itemsList: List<PostSimple>, private val 
         holder.hasLiked = item.hasLiked
 
         holder.tvPostOwnerName.text = item.user.name
-        Picasso.get().load(item.user.profilePic).into(holder.ivPostOwnerPicture)
+
+        if (URLUtil.isValidUrl(item.user.profilePic)) {
+            Picasso.get().load(item.user.profilePic).into(holder.ivPostOwnerPicture)
+        } else {
+            Picasso.get().load(R.drawable.ic_blank_profile).into(holder.ivPostOwnerPicture)
+        }
 
         holder.tvPostText.text = item.text
-        Picasso.get().load(item.user.profilePic).into(holder.ivPostMedia)
+
+        if (URLUtil.isValidUrl(item.mediaUrl)) {
+            Picasso.get().load(item.mediaUrl).into(holder.ivPostMedia)
+        }
 
         holder.tvLikeAmount.text = item.likeCount.toString()
         holder.tvCommentAmount.text = item.commentCount.toString()
 
         if (item.hasLiked) {
-            Picasso.get().load(R.drawable.ic_liked).into(holder.ivLikeButton)
+            holder.ivLikeButton.setImageDrawable(
+                ContextCompat.getDrawable(context, R.drawable.ic_liked)
+            )
+        } else {
+            holder.ivLikeButton.setImageDrawable(
+                ContextCompat.getDrawable(context, R.drawable.ic_like)
+            )
         }
 
         setListeners(holder, position)
@@ -76,67 +89,53 @@ internal class PostAdapter(private val itemsList: List<PostSimple>, private val 
 
         holder.ivLikeButton.setOnClickListener {
             if (holder.hasLiked) {
-                val callback = userClient.unlikePost(holder.userId, holder.postId)
+//                val callback = userClient.unlikePost(holder.userId, holder.postId)
+//
+//                callback.enqueue(object : Callback<ResponseBody> {
+//                    override fun onResponse(
+//                        call: Call<ResponseBody>,
+//                        response: Response<ResponseBody>
+//                    ) {
+                fragment.onUnlike(position)
+//                    }
 
-                callback.enqueue(object : Callback<ResponseBody> {
-                    override fun onResponse(
-                        call: Call<ResponseBody>,
-                        response: Response<ResponseBody>
-                    ) {
-                        subOne(holder.tvLikeAmount)
-                        Picasso.get().load(R.drawable.ic_like).into(holder.ivLikeButton)
-
-                        holder.hasLiked = false
-                    }
-
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.error_unliking),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-
-                })
+//                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+//                        Toast.makeText(
+//                            activity.baseContext,
+//                            activity.baseContext.getString(R.string.error_unliking),
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                    }
+//
+//                })
             } else {
-                val callback = userClient.likePost(holder.userId, holder.postId)
-
-                callback.enqueue(object : Callback<ResponseBody> {
-                    override fun onResponse(
-                        call: Call<ResponseBody>,
-                        response: Response<ResponseBody>
-                    ) {
-                        addOne(holder.tvLikeAmount)
-                        Picasso.get().load(R.drawable.ic_liked).into(holder.ivLikeButton)
-
-                        holder.hasLiked = true
-                    }
-
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.error_liking),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                })
+//                val callback = userClient.likePost(holder.userId, holder.postId)
+//
+//                callback.enqueue(object : Callback<ResponseBody> {
+//                    override fun onResponse(
+//                        call: Call<ResponseBody>,
+//                        response: Response<ResponseBody>
+//                    ) {
+                fragment.onLike(position)
+//                    }
+//
+//                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+//                        Toast.makeText(
+//                            activity.baseContext,
+//                            activity.baseContext.getString(R.string.error_liking),
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                    }
+//                })
             }
-
-            notifyItemChanged(position)
         }
-    }
-
-    private fun addOne(textView: TextView) {
-        val current = textView.text.toString().toInt()
-        textView.text = (current + 1).toString()
-    }
-
-    private fun subOne(textView: TextView) {
-        val current = textView.text.toString().toInt()
-        textView.text = (current - 1).toString()
     }
 
     override fun getItemCount(): Int {
         return itemsList.size
+    }
+
+    fun getItem(position: Int): PostSimple {
+        return itemsList[position]
     }
 }

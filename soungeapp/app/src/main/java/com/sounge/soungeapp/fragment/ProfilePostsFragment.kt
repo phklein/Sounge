@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.reflect.TypeToken
@@ -12,14 +13,14 @@ import com.sounge.soungeapp.data.PostSimple
 import com.sounge.soungeapp.databinding.FragmentProfilePostsBinding
 import com.sounge.soungeapp.utils.GsonUtils
 
-class ProfilePostsFragment : Fragment() {
+class ProfilePostsFragment : Fragment(), PostRelated {
     private lateinit var binding: FragmentProfilePostsBinding
     private lateinit var adapter: PostAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val postList = GsonUtils.INSTANCE.fromJson<List<PostSimple>>(
             arguments?.getString("postList"),
             object: TypeToken<List<PostSimple>>() {}.type
@@ -28,11 +29,25 @@ class ProfilePostsFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireActivity())
 
         binding = FragmentProfilePostsBinding.inflate(inflater, container, false)
-        adapter = PostAdapter(postList, requireActivity())
+        adapter = PostAdapter(postList, requireActivity(), this)
 
         binding.rvProfilePosts.layoutManager = layoutManager
         binding.rvProfilePosts.adapter = adapter
 
         return binding.root
+    }
+
+    override fun onLike(position: Int) {
+        val post = adapter.getItem(position)
+        post.likeCount++
+        post.hasLiked = true
+        adapter.notifyItemChanged(position, post)
+    }
+
+    override fun onUnlike(position: Int) {
+        val post = adapter.getItem(position)
+        post.likeCount--
+        post.hasLiked = false
+        adapter.notifyItemChanged(position, post)
     }
 }

@@ -5,24 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.sounge.soungeapp.R
+import com.sounge.soungeapp.data.GroupSimple
+import com.sounge.soungeapp.data.PostSimple
 import com.sounge.soungeapp.data.UserPage
+import com.sounge.soungeapp.data.UserSimple
 import com.sounge.soungeapp.databinding.FragmentProfileBinding
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.GsonUtils
 import com.squareup.picasso.Picasso
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var userClient: UserClient
+    private lateinit var postFragmentBackup: ProfilePostsFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,37 +38,72 @@ class ProfileFragment : Fragment() {
     }
 
     private fun getProfileInfo() {
-        val callback = userClient.getUserPage(6, 2)
+        val postList = ArrayList<PostSimple>()
+        postList.add(PostSimple(
+            1,
+            "Muito obrigado pelo show rapaziada, foi chave \n\n É ISSO!",
+            "https://www.ofuxico.com.br/wp-content/uploads/2021/08/shrek-sessao-da-tarde-1.jpg",
+            20,
+            UserSimple(1, "Danielzinho do Rock", "https://yt3.ggpht.com/FSA44v5dG56FXl25kAuka8ceV5CtJa20l7oNhxpfMWSC_MDfrFWxG4GJFa3iRTWkfXDjfU8wt6Y=s88-c-k-c0x00ffffff-no-rj",
+            true),
+            GroupSimple(1, "TURMA DO ROCK", ""),
+            10,
+            20,
+            true
+        ))
 
-        callback.enqueue(object : Callback<UserPage> {
-            override fun onResponse(call: Call<UserPage>, response: Response<UserPage>) {
-                val body = response.body()
+        postList.add(PostSimple(
+            2,
+            "Acho que vou começar a cantar pagode.......",
+            "",
+            23,
+            UserSimple(1, "Danielzinho do Rock", "",
+                true),
+            GroupSimple(1, "TURMA DO ROCK", ""),
+            18372,
+            20321,
+            false
+        ))
 
-                if (body == null) {
-                    showError()
-                    return
-                }
+        val args = Bundle()
+        args.putString("postList", GsonUtils.INSTANCE.toJson(postList))
 
-                setProfileInfo(body)
+        postFragmentBackup = ProfilePostsFragment()
+        postFragmentBackup.arguments = args
 
-                val args = Bundle()
-                args.putString("postList", GsonUtils.INSTANCE.toJson(body.postList))
+        replaceFragment(postFragmentBackup, DestinationFragment.POSTS)
 
-                val postFragment = ProfilePostsFragment()
-                postFragment.arguments = args
-
-                replaceFragment(postFragment, DestinationFragment.POSTS)
-            }
-
-            override fun onFailure(call: Call<UserPage>, t: Throwable) {
-                showError()
-            }
-
-            fun showError() {
-                Toast.makeText(activity, "Erro ao carregar perfil", Toast.LENGTH_LONG).show()
-                activity?.onBackPressed()
-            }
-        })
+//        val callback = userClient.getUserPage(6, 2)
+//
+//        callback.enqueue(object : Callback<UserPage> {
+//            override fun onResponse(call: Call<UserPage>, response: Response<UserPage>) {
+//                val body = response.body()
+//
+//                if (body == null) {
+//                    showError()
+//                    return
+//                }
+//
+//                setProfileInfo(body)
+//
+//                val args = Bundle()
+//                args.putString("postList", GsonUtils.INSTANCE.toJson(body.postList))
+//
+//                val postFragment = ProfilePostsFragment()
+//                postFragment.arguments = args
+//
+//                replaceFragment(postFragment, DestinationFragment.POSTS)
+//            }
+//
+//            override fun onFailure(call: Call<UserPage>, t: Throwable) {
+//                showError()
+//            }
+//
+//            fun showError() {
+//                Toast.makeText(activity, "Erro ao carregar perfil", Toast.LENGTH_LONG).show()
+//                activity?.onBackPressed()
+//            }
+//        })
     }
 
     private fun setProfileInfo(body: UserPage) {
@@ -80,7 +115,7 @@ class ProfileFragment : Fragment() {
 
     private fun setListeners() {
         binding.tvPostsOption.setOnClickListener {
-            replaceFragment(ProfilePostsFragment(), DestinationFragment.POSTS)
+            replaceFragment(postFragmentBackup, DestinationFragment.POSTS)
         }
 
         binding.tvTalentsOption.setOnClickListener {
@@ -94,10 +129,9 @@ class ProfileFragment : Fragment() {
 
     private fun replaceFragment(fragment: Fragment, destinationFragment: DestinationFragment) {
         val fragmentManager = childFragmentManager
+        val targetFragment = fragmentManager.findFragmentByTag(fragment.javaClass.name)
 
-        val currentFragment = fragmentManager.findFragmentByTag(fragment.javaClass.name)
-
-        if (currentFragment != null && currentFragment.isVisible) {
+        if (targetFragment != null && targetFragment.isVisible) {
             return
         }
 
