@@ -1,6 +1,7 @@
 package com.sounge.soungeapp.adapter
 
 import android.content.Context
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.sounge.soungeapp.data.PostSimple
 import com.sounge.soungeapp.fragment.PostRelated
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
+import com.sounge.soungeapp.utils.ImageUtils
 import com.squareup.picasso.Picasso
 
 internal class PostAdapter(private val itemsList: List<PostSimple>,
@@ -27,8 +29,9 @@ internal class PostAdapter(private val itemsList: List<PostSimple>,
         var userId: Long = 0
         var hasLiked: Boolean = false
 
-        val tvPostOwnerName: TextView = view.findViewById(R.id.tv_post_owner_name)
         val ivPostOwnerPicture: ImageView = view.findViewById(R.id.iv_post_owner_picture)
+        val tvPostOwnerName: TextView = view.findViewById(R.id.tv_post_owner_name)
+        val tvHoursPast: TextView = view.findViewById(R.id.tv_hours_past)
 
         val tvPostText: TextView = view.findViewById(R.id.tv_post_text)
         val ivPostMedia: ImageView = view.findViewById(R.id.iv_post_media)
@@ -55,6 +58,7 @@ internal class PostAdapter(private val itemsList: List<PostSimple>,
         holder.hasLiked = item.hasLiked
 
         holder.tvPostOwnerName.text = item.user.name
+        holder.tvHoursPast.text = formatHoursPast(item.hoursPast)
 
         if (URLUtil.isValidUrl(item.user.profilePic)) {
             Picasso.get().load(item.user.profilePic).into(holder.ivPostOwnerPicture)
@@ -62,10 +66,16 @@ internal class PostAdapter(private val itemsList: List<PostSimple>,
             Picasso.get().load(R.drawable.ic_blank_profile).into(holder.ivPostOwnerPicture)
         }
 
-        holder.tvPostText.text = item.text
+        if (item.text.isNotEmpty()) {
+            holder.tvPostText.text = item.text
+        } else {
+            holder.tvPostText.visibility = View.GONE
+        }
 
         if (URLUtil.isValidUrl(item.mediaUrl)) {
             Picasso.get().load(item.mediaUrl).into(holder.ivPostMedia)
+        } else {
+            holder.ivPostMedia.visibility = View.GONE
         }
 
         holder.tvLikeAmount.text = item.likeCount.toString()
@@ -84,8 +94,40 @@ internal class PostAdapter(private val itemsList: List<PostSimple>,
         setListeners(holder, position)
     }
 
+    private fun formatHoursPast(hoursPast: Long) : String {
+        if (hoursPast > 8760) {
+            val years = Math.floorDiv(hoursPast, 8760)
+
+            return "%d%s".format(years, "a")
+        }
+
+        if (hoursPast > 730) {
+            val months = Math.floorDiv(hoursPast, 730)
+
+            return "%d%s".format(months, "me")
+        }
+
+        if (hoursPast > 168) {
+            val weeks = Math.floorDiv(hoursPast, 168)
+
+            return "%d%s".format(weeks, "s")
+        }
+
+        if (hoursPast > 24) {
+            val days = Math.floorDiv(hoursPast, 24)
+
+            return "%d%s".format(days, "d")
+        }
+
+        return "%d%s".format(hoursPast, "h")
+    }
+
     private fun setListeners(holder: PostViewHolder, position: Int) {
         val userClient = Retrofit.getInstance().create(UserClient::class.java)
+
+        holder.ivPostMedia.setOnClickListener {
+            ImageUtils.popupImage(holder.ivPostMedia.drawable, holder.itemView)
+        }
 
         holder.ivLikeButton.setOnClickListener {
             if (holder.hasLiked) {

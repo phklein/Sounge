@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/iv_profile_banner"
@@ -19,8 +19,8 @@
             android:contentDescription="@string/banner_content_description"
             android:scaleType="centerCrop"
             android:src="@drawable/example_banner_picture"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -32,16 +32,16 @@
             android:src="@drawable/example_profile_picture"
             app:civ_border_color="@color/dark_gray"
             app:civ_border_width="2dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_profile_info"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_profile_banner">
 
             <Button
@@ -54,7 +54,7 @@
                 android:text="@string/edit_button"
                 android:textColor="@color/main_purple"
                 android:textSize="12sp"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -63,12 +63,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
                 android:padding="5dp"
-                android:text="Matheus Correia da Silva"
+                android:text="Danielzinho do Rock"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -77,12 +77,12 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:padding="5dp"
-                android:text="Apaixonado por ROCK!!!"
+                android:text="Moro com minha mãe mas sou gangsta"
                 android:textAlignment="center"
                 android:textColor="@color/dark_white"
                 android:textSize="16sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_profile_name" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -90,8 +90,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/ll_posts_option"
@@ -116,6 +116,7 @@
                         android:layout_width="50dp"
                         android:layout_height="2dp"
                         android:layout_marginTop="3dp"
+
                         android:background="@color/light_gray" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -183,8 +184,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cl_profile_info" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

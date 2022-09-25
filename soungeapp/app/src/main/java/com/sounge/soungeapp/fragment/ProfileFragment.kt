@@ -9,20 +9,33 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.sounge.soungeapp.R
-import com.sounge.soungeapp.data.GroupSimple
-import com.sounge.soungeapp.data.PostSimple
-import com.sounge.soungeapp.data.UserPage
-import com.sounge.soungeapp.data.UserSimple
+import com.sounge.soungeapp.data.*
 import com.sounge.soungeapp.databinding.FragmentProfileBinding
+import com.sounge.soungeapp.enums.RoleName
+import com.sounge.soungeapp.fragment.ProfileFragment.Constants.BAND_INFO_KEY
+import com.sounge.soungeapp.fragment.ProfileFragment.Constants.IS_PROFILE_OWNER_KEY
+import com.sounge.soungeapp.fragment.ProfileFragment.Constants.POST_LIST_KEY
+import com.sounge.soungeapp.fragment.ProfileFragment.Constants.TALENT_LIST_KEY
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.GsonUtils
+import com.sounge.soungeapp.utils.ImageUtils
 import com.squareup.picasso.Picasso
 
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var userClient: UserClient
-    private lateinit var postFragmentBackup: ProfilePostsFragment
+
+    private val postFragment: ProfilePostsFragment = ProfilePostsFragment()
+    private val talentsFragment: ProfileTalentsFragment = ProfileTalentsFragment()
+    private val bandFragment: ProfileBandFragment = ProfileBandFragment()
+
+    object Constants {
+        const val POST_LIST_KEY = "postList"
+        const val TALENT_LIST_KEY = "talentList"
+        const val BAND_INFO_KEY = "bandInfo"
+        const val IS_PROFILE_OWNER_KEY = "isProfileOwner"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,40 +51,20 @@ class ProfileFragment : Fragment() {
     }
 
     private fun getProfileInfo() {
-        val postList = ArrayList<PostSimple>()
-        postList.add(PostSimple(
-            1,
-            "Muito obrigado pelo show rapaziada, foi chave \n\n É ISSO!",
-            "https://www.ofuxico.com.br/wp-content/uploads/2021/08/shrek-sessao-da-tarde-1.jpg",
-            20,
-            UserSimple(1, "Danielzinho do Rock", "https://yt3.ggpht.com/FSA44v5dG56FXl25kAuka8ceV5CtJa20l7oNhxpfMWSC_MDfrFWxG4GJFa3iRTWkfXDjfU8wt6Y=s88-c-k-c0x00ffffff-no-rj",
-            true),
-            GroupSimple(1, "TURMA DO ROCK", ""),
-            10,
-            20,
-            true
-        ))
+        val postArgs = Bundle()
+        postArgs.putString(POST_LIST_KEY, GsonUtils.INSTANCE.toJson(mockPosts()))
+        postFragment.arguments = postArgs
 
-        postList.add(PostSimple(
-            2,
-            "Acho que vou começar a cantar pagode.......",
-            "",
-            23,
-            UserSimple(1, "Danielzinho do Rock", "",
-                true),
-            GroupSimple(1, "TURMA DO ROCK", ""),
-            18372,
-            20321,
-            false
-        ))
+        val talentArgs = Bundle()
+        talentArgs.putString(TALENT_LIST_KEY, GsonUtils.INSTANCE.toJson(mockTalents()))
+        talentsFragment.arguments = talentArgs
 
-        val args = Bundle()
-        args.putString("postList", GsonUtils.INSTANCE.toJson(postList))
+        val bandArgs = Bundle()
+        bandArgs.putString(BAND_INFO_KEY, GsonUtils.INSTANCE.toJson(mockBand()))
+        bandArgs.putBoolean(IS_PROFILE_OWNER_KEY, true)
+        bandFragment.arguments = bandArgs
 
-        postFragmentBackup = ProfilePostsFragment()
-        postFragmentBackup.arguments = args
-
-        replaceFragment(postFragmentBackup, DestinationFragment.POSTS)
+        replaceFragment(postFragment, DestinationFragment.POSTS)
 
 //        val callback = userClient.getUserPage(6, 2)
 //
@@ -106,6 +99,133 @@ class ProfileFragment : Fragment() {
 //        })
     }
 
+    private fun mockPosts(): ArrayList<PostSimple> {
+        val postList = ArrayList<PostSimple>()
+        postList.add(
+            PostSimple(
+                1,
+                "Muito obrigado pelo show rapaziada, foi chave \n\n É ISSO!",
+                "https://www.ofuxico.com.br/wp-content/uploads/2021/08/shrek-sessao-da-tarde-1.jpg",
+                20,
+                UserSimple(
+                    1,
+                    "Danielzinho do Rock",
+                    "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
+                    true
+                ),
+                GroupSimple(1, "TURMA DO ROCK", ""),
+                10,
+                20,
+                true
+            )
+        )
+
+        postList.add(
+            PostSimple(
+                2,
+                "Acho que vou começar a cantar pagode.......",
+                "",
+                78,
+                UserSimple(
+                    1,
+                    "Danielzinho do Rock",
+                    "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
+                    true
+                ),
+                GroupSimple(1, "TURMA DO ROCK", ""),
+                12,
+                1,
+                false
+            )
+        )
+
+        postList.add(
+            PostSimple(
+                3,
+                "",
+                "https://wallpaperaccess.com/full/1213672.jpg",
+                563,
+                UserSimple(
+                    1,
+                    "Danielzinho do Rock",
+                    "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
+                    true
+                ),
+                GroupSimple(1, "TURMA DO ROCK", ""),
+                923,
+                23,
+                false
+            )
+        )
+
+        postList.add(
+            PostSimple(
+                4,
+                "Hoje tomei o DIABO VERDE do TOGURO vou DESTRUIR TUDO na ACADEMIA \n HAHAHAHAHAHAHAHAHAHAHAHHAHAHAHAHAHAAHAHAHAH",
+                "https://c.tenor.com/ZRHlOrai4F4AAAAM/toguro-lan%C3%A7ando-a-braba-toguro.gif",
+                1500,
+                UserSimple(
+                    1,
+                    "Danielzinho do Rock",
+                    "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
+                    true
+                ),
+                GroupSimple(1, "TURMA DO ROCK", ""),
+                239,
+                342,
+                false
+            )
+        )
+
+        postList.add(
+            PostSimple(
+                5,
+                "EU NÃO QUERO SABER DE MAIS NADAAAAAAAAA",
+                "",
+                29000,
+                UserSimple(
+                    1,
+                    "Danielzinho do Rock",
+                    "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
+                    true
+                ),
+                GroupSimple(1, "TURMA DO ROCK", ""),
+                12,
+                32,
+                false
+            )
+        )
+        return postList
+    }
+
+    private fun mockTalents(): ArrayList<RoleSimple> {
+        val talentList = ArrayList<RoleSimple>()
+
+        talentList.add(RoleSimple(1, RoleName.VOCALIST))
+        talentList.add(RoleSimple(2, RoleName.GUITARIST))
+        talentList.add(RoleSimple(3, RoleName.BASSPLAYER))
+        talentList.add(RoleSimple(4, RoleName.DJ))
+        talentList.add(RoleSimple(5, RoleName.ACCORDIONIST))
+        talentList.add(RoleSimple(6, RoleName.CORNETPLAYER))
+        talentList.add(RoleSimple(7, RoleName.DRUMMER))
+        talentList.add(RoleSimple(8, RoleName.EKEYBOARDPLAYER))
+        talentList.add(RoleSimple(9, RoleName.EGUITARIST))
+        talentList.add(RoleSimple(10, RoleName.FLUTIST))
+        talentList.add(RoleSimple(11, RoleName.PIANIST))
+        talentList.add(RoleSimple(12, RoleName.SAXOPHONIST))
+        talentList.add(RoleSimple(13, RoleName.OTHERS))
+
+        return talentList
+    }
+
+    private fun mockBand(): GroupSimple {
+        return GroupSimple(
+            1,
+            "Tropa do Rock",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSm2zSDYY03ED0I4kXbHKyYhCmHbFtfU1_FepUo3OBRomjb1rw_Jk1WglkwlygQCxV8JqA&usqp=CAU"
+        )
+    }
+
     private fun setProfileInfo(body: UserPage) {
         Picasso.get().load(body.banner).into(binding.ivProfileBanner)
         Picasso.get().load(body.profilePic).into(binding.ivProfilePicture)
@@ -114,16 +234,24 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setListeners() {
+        binding.ivProfileBanner.setOnClickListener {
+            ImageUtils.popupImage(binding.ivProfileBanner.drawable, this.requireView())
+        }
+
+        binding.ivProfilePicture.setOnClickListener {
+            ImageUtils.popupImage(binding.ivProfilePicture.drawable, this.requireView())
+        }
+
         binding.tvPostsOption.setOnClickListener {
-            replaceFragment(postFragmentBackup, DestinationFragment.POSTS)
+            replaceFragment(postFragment, DestinationFragment.POSTS)
         }
 
         binding.tvTalentsOption.setOnClickListener {
-            replaceFragment(ProfileTalentsFragment(), DestinationFragment.TALENTS)
+            replaceFragment(talentsFragment, DestinationFragment.TALENTS)
         }
 
         binding.tvBandOption.setOnClickListener {
-            replaceFragment(ProfileBandFragment(), DestinationFragment.BAND)
+            replaceFragment(bandFragment, DestinationFragment.BAND)
         }
     }
 

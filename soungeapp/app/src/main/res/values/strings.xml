@@ -15,4 +15,5 @@
     <string name="not_in_band">Nenhuma banda para mostrar</string>
     <string name="error_unliking">Erro ao retirar reação</string>
     <string name="error_liking">Erro ao reagir ao post</string>
+    <string name="syntonize">Sintonizar</string>
 </resources>

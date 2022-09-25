@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fbl_talent_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/dark_gray"
-    tools:context=".fragment.ProfileTalentsFragment">
+    tools:context=".fragment.ProfileTalentsFragment"
+    app:flexWrap="wrap">
 
-    <ScrollView
-        android:id="@+id/sv_profile_talents"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </ScrollView>
-
-</FrameLayout>
+</com.google.android.flexbox.FlexboxLayout>
