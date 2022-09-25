@@ -7,6 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/dark_gray"
     tools:context=".fragment.ProfileTalentsFragment"
+    app:justifyContent="center"
     app:flexWrap="wrap">
 
 </com.google.android.flexbox.FlexboxLayout>

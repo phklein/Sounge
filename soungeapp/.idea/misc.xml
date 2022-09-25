@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_black_gray_round_fill.xml" value="0.15" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_card_talent.xml" value="0.1315" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_gray_outline_button.xml" value="0.2" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_gray_round_fill.xml" value="0.15" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_gray_round_outline.xml" value="0.15" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_profile_info.xml" value="0.1855" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_purple_outline_button.xml" value="0.169" />
@@ -51,6 +53,7 @@
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/font/roboto_main.xml" value="0.22135416666666666" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout-v28/fragment_profile.xml" value="0.1921875" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout-v31/fragment_profile.xml" value="0.19114583333333332" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/activity_comment.xml" value="0.1921875" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/activity_profile.xml" value="0.14719202898550723" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/card_talent.xml" value="0.5" />
@@ -60,8 +63,12 @@
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/fragment_profile_posts.xml" value="0.25" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/fragment_profile_talents.xml" value="0.21" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/popup_fullscreen_media.xml" value="0.18" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/row_comment.xml" value="0.25" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/row_post.xml" value="0.33" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/menu/comment_context_menu.xml" value="0.1921875" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/menu/image_context_menu.xml" value="0.1" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/menu/main_bottom_nav.xml" value="0.19114583333333332" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/menu/post_context_menu.xml" value="0.1921875" />
       </map>
     </option>
   </component>

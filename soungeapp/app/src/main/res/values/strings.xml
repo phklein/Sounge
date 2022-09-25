@@ -16,4 +16,8 @@
     <string name="error_unliking">Erro ao retirar reação</string>
     <string name="error_liking">Erro ao reagir ao post</string>
     <string name="syntonize">Sintonizar</string>
+    <string name="delete">Deletar</string>
+    <string name="edit">Editar</string>
+    <string name="save">Salvar</string>
+    <string name="permission_error">Não foi possível continuar, permissão necessária</string>
 </resources>

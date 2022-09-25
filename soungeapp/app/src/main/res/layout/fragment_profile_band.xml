@@ -12,8 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
-        android:background="@drawable/bg_purple_round_outline"
+        android:background="@drawable/bg_black_gray_round_fill"
         android:padding="24dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -22,6 +21,7 @@
             android:layout_height="64dp"
             android:contentDescription="@string/profile_picture_description"
             app:civ_border_color="@color/dark_gray"
+            android:src="@drawable/example_profile_picture"
             app:civ_border_width="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -34,6 +34,7 @@
             android:layout_marginStart="10dp"
             android:padding="2.5dp"
             android:textAlignment="textStart"
+            android:text="TROPA DO ROCK"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/iv_profile_band_picture"
@@ -48,6 +49,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
+        android:visibility="gone"
         android:layout_gravity="center">
 
         <TextView
@@ -63,7 +65,7 @@
             android:id="@+id/bt_go_to_match"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_gray_round_outline"
+            android:background="@drawable/bg_purple_round_fill"
             android:layout_marginTop="16dp"
             android:visibility="gone"
             android:text="@string/syntonize" />

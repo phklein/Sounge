@@ -34,6 +34,8 @@ class ProfilePostsFragment : Fragment(), PostRelated {
         binding.rvProfilePosts.layoutManager = layoutManager
         binding.rvProfilePosts.adapter = adapter
 
+        registerForContextMenu(binding.rvProfilePosts);
+
         return binding.root
     }
 

@@ -114,8 +114,8 @@ class ProfileFragment : Fragment() {
                     true
                 ),
                 GroupSimple(1, "TURMA DO ROCK", ""),
-                10,
-                20,
+                2_590_000,
+                39_000,
                 true
             )
         )
@@ -133,8 +133,8 @@ class ProfileFragment : Fragment() {
                     true
                 ),
                 GroupSimple(1, "TURMA DO ROCK", ""),
-                12,
-                1,
+                120_000,
+                1_908_000,
                 false
             )
         )
@@ -152,8 +152,8 @@ class ProfileFragment : Fragment() {
                     true
                 ),
                 GroupSimple(1, "TURMA DO ROCK", ""),
-                923,
-                23,
+                1_000,
+                1_000,
                 false
             )
         )
@@ -190,8 +190,8 @@ class ProfileFragment : Fragment() {
                     true
                 ),
                 GroupSimple(1, "TURMA DO ROCK", ""),
-                12,
-                32,
+                0,
+                0,
                 false
             )
         )
@@ -235,11 +235,13 @@ class ProfileFragment : Fragment() {
 
     private fun setListeners() {
         binding.ivProfileBanner.setOnClickListener {
-            ImageUtils.popupImage(binding.ivProfileBanner.drawable, this.requireView())
+            ImageUtils.popupImage(binding.ivProfileBanner.drawable,
+                this.requireView())
         }
 
         binding.ivProfilePicture.setOnClickListener {
-            ImageUtils.popupImage(binding.ivProfilePicture.drawable, this.requireView())
+            ImageUtils.popupImage(binding.ivProfilePicture.drawable,
+                this.requireView())
         }
 
         binding.tvPostsOption.setOnClickListener {

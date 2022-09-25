@@ -46,7 +46,7 @@ class ProfileTalentsFragment : Fragment() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
 
-            layoutParams.setMargins(16, 16, 16, 16)
+            layoutParams.setMargins(24, 24, 24, 24)
             talentCard.layoutParams = layoutParams
 
             binding.fblTalentList.addView(talentCard)

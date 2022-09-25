@@ -1,11 +1,15 @@
 package com.sounge.soungeapp.actitivy
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.sounge.soungeapp.R
-import com.sounge.soungeapp.fragment.ProfileFragment
 import com.sounge.soungeapp.databinding.ActivityMainBinding
+import com.sounge.soungeapp.fragment.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -18,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         replaceFragment(ProfileFragment())
 
         // TODO: Substituir fragments conforme for criando
-        binding.bnvMain.setOnNavigationItemSelectedListener {
+        binding.bnvMain.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.mi_home -> replaceFragment(ProfileFragment())
                 R.id.mi_search -> replaceFragment(ProfileFragment())

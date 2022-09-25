@@ -1,7 +1,7 @@
 package com.sounge.soungeapp.adapter
 
 import android.content.Context
-import android.opengl.Visibility
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +9,17 @@ import android.webkit.URLUtil
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
+import com.sounge.soungeapp.actitivy.CommentActivity
 import com.sounge.soungeapp.data.PostSimple
 import com.sounge.soungeapp.fragment.PostRelated
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
+import com.sounge.soungeapp.utils.FormatUtils
 import com.sounge.soungeapp.utils.ImageUtils
 import com.squareup.picasso.Picasso
 
@@ -42,6 +46,31 @@ internal class PostAdapter(private val itemsList: List<PostSimple>,
         val ivLikeButton: ImageView = view.findViewById(R.id.iv_like_button)
         val ivCommentButton: ImageView = view.findViewById(R.id.iv_comment_button)
         val ivShareButton: ImageView = view.findViewById(R.id.iv_share_button)
+
+        init {
+            // TODO: Setar listener se for dono do post
+            view.setOnLongClickListener {
+
+                val popupMenu = PopupMenu(view.context, it)
+                popupMenu.inflate(R.menu.post_context_menu)
+
+                popupMenu.setOnMenuItemClickListener {item->
+                    when(item.itemId) {
+                        R.id.mi_edit_post -> {
+                            // TODO: Abrir tela de edição de post
+                        }
+
+                        R.id.mi_delete_post -> {
+                            // TODO: Excluir post
+                        }
+                    }
+                    true
+                }
+
+                popupMenu.show()
+                true
+            }
+        }
     }
 
     @NonNull
@@ -58,7 +87,7 @@ internal class PostAdapter(private val itemsList: List<PostSimple>,
         holder.hasLiked = item.hasLiked
 
         holder.tvPostOwnerName.text = item.user.name
-        holder.tvHoursPast.text = formatHoursPast(item.hoursPast)
+        holder.tvHoursPast.text = FormatUtils.formatHoursPast(item.hoursPast)
 
         if (URLUtil.isValidUrl(item.user.profilePic)) {
             Picasso.get().load(item.user.profilePic).into(holder.ivPostOwnerPicture)
@@ -78,8 +107,8 @@ internal class PostAdapter(private val itemsList: List<PostSimple>,
             holder.ivPostMedia.visibility = View.GONE
         }
 
-        holder.tvLikeAmount.text = item.likeCount.toString()
-        holder.tvCommentAmount.text = item.commentCount.toString()
+        holder.tvLikeAmount.text = FormatUtils.formatLikeAndCommentCount(item.likeCount)
+        holder.tvCommentAmount.text = FormatUtils.formatLikeAndCommentCount(item.commentCount)
 
         if (item.hasLiked) {
             holder.ivLikeButton.setImageDrawable(
@@ -94,82 +123,25 @@ internal class PostAdapter(private val itemsList: List<PostSimple>,
         setListeners(holder, position)
     }
 
-    private fun formatHoursPast(hoursPast: Long) : String {
-        if (hoursPast > 8760) {
-            val years = Math.floorDiv(hoursPast, 8760)
-
-            return "%d%s".format(years, "a")
-        }
-
-        if (hoursPast > 730) {
-            val months = Math.floorDiv(hoursPast, 730)
-
-            return "%d%s".format(months, "me")
-        }
-
-        if (hoursPast > 168) {
-            val weeks = Math.floorDiv(hoursPast, 168)
-
-            return "%d%s".format(weeks, "s")
-        }
-
-        if (hoursPast > 24) {
-            val days = Math.floorDiv(hoursPast, 24)
-
-            return "%d%s".format(days, "d")
-        }
-
-        return "%d%s".format(hoursPast, "h")
-    }
-
     private fun setListeners(holder: PostViewHolder, position: Int) {
         val userClient = Retrofit.getInstance().create(UserClient::class.java)
 
         holder.ivPostMedia.setOnClickListener {
-            ImageUtils.popupImage(holder.ivPostMedia.drawable, holder.itemView)
+            ImageUtils.popupImage(holder.ivPostMedia.drawable,
+                holder.itemView)
         }
 
         holder.ivLikeButton.setOnClickListener {
             if (holder.hasLiked) {
-//                val callback = userClient.unlikePost(holder.userId, holder.postId)
-//
-//                callback.enqueue(object : Callback<ResponseBody> {
-//                    override fun onResponse(
-//                        call: Call<ResponseBody>,
-//                        response: Response<ResponseBody>
-//                    ) {
                 fragment.onUnlike(position)
-//                    }
-
-//                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-//                        Toast.makeText(
-//                            activity.baseContext,
-//                            activity.baseContext.getString(R.string.error_unliking),
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                    }
-//
-//                })
             } else {
-//                val callback = userClient.likePost(holder.userId, holder.postId)
-//
-//                callback.enqueue(object : Callback<ResponseBody> {
-//                    override fun onResponse(
-//                        call: Call<ResponseBody>,
-//                        response: Response<ResponseBody>
-//                    ) {
                 fragment.onLike(position)
-//                    }
-//
-//                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-//                        Toast.makeText(
-//                            activity.baseContext,
-//                            activity.baseContext.getString(R.string.error_liking),
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                    }
-//                })
             }
+        }
+
+        holder.ivCommentButton.setOnClickListener {
+            val intent = Intent(context, CommentActivity::class.java)
+            startActivity(context, intent, null)
         }
     }
 
