@@ -5,28 +5,28 @@ object FormatUtils {
         if (hoursPast > 8760) {
             val years = Math.floorDiv(hoursPast, 8760)
 
-            return "%d%s".format(years, "a")
+            return "%d %s".format(years, "a")
         }
 
         if (hoursPast > 730) {
             val months = Math.floorDiv(hoursPast, 730)
 
-            return "%d%s".format(months, "me")
+            return "%d %s".format(months, "me")
         }
 
         if (hoursPast > 168) {
             val weeks = Math.floorDiv(hoursPast, 168)
 
-            return "%d%s".format(weeks, "s")
+            return "%d %s".format(weeks, "sem")
         }
 
         if (hoursPast > 24) {
             val days = Math.floorDiv(hoursPast, 24)
 
-            return "%d%s".format(days, "d")
+            return "%d %s".format(days, "d")
         }
 
-        return "%d%s".format(hoursPast, "h")
+        return "%d %s".format(hoursPast, "h")
     }
 
     fun formatLikeAndCommentCount(count: Int): String {

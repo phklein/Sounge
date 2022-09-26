@@ -231,6 +231,7 @@ class ProfileFragment : Fragment(), PostEventListener {
         binding.tvProfileDescription.text = userPage.description
 
         showTalentList()
+        showBandInfo()
     }
 
     private fun showTalentList() {
@@ -240,20 +241,33 @@ class ProfileFragment : Fragment(), PostEventListener {
                 .setImageResource(it.roleName.icon)
             talentCard.findViewById<TextView>(R.id.tv_talent_name).text = it.roleName.s
 
-            binding.vTalentList.addView(talentCard)
+            binding.llTalentList.addView(talentCard)
 
-            if (userPage.roles.size == i + 1) {
+            if (userPage.roles.size != i + 1) {
                 val space = Space(context)
 
                 val layoutParams = LinearLayout.LayoutParams(
-                    8,
+                    16,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
 
                 space.layoutParams = layoutParams
 
-                binding.vTalentList.addView(space)
+                binding.llTalentList.addView(space)
             }
+        }
+    }
+
+    private fun showBandInfo() {
+        if (userPage.group != null && userPage.group.id != null) {
+
+            if (URLUtil.isValidUrl(userPage.group.profilePic)) {
+                Picasso.get().load(userPage.group.profilePic).into(binding.ivBandProfilePicture)
+            } else {
+                Picasso.get().load(R.drawable.ic_blank_profile).into(binding.ivBandProfilePicture)
+            }
+
+            binding.tvBandProfileName.text = userPage.group.name
         }
     }
 

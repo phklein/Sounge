@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -27,7 +27,6 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="100dp"
-            android:contentDescription="@string/profile_picture_description"
             app:civ_border_color="@color/dark_gray"
             app:civ_border_width="2dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,14 +39,15 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_profile_banner">
+            app:layout_constraintTop_toBottomOf="@id/iv_profile_banner"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
             <Button
                 android:id="@+id/bt_edit_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
                 android:background="@android:color/transparent"
                 android:text="@string/edit_button"
                 android:textColor="@color/main_purple"
@@ -60,10 +60,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
-                android:padding="5dp"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -73,10 +73,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:padding="5dp"
                 android:textAlignment="center"
                 android:textColor="@color/dark_white"
                 android:textSize="18sp"
+                android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_profile_name" />
@@ -84,14 +84,14 @@
             <HorizontalScrollView
                 android:id="@+id/sv_talent_list"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_profile_description">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/v_talent_list"
+                    android:id="@+id/ll_talent_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:listitem="@layout/card_talent"
@@ -99,21 +99,63 @@
                     android:layout_gravity="center_vertical" />
 
             </HorizontalScrollView>
+            
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/sv_talent_list"
+                app:layout_constraintStart_toStartOf="parent"
+                android:padding="24dp"
+                app:layout_constraintEnd_toEndOf="parent" >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_band_profile_picture"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    app:civ_border_color="@color/dark_gray"
+                    app:civ_border_width="2dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_band_profile_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:padding="5dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toEndOf="@id/iv_band_profile_picture"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:alpha="0.3"
+            app:layout_constraintTop_toBottomOf="@id/cl_profile_info"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/medium_gray"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_profile_posts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
             android:nestedScrollingEnabled="false"
-            android:padding="8dp"
+            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cl_profile_info"
-            tools:listitem="@layout/row_post" />
+            tools:listitem="@layout/row_post"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

@@ -6,6 +6,7 @@ import android.view.inputmethod.InputMethodManager
 import android.webkit.URLUtil
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Space
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.squareup.picasso.Picasso
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProfileBinding
+    private lateinit var userPage: UserPage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,12 +27,12 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupActionBar()
 
-        val userPage = GsonUtils.INSTANCE.fromJson(
+        userPage = GsonUtils.INSTANCE.fromJson(
             intent.getStringExtra(USER_PAGE_KEY),
             UserPage::class.java
         )
 
-        setCurrentInfo(userPage)
+        setCurrentInfo()
     }
 
     private fun setupActionBar() {
@@ -45,11 +47,11 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.tv_action_save).setOnClickListener {
-
+            // TODO: Salvar alterações no banco
         }
     }
 
-    private fun setCurrentInfo(userPage: UserPage) {
+    private fun setCurrentInfo() {
         Picasso.get().load(userPage.banner).into(binding.ivEditProfileBanner)
 
         if (URLUtil.isValidUrl(userPage.profilePic)) {
@@ -60,5 +62,31 @@ class EditProfileActivity : AppCompatActivity() {
 
         binding.etProfileName.setText(userPage.name)
         binding.etProfileDescription.setText(userPage.description)
+
+        showTalentList()
+    }
+
+    private fun showTalentList() {
+        userPage.roles.forEachIndexed { i, it ->
+            val talentCard = layoutInflater.inflate(R.layout.card_talent, null)
+            talentCard.findViewById<ImageView>(R.id.iv_talent_icon)
+                .setImageResource(it.roleName.icon)
+            talentCard.findViewById<TextView>(R.id.tv_talent_name).text = it.roleName.s
+
+            binding.llEditTalentList.addView(talentCard)
+
+            if (userPage.roles.size != i + 1) {
+                val space = Space(this)
+
+                val layoutParams = LinearLayout.LayoutParams(
+                    16,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+                space.layoutParams = layoutParams
+
+                binding.llEditTalentList.addView(space)
+            }
+        }
     }
 }
