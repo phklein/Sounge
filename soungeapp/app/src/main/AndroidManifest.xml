@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Soungeapp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".actitivy.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".actitivy.CommentActivity"
             android:exported="false" />
         <activity

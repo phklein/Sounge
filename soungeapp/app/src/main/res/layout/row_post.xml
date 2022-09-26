@@ -25,7 +25,7 @@
         android:padding="5dp"
         android:layout_marginStart="10dp"
         android:textAlignment="textStart"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
@@ -38,7 +38,7 @@
         android:padding="5dp"
         android:layout_marginStart="10dp"
         android:textAlignment="textStart"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:fontFamily="sans-serif"
         android:textColor="@color/dark_white" />
 
@@ -53,7 +53,7 @@
         android:padding="5dp"
         android:layout_marginStart="10dp"
         android:textAlignment="textStart"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:fontFamily="sans-serif"
         android:textColor="@color/dark_white" />
 
@@ -98,7 +98,7 @@
                 app:layout_constraintStart_toEndOf="@id/iv_post_owner_picture"
                 android:padding="5dp"
                 android:textAlignment="textStart"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/dark_white"
                 android:textStyle="bold" />
@@ -127,7 +127,7 @@
                 app:layout_constraintStart_toEndOf="@id/iv_post_owner_picture"
                 android:padding="5dp"
                 android:textAlignment="textStart"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/dark_white"
                 android:textStyle="bold" />

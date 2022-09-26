@@ -1,40 +1,43 @@
 package com.sounge.soungeapp.fragment
 
+import android.app.ActionBar
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Space
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sounge.soungeapp.R
+import com.sounge.soungeapp.actitivy.EditProfileActivity
+import com.sounge.soungeapp.adapter.PostAdapter
 import com.sounge.soungeapp.data.*
 import com.sounge.soungeapp.databinding.FragmentProfileBinding
 import com.sounge.soungeapp.enums.RoleName
-import com.sounge.soungeapp.fragment.ProfileFragment.Constants.BAND_INFO_KEY
-import com.sounge.soungeapp.fragment.ProfileFragment.Constants.IS_PROFILE_OWNER_KEY
-import com.sounge.soungeapp.fragment.ProfileFragment.Constants.POST_LIST_KEY
-import com.sounge.soungeapp.fragment.ProfileFragment.Constants.TALENT_LIST_KEY
+import com.sounge.soungeapp.enums.SkillLevel
+import com.sounge.soungeapp.fragment.ProfileFragment.Constants.USER_PAGE_KEY
+import com.sounge.soungeapp.listeners.PostEventListener
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.GsonUtils
 import com.sounge.soungeapp.utils.ImageUtils
 import com.squareup.picasso.Picasso
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), PostEventListener {
     private lateinit var binding: FragmentProfileBinding
+    private lateinit var userPage: UserPage
+
+    private lateinit var adapter: PostAdapter
+
     private lateinit var userClient: UserClient
 
-    private val postFragment: ProfilePostsFragment = ProfilePostsFragment()
-    private val talentsFragment: ProfileTalentsFragment = ProfileTalentsFragment()
-    private val bandFragment: ProfileBandFragment = ProfileBandFragment()
-
     object Constants {
-        const val POST_LIST_KEY = "postList"
-        const val TALENT_LIST_KEY = "talentList"
-        const val BAND_INFO_KEY = "bandInfo"
-        const val IS_PROFILE_OWNER_KEY = "isProfileOwner"
+        const val USER_PAGE_KEY = "userPage"
     }
 
     override fun onCreateView(
@@ -44,59 +47,37 @@ class ProfileFragment : Fragment() {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         userClient = Retrofit.getInstance().create(UserClient::class.java)
 
-        setListeners()
         getProfileInfo()
+
+        setListeners()
 
         return binding.root
     }
 
     private fun getProfileInfo() {
-        val postArgs = Bundle()
-        postArgs.putString(POST_LIST_KEY, GsonUtils.INSTANCE.toJson(mockPosts()))
-        postFragment.arguments = postArgs
+        userPage = mockProfile()
 
-        val talentArgs = Bundle()
-        talentArgs.putString(TALENT_LIST_KEY, GsonUtils.INSTANCE.toJson(mockTalents()))
-        talentsFragment.arguments = talentArgs
+        setupRecyclerView()
+        setProfileInfo()
+    }
 
-        val bandArgs = Bundle()
-        bandArgs.putString(BAND_INFO_KEY, GsonUtils.INSTANCE.toJson(mockBand()))
-        bandArgs.putBoolean(IS_PROFILE_OWNER_KEY, true)
-        bandFragment.arguments = bandArgs
-
-        replaceFragment(postFragment, DestinationFragment.POSTS)
-
-//        val callback = userClient.getUserPage(6, 2)
-//
-//        callback.enqueue(object : Callback<UserPage> {
-//            override fun onResponse(call: Call<UserPage>, response: Response<UserPage>) {
-//                val body = response.body()
-//
-//                if (body == null) {
-//                    showError()
-//                    return
-//                }
-//
-//                setProfileInfo(body)
-//
-//                val args = Bundle()
-//                args.putString("postList", GsonUtils.INSTANCE.toJson(body.postList))
-//
-//                val postFragment = ProfilePostsFragment()
-//                postFragment.arguments = args
-//
-//                replaceFragment(postFragment, DestinationFragment.POSTS)
-//            }
-//
-//            override fun onFailure(call: Call<UserPage>, t: Throwable) {
-//                showError()
-//            }
-//
-//            fun showError() {
-//                Toast.makeText(activity, "Erro ao carregar perfil", Toast.LENGTH_LONG).show()
-//                activity?.onBackPressed()
-//            }
-//        })
+    private fun mockProfile(): UserPage {
+        return UserPage(
+            1,
+            "Danielzinho do Rock",
+            "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRe2dvZilCtcjeyvMg0u9dJpsOPOQOvCxQaA&usqp=CAU",
+            true,
+            "Eu gosto de tocar guitarra mesmo, rock mesmo tlgd? Fumo cigarro e bebo pinga no gargalo, não ligo!!!!!!",
+            true,
+            SkillLevel.INTERMEDIATE,
+            mockBand(),
+            ArrayList(),
+            mockTalents(),
+            32,
+            true,
+            mockPosts()
+        )
     }
 
     private fun mockPosts(): ArrayList<PostSimple> {
@@ -161,7 +142,7 @@ class ProfileFragment : Fragment() {
         postList.add(
             PostSimple(
                 4,
-                "Hoje tomei o DIABO VERDE do TOGURO vou DESTRUIR TUDO na ACADEMIA \n HAHAHAHAHAHAHAHAHAHAHAHHAHAHAHAHAHAAHAHAHAH",
+                "Hoje tomei o DIABO VERDE do TOGURO vou DESTRUIR TUDO na ACADEMIA \nHAHAHAHAHAHAHAHAHAHAHAHHAHAHAHAHAHAAHAHAHAH",
                 "https://c.tenor.com/ZRHlOrai4F4AAAAM/toguro-lan%C3%A7ando-a-braba-toguro.gif",
                 1500,
                 UserSimple(
@@ -226,89 +207,89 @@ class ProfileFragment : Fragment() {
         )
     }
 
-    private fun setProfileInfo(body: UserPage) {
-        Picasso.get().load(body.banner).into(binding.ivProfileBanner)
-        Picasso.get().load(body.profilePic).into(binding.ivProfilePicture)
-        binding.tvProfileName.text = body.name
-        binding.tvProfileDescription.text = body.description
+    private fun setupRecyclerView() {
+        val layoutManager = LinearLayoutManager(requireActivity())
+
+        adapter = PostAdapter(userPage.postList, requireActivity(), this)
+
+        binding.rvProfilePosts.layoutManager = layoutManager
+        binding.rvProfilePosts.adapter = adapter
+
+        registerForContextMenu(binding.rvProfilePosts);
+    }
+
+    private fun setProfileInfo() {
+        Picasso.get().load(userPage.banner).into(binding.ivProfileBanner)
+
+        if (URLUtil.isValidUrl(userPage.profilePic)) {
+            Picasso.get().load(userPage.profilePic).into(binding.ivProfilePicture)
+        } else {
+            Picasso.get().load(R.drawable.ic_blank_profile).into(binding.ivProfilePicture)
+        }
+
+        binding.tvProfileName.text = userPage.name
+        binding.tvProfileDescription.text = userPage.description
+
+        showTalentList()
+    }
+
+    private fun showTalentList() {
+        userPage.roles.forEachIndexed { i, it ->
+            val talentCard = layoutInflater.inflate(R.layout.card_talent, null)
+            talentCard.findViewById<ImageView>(R.id.iv_talent_icon)
+                .setImageResource(it.roleName.icon)
+            talentCard.findViewById<TextView>(R.id.tv_talent_name).text = it.roleName.s
+
+            binding.vTalentList.addView(talentCard)
+
+            if (userPage.roles.size == i + 1) {
+                val space = Space(context)
+
+                val layoutParams = LinearLayout.LayoutParams(
+                    8,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+                space.layoutParams = layoutParams
+
+                binding.vTalentList.addView(space)
+            }
+        }
     }
 
     private fun setListeners() {
         binding.ivProfileBanner.setOnClickListener {
-            ImageUtils.popupImage(binding.ivProfileBanner.drawable,
-                this.requireView())
+            ImageUtils.popupImage(
+                binding.ivProfileBanner.drawable,
+                this.requireView()
+            )
         }
 
         binding.ivProfilePicture.setOnClickListener {
-            ImageUtils.popupImage(binding.ivProfilePicture.drawable,
-                this.requireView())
+            ImageUtils.popupImage(
+                binding.ivProfilePicture.drawable,
+                this.requireView()
+            )
         }
 
-        binding.tvPostsOption.setOnClickListener {
-            replaceFragment(postFragment, DestinationFragment.POSTS)
-        }
-
-        binding.tvTalentsOption.setOnClickListener {
-            replaceFragment(talentsFragment, DestinationFragment.TALENTS)
-        }
-
-        binding.tvBandOption.setOnClickListener {
-            replaceFragment(bandFragment, DestinationFragment.BAND)
+        binding.btEditProfile.setOnClickListener {
+            val intent = Intent(requireActivity(), EditProfileActivity::class.java)
+            intent.putExtra(USER_PAGE_KEY, GsonUtils.INSTANCE.toJson(userPage))
+            startActivity(intent)
         }
     }
 
-    private fun replaceFragment(fragment: Fragment, destinationFragment: DestinationFragment) {
-        val fragmentManager = childFragmentManager
-        val targetFragment = fragmentManager.findFragmentByTag(fragment.javaClass.name)
-
-        if (targetFragment != null && targetFragment.isVisible) {
-            return
-        }
-
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.fl_profile, fragment)
-        fragmentTransaction.commit()
-
-        updateMenuColors(destinationFragment)
+    override fun onLike(position: Int) {
+        val post = adapter.getItem(position)
+        post.likeCount++
+        post.hasLiked = true
+        adapter.notifyItemChanged(position, post)
     }
 
-    private fun updateMenuColors(destinationFragment: DestinationFragment) {
-        val context = requireActivity()
-
-        resetMenu(context)
-
-        val option: TextView
-        val optionUnderline: View
-
-        when (destinationFragment) {
-            DestinationFragment.POSTS -> {
-                option = binding.tvPostsOption
-                optionUnderline = binding.vPostsOptionUnderline
-            }
-            DestinationFragment.TALENTS -> {
-                option = binding.tvTalentsOption
-                optionUnderline = binding.vTalentsOptionUnderline
-            }
-            DestinationFragment.BAND -> {
-                option = binding.tvBandOption
-                optionUnderline = binding.vBandOptionUnderline
-            }
-        }
-
-        option.setTextColor(ContextCompat.getColor(context, R.color.main_purple))
-        optionUnderline.visibility = View.VISIBLE
+    override fun onUnlike(position: Int) {
+        val post = adapter.getItem(position)
+        post.likeCount--
+        post.hasLiked = false
+        adapter.notifyItemChanged(position, post)
     }
-
-    private fun resetMenu(context: FragmentActivity) {
-        binding.tvPostsOption.setTextColor(ContextCompat.getColor(context, R.color.light_gray))
-        binding.vPostsOptionUnderline.visibility = View.INVISIBLE
-        binding.tvTalentsOption.setTextColor(ContextCompat.getColor(context, R.color.light_gray))
-        binding.vTalentsOptionUnderline.visibility = View.INVISIBLE
-        binding.tvBandOption.setTextColor(ContextCompat.getColor(context, R.color.light_gray))
-        binding.vBandOptionUnderline.visibility = View.INVISIBLE
-    }
-}
-
-enum class DestinationFragment {
-    POSTS, TALENTS, BAND
 }

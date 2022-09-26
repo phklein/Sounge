@@ -20,4 +20,8 @@
     <string name="edit">Editar</string>
     <string name="save">Salvar</string>
     <string name="permission_error">Não foi possível continuar, permissão necessária</string>
+    <string name="name">Nome</string>
+    <string name="description">Descrição</string>
+    <string name="password">Senha</string>
+    <string name="cancel">Cancelar</string>
 </resources>

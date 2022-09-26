@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ProfileFragment"
-    android:background="@color/dark_gray" >
+    android:background="@color/dark_gray"
+    tools:context=".ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,9 +18,8 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/banner_content_description"
             android:scaleType="centerCrop"
-            android:src="@drawable/example_banner_picture"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -29,19 +28,18 @@
             android:layout_height="100dp"
             android:layout_marginTop="100dp"
             android:contentDescription="@string/profile_picture_description"
-            android:src="@drawable/example_profile_picture"
             app:civ_border_color="@color/dark_gray"
             app:civ_border_width="2dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_profile_info"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_profile_banner">
 
             <Button
@@ -53,7 +51,7 @@
                 android:background="@android:color/transparent"
                 android:text="@string/edit_button"
                 android:textColor="@color/main_purple"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,12 +61,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
                 android:padding="5dp"
-                android:text="Danielzinho do Rock"
                 android:textAlignment="center"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -77,116 +74,45 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:padding="5dp"
-                android:text="Moro com minha mãe mas sou gangsta"
                 android:textAlignment="center"
                 android:textColor="@color/dark_white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_profile_name" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <HorizontalScrollView
+                android:id="@+id/sv_talent_list"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_margin="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/tv_profile_description">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/ll_posts_option"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:id="@+id/v_talent_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/card_talent"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical" />
 
-                    <TextView
-                        android:id="@+id/tv_posts_option"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/posts"
-                        android:textAlignment="center"
-                        android:textColor="@color/main_purple"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:id="@+id/v_posts_option_underline"
-                        android:layout_width="50dp"
-                        android:layout_height="2dp"
-                        android:layout_marginTop="3dp"
-
-                        android:background="@color/light_gray" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/ll_talents_option"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_talents_option"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/talents"
-                        android:textAlignment="center"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:id="@+id/v_talents_option_underline"
-                        android:layout_width="50dp"
-                        android:layout_height="2dp"
-                        android:layout_marginTop="3dp"
-                        android:background="@color/light_gray"
-                        android:visibility="invisible" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/ll_band_option"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_band_option"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/band"
-                        android:textAlignment="center"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:id="@+id/v_band_option_underline"
-                        android:layout_width="50dp"
-                        android:layout_height="2dp"
-                        android:layout_marginTop="3dp"
-                        android:background="@color/light_gray"
-                        android:visibility="invisible" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </HorizontalScrollView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <FrameLayout
-            android:id="@+id/fl_profile"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_profile_posts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="16dp"
+            android:nestedScrollingEnabled="false"
+            android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_profile_info" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_profile_info"
+            tools:listitem="@layout/row_post" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

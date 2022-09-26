@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.actitivy.CommentActivity
 import com.sounge.soungeapp.data.PostSimple
-import com.sounge.soungeapp.fragment.PostRelated
+import com.sounge.soungeapp.listeners.PostEventListener
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.FormatUtils
@@ -25,7 +25,8 @@ import com.squareup.picasso.Picasso
 
 internal class PostAdapter(private val itemsList: List<PostSimple>,
                            private val context: Context,
-                           private val fragment: PostRelated) :
+                           private val fragment: PostEventListener
+) :
     RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     internal inner class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {

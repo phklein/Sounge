@@ -23,7 +23,7 @@
         android:layout_marginStart="10dp"
         android:padding="5dp"
         android:textAlignment="textStart"
-        android:textSize="16sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/iv_comment_owner_picture"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +38,7 @@
         android:padding="5dp"
         android:textAlignment="textStart"
         android:textColor="@color/dark_white"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,7 +53,7 @@
         android:padding="5dp"
         android:textAlignment="textStart"
         android:textColor="@color/dark_white"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@id/iv_comment_owner_picture"
         app:layout_constraintTop_toBottomOf="@id/tv_comment_owner_name" />
 

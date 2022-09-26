@@ -1,7 +1,6 @@
 package com.sounge.soungeapp.adapter
 
 import android.content.Context
-import android.media.AudioMetadata
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

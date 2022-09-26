@@ -1,16 +1,13 @@
 package com.sounge.soungeapp.utils
 
-import android.Manifest
 import android.graphics.drawable.Drawable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import android.widget.PopupWindow
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.databinding.PopupFullscreenMediaBinding
-
 
 object ImageUtils {
     fun popupImage(drawable: Drawable, location: View) {
