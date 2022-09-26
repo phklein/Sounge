@@ -36,4 +36,8 @@
         <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
+
+    <style name="Shape" parent="">
+        <item name="cornerSize">5%</item>
+    </style>
 </resources>
