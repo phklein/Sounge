@@ -1,196 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ProfileFragment"
-    android:background="@color/dark_gray" >
-    
+    android:background="@color/dark_gray"
+    tools:context=".ProfileFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/iv_profile_banner"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="160dp"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/banner_content_description"
-            android:src="@drawable/example_banner_picture"
             android:scaleType="centerCrop"
-            android:adjustViewBounds="true" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile_picture"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="120dp"
-            app:civ_border_width="2dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="100dp"
             app:civ_border_color="@color/dark_gray"
-            app:civ_shadow="true"
-            app:civ_shadow_radius="10"
-            app:civ_shadow_color="@color/black"
-            android:contentDescription="@string/profile_picture_description"
-            android:src="@drawable/example_profile_picture" />
+            app:civ_border_width="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_profile_info"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_profile_banner"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-            
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
             <Button
                 android:id="@+id/bt_edit_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bg_purple_outline_button"
+                android:background="@android:color/transparent"
                 android:text="@string/edit_button"
                 android:textColor="@color/main_purple"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_profile_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="64dp"
-                android:padding="5dp"
                 android:textAlignment="center"
-                android:textSize="16sp"
-                android:textFontWeight="900"
-                android:text="Matheus Correia da Silva" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_profile_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_profile_name"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:padding="5dp"
-                android:textAlignment="center"
-                android:textSize="16sp"
                 android:fontFamily="sans-serif"
+                android:textAlignment="center"
                 android:textColor="@color/dark_white"
-                android:textFontWeight="400"
-                android:text="Apaixonado por ROCK!!!" />
-            
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_profile_name" />
+
+            <HorizontalScrollView
+                android:id="@+id/sv_talent_list"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginBottom="24dp">
-                
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/ll_posts_option"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_weight="1" >
-
-                    <TextView
-                        android:id="@+id/tv_posts_option"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/posts"
-                        android:textColor="@color/main_purple"
-                        android:textSize="16sp"
-                        android:textFontWeight="500"
-                        android:textAlignment="center" />
-
-                    <View
-                        android:id="@+id/v_posts_option_underline"
-                        android:layout_width="50dp"
-                        android:layout_height="2dp"
-                        android:layout_marginTop="3dp"
-                        android:background="@color/light_gray" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                android:layout_marginTop="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_profile_description">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/ll_talents_option"
+                    android:id="@+id/ll_talent_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/card_talent"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical" />
+
+            </HorizontalScrollView>
+            
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/sv_talent_list"
+                app:layout_constraintStart_toStartOf="parent"
+                android:padding="24dp"
+                app:layout_constraintEnd_toEndOf="parent" >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_band_profile_picture"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    app:civ_border_color="@color/dark_gray"
+                    app:civ_border_width="2dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_band_profile_name"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_weight="1" >
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:padding="5dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toEndOf="@id/iv_band_profile_picture"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
-                    <TextView
-                        android:id="@+id/tv_talents_option"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/talents"
-                        android:textSize="16sp"
-                        android:textFontWeight="500"
-                        android:textAlignment="center" />
-
-                    <View
-                        android:id="@+id/v_talents_option_underline"
-                        android:layout_width="50dp"
-                        android:layout_height="2dp"
-                        android:layout_marginTop="3dp"
-                        android:background="@color/light_gray"
-                        android:visibility="invisible" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/ll_band_option"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_weight="1" >
-
-                    <TextView
-                        android:id="@+id/tv_band_option"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/band"
-                        android:textSize="16sp"
-                        android:textFontWeight="500"
-                        android:textAlignment="center" />
-
-                    <View
-                        android:id="@+id/v_band_option_underline"
-                        android:layout_width="50dp"
-                        android:layout_height="2dp"
-                        android:layout_marginTop="3dp"
-                        android:background="@color/light_gray"
-                        android:visibility="invisible" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-                
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        
-        <FrameLayout
-            android:id="@+id/fl_profile"
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:alpha="0.3"
+            app:layout_constraintTop_toBottomOf="@id/cl_profile_info"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/medium_gray"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_profile_posts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/cl_profile_info"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:padding="24dp" />
-        
+            android:layout_marginTop="16dp"
+            android:nestedScrollingEnabled="false"
+            android:padding="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_profile_info"
+            tools:listitem="@layout/row_post"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+</androidx.core.widget.NestedScrollView>

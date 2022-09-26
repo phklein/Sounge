@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MainActivity"
+    tools:context=".actitivy.MainActivity"
     android:background="@color/dark_gray">
-    
+
     <FrameLayout
         android:id="@+id/fl_main"
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bnv_main"/>
-    
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnv_main"
         android:layout_width="0dp"
@@ -25,7 +25,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:itemIconTint="@color/sel_navbar"
-        android:background="@color/dark_gray"
-        app:menu="@menu/main_bottom_nav"/>
+        android:background="@color/light_black"
+        app:menu="@menu/main_bottom_nav"
+        app:labelVisibilityMode="unlabeled"/>
     
 </androidx.constraintlayout.widget.ConstraintLayout>

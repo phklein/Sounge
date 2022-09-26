@@ -1,6 +1,6 @@
 package com.sounge.soungeapp.data
 
-data class PostSimple (
+data class PostSimple(
     var id: Long,
     var text: String,
     var mediaUrl: String,

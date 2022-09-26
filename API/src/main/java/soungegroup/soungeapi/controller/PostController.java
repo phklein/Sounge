@@ -67,6 +67,7 @@ public class PostController {
         return service.findAll(userId,groupId,genre, startDateTime, endDateTime, textLike);
     }
 
+    @PutMapping("/{id}")
     @Operation(tags = {"Posts - Criação e edição"}, summary = "Atualizar um post",
             description = "Atualiza o texto e a mídia de um post")
     @ApiResponses(value = {

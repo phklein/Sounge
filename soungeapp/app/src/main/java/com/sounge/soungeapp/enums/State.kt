@@ -1,6 +1,6 @@
 package com.sounge.soungeapp.enums
 
-enum class State(s: String) {
+enum class State(val s: String) {
     AC("Acre"),
     AL("Alagoas"),
     AP("Amapá"),
