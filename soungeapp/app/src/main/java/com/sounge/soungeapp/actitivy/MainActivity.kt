@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.databinding.ActivityMainBinding
+import com.sounge.soungeapp.fragment.MatchFragment
 import com.sounge.soungeapp.fragment.ProfileFragment
 
 
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.mi_home -> replaceFragment(ProfileFragment())
                 R.id.mi_search -> replaceFragment(ProfileFragment())
-                R.id.mi_match -> replaceFragment(ProfileFragment())
+                R.id.mi_match -> replaceFragment(MatchFragment())
                 R.id.mi_notifications -> replaceFragment(ProfileFragment())
                 R.id.mi_profile -> replaceFragment(ProfileFragment())
                 else -> {}
