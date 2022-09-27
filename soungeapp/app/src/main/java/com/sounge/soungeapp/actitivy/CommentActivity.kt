@@ -3,7 +3,6 @@ package com.sounge.soungeapp.actitivy
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
@@ -27,6 +26,7 @@ import com.sounge.soungeapp.utils.GsonUtils
 class CommentActivity : AppCompatActivity(), CommentEventListener {
     private lateinit var binding: ActivityCommentBinding
 
+    private var originPostPosition: Int = -1
     private lateinit var originPost: PostSimple
     private lateinit var viewer: UserSimple
     private lateinit var commentList: MutableList<CommentSimple>
@@ -43,7 +43,7 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
             PostSimple::class.java
         )
 
-        val originPostPosition = intent.getIntExtra(ORIGIN_POST_POSITION_KEY, -1)
+        originPostPosition = intent.getIntExtra(ORIGIN_POST_POSITION_KEY, -1)
 
         viewer = GsonUtils.INSTANCE.fromJson(
             intent.getStringExtra(USER_SIMPLE_KEY),
@@ -53,28 +53,18 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
         commentList = mockComments()
         setupRecyclerView()
 
-        setupActionBar(originPostPosition)
+        setupActionBar()
         setListeners()
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setupActionBar(originPostPosition: Int) {
+    private fun setupActionBar() {
         supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         supportActionBar!!.setDisplayShowCustomEnabled(true)
         supportActionBar!!.setCustomView(R.layout.action_bar_back)
 
         findViewById<ImageView>(R.id.iv_back_button).setOnClickListener {
-            val intent = Intent()
-            intent.putExtra(
-                ORIGIN_POST_POSITION_KEY,
-                originPostPosition
-            )
-            intent.putExtra(
-                NEW_COMMENT_AMOUNT_KEY,
-                originPost.commentCount
-            )
-            setResult(RESULT_OK, intent)
-            finish()
+            onBackPressed()
         }
 
         findViewById<TextView>(R.id.tv_page_name).text =
@@ -83,14 +73,18 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
             )
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
+    override fun onBackPressed() {
+        val intent = Intent()
+        intent.putExtra(
+            ORIGIN_POST_POSITION_KEY,
+            originPostPosition
+        )
+        intent.putExtra(
+            NEW_COMMENT_AMOUNT_KEY,
+            originPost.commentCount
+        )
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     private fun mockComments(): MutableList<CommentSimple> {

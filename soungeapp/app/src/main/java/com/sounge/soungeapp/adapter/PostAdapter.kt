@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.data.PostSimple
-import com.sounge.soungeapp.data.UserSimple
 import com.sounge.soungeapp.listeners.PostEventListener
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient

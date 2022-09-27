@@ -13,10 +13,10 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.reflect.TypeToken
 import com.sounge.soungeapp.R
-import com.sounge.soungeapp.actitivy.EditTalentsActivity.Constants.TALENTS_TO_ADD_KEY
-import com.sounge.soungeapp.actitivy.EditTalentsActivity.Constants.TALENTS_TO_REMOVE_KEY
 import com.sounge.soungeapp.actitivy.EditProfileActivity.Constants.USER_NEW_PROFILE_KEY
 import com.sounge.soungeapp.actitivy.EditProfileActivity.Constants.USER_TALENTS_KEY
+import com.sounge.soungeapp.actitivy.EditTalentsActivity.Constants.TALENTS_TO_ADD_KEY
+import com.sounge.soungeapp.actitivy.EditTalentsActivity.Constants.TALENTS_TO_REMOVE_KEY
 import com.sounge.soungeapp.data.RoleSimple
 import com.sounge.soungeapp.data.UserPage
 import com.sounge.soungeapp.databinding.ActivityEditProfileBinding
