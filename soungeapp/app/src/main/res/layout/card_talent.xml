@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_purple_round_fill"
     android:gravity="center"
-    android:padding="16dp">
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/iv_talent_icon"

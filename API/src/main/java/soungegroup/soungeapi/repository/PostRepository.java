@@ -7,7 +7,6 @@ import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Post;
 import soungegroup.soungeapi.model.User;
-import soungegroup.soungeapi.response.PostSimpleResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,10 +19,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "OR p.user IN :users " +
             "ORDER BY p.postDateTime DESC")
     List<Post> findAllFilteredByUserOrdered(List<Genre> genres,
-                                                          List<User> users,
-                                                          Pageable pageable);
+                                            List<User> users,
+                                            Pageable pageable);
 
-    @Query("SELECT p "+
+    @Query("SELECT p " +
             "FROM Post p " +
             "JOIN p.genres g " +
             "WHERE (g.name = :genreName OR :genreName IS NULL) " +
@@ -32,21 +31,22 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "AND (LOWER(p.text) LIKE CONCAT('%', LOWER(:textLike), '%') OR :textLike IS NULL) " +
             "ORDER BY p.postDateTime DESC")
     List<Post> findAllFilteredOrdered(GenreName genreName,
-                                                    LocalDateTime startDateTime,
-                                                    LocalDateTime endDateTime,
-                                                    String textLike,
-                                                    Pageable pageable);
+                                      LocalDateTime startDateTime,
+                                      LocalDateTime endDateTime,
+                                      String textLike,
+                                      Pageable pageable);
 
     @Query("SELECT p " +
             "FROM Post p " +
             "WHERE p.user.id = :userId " +
             "ORDER BY p.postDateTime DESC")
     List<Post> findByUserIdOrdered(Long userId,
-                                                 Pageable pageable);
-@Query("SELECT p " +
-        "FROM Post p " +
-        "WHERE p.group.id = :userId " +
-        "ORDER BY p.postDateTime DESC")
+                                   Pageable pageable);
+
+    @Query("SELECT p " +
+            "FROM Post p " +
+            "WHERE p.group.id = :userId " +
+            "ORDER BY p.postDateTime DESC")
     List<Post> findByGroupIdOrdered(Long userId,
-        Pageable pageable);
-        }
+                                    Pageable pageable);
+}

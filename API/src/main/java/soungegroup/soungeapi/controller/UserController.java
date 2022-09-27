@@ -64,7 +64,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content)
     })
     public ResponseEntity<UserProfileResponse> getProfileById(@RequestParam Long viewerId,
-                                                               @PathVariable Long id){
+                                                              @PathVariable Long id) {
         return service.getProfileById(viewerId, id);
     }
 
@@ -84,7 +84,7 @@ public class UserController {
                                                                  @RequestParam Optional<RoleName> roleName,
                                                                  @RequestParam Optional<Sex> sex,
                                                                  @RequestParam Optional<SkillLevel> skillLevel) {
-        return service.findMatchList(id, maxDistance, minAge, maxAge, genreName, roleName, sex , skillLevel);
+        return service.findMatchList(id, maxDistance, minAge, maxAge, genreName, roleName, sex, skillLevel);
     }
 
     @GetMapping("{id}/contacts")
@@ -167,7 +167,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public ResponseEntity<Void> updateProfile(@PathVariable Long id,
-                                              @RequestBody @Valid UserProfileUpdateRequest body){
+                                              @RequestBody @Valid UserProfileUpdateRequest body) {
         return service.updateProfilePage(id, body);
     }
 
@@ -249,6 +249,31 @@ public class UserController {
         return service.unlikePost(id, postId);
     }
 
+    @PostMapping("/{id}/likeComment/{postId}")
+    @Operation(tags = {"Usuários - Operações"}, summary = "Dar like em um comentário",
+            description = "Adiciona um like à um post, caso ainda não exista")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Like criado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Usuário/Post não encontrado"),
+            @ApiResponse(responseCode = "405", description = "Like já existe")
+    })
+    public ResponseEntity<Void> likeComment(@PathVariable Long id,
+                                            @PathVariable Long commentId) {
+        return service.likeComment(id, commentId);
+    }
+
+    @DeleteMapping("/{id}/likeComment/{postId}")
+    @Operation(tags = {"Usuários - Operações"}, summary = "Remover um like de um comentário",
+            description = "Remove um like de um post, caso exista")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Like removido com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Usuário/Post/Like não encontrado")
+    })
+    public ResponseEntity<Void> unlikeComment(@PathVariable Long id,
+                                              @PathVariable Long commentId) {
+        return service.unlikeComment(id, commentId);
+    }
+
     @PostMapping("/{id}/likeUser/{likedId}")
     @Operation(tags = {"Usuários - Operações"}, summary = "Dar like em um usuário",
             description = "Adiciona um like à um usuário, caso ainda não exista")
@@ -273,11 +298,13 @@ public class UserController {
                                            @PathVariable Long likedId) {
         return service.unlikeUser(id, likedId);
     }
+
     @DeleteMapping("/roolback/{id}/{likeid}")
-    public ResponseEntity<UserSimpleResponse> rollbackLike(@PathVariable Long id, @PathVariable Long likeId){
-        return service.roolbackLike(id,likeId);
+    public ResponseEntity<UserSimpleResponse> rollbackLike(@PathVariable Long id, @PathVariable Long likeId) {
+        return service.roolbackLike(id, likeId);
 
     }
+
     @PostMapping("/{id}/group/{groupId}")
     @Operation(tags = {"Usuários - Operações"}, summary = "Entrar em um grupo",
             description = "Relaciona o usuário à um grupo pelo ID, caso seja o primeiro a entrar, se torna líder")
@@ -368,8 +395,9 @@ public class UserController {
                                        @RequestParam String pwd) {
         return service.delete(id, pwd);
     }
+
     @GetMapping("/download/{id}")
-    public  ResponseEntity download(@PathVariable Long id){
+    public ResponseEntity download(@PathVariable Long id) {
         return service.download(id);
     }
 

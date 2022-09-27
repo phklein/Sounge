@@ -5,5 +5,7 @@ data class CommentSimple (
     var text: String,
     var mediaUrl: String,
     var hoursPast: Long,
-    var user: UserSimple
+    var user: UserSimple,
+    var likeCount: Int,
+    var hasLiked: Boolean
 )

@@ -29,9 +29,10 @@
                 android:scaleType="centerCrop" />
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerInParent="true"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="32dp"
                 android:src="@drawable/ic_camera" />
 
         </RelativeLayout>
@@ -54,8 +55,8 @@
                 app:civ_border_width="2dp" />
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/ic_camera" />
 
@@ -87,7 +88,7 @@
                     android:id="@+id/et_profile_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_light_gray_underline"
+                    android:background="@drawable/bg_medium_gray_underline"
                     android:textSize="18sp"
                     android:textColor="@color/dark_white"
                     android:padding="8dp"
@@ -112,7 +113,7 @@
                     android:id="@+id/et_profile_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_light_gray_underline"
+                    android:background="@drawable/bg_medium_gray_underline"
                     android:textSize="18sp"
                     android:textColor="@color/dark_white"
                     android:padding="8dp"
@@ -141,6 +142,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
+                        android:id="@+id/iv_edit_profile_talents"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:src="@drawable/ic_edit" />
@@ -166,27 +168,6 @@
 
                 </HorizontalScrollView>
                 
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/password"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_edit" />
-
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>

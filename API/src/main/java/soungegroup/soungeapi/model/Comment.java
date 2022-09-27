@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "Comment")
 @Table(name = "tb_comment")
@@ -30,4 +31,8 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_fk")
     private User user;
+
+    // Many posts are liked by many users
+    @ManyToMany(mappedBy = "likedComments", fetch = FetchType.LAZY)
+    private List<User> usersWhoLiked;
 }

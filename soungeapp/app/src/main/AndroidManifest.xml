@@ -17,6 +17,12 @@
         android:theme="@style/Theme.Soungeapp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".actitivy.WritingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".actitivy.EditTalentsActivity"
+            android:exported="false" />
+        <activity
             android:name=".actitivy.EditProfileActivity"
             android:exported="false" />
         <activity

@@ -82,6 +82,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "post_fk"))
     private List<Post> likedPosts;
 
+    @ManyToMany
+    @JoinTable(name = "tb_user_likes_comment",
+            joinColumns = @JoinColumn(name = "user_fk"),
+            inverseJoinColumns = @JoinColumn(name = "comment_fk"))
+    private List<Comment> likedComments;
+
     // Many users like many users
     @ManyToMany
     @JoinTable(name = "tb_user_likes_user",

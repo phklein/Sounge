@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final GroupRepository groupRepository;
@@ -147,6 +148,56 @@ public class UserServiceImpl implements UserService {
 
             if (user.getLikedPosts().contains(post)) {
                 user.getLikedPosts().remove(post);
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> likeComment(Long id, Long commentId) {
+        Optional<User> userOptional = repository.findById(id);
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+
+        if (userOptional.isPresent() && commentOptional.isPresent()) {
+            User user = userOptional.get();
+            Comment comment = commentOptional.get();
+
+            if (!user.getLikedComments().contains(comment)) {
+                user.getLikedComments().add(comment);
+                repository.save(user);
+
+                Notification notification = new Notification();
+                notification.setType(NotificationType.LIKE);
+                notification.setSender(user);
+                notification.setReceiver(comment.getUser());
+                notification.setCreationDateTime(LocalDateTime.now());
+                notification.setText(String.format("%s deu like em seu comentário", user.getName()));
+                notificationRepository.save(notification);
+
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> unlikeComment(Long id, Long commentId) {
+        Optional<User> userOptional = repository.findById(id);
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+
+        if (userOptional.isPresent() && commentOptional.isPresent()) {
+            User user = userOptional.get();
+            Comment comment = commentOptional.get();
+
+            if (user.getLikedComments().contains(comment)) {
+                user.getLikedComments().remove(comment);
                 repository.save(user);
                 return ResponseEntity.status(HttpStatus.OK).build();
             }

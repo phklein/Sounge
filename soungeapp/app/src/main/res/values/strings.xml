@@ -3,7 +3,6 @@
     <string name="banner_content_description">Imagem de fundo de perfil</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="edit_button">Editar</string>
     <string name="posts">Posts</string>
     <string name="talents">Talentos</string>
     <string name="band">Banda</string>
@@ -19,4 +18,9 @@
     <string name="description">Descrição</string>
     <string name="password">Senha</string>
     <string name="cancel">Cancelar</string>
+    <string name="my_talents">Meus Talentos</string>
+    <string name="other_talents">Outros Talentos</string>
+    <string name="post_hint0">Fale sobre sua música…</string>
+    <string name="post_hint1">Compartilhe seus momentos…</string>
+    <string name="post_hint2">Solte sua voz!</string>
 </resources>

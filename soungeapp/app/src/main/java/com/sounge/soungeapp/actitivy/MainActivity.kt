@@ -40,9 +40,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupActionBar() {
+        // TODO: Mudar para actionbar com menu lateral
         supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         supportActionBar!!.setDisplayShowCustomEnabled(true)
-        supportActionBar!!.setCustomView(R.layout.action_bar_main)
+        supportActionBar!!.setCustomView(R.layout.action_bar_back)
 
         findViewById<ImageView>(R.id.iv_back_button).setOnClickListener {
             val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

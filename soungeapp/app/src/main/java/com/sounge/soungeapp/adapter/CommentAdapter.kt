@@ -9,9 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.data.CommentSimple
+import com.sounge.soungeapp.listeners.CommentEventListener
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.FormatUtils
@@ -19,21 +21,26 @@ import com.sounge.soungeapp.utils.ImageUtils
 import com.squareup.picasso.Picasso
 
 internal class CommentAdapter(private val itemsList: List<CommentSimple>,
-                              private val context: Context) :
+                              private val context: Context,
+                              private val commentEventListener: CommentEventListener) :
     RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
     internal inner class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var commentId: Long = 0
         var userId: Long = 0
+        var hasLiked: Boolean = false
 
         val ivCommentOwnerPicture: ImageView = view.findViewById(R.id.iv_comment_owner_picture)
         val tvCommentOwnerName: TextView = view.findViewById(R.id.tv_comment_owner_name)
-        val tvHoursPast: TextView = view.findViewById(R.id.tv_hours_past)
+        val tvCommentHoursPast: TextView = view.findViewById(R.id.tv_comment_hours_past)
 
         val tvCommentText: TextView = view.findViewById(R.id.tv_comment_text)
         val ivCommentMedia: ImageView = view.findViewById(R.id.iv_comment_media)
 
-        val ivShareButton: ImageView = view.findViewById(R.id.iv_share_button)
+        val tvCommentLikeAmount: TextView = view.findViewById(R.id.tv_comment_like_amount)
+
+        val ivCommentLikeButton: ImageView = view.findViewById(R.id.iv_comment_like_button)
+        val ivCommentShareButton: ImageView = view.findViewById(R.id.iv_comment_share_button)
 
         init {
             // TODO: Setar listener se é o dono do comentário
@@ -42,8 +49,8 @@ internal class CommentAdapter(private val itemsList: List<CommentSimple>,
                 val popupMenu = PopupMenu(view.context, it)
                 popupMenu.inflate(R.menu.comment_context_menu)
 
-                popupMenu.setOnMenuItemClickListener {item->
-                    when(item.itemId) {
+                popupMenu.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
                         R.id.mi_delete_comment -> {
                             // TODO: Excluir comentário
                         }
@@ -68,9 +75,10 @@ internal class CommentAdapter(private val itemsList: List<CommentSimple>,
         val item = itemsList[position]
         holder.commentId = item.id
         holder.userId = item.user.id
+        holder.hasLiked = item.hasLiked
 
         holder.tvCommentOwnerName.text = item.user.name
-        holder.tvHoursPast.text = FormatUtils.formatHoursPast(item.hoursPast)
+        holder.tvCommentHoursPast.text = FormatUtils.formatHoursPast(item.hoursPast)
 
         if (URLUtil.isValidUrl(item.user.profilePic)) {
             Picasso.get().load(item.user.profilePic).into(holder.ivCommentOwnerPicture)
@@ -90,6 +98,18 @@ internal class CommentAdapter(private val itemsList: List<CommentSimple>,
             holder.ivCommentMedia.visibility = View.GONE
         }
 
+        holder.tvCommentLikeAmount.text = FormatUtils.formatLikeAndCommentCount(item.likeCount)
+
+        if (item.hasLiked) {
+            holder.ivCommentLikeButton.setImageDrawable(
+                ContextCompat.getDrawable(context, R.drawable.ic_liked)
+            )
+        } else {
+            holder.ivCommentLikeButton.setImageDrawable(
+                ContextCompat.getDrawable(context, R.drawable.ic_like)
+            )
+        }
+
         setListeners(holder, position)
     }
 
@@ -97,11 +117,21 @@ internal class CommentAdapter(private val itemsList: List<CommentSimple>,
         val userClient = Retrofit.getInstance().create(UserClient::class.java)
 
         holder.ivCommentMedia.setOnClickListener {
-            ImageUtils.popupImage(holder.ivCommentMedia.drawable,
-                holder.itemView)
+            ImageUtils.popupImage(
+                holder.ivCommentMedia.drawable,
+                holder.itemView
+            )
         }
 
-        holder.ivShareButton.setOnClickListener {
+        holder.ivCommentLikeButton.setOnClickListener {
+            if (holder.hasLiked) {
+                commentEventListener.onUnlike(position)
+            } else {
+                commentEventListener.onLike(position)
+            }
+        }
+
+        holder.ivCommentShareButton.setOnClickListener {
             // TODO: Abrir janela de compartilhamento
         }
     }

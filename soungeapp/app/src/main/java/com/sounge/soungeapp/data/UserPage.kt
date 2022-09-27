@@ -13,8 +13,8 @@ data class UserPage (
     var skillLevel: SkillLevel,
     var group: GroupSimple,
     var likedGenres: List<GenreSimple>,
-    var roles: List<RoleSimple>,
+    var roles: MutableList<RoleSimple>,
     var age: Int,
     var isViewerProfile: Boolean,
-    var postList: List<PostSimple>
+    var postList: MutableList<PostSimple>
 )

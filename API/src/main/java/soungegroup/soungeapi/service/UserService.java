@@ -17,6 +17,8 @@ public interface UserService {
 
     ResponseEntity<Void> likePost(Long id, Long postId);
     ResponseEntity<Void> unlikePost(Long id, Long postId);
+    ResponseEntity<Void> likeComment(Long id, Long commentId);
+    ResponseEntity<Void> unlikeComment(Long id, Long commentId);
 
     ResponseEntity<Void> likeUser(Long id, Long likedId);
     ResponseEntity<Void> unlikeUser(Long id, Long likedId);

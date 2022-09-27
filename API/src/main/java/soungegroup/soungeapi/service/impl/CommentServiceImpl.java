@@ -65,18 +65,32 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public ResponseEntity<List<CommentSimpleResponse>> findByPostId(Long postId) {
+    public ResponseEntity<List<CommentSimpleResponse>> findByPostId(Optional<Long> viewerId, Long postId) {
         Optional<Post> postOptional = postRepository.findById(postId);
 
         if (postOptional.isPresent()) {
+
             List<CommentSimpleResponse> comments = repository.findByPostOrdered(
                     postOptional.get(),
                     PAGEABLE
             );
 
+
+            if (viewerId.isPresent()) {
+                Optional<User> viewerOptional = userRepository.findById(viewerId.get());
+
+                if (viewerOptional.isPresent()) {
+                    User viewer = viewerOptional.get();
+
+                    comments.forEach(c -> c.setHasLiked(viewer.getLikedComments().stream()
+                            .anyMatch(lc -> lc.getId().equals(c.getId()))));
+                }
+            }
+
             return comments.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
                     ResponseEntity.status(HttpStatus.OK).body(comments);
+
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

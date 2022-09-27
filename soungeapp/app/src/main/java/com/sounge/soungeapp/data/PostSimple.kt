@@ -5,8 +5,8 @@ data class PostSimple(
     var text: String,
     var mediaUrl: String,
     var hoursPast: Long,
-    var user: UserSimple,
-    var group: GroupSimple,
+    var user: UserSimple?,
+    var group: GroupSimple?,
     var likeCount: Int,
     var commentCount: Int,
     var hasLiked: Boolean

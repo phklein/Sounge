@@ -112,8 +112,9 @@ public class PostController {
             @ApiResponse(responseCode = "204", description = "Nenhum registro na lista", content = @Content),
             @ApiResponse(responseCode = "404", description = "Post não encontrado", content = @Content)
     })
-    public ResponseEntity<List<CommentSimpleResponse>> findCommentsByPostId(@PathVariable Long postId) {
-        return commentService.findByPostId(postId);
+    public ResponseEntity<List<CommentSimpleResponse>> findCommentsByPostId(@RequestParam Optional<Long> viewerId,
+                                                                            @PathVariable Long postId) {
+        return commentService.findByPostId(viewerId, postId);
     }
 
     @DeleteMapping("/{postId}/comments/{id}")
