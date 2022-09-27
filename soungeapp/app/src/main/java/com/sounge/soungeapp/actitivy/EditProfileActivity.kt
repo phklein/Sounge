@@ -1,9 +1,7 @@
 package com.sounge.soungeapp.actitivy
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.inputmethod.InputMethodManager
 import android.webkit.URLUtil
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -23,7 +21,6 @@ import com.sounge.soungeapp.databinding.ActivityEditProfileBinding
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.USER_PAGE_KEY
 import com.sounge.soungeapp.utils.GsonUtils
 import com.squareup.picasso.Picasso
-
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProfileBinding
@@ -58,8 +55,6 @@ class EditProfileActivity : AppCompatActivity() {
         supportActionBar!!.setCustomView(R.layout.action_bar_edit)
 
         findViewById<TextView>(R.id.tv_action_cancel).setOnClickListener {
-            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
             onBackPressed()
         }
 

@@ -434,7 +434,7 @@ class ProfileFragment : Fragment(), PostEventListener {
             val newCommentAmount = data.getIntExtra(NEW_COMMENT_AMOUNT_KEY, 0)
 
             userPage.postList[position].commentCount = newCommentAmount
-            adapter.notifyItemInserted(position)
+            adapter.notifyItemChanged(position)
         }
     }
 }
