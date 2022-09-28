@@ -19,4 +19,6 @@
     <string name="description">Descrição</string>
     <string name="password">Senha</string>
     <string name="cancel">Cancelar</string>
+    <string name="enter">Entrar</string>
+    <string name="email">E-mail</string>
 </resources>
