@@ -12,7 +12,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
-import com.sounge.soungeapp.data.CommentSimple
+import com.sounge.soungeapp.response.CommentSimple
 import com.sounge.soungeapp.listeners.CommentEventListener
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient

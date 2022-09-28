@@ -1,17 +1,12 @@
 package com.sounge.soungeapp.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.webkit.URLUtil
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Space
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -20,13 +15,15 @@ import com.sounge.soungeapp.R
 import com.sounge.soungeapp.actitivy.CommentActivity
 import com.sounge.soungeapp.actitivy.EditProfileActivity
 import com.sounge.soungeapp.actitivy.EditProfileActivity.Constants.USER_NEW_PROFILE_KEY
+import com.sounge.soungeapp.actitivy.MainActivity.Constants.PROFILE_OWNER_ID_KEY
 import com.sounge.soungeapp.actitivy.WritingActivity
 import com.sounge.soungeapp.actitivy.WritingActivity.Constants.USER_NEW_POST_KEY
 import com.sounge.soungeapp.adapter.PostAdapter
-import com.sounge.soungeapp.data.*
+import com.sounge.soungeapp.response.PostSimple
+import com.sounge.soungeapp.response.UserLogin
+import com.sounge.soungeapp.response.UserPage
+import com.sounge.soungeapp.response.UserSimple
 import com.sounge.soungeapp.databinding.FragmentProfileBinding
-import com.sounge.soungeapp.enums.RoleName
-import com.sounge.soungeapp.enums.SkillLevel
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.COMMENT_CREATION_REQUEST_CODE
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.NEW_COMMENT_AMOUNT_KEY
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.ORIGIN_POST_KEY
@@ -40,10 +37,18 @@ import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.GsonUtils
 import com.sounge.soungeapp.utils.ImageUtils
+import com.sounge.soungeapp.utils.SharedPreferencesUtils
+import com.sounge.soungeapp.utils.SharedPreferencesUtils.Constants.USER_INFO_PREFS
+import com.sounge.soungeapp.utils.SharedPreferencesUtils.Constants.USER_LOGIN_KEY
 import com.squareup.picasso.Picasso
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ProfileFragment : Fragment(), PostEventListener {
     private lateinit var binding: FragmentProfileBinding
+
+    private lateinit var viewer: UserLogin
     private lateinit var userPage: UserPage
 
     private lateinit var adapter: PostAdapter
@@ -67,208 +72,98 @@ class ProfileFragment : Fragment(), PostEventListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
+        viewer = GsonUtils.INSTANCE.fromJson(
+            SharedPreferencesUtils.get(requireActivity(), USER_INFO_PREFS, USER_LOGIN_KEY),
+            UserLogin::class.java
+        )
 
+        val ownerId = requireArguments().getLong(PROFILE_OWNER_ID_KEY)
         userClient = Retrofit.getInstance().create(UserClient::class.java)
-        getProfileInfo()
 
-        hideViewsIfViewerNotOwner()
-
-        setupActionBar()
-        setListeners()
+        getUserPage(ownerId)
 
         return binding.root
     }
 
+    private fun getUserPage(ownerId: Long) {
+        val getUserPage = userClient.getUserPage(ownerId, viewer.id)
+        getUserPage.enqueue(object : Callback<UserPage> {
+            override fun onResponse(call: Call<UserPage>, response: Response<UserPage>) {
+                val message: String
+
+                if (response.code() in 200..299) {
+                    userPage = response.body()!!
+                    showProfileInfo()
+                    showTalentList()
+                    showBandInfo()
+                    setupRecyclerView()
+
+                    hideViewsIfViewerNotOwner()
+
+                    setupActionBar()
+                    setListeners()
+                    return
+                } else if (response.code() == 404) {
+                    message = getString(R.string.profile_not_found)
+                } else {
+                    message = getString(R.string.profile_error)
+                }
+
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                requireActivity().onBackPressed()
+            }
+
+            override fun onFailure(call: Call<UserPage>, t: Throwable) {
+                Toast.makeText(context, getString(R.string.profile_error),
+                    Toast.LENGTH_LONG).show()
+                requireActivity().onBackPressed()
+            }
+        })
+    }
+
     private fun hideViewsIfViewerNotOwner() {
-        if (!userPage.isViewerProfile) {
+        if (!userPage.viewerProfile) {
             binding.btEditProfile.visibility = View.GONE
             binding.fabWritePost.visibility = View.GONE
         }
     }
 
-    private fun getProfileInfo() {
-        userPage = mockProfile()
-
-        setupRecyclerView()
-        setProfileInfo()
-    }
-
-    private fun mockProfile(): UserPage {
-        return UserPage(
-            1,
-            "Danielzinho do Rock",
-            "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRe2dvZilCtcjeyvMg0u9dJpsOPOQOvCxQaA&usqp=CAU",
-            true,
-            "Eu gosto de tocar guitarra mesmo, rock mesmo tlgd? Fumo cigarro e bebo pinga no gargalo, não ligo!!!!!!",
-            true,
-            SkillLevel.INTERMEDIATE,
-            mockBand(),
-            ArrayList(),
-            mockTalents(),
-            32,
-            false,
-            mockPosts()
-        )
-    }
-
-    private fun mockPosts(): ArrayList<PostSimple> {
-        val postList = ArrayList<PostSimple>()
-        postList.add(
-            PostSimple(
-                1,
-                "Muito obrigado pelo show rapaziada, foi chave \n\n É ISSO!",
-                "https://www.ofuxico.com.br/wp-content/uploads/2021/08/shrek-sessao-da-tarde-1.jpg",
-                20,
-                UserSimple(
-                    1,
-                    "Danielzinho do Rock",
-                    "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
-                    true
-                ),
-                null,
-                2_590_000,
-                39_000,
-                true
-            )
-        )
-
-        postList.add(
-            PostSimple(
-                2,
-                "Acho que vou começar a cantar pagode.......",
-                "",
-                78,
-                UserSimple(
-                    1,
-                    "Danielzinho do Rock",
-                    "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
-                    true
-                ),
-                null,
-                120_000,
-                1_908_000,
-                false
-            )
-        )
-
-        postList.add(
-            PostSimple(
-                3,
-                "",
-                "https://wallpaperaccess.com/full/1213672.jpg",
-                563,
-                UserSimple(
-                    1,
-                    "Danielzinho do Rock",
-                    "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
-                    true
-                ),
-                null,
-                1_000,
-                1_000,
-                false
-            )
-        )
-
-        postList.add(
-            PostSimple(
-                4,
-                "Hoje tomei o DIABO VERDE do TOGURO vou DESTRUIR TUDO na ACADEMIA \nHAHAHAHAHAHAHAHAHAHAHAHHAHAHAHAHAHAAHAHAHAH",
-                "https://c.tenor.com/ZRHlOrai4F4AAAAM/toguro-lan%C3%A7ando-a-braba-toguro.gif",
-                1500,
-                UserSimple(
-                    1,
-                    "Danielzinho do Rock",
-                    "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
-                    true
-                ),
-                null,
-                239,
-                342,
-                false
-            )
-        )
-
-        postList.add(
-            PostSimple(
-                5,
-                "EU NÃO QUERO SABER DE MAIS NADAAAAAAAAA",
-                "",
-                29000,
-                UserSimple(
-                    1,
-                    "Danielzinho do Rock",
-                    "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
-                    true
-                ),
-                null,
-                0,
-                0,
-                false
-            )
-        )
-        return postList
-    }
-
-    private fun mockTalents(): ArrayList<RoleSimple> {
-        val talentList = ArrayList<RoleSimple>()
-
-        talentList.add(RoleSimple(1, RoleName.VOCALIST))
-        talentList.add(RoleSimple(2, RoleName.GUITARIST))
-        talentList.add(RoleSimple(3, RoleName.BASSPLAYER))
-        talentList.add(RoleSimple(4, RoleName.DJ))
-        talentList.add(RoleSimple(5, RoleName.ACCORDIONIST))
-        talentList.add(RoleSimple(6, RoleName.CORNETPLAYER))
-        talentList.add(RoleSimple(7, RoleName.DRUMMER))
-        talentList.add(RoleSimple(8, RoleName.EKEYBOARDPLAYER))
-        talentList.add(RoleSimple(9, RoleName.EGUITARIST))
-        talentList.add(RoleSimple(10, RoleName.FLUTIST))
-        talentList.add(RoleSimple(11, RoleName.PIANIST))
-        talentList.add(RoleSimple(12, RoleName.SAXOPHONIST))
-        talentList.add(RoleSimple(13, RoleName.OTHERS))
-
-        return talentList
-    }
-
-    private fun mockBand(): GroupSimple {
-        return GroupSimple(
-            1,
-            "Tropa do Rock",
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSm2zSDYY03ED0I4kXbHKyYhCmHbFtfU1_FepUo3OBRomjb1rw_Jk1WglkwlygQCxV8JqA&usqp=CAU"
-        )
-    }
-
     private fun setupRecyclerView() {
-        val layoutManager = LinearLayoutManager(requireActivity())
+        if (userPage.postList.isEmpty()) {
+            binding.tvNoPosts.visibility = View.VISIBLE
+            binding.rvProfilePosts.visibility = View.GONE
+        } else {
+            val layoutManager = LinearLayoutManager(requireActivity())
 
-        // TODO: Receber viewer da main activity
-        adapter = PostAdapter(
-            userPage.postList,
-            requireActivity(),
-            this
-        )
+            // TODO: Receber viewer da main activity
+            adapter = PostAdapter(
+                userPage.postList,
+                requireActivity(),
+                this
+            )
 
-        binding.rvProfilePosts.layoutManager = layoutManager
-        binding.rvProfilePosts.adapter = adapter
+            binding.rvProfilePosts.layoutManager = layoutManager
+            binding.rvProfilePosts.adapter = adapter
 
-        registerForContextMenu(binding.rvProfilePosts);
+            registerForContextMenu(binding.rvProfilePosts);
+        }
     }
 
-    private fun setProfileInfo() {
-        Picasso.get().load(userPage.banner).into(binding.ivProfileBanner)
+    private fun showProfileInfo() {
+        if (URLUtil.isValidUrl(userPage.banner)) {
+            Picasso.get().load(userPage.banner).into(binding.ivProfileBanner)
+        } else {
+            Picasso.get().load(R.drawable.ic_blank_profile).into(binding.ivProfileBanner)
+        }
 
         if (URLUtil.isValidUrl(userPage.profilePic)) {
             Picasso.get().load(userPage.profilePic).into(binding.ivProfilePicture)
         } else {
-            Picasso.get().load(R.drawable.ic_blank_profile).into(binding.ivProfilePicture)
+            Picasso.get().load(R.drawable.ic_blank_profile).into(binding.ivProfileBanner)
         }
 
         binding.tvProfileName.text = userPage.name
         binding.tvProfileDescription.text = userPage.description
-
-        showTalentList()
-        showBandInfo()
     }
 
     private fun showTalentList() {
@@ -280,8 +175,8 @@ class ProfileFragment : Fragment(), PostEventListener {
         userPage.roles.forEachIndexed { i, it ->
             val talentCard = layoutInflater.inflate(R.layout.card_talent, null)
             talentCard.findViewById<ImageView>(R.id.iv_talent_icon)
-                .setImageResource(it.roleName.icon)
-            talentCard.findViewById<TextView>(R.id.tv_talent_name).text = it.roleName.s
+                .setImageResource(it.name.icon)
+            talentCard.findViewById<TextView>(R.id.tv_talent_name).text = it.name.s
 
             binding.llTalentList.addView(talentCard)
 
@@ -320,12 +215,18 @@ class ProfileFragment : Fragment(), PostEventListener {
 
         activity.supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         activity.supportActionBar!!.setDisplayShowCustomEnabled(true)
-        activity.supportActionBar!!.setCustomView(R.layout.action_bar_back)
 
-        activity.findViewById<ImageView>(R.id.iv_back_button).setOnClickListener {
-            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(activity.currentFocus?.windowToken, 0)
-            activity.onBackPressed()
+        if (!userPage.viewerProfile) {
+            activity.supportActionBar!!.setCustomView(R.layout.action_bar_back)
+
+            activity.findViewById<ImageView>(R.id.iv_back_button).setOnClickListener {
+                activity.onBackPressed()
+            }
+        } else {
+            activity.supportActionBar!!.setCustomView(R.layout.action_bar_settings)
+
+            activity.findViewById<ImageView>(R.id.iv_settings_button).setOnClickListener {
+            }
         }
 
         activity.findViewById<TextView>(R.id.tv_page_name).text = userPage.name
@@ -414,7 +315,7 @@ class ProfileFragment : Fragment(), PostEventListener {
                 UserPage::class.java
             )
 
-            setProfileInfo()
+            showProfileInfo()
             showTalentList()
         } else if (requestCode == POST_WRITING_REQUEST_CODE &&
             resultCode == AppCompatActivity.RESULT_OK

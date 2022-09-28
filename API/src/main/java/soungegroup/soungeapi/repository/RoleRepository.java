@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface RoleRepository extends JpaRepository<Role, Long> {
     Optional<Role> findByName(RoleName name);
 
+    List<Role> findByNameIn(List<RoleName> nameList);
+
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.RoleSimpleResponse(r.id, r.name) " +
             "FROM Role r " +
             "JOIN r.users u " +

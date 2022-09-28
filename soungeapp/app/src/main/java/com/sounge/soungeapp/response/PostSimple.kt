@@ -1,4 +1,4 @@
-package com.sounge.soungeapp.data
+package com.sounge.soungeapp.response
 
 data class PostSimple(
     var id: Long,

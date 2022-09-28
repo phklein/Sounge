@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Soungeapp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".actitivy.BandProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".actitivy.WritingActivity"
             android:exported="false" />
         <activity

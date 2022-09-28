@@ -10,9 +10,9 @@ import com.sounge.soungeapp.R
 import com.sounge.soungeapp.actitivy.WritingActivity.Constants.USER_NEW_COMMENT_KEY
 import com.sounge.soungeapp.actitivy.WritingActivity.Constants.USER_NEW_POST_KEY
 import com.sounge.soungeapp.actitivy.WritingActivity.Hints.hintList
-import com.sounge.soungeapp.data.CommentSimple
-import com.sounge.soungeapp.data.PostSimple
-import com.sounge.soungeapp.data.UserSimple
+import com.sounge.soungeapp.response.CommentSimple
+import com.sounge.soungeapp.response.PostSimple
+import com.sounge.soungeapp.response.UserSimple
 import com.sounge.soungeapp.databinding.ActivityWritingBinding
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.ORIGIN_POST_KEY
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.USER_SIMPLE_KEY

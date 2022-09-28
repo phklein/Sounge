@@ -1,7 +1,6 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +16,7 @@ import soungegroup.soungeapi.service.UserService;
 import soungegroup.soungeapi.util.Fila;
 import soungegroup.soungeapi.util.ListaObj;
 import soungegroup.soungeapi.util.LocationUtil;
-import soungegroup.soungeapi.util.Mapper;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -428,6 +425,35 @@ public class UserServiceImpl implements UserService {
                     repository.save(user);
                     return ResponseEntity.status(HttpStatus.OK).build();
                 }
+            }
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> updateMultipleRoles(Long id, List<RoleName> toAdd, List<RoleName> toRemove) {
+        List<Role> rolesToAdd = roleRepository.findByNameIn(toAdd);
+        List<Role> rolesToRemove = roleRepository.findByNameIn(toRemove);
+
+        if (rolesToAdd.size() == toAdd.size() && rolesToRemove.size() == toRemove.size()) {
+            Optional<User> userOptional = repository.findById(id);
+
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                List<Role> roles = user.getRoles();
+
+                if (roles.containsAll(rolesToRemove) &&
+                roles.stream().noneMatch(rolesToAdd::contains)) {
+                    roles.removeAll(rolesToRemove);
+                    roles.addAll(rolesToAdd);
+                    repository.save(user);
+                    return ResponseEntity.status(HttpStatus.OK).build();
+                }
+
+                return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
             }
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

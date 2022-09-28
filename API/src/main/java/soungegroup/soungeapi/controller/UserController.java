@@ -382,6 +382,19 @@ public class UserController {
         return service.removeRole(id, roleName);
     }
 
+    @PutMapping("/{id}/roles/multiple")
+    @Operation(tags = {"Usuários - Criação e edição"}, summary = "Remover funções do usuário",
+            description = "Remove várias funções do usuário, caso exista lá")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Função removida com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Função não existe"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
+    public ResponseEntity<Void> updateMultipleRoles(@PathVariable Long id,
+                                                    @RequestBody RoleUpdateRequest body) {
+        return service.updateMultipleRoles(id, body.getToAdd(), body.getToRemove());
+    }
+
     @DeleteMapping("/{id}")
     @Operation(tags = {"Usuários - Criação e edição"}, summary = "Remover um usuário",
             description = "Remove um usuário pelo ID e senha")

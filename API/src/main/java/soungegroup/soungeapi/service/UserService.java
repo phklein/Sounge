@@ -30,6 +30,7 @@ public interface UserService {
     ResponseEntity<Void> addRole(Long id, RoleName roleName);
     ResponseEntity<Void> removeGenre(Long id, GenreName genreName);
     ResponseEntity<Void> removeRole(Long id, RoleName roleName);
+    ResponseEntity<Void> updateMultipleRoles(Long id, List<RoleName> toAdd, List<RoleName> toRemove);
 
     ResponseEntity<Void> updateSignature(Long id, SignatureType signatureType);
     ResponseEntity<Void> updateLocation(Long id, UserLocationUpdateRequest body);

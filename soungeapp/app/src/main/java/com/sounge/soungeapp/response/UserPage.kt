@@ -1,4 +1,4 @@
-package com.sounge.soungeapp.data
+package com.sounge.soungeapp.response
 
 import com.sounge.soungeapp.enums.SkillLevel
 
@@ -15,6 +15,6 @@ data class UserPage (
     var likedGenres: List<GenreSimple>,
     var roles: MutableList<RoleSimple>,
     var age: Int,
-    var isViewerProfile: Boolean,
+    var viewerProfile: Boolean,
     var postList: MutableList<PostSimple>
 )
