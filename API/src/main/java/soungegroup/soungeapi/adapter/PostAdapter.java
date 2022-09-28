@@ -2,7 +2,6 @@ package soungegroup.soungeapi.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.model.Genre;
 import soungegroup.soungeapi.model.Post;
 import soungegroup.soungeapi.model.User;
@@ -30,19 +29,13 @@ public class PostAdapter {
                 .mediaUrl(postSaveRequest.getMediaUrl())
                 .build();
 
-        List<Genre> genres = new ArrayList<>();
-
-        for (GenreName gn : postSaveRequest.getGenres()) {
-            Optional<Genre> genre = genreRepository.findByName(gn);
-            genre.ifPresent(genres::add);
-        }
-
         Optional<User> userOptional = userRepository.findById(postSaveRequest.getUserId());
 
-        if (genres.size() < postSaveRequest.getGenres().size() || userOptional.isEmpty()) {
+        if (userOptional.isEmpty()) {
             return null;
         }
 
+        List<Genre> genres = new ArrayList<>(userOptional.get().getLikedGenres());
         post.setGenres(genres);
         post.setUser(userOptional.get());
 

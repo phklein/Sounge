@@ -4,26 +4,37 @@ import android.content.Intent
 import android.os.Bundle
 import android.webkit.URLUtil
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.actitivy.WritingActivity.Constants.USER_NEW_COMMENT_KEY
 import com.sounge.soungeapp.actitivy.WritingActivity.Constants.USER_NEW_POST_KEY
 import com.sounge.soungeapp.actitivy.WritingActivity.Hints.hintList
-import com.sounge.soungeapp.response.CommentSimple
-import com.sounge.soungeapp.response.PostSimple
-import com.sounge.soungeapp.response.UserSimple
 import com.sounge.soungeapp.databinding.ActivityWritingBinding
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.ORIGIN_POST_KEY
-import com.sounge.soungeapp.fragment.ProfileFragment.Constants.USER_SIMPLE_KEY
+import com.sounge.soungeapp.fragment.ProfileFragment.Constants.VIEWER_KEY
+import com.sounge.soungeapp.request.CreateComment
+import com.sounge.soungeapp.request.CreatePost
+import com.sounge.soungeapp.response.CommentSimple
+import com.sounge.soungeapp.response.PostSimple
+import com.sounge.soungeapp.response.UserLogin
+import com.sounge.soungeapp.response.UserSimple
+import com.sounge.soungeapp.rest.PostClient
+import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.utils.GsonUtils
 import com.squareup.picasso.Picasso
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.random.Random
 
 class WritingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWritingBinding
 
-    private lateinit var originUser: UserSimple
+    private lateinit var originUser: UserLogin
+
+    private lateinit var postClient: PostClient
 
     object Constants {
         const val USER_NEW_POST_KEY = "userNewPost"
@@ -43,12 +54,14 @@ class WritingActivity : AppCompatActivity() {
         binding = ActivityWritingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val originPostId = intent.getLongExtra(ORIGIN_POST_KEY, 0)
+        val originPostId = intent.getLongExtra(ORIGIN_POST_KEY, -1)
 
         originUser = GsonUtils.INSTANCE.fromJson(
-            intent.getStringExtra(USER_SIMPLE_KEY),
-            UserSimple::class.java
+            intent.getStringExtra(VIEWER_KEY),
+            UserLogin::class.java
         )
+
+        postClient = Retrofit.getInstance().create(PostClient::class.java)
 
         setRandomHint()
         setUserPhoto()
@@ -77,43 +90,107 @@ class WritingActivity : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.tv_action_save).setOnClickListener {
-            // TODO: Enviar ok se conseguir salvar no banco
             val text = binding.etCreatePostText.text.toString()
 
-            val intent = Intent()
-
-            if (originPostId > 0) {
-                intent.putExtra(
-                    USER_NEW_COMMENT_KEY,
-                    GsonUtils.INSTANCE.toJson(CommentSimple(
-                        1,
-                        text,
-                        "",
-                        0,
-                        originUser,
-                        0,
-                        false
-                    ))
-                )
-            } else {
-                intent.putExtra(
-                    USER_NEW_POST_KEY,
-                    GsonUtils.INSTANCE.toJson(PostSimple(
-                        1,
-                        text,
-                        "",
-                        0,
-                        originUser,
+            if (originPostId < 1) {
+                val createPost = postClient.createPost(
+                    CreatePost(
+                        originUser.id,
                         null,
-                        0,
-                        0,
-                        false
-                    ))
+                        text,
+                        ""
+                    )
                 )
-            }
 
-            setResult(RESULT_OK, intent)
-            finish()
+                createPost.enqueue(object : Callback<Long> {
+                    override fun onResponse(call: Call<Long>, response: Response<Long>) {
+                        if (response.code() in 200..299) {
+                            val intent = Intent()
+
+                            intent.putExtra(
+                                USER_NEW_POST_KEY,
+                                GsonUtils.INSTANCE.toJson(
+                                    PostSimple(
+                                        response.body()!!,
+                                        text,
+                                        "",
+                                        0,
+                                        UserSimple(
+                                            originUser.id,
+                                            originUser.name,
+                                            originUser.profilePic,
+                                            originUser.leader
+                                        ),
+                                        null,
+                                        0,
+                                        0,
+                                        false
+                                    )
+                                )
+                            )
+
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        } else {
+                            showError(getString(R.string.posting_eror))
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Long>, t: Throwable) {
+                        showError(getString(R.string.posting_eror))
+                    }
+                })
+            } else {
+                val createComment = postClient.createComment(
+                    originPostId,
+                    CreateComment(
+                        originUser.id,
+                        text,
+                        ""
+                    )
+                )
+
+                createComment.enqueue(object : Callback<Long> {
+                    override fun onResponse(call: Call<Long>, response: Response<Long>) {
+                        if (response.code() in 200..299) {
+                            val intent = Intent()
+
+                            intent.putExtra(
+                                USER_NEW_COMMENT_KEY,
+                                GsonUtils.INSTANCE.toJson(
+                                    CommentSimple(
+                                        response.body()!!,
+                                        text,
+                                        "",
+                                        0,
+                                        UserSimple(
+                                            originUser.id,
+                                            originUser.name,
+                                            originUser.profilePic,
+                                            originUser.leader
+                                        ),
+                                        0,
+                                        false
+                                    )
+                                )
+                            )
+
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        } else {
+                            showError(getString(R.string.commenting_error))
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Long>, t: Throwable) {
+                        showError(getString(R.string.commenting_error))
+                    }
+                })
+            }
         }
+    }
+
+    private fun showError(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 }

@@ -27,4 +27,6 @@
     <string name="profile_error">Erro ao buscar perfil</string>
     <string name="nothing_here">Ainda não há nada por aqui</string>
     <string name="saving_error">Erro ao salvar alterações</string>
+    <string name="posting_eror">Erro ao criar post</string>
+    <string name="commenting_error">Erro ao criar comentário</string>
 </resources>

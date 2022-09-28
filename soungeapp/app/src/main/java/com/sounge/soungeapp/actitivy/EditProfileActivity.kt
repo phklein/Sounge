@@ -110,7 +110,6 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun showSavingError() {
         Toast.makeText(applicationContext, R.string.saving_error, Toast.LENGTH_LONG).show()
-        onBackPressed()
     }
 
     private fun setCurrentInfo() {

@@ -19,10 +19,6 @@ import com.sounge.soungeapp.actitivy.MainActivity.Constants.PROFILE_OWNER_ID_KEY
 import com.sounge.soungeapp.actitivy.WritingActivity
 import com.sounge.soungeapp.actitivy.WritingActivity.Constants.USER_NEW_POST_KEY
 import com.sounge.soungeapp.adapter.PostAdapter
-import com.sounge.soungeapp.response.PostSimple
-import com.sounge.soungeapp.response.UserLogin
-import com.sounge.soungeapp.response.UserPage
-import com.sounge.soungeapp.response.UserSimple
 import com.sounge.soungeapp.databinding.FragmentProfileBinding
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.COMMENT_CREATION_REQUEST_CODE
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.NEW_COMMENT_AMOUNT_KEY
@@ -31,8 +27,11 @@ import com.sounge.soungeapp.fragment.ProfileFragment.Constants.ORIGIN_POST_POSIT
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.POST_WRITING_REQUEST_CODE
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.PROFILE_EDIT_REQUEST_CODE
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.USER_PAGE_KEY
-import com.sounge.soungeapp.fragment.ProfileFragment.Constants.USER_SIMPLE_KEY
+import com.sounge.soungeapp.fragment.ProfileFragment.Constants.VIEWER_KEY
 import com.sounge.soungeapp.listeners.PostEventListener
+import com.sounge.soungeapp.response.PostSimple
+import com.sounge.soungeapp.response.UserLogin
+import com.sounge.soungeapp.response.UserPage
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.GsonUtils
@@ -63,7 +62,7 @@ class ProfileFragment : Fragment(), PostEventListener {
         const val ORIGIN_POST_KEY = "originPost"
         const val ORIGIN_POST_POSITION_KEY = "originPostPosition"
         const val USER_PAGE_KEY = "userPage"
-        const val USER_SIMPLE_KEY = "userSimple"
+        const val VIEWER_KEY = "userSimple"
         const val NEW_COMMENT_AMOUNT_KEY = "newCommentAmount"
     }
 
@@ -256,12 +255,8 @@ class ProfileFragment : Fragment(), PostEventListener {
         binding.fabWritePost.setOnClickListener {
             val intent = Intent(requireActivity(), WritingActivity::class.java)
             intent.putExtra(
-                USER_SIMPLE_KEY,
-                GsonUtils.INSTANCE.toJson(
-                    UserSimple(
-                        userPage.id, userPage.name, userPage.profilePic, userPage.isLeader
-                    )
-                )
+                VIEWER_KEY,
+                GsonUtils.INSTANCE.toJson(viewer)
             )
             startActivityForResult(intent, POST_WRITING_REQUEST_CODE)
         }
@@ -292,15 +287,8 @@ class ProfileFragment : Fragment(), PostEventListener {
             position
         )
         intent.putExtra(
-            USER_SIMPLE_KEY,
-            GsonUtils.INSTANCE.toJson(
-                UserSimple(
-                    1,
-                    "Danielzinho do Rock",
-                    "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
-                    true
-                )
-            )
+            VIEWER_KEY,
+            GsonUtils.INSTANCE.toJson(viewer)
         )
         startActivityForResult(intent, COMMENT_CREATION_REQUEST_CODE)
     }

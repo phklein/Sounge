@@ -19,7 +19,7 @@ import com.sounge.soungeapp.fragment.ProfileFragment
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.NEW_COMMENT_AMOUNT_KEY
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.ORIGIN_POST_KEY
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.ORIGIN_POST_POSITION_KEY
-import com.sounge.soungeapp.fragment.ProfileFragment.Constants.USER_SIMPLE_KEY
+import com.sounge.soungeapp.fragment.ProfileFragment.Constants.VIEWER_KEY
 import com.sounge.soungeapp.listeners.CommentEventListener
 import com.sounge.soungeapp.utils.GsonUtils
 
@@ -46,7 +46,7 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
         originPostPosition = intent.getIntExtra(ORIGIN_POST_POSITION_KEY, -1)
 
         viewer = GsonUtils.INSTANCE.fromJson(
-            intent.getStringExtra(USER_SIMPLE_KEY),
+            intent.getStringExtra(VIEWER_KEY),
             UserSimple::class.java
         )
 
@@ -146,7 +146,7 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
                 originPost.id
             )
             intent.putExtra(
-                USER_SIMPLE_KEY,
+                VIEWER_KEY,
                 GsonUtils.INSTANCE.toJson(viewer)
             )
             startActivityForResult(intent, ProfileFragment.Constants.POST_WRITING_REQUEST_CODE)

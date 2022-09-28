@@ -12,8 +12,8 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
-import com.sounge.soungeapp.response.PostSimple
 import com.sounge.soungeapp.listeners.PostEventListener
+import com.sounge.soungeapp.response.PostSimple
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.FormatUtils
@@ -98,7 +98,7 @@ internal class PostAdapter(
             Picasso.get().load(R.drawable.ic_blank_profile).into(holder.ivPostOwnerPicture)
         }
 
-        if (item.text.isNotEmpty()) {
+        if (item.text?.isNotEmpty() == true) {
             holder.tvPostText.text = item.text
         } else {
             holder.tvPostText.visibility = View.GONE
