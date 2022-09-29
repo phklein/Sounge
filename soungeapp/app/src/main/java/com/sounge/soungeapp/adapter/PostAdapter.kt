@@ -14,24 +14,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.listeners.PostEventListener
 import com.sounge.soungeapp.response.PostSimple
-import com.sounge.soungeapp.rest.Retrofit
-import com.sounge.soungeapp.rest.UserClient
+import com.sounge.soungeapp.response.UserLogin
 import com.sounge.soungeapp.utils.FormatUtils
 import com.sounge.soungeapp.utils.ImageUtils
 import com.squareup.picasso.Picasso
 
 internal class PostAdapter(
     private val itemsList: List<PostSimple>,
+    private val viewer: UserLogin,
     private val context: Context,
     private val postEventListener: PostEventListener
 ) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     internal inner class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var postId: Long = 0
-        var userId: Long? = null
-        var groupId: Long? = null
-        var hasLiked: Boolean = false
-
         val ivPostOwnerPicture: ImageView = view.findViewById(R.id.iv_post_owner_picture)
         val tvPostOwnerName: TextView = view.findViewById(R.id.tv_post_owner_name)
         val tvHoursPast: TextView = view.findViewById(R.id.tv_hours_past)
@@ -45,31 +40,6 @@ internal class PostAdapter(
         val ivLikeButton: ImageView = view.findViewById(R.id.iv_like_button)
         val ivCommentButton: ImageView = view.findViewById(R.id.iv_comment_button)
         val ivShareButton: ImageView = view.findViewById(R.id.iv_share_button)
-
-        init {
-            // TODO: Setar listener se for dono do post
-            view.setOnLongClickListener {
-
-                val popupMenu = PopupMenu(view.context, it)
-                popupMenu.inflate(R.menu.post_context_menu)
-
-                popupMenu.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.mi_edit_post -> {
-                            // TODO: Abrir tela de edição de post
-                        }
-
-                        R.id.mi_delete_post -> {
-                            // TODO: Excluir post
-                        }
-                    }
-                    true
-                }
-
-                popupMenu.show()
-                true
-            }
-        }
     }
 
     @NonNull
@@ -81,10 +51,6 @@ internal class PostAdapter(
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val item = itemsList[position]
-        holder.postId = item.id
-        holder.userId = item.user?.id
-        holder.groupId = item.group?.id
-        holder.hasLiked = item.hasLiked
 
         holder.tvPostOwnerName.text = if (item.user != null)
             item.user?.name else item.group?.name
@@ -126,9 +92,7 @@ internal class PostAdapter(
         setListeners(holder, position, item)
     }
 
-    private fun setListeners(holder: PostViewHolder, position: Int, post: PostSimple) {
-        val userClient = Retrofit.getInstance().create(UserClient::class.java)
-
+    private fun setListeners(holder: PostViewHolder, position: Int, item: PostSimple) {
         holder.ivPostMedia.setOnClickListener {
             ImageUtils.popupImage(
                 holder.ivPostMedia.drawable,
@@ -137,7 +101,7 @@ internal class PostAdapter(
         }
 
         holder.ivLikeButton.setOnClickListener {
-            if (holder.hasLiked) {
+            if (item.hasLiked) {
                 postEventListener.onUnlike(position)
             } else {
                 postEventListener.onLike(position)
@@ -145,7 +109,30 @@ internal class PostAdapter(
         }
 
         holder.ivCommentButton.setOnClickListener {
-            postEventListener.onClickComment(post, position)
+            postEventListener.onClickComment(item, position)
+        }
+
+        if (item.id == viewer.id) {
+            holder.itemView.setOnLongClickListener {
+                val popupMenu = PopupMenu(context, it)
+                popupMenu.inflate(R.menu.post_context_menu)
+
+                popupMenu.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.mi_edit_post -> {
+                            // TODO: Abrir tela de edição de post
+                        }
+
+                        R.id.mi_delete_post -> {
+                            // TODO: Excluir post
+                        }
+                    }
+                    true
+                }
+
+                popupMenu.show()
+                true
+            }
         }
     }
 

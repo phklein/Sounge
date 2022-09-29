@@ -29,4 +29,8 @@
     <string name="saving_error">Erro ao salvar alterações</string>
     <string name="posting_eror">Erro ao criar post</string>
     <string name="commenting_error">Erro ao criar comentário</string>
+    <string name="get_comments_error">Erro ao buscar comentários</string>
+    <string name="like_comment_error">Erro ao reagir ao comentário</string>
+    <string name="unlike_error">Erro ao remover reação</string>
+    <string name="like_post_error">Erro ao reagir ao post</string>
 </resources>

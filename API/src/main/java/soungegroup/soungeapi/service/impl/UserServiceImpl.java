@@ -1,11 +1,12 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.adapter.UserAdapter;
 import soungegroup.soungeapi.enums.*;
 import soungegroup.soungeapi.model.*;
@@ -13,22 +14,19 @@ import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.*;
 import soungegroup.soungeapi.response.*;
 import soungegroup.soungeapi.service.UserService;
-import soungegroup.soungeapi.util.Fila;
-import soungegroup.soungeapi.util.ListaObj;
 import soungegroup.soungeapi.util.LocationUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private static final Pageable PAGEABLE = Pageable.ofSize(30);
-
     private final UserRepository repository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
@@ -38,7 +36,6 @@ public class UserServiceImpl implements UserService {
     private final NotificationRepository notificationRepository;
 
     private final UserAdapter adapter;
-    private final PostAdapter postAdapter;
     private final List<UserLoginResponse> sessions;
 
     private final LocationUtil locationUtil;
@@ -235,8 +232,6 @@ public class UserServiceImpl implements UserService {
 
                     notificationRepository.save(likedNotification);
                     notificationRepository.save(likerNotification);
-
-                    // TODO: Send notification to liker and liked users
                 }
 
                 return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -329,21 +324,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Void> addGenre(Long id, GenreName genreName) {
-        Optional<Genre> genreOptional = genreRepository.findByName(genreName);
+    public ResponseEntity<Void> updateGenres(Long id, List<GenreName> toAdd, List<GenreName> toRemove) {
+        List<Genre> genresToAdd = genreRepository.findByNameIn(toAdd);
+        List<Genre> genresToRemove = genreRepository.findByNameIn(toRemove);
 
-        if (genreOptional.isPresent()) {
-            Genre genre = genreOptional.get();
-
+        if (genresToAdd.size() == toAdd.size() && genresToRemove.size() == toRemove.size()) {
             Optional<User> userOptional = repository.findById(id);
 
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
+                List<Genre> genres = user.getLikedGenres();
 
-                if (!user.getLikedGenres().contains(genre)) {
-                    user.getLikedGenres().add(genre);
+                if (genres.containsAll(genresToRemove) &&
+                        genres.stream().noneMatch(genresToAdd::contains)) {
+                    genres.removeAll(genresToRemove);
+                    genres.addAll(genresToAdd);
                     repository.save(user);
-                    return ResponseEntity.status(HttpStatus.CREATED).build();
+                    return ResponseEntity.status(HttpStatus.OK).build();
                 }
 
                 return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
@@ -356,85 +353,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Void> addRole(Long id, RoleName roleName) {
-        Optional<Role> roleOptional = roleRepository.findByName(roleName);
-
-        if (roleOptional.isPresent()) {
-            Role role = roleOptional.get();
-
-            Optional<User> userOptional = repository.findById(id);
-
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-
-                if (!user.getRoles().contains(role)) {
-                    user.getRoles().add(role);
-                    repository.save(user);
-                    return ResponseEntity.status(HttpStatus.CREATED).build();
-                }
-
-                return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
-            }
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
-
-    @Override
-    public ResponseEntity<Void> removeGenre(Long id, GenreName genreName) {
-        Optional<Genre> genreOptional = genreRepository.findByName(genreName);
-
-        if (genreOptional.isPresent()) {
-            Genre genre = genreOptional.get();
-
-            Optional<User> userOptional = repository.findById(id);
-
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-
-                if (user.getLikedGenres().contains(genre)) {
-                    user.getLikedGenres().remove(genre);
-                    repository.save(user);
-                    return ResponseEntity.status(HttpStatus.OK).build();
-                }
-
-            }
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
-
-    @Override
-    public ResponseEntity<Void> removeRole(Long id, RoleName roleName) {
-        Optional<Role> roleOptional = roleRepository.findByName(roleName);
-
-        if (roleOptional.isPresent()) {
-            Role role = roleOptional.get();
-
-            Optional<User> userOptional = repository.findById(id);
-
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-
-                if (user.getRoles().contains(role)) {
-                    user.getRoles().remove(role);
-                    repository.save(user);
-                    return ResponseEntity.status(HttpStatus.OK).build();
-                }
-            }
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
-
-    @Override
-    public ResponseEntity<Void> updateMultipleRoles(Long id, List<RoleName> toAdd, List<RoleName> toRemove) {
+    public ResponseEntity<Void> updateRoles(Long id, List<RoleName> toAdd, List<RoleName> toRemove) {
         List<Role> rolesToAdd = roleRepository.findByNameIn(toAdd);
         List<Role> rolesToRemove = roleRepository.findByNameIn(toRemove);
 
@@ -446,7 +365,7 @@ public class UserServiceImpl implements UserService {
                 List<Role> roles = user.getRoles();
 
                 if (roles.containsAll(rolesToRemove) &&
-                roles.stream().noneMatch(rolesToAdd::contains)) {
+                        roles.stream().noneMatch(rolesToAdd::contains)) {
                     roles.removeAll(rolesToRemove);
                     roles.addAll(rolesToAdd);
                     repository.save(user);
@@ -502,7 +421,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<Void> updateLocation(Long id, UserLocationUpdateRequest body) {
         Optional<User> userOptional = repository.findById(id);
 
-        if (userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setLatitude(body.getLatitude());
             user.setLongitude(body.getLongitude());
@@ -532,30 +451,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> export() {
-        List<UserCsvResponse> users = repository.findAllCsv(PAGEABLE);
-        ListaObj<UserCsvResponse> responseObj = new ListaObj<>(users.size());
-        for (UserCsvResponse csv: users) {
-            responseObj.adiciona(csv);
-        }
-        StringBuilder report = new StringBuilder();
-        for (int i = 0; i < responseObj.getTamanho(); i++) {
-            UserCsvResponse u = responseObj.getElemento(i);
-            report.append(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\r%n",
-                    u.getId(), u.getName(), u.getSex(), u.getDescription(),
-                    u.getBirthDate(), u.getState(), u.getCity(),
-                    u.getLatitude(), u.getLongitude(),
-                    u.isLeader(), u.getSkillLevel()));
-        }
-        return users.isEmpty() ?
-                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                ResponseEntity.status(HttpStatus.OK)
-                .header("content-type", "text/csv")
-                .header("content-disposition", "filename=\"users.csv\"")
-                .body(report.toString());
-    }
-
-    @Override
     public ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id) {
         Optional<User> viewerOptional = repository.findById(viewerId);
         Optional<UserProfileResponse> profileOptional = repository.findProfile(id);
@@ -565,7 +460,11 @@ public class UserServiceImpl implements UserService {
             User viewer = viewerOptional.get();
             UserProfileResponse profile = profileOptional.get();
 
-            profile.setPostList(postAdapter.toSimpleResponseList(postRepository.findByUserIdOrdered(profile.getId(), PAGEABLE)));
+            profile.setPostList(postRepository.findByUserIdOrdered(
+                    profile.getId(),
+                    Pageable.ofSize(50)
+                            .withPage(0))
+            );
             profile.setLikedGenres(genreRepository.findByUserId(profile.getId()));
             profile.setRoles(roleRepository.findByUserId(profile.getId()));
 
@@ -583,12 +482,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<List<UserContactResponse>> findContactList(Long id) {
+    public ResponseEntity<Page<UserContactResponse>> findContactList(Long id, Integer page) {
         Optional<User> userOptional = repository.findById(id);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            List<UserContactResponse> contacts = repository.findContactList(user.getId());
+            Page<UserContactResponse> contacts = repository.findContactList(
+                    user.getId(), Pageable.ofSize(50).withPage(page));
 
             notificationRepository.setMatchesViewedByUser(user);
 
@@ -601,13 +501,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<List<NotificationSimpleResponse>> findNotifications(Long id) {
+    public ResponseEntity<Page<NotificationSimpleResponse>> findNotifications(Long id, Integer page) {
         Optional<User> userOptional = repository.findById(id);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            List<NotificationSimpleResponse> notifications =
-                    notificationRepository.findByUser(user, PAGEABLE);
+            Page<NotificationSimpleResponse> notifications =
+                    notificationRepository.findByUser(user,
+                            Pageable.ofSize(50).withPage(page));
 
             notificationRepository.setViewedByUser(user);
 
@@ -626,7 +527,7 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             List<NotificationSimpleResponse> newMatches =
-                    notificationRepository.findNewMatchesByUser(user, PAGEABLE);
+                    notificationRepository.findNewMatchesByUser(user);
 
             notificationRepository.setMatchesViewedByUser(user);
 
@@ -639,14 +540,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<List<UserMatchResponse>> findMatchList(Long id,
+    public ResponseEntity<Page<UserMatchResponse>> findMatchList(Long id,
                                                                  Integer maxDistance,
                                                                  Optional<Integer> minAge,
                                                                  Optional<Integer> maxAge,
                                                                  Optional<GenreName> genreName,
                                                                  Optional<RoleName> roleName,
                                                                  Optional<Sex> sex,
-                                                                 Optional<SkillLevel> skillLevel) {
+                                                                 Optional<SkillLevel> skillLevel,
+                                                                 Integer page) {
         Optional<User> userOptional = repository.findById(id);
 
         if (userOptional.isPresent()) {
@@ -660,7 +562,7 @@ public class UserServiceImpl implements UserService {
                     Optional.empty() :
                     Optional.of(LocalDate.now().minusYears(minAge.get()));
 
-            List<UserMatchResponse> matchList = repository.findMatchList(
+            Page<UserMatchResponse> matchList = repository.findMatchList(
                     user.getId(),
                     user.getLikedUsers(),
                     minBirthDate.orElse(null),
@@ -669,7 +571,7 @@ public class UserServiceImpl implements UserService {
                     roleName.orElse(null),
                     sex.orElse(null),
                     skillLevel.orElse(null),
-                    PAGEABLE
+                    Pageable.ofSize(50).withPage(0)
             );
 
             matchList.forEach(u -> {
@@ -701,15 +603,10 @@ public class UserServiceImpl implements UserService {
                 u.setRelevance(relevance);
             });
 
-            matchList = matchList.stream()
+            matchList = new PageImpl<>(matchList.stream()
                     .filter(u -> u.getDistance() <= maxDistance)
                     .sorted(Comparator.comparing(UserMatchResponse::getRelevance).reversed())
-                    .collect(Collectors.toList());
-            Fila<UserMatchResponse> fila = new Fila<>(matchList.size());
-            for (UserMatchResponse userAux :
-                 matchList) {
-                fila.insert(userAux);
-            }
+                    .collect(Collectors.toList()));
 
             return matchList.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
@@ -720,8 +617,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<List<UserSimpleResponse>> findByName(String nameLike) {
-        List<UserSimpleResponse> foundUsers = repository.findByName(nameLike, PAGEABLE);
+    public ResponseEntity<Page<UserSimpleResponse>> findByName(String nameLike) {
+        Page<UserSimpleResponse> foundUsers = repository.findByName(nameLike,
+                Pageable.ofSize(50).withPage(0));
 
         return foundUsers.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
@@ -729,8 +627,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private Boolean hasSession(Long id) {
-        for (UserLoginResponse ulr: sessions) {
-            if (ulr.getId().equals(id)){
+        for (UserLoginResponse ulr : sessions) {
+            if (ulr.getId().equals(id)) {
                 return true;
             }
         }
@@ -739,16 +637,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<Void> updateProfilePage(Long id, UserProfileUpdateRequest body) {
-       Optional<User> userOptional = repository.findById(id);
+        Optional<User> userOptional = repository.findById(id);
 
-       if (userOptional.isPresent()){
-           User user = userOptional.get();
-           user.setSpotifyID(body.getSpotifyID());
-           user.setDescription(body.getDescription());
-           user.setName(body.getName());
-           repository.save(user);
-           return ResponseEntity.status(HttpStatus.OK).build();
-       }
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setSpotifyID(body.getSpotifyID());
+            user.setDescription(body.getDescription());
+            user.setName(body.getName());
+            repository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
@@ -757,7 +655,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<Void> updatePicture(Long id, PictureUpdateRequest body) {
         Optional<User> userOptional = repository.findById(id);
 
-        if (userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setProfilePic(body.getProfilePic());
             user.setBanner(body.getBanner());
@@ -771,7 +669,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<Void> updatePassword(Long id, UserPasswordUpdateRequest body) {
         Optional<User> userOptional = repository.findById(id);
 
-        if (userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             User user = userOptional.get();
 
             if (body.getOldPassword().equals(user.getPassword())) {
@@ -784,75 +682,6 @@ public class UserServiceImpl implements UserService {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    @Override
-
-    public ResponseEntity<UserSimpleResponse> roolbackLike(Long id, Long idLike) {
-        unlikeUser(id,idLike);
-        Optional<User> userOptional = repository.findById(id);
-        AtomicReference<User> returnUser = null;
-        if (userOptional.get() != null){
-             sessions.forEach(userLoginResponse -> {
-                 if (userLoginResponse.getId().equals(id)) {
-                    returnUser.set(userOptional.get().getRecentLikes().pop());
-                 }
-             });
-        } else {
-                 return  ResponseEntity.status(404).build();
-            }
-            UserSimpleResponse response = adapter.toUserSimpleResponse(returnUser.get());
-            return ResponseEntity.status(200).body(response);
-        }
-
-    @Override
-    public ResponseEntity download(Long id) {
-        Optional<User> userOptional = repository.findById(id);
-
-        String body = "";
-        String finalString = "";
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            String header = "00USERS2022";
-            header += LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-mm-yyyy HH:mm:ss"));
-            header += "00USERS2022";
-            finalString += header;
-            body += "02";
-            body += String.format("%-100.100s", user.getEmail());
-            body += String.format("%-45.45s", user.getPassword());
-            body += String.format("%-100.100s", user.getName());
-            body += String.format("%-3.3s", user.getSex().name());
-            body += String.format("%-256.256s", user.getDescription());
-            body += String.format("%-10.10s", user.getBirthDate().toString());
-            body += String.format("%-2.2s", user.getState().name());
-            body += String.format("%-100.100s", user.getCity());
-            body += String.format("%020.20f", user.getLatitude());
-            body += String.format("%020.20f", user.getLongitude());
-            body += String.format("%-5.5s", Boolean.toString(user.isLeader()));
-            body += String.format("%-12.12s", user.getSkillLevel().name());
-            body += "\n";
-            if (user.getGroup() != null) {
-             Optional<Group> groupOptional = groupRepository.findById(user.getGroup().getId());
-                if (groupOptional.isPresent()) {
-                    Group group = groupOptional.get();
-                    body += "03";
-                    body += String.format("%-45.45s", group.getName());
-                    body += String.format("%-45.45s", group.getDescription());
-                    body += String.format("%-10.10s", group.getCreationDate().toString());
-                    body += String.format("%-10.10s", group.getGenres().stream().findFirst().get().getName());
-                }
-            }
-            finalString += body;
-            String trailer = "01";
-            trailer += "02";
-            finalString += trailer;
-            return ResponseEntity.ok()
-                    .header("Content-Disposition", "attachment; filename=\"" + "user" + ".txt\"")
-                    .header("Content-Type", "text/plain")
-                    .body(finalString);
-        }else{
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
     }
 }
 

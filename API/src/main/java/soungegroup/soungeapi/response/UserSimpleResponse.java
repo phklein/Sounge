@@ -1,9 +1,6 @@
 package soungegroup.soungeapi.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 public class UserSimpleResponse {
     @Schema(description = "ID do usuário",
             example = "6")

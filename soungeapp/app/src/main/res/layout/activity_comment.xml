@@ -19,6 +19,21 @@
         android:src="@drawable/ic_add_post"
         app:tint="@color/white"/>
 
+    <TextView
+        android:id="@+id/tv_no_comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:text="@string/nothing_here"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_post_comments"
         android:layout_width="match_parent"

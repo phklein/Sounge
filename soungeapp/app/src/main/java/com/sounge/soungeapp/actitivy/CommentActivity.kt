@@ -3,17 +3,16 @@ package com.sounge.soungeapp.actitivy
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.actitivy.WritingActivity.Constants.USER_NEW_COMMENT_KEY
 import com.sounge.soungeapp.adapter.CommentAdapter
-import com.sounge.soungeapp.response.CommentSimple
-import com.sounge.soungeapp.response.PostSimple
-import com.sounge.soungeapp.response.UserSimple
 import com.sounge.soungeapp.databinding.ActivityCommentBinding
 import com.sounge.soungeapp.fragment.ProfileFragment
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.NEW_COMMENT_AMOUNT_KEY
@@ -21,7 +20,17 @@ import com.sounge.soungeapp.fragment.ProfileFragment.Constants.ORIGIN_POST_KEY
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.ORIGIN_POST_POSITION_KEY
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.VIEWER_KEY
 import com.sounge.soungeapp.listeners.CommentEventListener
+import com.sounge.soungeapp.response.CommentSimple
+import com.sounge.soungeapp.response.PostSimple
+import com.sounge.soungeapp.response.UserSimple
+import com.sounge.soungeapp.rest.PostClient
+import com.sounge.soungeapp.rest.Retrofit
+import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.GsonUtils
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CommentActivity : AppCompatActivity(), CommentEventListener {
     private lateinit var binding: ActivityCommentBinding
@@ -32,6 +41,9 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
     private lateinit var commentList: MutableList<CommentSimple>
 
     private lateinit var adapter: CommentAdapter
+
+    private lateinit var userClient: UserClient
+    private lateinit var postClient: PostClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,11 +62,39 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
             UserSimple::class.java
         )
 
-        commentList = mockComments()
-        setupRecyclerView()
+        userClient = Retrofit.getInstance().create(UserClient::class.java)
+        postClient = Retrofit.getInstance().create(PostClient::class.java)
 
-        setupActionBar()
-        setListeners()
+        getComments()
+    }
+
+    private fun getComments() {
+        val comments = postClient.getComments(originPost.id)
+
+        comments.enqueue(object : Callback<MutableList<CommentSimple>> {
+            override fun onResponse(
+                call: Call<MutableList<CommentSimple>>,
+                response: Response<MutableList<CommentSimple>>
+            ) {
+                if (response.code() in 200..299) {
+                    setupRecyclerView(response.code() == 204)
+
+                    setupActionBar()
+                    setListeners()
+                    return
+                } else {
+                    showError(getString(R.string.get_comments_error))
+                }
+            }
+
+            override fun onFailure(call: Call<MutableList<CommentSimple>>, t: Throwable) {
+                showError(getString(R.string.get_comments_error))
+            }
+        })
+    }
+
+    private fun showError(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
     }
 
     @SuppressLint("SetTextI18n")
@@ -87,55 +127,20 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
         finish()
     }
 
-    private fun mockComments(): MutableList<CommentSimple> {
-        val commentList = ArrayList<CommentSimple>()
+    private fun setupRecyclerView(empty: Boolean) {
+        if (empty) {
+            binding.tvNoComments.visibility = View.VISIBLE
+            binding.rvPostComments.visibility = View.GONE
+        } else {
+            val layoutManager = LinearLayoutManager(this)
 
-        commentList.add(
-            CommentSimple(
-                1,
-                "Olha, eu odeio rock mas seu show até q foi bom",
-                "",
-                20,
-                UserSimple(
-                    1,
-                    "Fulaninho do Pagode",
-                    "",
-                    true
-                ),
-                10,
-                true
-            )
-        )
+            adapter = CommentAdapter(commentList, this, this)
 
-        commentList.add(
-            CommentSimple(
-                1,
-                "Mano, com todo respeito, mas vc parece o shrek kk",
-                "https://www.ofuxico.com.br/wp-content/uploads/2021/08/shrek-sessao-da-tarde-1.jpg",
-                20,
-                UserSimple(
-                    1,
-                    "Luiza do Funk",
-                    "https://s2.glbimg.com/ms-q0_2dw7-DhcfJheDbep5eWVI=/0x0:1365x2048/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_ba3db981e6d14e54bb84be31c923b00c/internal_photos/bs/2021/S/A/qLhXuMT8mnhOgfAvnzBg/2021-12-15-autoral-funk0365.jpg",
-                    true
-                ),
-                10_000_000,
-                true
-            )
-        )
+            binding.rvPostComments.layoutManager = layoutManager
+            binding.rvPostComments.adapter = adapter
 
-        return commentList
-    }
-
-    private fun setupRecyclerView() {
-        val layoutManager = LinearLayoutManager(this)
-
-        adapter = CommentAdapter(commentList, this, this)
-
-        binding.rvPostComments.layoutManager = layoutManager
-        binding.rvPostComments.adapter = adapter
-
-        registerForContextMenu(binding.rvPostComments)
+            registerForContextMenu(binding.rvPostComments)
+        }
     }
 
     private fun setListeners() {
@@ -155,16 +160,44 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
 
     override fun onLike(position: Int) {
         val comment = adapter.getItem(position)
-        comment.likeCount++
-        comment.hasLiked = true
-        adapter.notifyItemChanged(position, comment)
+        val likeComment = userClient.likeComment(viewer.id, comment.id)
+
+        likeComment.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() in 200..299) {
+                    comment.likeCount++
+                    comment.hasLiked = true
+                    adapter.notifyItemChanged(position, comment)
+                } else {
+                    showError(getString(R.string.like_comment_error))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                showError(getString(R.string.like_comment_error))
+            }
+        })
     }
 
     override fun onUnlike(position: Int) {
         val comment = adapter.getItem(position)
-        comment.likeCount--
-        comment.hasLiked = false
-        adapter.notifyItemChanged(position, comment)
+        val unlikeComment = userClient.unlikeComment(viewer.id, comment.id)
+
+        unlikeComment.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() in 200..299) {
+                    comment.likeCount--
+                    comment.hasLiked = false
+                    adapter.notifyItemChanged(position, comment)
+                } else {
+                    showError(getString(R.string.unlike_error))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                showError(getString(R.string.unlike_error))
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

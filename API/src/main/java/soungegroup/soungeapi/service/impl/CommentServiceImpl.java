@@ -1,6 +1,7 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +21,11 @@ import soungegroup.soungeapi.response.CommentSimpleResponse;
 import soungegroup.soungeapi.service.CommentService;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
-    private static final Pageable PAGEABLE = Pageable.ofSize(10);
-
     private final CommentRepository repository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
@@ -65,14 +63,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public ResponseEntity<List<CommentSimpleResponse>> findByPostId(Optional<Long> viewerId, Long postId) {
+    public ResponseEntity<Page<CommentSimpleResponse>> findByPostId(Optional<Long> viewerId, Long postId, Integer page) {
         Optional<Post> postOptional = postRepository.findById(postId);
 
         if (postOptional.isPresent()) {
 
-            List<CommentSimpleResponse> comments = repository.findByPostOrdered(
+            Page<CommentSimpleResponse> comments = repository.findByPostOrdered(
                     postOptional.get(),
-                    PAGEABLE
+                    Pageable.ofSize(50).withPage(page)
             );
 
 

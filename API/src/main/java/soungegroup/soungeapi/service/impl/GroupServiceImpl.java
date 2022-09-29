@@ -1,6 +1,8 @@
 package soungegroup.soungeapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +12,7 @@ import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.enums.RoleName;
 import soungegroup.soungeapi.model.Group;
 import soungegroup.soungeapi.model.User;
-import soungegroup.soungeapi.repository.GenreRepository;
-import soungegroup.soungeapi.repository.GroupRepository;
-import soungegroup.soungeapi.repository.RoleRepository;
-import soungegroup.soungeapi.repository.UserRepository;
+import soungegroup.soungeapi.repository.*;
 import soungegroup.soungeapi.request.GroupPageUpdateRequest;
 import soungegroup.soungeapi.request.GroupSaveRequest;
 import soungegroup.soungeapi.request.PictureUpdateRequest;
@@ -23,19 +22,18 @@ import soungegroup.soungeapi.response.GroupSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 import soungegroup.soungeapi.util.LocationUtil;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
-    private static final Pageable PAGEABLE = Pageable.ofSize(10);
-
     private final GroupRepository repository;
     private final GenreRepository genreRepository;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     private final GroupAdapter adapter;
 
@@ -59,14 +57,20 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseEntity<GroupPageResponse> findPageById(Long id) {
+    public ResponseEntity<GroupPageResponse> findPageById(Long viewerId, Long id) {
+        Optional<User> viewerOptional = userRepository.findById(viewerId);
         Optional<GroupPageResponse> pageOptional = repository.findPage(id);
 
-        if (pageOptional.isPresent()) {
+        if (viewerOptional.isPresent() && pageOptional.isPresent()) {
+            User viewer = viewerOptional.get();
             GroupPageResponse page = pageOptional.get();
 
             page.setGenres(genreRepository.findByGroupId(page.getId()));
             page.setUsers(userRepository.findByGroupId(page.getId()));
+            page.setPostList(postRepository.findByGroupIdOrdered(viewerId,
+                    Pageable.ofSize(50).withPage(0)));
+            page.getPostList().forEach(p -> p.setHasLiked(viewer.getLikedPosts().stream()
+                    .anyMatch(lp -> lp.getId().equals(p.getId()))));
 
             return ResponseEntity.status(HttpStatus.OK).body(page);
         }
@@ -75,25 +79,26 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseEntity<List<GroupMatchResponse>> findMatchList(Long userId,
+    public ResponseEntity<Page<GroupMatchResponse>> findMatchList(Long userId,
                                                                   Integer maxDistance,
                                                                   Optional<GenreName> genreName,
                                                                   Optional<Integer> minSize,
                                                                   Optional<Integer> maxSize,
-                                                                  Optional<RoleName> missingRoleName) {
+                                                                  Optional<RoleName> missingRoleName,
+                                                                  Integer page) {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
-            List<GroupMatchResponse> matchList = repository.findMatchList(
+            Page<GroupMatchResponse> matchList = repository.findMatchList(
                     user.getId(),
                     user.getLikedUsers(),
                     genreName.orElse(null),
                     minSize.orElse(null),
                     maxSize.orElse(null),
                     missingRoleName.orElse(null),
-                    PAGEABLE
+                    Pageable.ofSize(50).withPage(page)
             );
 
             matchList.forEach(gp -> {
@@ -123,10 +128,10 @@ public class GroupServiceImpl implements GroupService {
                 gp.setRelevance(relevance);
             });
 
-            matchList = matchList.stream()
+            matchList = new PageImpl<>(matchList.stream()
                     .filter(u -> u.getLeaderDistance() <= maxDistance)
                     .sorted(Comparator.comparing(GroupMatchResponse::getRelevance).reversed())
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()));
 
             return matchList.isEmpty() ?
                     ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
@@ -137,8 +142,9 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseEntity<List<GroupSimpleResponse>> findByName(String nameLike) {
-        List<GroupSimpleResponse> foundGroups = repository.findByName(nameLike, PAGEABLE);
+    public ResponseEntity<Page<GroupSimpleResponse>> findByName(String nameLike, Integer page) {
+        Page<GroupSimpleResponse> foundGroups = repository.findByName(nameLike,
+                Pageable.ofSize(50).withPage(page));
 
         return foundGroups.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
@@ -188,18 +194,5 @@ public class GroupServiceImpl implements GroupService {
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    @Override
-    public ResponseEntity<Long> upload(Long id, String file) {
-        GroupSaveRequest group = new GroupSaveRequest();
-        group.setLeaderId(id);
-        group.setName(file.substring(0,9));
-        group.setDescription(file.substring(10,20));
-        group.setCreationDate(LocalDate.now());
-        List<GenreName> genres = new ArrayList<>();
-        genres.add(GenreName.valueOf(file.substring(21,25)));
-        group.setGenres(genres);
-        return this.save(group);
     }
 }

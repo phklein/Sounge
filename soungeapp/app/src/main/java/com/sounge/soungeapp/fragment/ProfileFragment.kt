@@ -40,6 +40,7 @@ import com.sounge.soungeapp.utils.SharedPreferencesUtils
 import com.sounge.soungeapp.utils.SharedPreferencesUtils.Constants.USER_INFO_PREFS
 import com.sounge.soungeapp.utils.SharedPreferencesUtils.Constants.USER_LOGIN_KEY
 import com.squareup.picasso.Picasso
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -137,6 +138,7 @@ class ProfileFragment : Fragment(), PostEventListener {
             // TODO: Receber viewer da main activity
             adapter = PostAdapter(
                 userPage.postList,
+                viewer,
                 requireActivity(),
                 this
             )
@@ -264,16 +266,48 @@ class ProfileFragment : Fragment(), PostEventListener {
 
     override fun onLike(position: Int) {
         val post = adapter.getItem(position)
-        post.likeCount++
-        post.hasLiked = true
-        adapter.notifyItemChanged(position, post)
+        val likePost = userClient.likePost(viewer.id, post.id)
+
+        likePost.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() in 200..299) {
+                    post.likeCount++
+                    post.hasLiked = true
+                    adapter.notifyItemChanged(position, post)
+                } else {
+                    showError(getString(R.string.like_post_error))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                showError(getString(R.string.like_post_error))
+            }
+        })
     }
 
     override fun onUnlike(position: Int) {
         val post = adapter.getItem(position)
-        post.likeCount--
-        post.hasLiked = false
-        adapter.notifyItemChanged(position, post)
+        val unlikePost = userClient.unlikePost(viewer.id, post.id)
+
+        unlikePost.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() in 200..299) {
+                    post.likeCount--
+                    post.hasLiked = false
+                    adapter.notifyItemChanged(position, post)
+                } else {
+                    showError(getString(R.string.unlike_error))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                showError(getString(R.string.unlike_error))
+            }
+        })
+    }
+
+    private fun showError(msg: String) {
+        Toast.makeText(requireActivity(), msg, Toast.LENGTH_LONG).show()
     }
 
     override fun onClickComment(post: PostSimple, position: Int) {

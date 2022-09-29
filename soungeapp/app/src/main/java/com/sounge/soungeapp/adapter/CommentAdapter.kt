@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.response.CommentSimple
 import com.sounge.soungeapp.listeners.CommentEventListener
+import com.sounge.soungeapp.response.UserLogin
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.FormatUtils
@@ -26,10 +27,6 @@ internal class CommentAdapter(private val itemsList: List<CommentSimple>,
     RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
     internal inner class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var commentId: Long = 0
-        var userId: Long = 0
-        var hasLiked: Boolean = false
-
         val ivCommentOwnerPicture: ImageView = view.findViewById(R.id.iv_comment_owner_picture)
         val tvCommentOwnerName: TextView = view.findViewById(R.id.tv_comment_owner_name)
         val tvCommentHoursPast: TextView = view.findViewById(R.id.tv_comment_hours_past)
@@ -41,27 +38,6 @@ internal class CommentAdapter(private val itemsList: List<CommentSimple>,
 
         val ivCommentLikeButton: ImageView = view.findViewById(R.id.iv_comment_like_button)
         val ivCommentShareButton: ImageView = view.findViewById(R.id.iv_comment_share_button)
-
-        init {
-            // TODO: Setar listener se é o dono do comentário
-            view.setOnLongClickListener {
-
-                val popupMenu = PopupMenu(view.context, it)
-                popupMenu.inflate(R.menu.comment_context_menu)
-
-                popupMenu.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.mi_delete_comment -> {
-                            // TODO: Excluir comentário
-                        }
-                    }
-                    true
-                }
-
-                popupMenu.show()
-                true
-            }
-        }
     }
 
     @NonNull
@@ -73,9 +49,6 @@ internal class CommentAdapter(private val itemsList: List<CommentSimple>,
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         val item = itemsList[position]
-        holder.commentId = item.id
-        holder.userId = item.user.id
-        holder.hasLiked = item.hasLiked
 
         holder.tvCommentOwnerName.text = item.user.name
         holder.tvCommentHoursPast.text = FormatUtils.formatHoursPast(item.hoursPast)
@@ -110,10 +83,10 @@ internal class CommentAdapter(private val itemsList: List<CommentSimple>,
             )
         }
 
-        setListeners(holder, position)
+        setListeners(holder, position, item)
     }
 
-    private fun setListeners(holder: CommentViewHolder, position: Int) {
+    private fun setListeners(holder: CommentViewHolder, position: Int, item: CommentSimple) {
         val userClient = Retrofit.getInstance().create(UserClient::class.java)
 
         holder.ivCommentMedia.setOnClickListener {
@@ -124,7 +97,7 @@ internal class CommentAdapter(private val itemsList: List<CommentSimple>,
         }
 
         holder.ivCommentLikeButton.setOnClickListener {
-            if (holder.hasLiked) {
+            if (item.hasLiked) {
                 commentEventListener.onUnlike(position)
             } else {
                 commentEventListener.onLike(position)
@@ -133,6 +106,24 @@ internal class CommentAdapter(private val itemsList: List<CommentSimple>,
 
         holder.ivCommentShareButton.setOnClickListener {
             // TODO: Abrir janela de compartilhamento
+        }
+
+        holder.itemView.setOnLongClickListener {
+
+            val popupMenu = PopupMenu(context, it)
+            popupMenu.inflate(R.menu.comment_context_menu)
+
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.mi_delete_comment -> {
+                        // TODO: Excluir comentário
+                    }
+                }
+                true
+            }
+
+            popupMenu.show()
+            true
         }
     }
 

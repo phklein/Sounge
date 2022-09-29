@@ -11,10 +11,8 @@ import soungegroup.soungeapi.repository.RoleRepository;
 import soungegroup.soungeapi.repository.SignatureRepository;
 import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
-import soungegroup.soungeapi.response.UserSimpleResponse;
 import soungegroup.soungeapi.util.Mapper;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -55,9 +53,6 @@ public class UserAdapter {
         user.setSignature(signatureRepository.save(signature));
 
         return user;
-    }
-    public UserSimpleResponse toUserSimpleResponse (User user){
-        return Mapper.INSTANCE.map(user, UserSimpleResponse.class);
     }
 
     public UserLoginResponse toLoginResponse(User user) {

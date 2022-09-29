@@ -1,6 +1,5 @@
 package com.sounge.soungeapp.rest
 
-import com.sounge.soungeapp.enums.RoleName
 import com.sounge.soungeapp.request.UpdateProfile
 import com.sounge.soungeapp.request.UpdateRole
 import com.sounge.soungeapp.response.UserPage
@@ -38,5 +37,17 @@ interface UserClient {
     fun unlikePost(
         @Path("id") id: Long,
         @Path("postId") postId: Long,
+    ): Call<ResponseBody>
+
+    @POST("/users/{id}/likeComment/{commentId}")
+    fun likeComment(
+        @Path("id") id: Long,
+        @Path("commentId") commentId: Long,
+    ): Call<ResponseBody>
+
+    @DELETE("/users/{id}/likeComment/{commentId}")
+    fun unlikeComment(
+        @Path("id") id: Long,
+        @Path("commentId") commentId: Long,
     ): Call<ResponseBody>
 }

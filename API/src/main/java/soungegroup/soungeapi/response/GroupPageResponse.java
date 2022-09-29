@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -40,6 +41,10 @@ public class GroupPageResponse {
     @Schema(description = "URL da foto do banner",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
     private String banner;
+    @ArraySchema(uniqueItems = true, arraySchema =
+    @Schema(description = "Posts feitos pelos usuários da banda",
+            oneOf = PostSimpleResponse.class))
+    private Page<PostSimpleResponse> postList;
 
     public GroupPageResponse(Long id,
                              String name,

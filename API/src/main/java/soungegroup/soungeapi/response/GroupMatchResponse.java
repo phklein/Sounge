@@ -7,7 +7,6 @@ import soungegroup.soungeapi.enums.State;
 import soungegroup.soungeapi.model.Signature;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 
