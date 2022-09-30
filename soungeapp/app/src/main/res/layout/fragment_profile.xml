@@ -11,13 +11,13 @@
         android:id="@+id/fab_write_post"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="@color/main_purple"
         android:src="@drawable/ic_add_post"
-        app:tint="@color/white"/>
+        app:tint="@color/white" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv_main_profile_view"
@@ -121,8 +121,8 @@
                     android:id="@+id/cl_profile_band_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="24dp"
                     android:paddingStart="24dp"
+                    android:paddingTop="24dp"
                     android:paddingEnd="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -159,27 +159,27 @@
                 android:id="@+id/v_profile_info_divider"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:alpha="0.3"
                 android:layout_marginTop="24dp"
+                android:alpha="0.3"
                 android:background="@color/medium_gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cl_profile_info" />
-            
+
             <TextView
                 android:id="@+id/tv_no_posts"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:padding="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/v_profile_info_divider"
                 android:text="@string/nothing_here"
                 android:textAlignment="center"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_profile_info_divider" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_profile_posts"

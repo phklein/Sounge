@@ -39,6 +39,7 @@ public interface UserService {
     ResponseEntity<Void> delete(Long id, String password);
 
     ResponseEntity<UserProfileResponse> getProfileById(Long viewerId, Long id);
+    ResponseEntity<Page<PostSimpleResponse>> getPostsById(Long viewerId, Long id, Integer page);
     ResponseEntity<Page<UserContactResponse>> findContactList(Long id, Integer page);
     ResponseEntity<Page<NotificationSimpleResponse>> findNotifications(Long id, Integer Page);
     ResponseEntity<List<NotificationSimpleResponse>> checkNewMatches(Long id);

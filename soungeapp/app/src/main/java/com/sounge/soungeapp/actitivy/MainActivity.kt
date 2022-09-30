@@ -6,10 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.actitivy.MainActivity.Constants.PROFILE_OWNER_ID_KEY
-import com.sounge.soungeapp.response.UserLogin
 import com.sounge.soungeapp.databinding.ActivityMainBinding
 import com.sounge.soungeapp.fragment.FeedFragment
 import com.sounge.soungeapp.fragment.ProfileFragment
+import com.sounge.soungeapp.response.UserLogin
 import com.sounge.soungeapp.utils.GsonUtils
 import com.sounge.soungeapp.utils.SharedPreferencesUtils
 import com.sounge.soungeapp.utils.SharedPreferencesUtils.Constants.USER_INFO_PREFS

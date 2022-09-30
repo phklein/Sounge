@@ -10,6 +10,7 @@ import soungegroup.soungeapi.request.PictureUpdateRequest;
 import soungegroup.soungeapi.response.GroupMatchResponse;
 import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
+import soungegroup.soungeapi.response.PostSimpleResponse;
 
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ public interface GroupService {
     ResponseEntity<Long> save(GroupSaveRequest body);
 
     ResponseEntity<GroupPageResponse> findPageById(Long viewerId, Long id);
+    ResponseEntity<Page<PostSimpleResponse>> getPostsById(Long viewerId, Long id, Integer page);
     ResponseEntity<Page<GroupMatchResponse>> findMatchList(Long userId,
                                                            Integer maxDistance,
                                                            Optional<GenreName> genreName,

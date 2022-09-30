@@ -17,16 +17,16 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse(" +
             "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, SIZE(uwl), SIZE(c)) " +
             "FROM Post p " +
-            "JOIN p.usersWhoLiked uwl " +
-            "JOIN p.comments c " +
+            "LEFT JOIN p.usersWhoLiked uwl " +
+            "LEFT JOIN p.comments c " +
             "ORDER BY p.postDateTime DESC")
     Page<PostSimpleResponse> findAllOrdered(Pageable pageable);
 
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse(" +
             "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, SIZE(uwl), SIZE(c)) " +
             "FROM Post p " +
-            "JOIN p.usersWhoLiked uwl " +
-            "JOIN p.comments c " +
+            "LEFT JOIN p.usersWhoLiked uwl " +
+            "LEFT JOIN p.comments c " +
             "JOIN p.genres g " +
             "WHERE g IN :genres " +
             "OR p.user IN :users " +
@@ -38,8 +38,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse(" +
             "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, SIZE(uwl), SIZE(c)) " +
             "FROM Post p " +
-            "JOIN p.usersWhoLiked uwl " +
-            "JOIN p.comments c " +
+            "LEFT JOIN p.usersWhoLiked uwl " +
+            "LEFT JOIN p.comments c " +
             "JOIN p.genres g " +
             "WHERE (g.name = :genreName OR :genreName IS NULL) " +
             "AND (p.postDateTime >= :startDateTime OR :startDateTime IS NULL) " +
@@ -55,8 +55,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse(" +
             "p.id, p.text, p.mediaUrl, p.postDateTime, p.user, SIZE(uwl), SIZE(c)) " +
             "FROM Post p " +
-            "JOIN p.usersWhoLiked uwl " +
-            "JOIN p.comments c " +
+            "LEFT JOIN p.usersWhoLiked uwl " +
+            "LEFT JOIN p.comments c " +
             "WHERE p.user.id = :userId " +
             "ORDER BY p.postDateTime DESC")
     Page<PostSimpleResponse> findByUserIdOrdered(Long userId,
@@ -65,9 +65,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.PostSimpleResponse( " +
             "p.id, p.text, p.mediaUrl, p.postDateTime, p.group, SIZE(uwl), SIZE(c)) " +
             "FROM Post p " +
-            "JOIN p.usersWhoLiked uwl " +
-            "JOIN p.comments c " +
-            "WHERE p.group.id = :userId " +
+            "LEFT JOIN p.usersWhoLiked uwl " +
+            "LEFT JOIN p.comments c " +
+            "WHERE p.group.id = :groupId " +
             "ORDER BY p.postDateTime DESC")
     Page<PostSimpleResponse> findByGroupIdOrdered(Long groupId,
                                                   Pageable pageable);

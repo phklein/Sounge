@@ -12,6 +12,7 @@ import soungegroup.soungeapi.request.PictureUpdateRequest;
 import soungegroup.soungeapi.response.GroupMatchResponse;
 import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
+import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 
 import javax.validation.Valid;
@@ -33,6 +34,13 @@ public class GroupController {
     public ResponseEntity<GroupPageResponse> findById(@RequestParam Long viewerId,
                                                       @PathVariable Long id) {
         return service.findPageById(viewerId, id);
+    }
+
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<Page<PostSimpleResponse>> getPostsById(@RequestParam Long viewerId,
+                                                                 @PathVariable Long id,
+                                                                 @RequestParam Integer page) {
+        return service.getPostsById(viewerId, id, page);
     }
 
     @GetMapping("/match")

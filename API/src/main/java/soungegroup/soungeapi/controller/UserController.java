@@ -36,6 +36,13 @@ public class UserController {
         return service.getProfileById(viewerId, id);
     }
 
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<Page<PostSimpleResponse>> getPostsById(@RequestParam Long viewerId,
+                                                                 @PathVariable Long id,
+                                                                 @RequestParam Integer page) {
+        return service.getPostsById(viewerId, id, page);
+    }
+
     @GetMapping("{id}/match")
     public ResponseEntity<Page<UserMatchResponse>> findMatchList(@PathVariable Long id,
                                                                  @RequestParam Integer maxDistance,
@@ -123,13 +130,13 @@ public class UserController {
         return service.unlikePost(id, postId);
     }
 
-    @PostMapping("/{id}/likeComment/{postId}")
+    @PostMapping("/{id}/likeComment/{commentId}")
     public ResponseEntity<Void> likeComment(@PathVariable Long id,
                                             @PathVariable Long commentId) {
         return service.likeComment(id, commentId);
     }
 
-    @DeleteMapping("/{id}/likeComment/{postId}")
+    @DeleteMapping("/{id}/likeComment/{commentId}")
     public ResponseEntity<Void> unlikeComment(@PathVariable Long id,
                                               @PathVariable Long commentId) {
         return service.unlikeComment(id, commentId);

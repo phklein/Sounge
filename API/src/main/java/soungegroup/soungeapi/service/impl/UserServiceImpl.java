@@ -114,13 +114,17 @@ public class UserServiceImpl implements UserService {
                 user.getLikedPosts().add(post);
                 repository.save(user);
 
-                Notification notification = new Notification();
-                notification.setType(NotificationType.LIKE);
-                notification.setSender(user);
-                notification.setReceiver(post.getUser());
-                notification.setCreationDateTime(LocalDateTime.now());
-                notification.setText(String.format("%s deu like em seu post", user.getName()));
-                notificationRepository.save(notification);
+                Thread notificationThread = new Thread(() -> {
+                    Notification notification = new Notification();
+                    notification.setType(NotificationType.LIKE);
+                    notification.setSender(user);
+                    notification.setReceiver(post.getUser());
+                    notification.setCreationDateTime(LocalDateTime.now());
+                    notification.setText(String.format("%s deu like em seu post", user.getName()));
+                    notificationRepository.save(notification);
+                });
+
+                notificationThread.start();
 
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
@@ -164,13 +168,17 @@ public class UserServiceImpl implements UserService {
                 user.getLikedComments().add(comment);
                 repository.save(user);
 
-                Notification notification = new Notification();
-                notification.setType(NotificationType.LIKE);
-                notification.setSender(user);
-                notification.setReceiver(comment.getUser());
-                notification.setCreationDateTime(LocalDateTime.now());
-                notification.setText(String.format("%s deu like em seu comentário", user.getName()));
-                notificationRepository.save(notification);
+                Thread notificationThread = new Thread(() -> {
+                    Notification notification = new Notification();
+                    notification.setType(NotificationType.LIKE);
+                    notification.setSender(user);
+                    notification.setReceiver(comment.getUser());
+                    notification.setCreationDateTime(LocalDateTime.now());
+                    notification.setText(String.format("%s deu like em seu comentário", user.getName()));
+                    notificationRepository.save(notification);
+                });
+
+                notificationThread.start();
 
                 return ResponseEntity.status(HttpStatus.CREATED).build();
             }
@@ -216,22 +224,26 @@ public class UserServiceImpl implements UserService {
                 repository.save(liker);
 
                 if (liked.getLikedUsers().contains(liker)) {
-                    Notification likedNotification = new Notification();
-                    likedNotification.setType(NotificationType.MATCH);
-                    likedNotification.setSender(liker);
-                    likedNotification.setReceiver(liked);
-                    likedNotification.setCreationDateTime(LocalDateTime.now());
-                    likedNotification.setText(String.format("Você sintonizou com %s", liker.getName()));
+                    Thread notificationThread = new Thread(() -> {
+                        Notification likedNotification = new Notification();
+                        likedNotification.setType(NotificationType.MATCH);
+                        likedNotification.setSender(liker);
+                        likedNotification.setReceiver(liked);
+                        likedNotification.setCreationDateTime(LocalDateTime.now());
+                        likedNotification.setText(String.format("Você sintonizou com %s", liker.getName()));
 
-                    Notification likerNotification = new Notification();
-                    likerNotification.setType(NotificationType.MATCH);
-                    likerNotification.setSender(liked);
-                    likerNotification.setReceiver(liker);
-                    likerNotification.setCreationDateTime(LocalDateTime.now());
-                    likerNotification.setText(String.format("Você sintonizou com %s", liked.getName()));
+                        Notification likerNotification = new Notification();
+                        likerNotification.setType(NotificationType.MATCH);
+                        likerNotification.setSender(liked);
+                        likerNotification.setReceiver(liker);
+                        likerNotification.setCreationDateTime(LocalDateTime.now());
+                        likerNotification.setText(String.format("Você sintonizou com %s", liked.getName()));
 
-                    notificationRepository.save(likedNotification);
-                    notificationRepository.save(likerNotification);
+                        notificationRepository.save(likedNotification);
+                        notificationRepository.save(likerNotification);
+                    });
+
+                    notificationThread.start();
                 }
 
                 return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -482,6 +494,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<Page<PostSimpleResponse>> getPostsById(Long viewerId, Long id, Integer page) {
+        Optional<User> viewerOptional = repository.findById(viewerId);
+
+        if (viewerOptional.isPresent() && repository.existsById(id)) {
+            User viewer = viewerOptional.get();
+
+            Page<PostSimpleResponse> postList = postRepository.findByUserIdOrdered(id,
+                    Pageable.ofSize(50).withPage(page));
+
+            postList.forEach(p -> p.setHasLiked(viewer.getLikedPosts().stream()
+                    .anyMatch(lp -> lp.getId().equals(p.getId()))));
+
+            return ResponseEntity.status(HttpStatus.OK).body(postList);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
     public ResponseEntity<Page<UserContactResponse>> findContactList(Long id, Integer page) {
         Optional<User> userOptional = repository.findById(id);
 
@@ -492,9 +523,7 @@ public class UserServiceImpl implements UserService {
 
             notificationRepository.setMatchesViewedByUser(user);
 
-            return contacts.isEmpty() ?
-                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                    ResponseEntity.status(HttpStatus.OK).body(contacts);
+            return ResponseEntity.status(HttpStatus.OK).body(contacts);
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -512,9 +541,7 @@ public class UserServiceImpl implements UserService {
 
             notificationRepository.setViewedByUser(user);
 
-            return notifications.isEmpty() ?
-                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                    ResponseEntity.status(HttpStatus.OK).body(notifications);
+            return ResponseEntity.status(HttpStatus.OK).body(notifications);
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -608,9 +635,7 @@ public class UserServiceImpl implements UserService {
                     .sorted(Comparator.comparing(UserMatchResponse::getRelevance).reversed())
                     .collect(Collectors.toList()));
 
-            return matchList.isEmpty() ?
-                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                    ResponseEntity.status(HttpStatus.OK).body(matchList);
+            return ResponseEntity.status(HttpStatus.OK).body(matchList);
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -621,9 +646,7 @@ public class UserServiceImpl implements UserService {
         Page<UserSimpleResponse> foundUsers = repository.findByName(nameLike,
                 Pageable.ofSize(50).withPage(0));
 
-        return foundUsers.isEmpty() ?
-                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                ResponseEntity.status(HttpStatus.OK).body(foundUsers);
+        return ResponseEntity.status(HttpStatus.OK).body(foundUsers);
     }
 
     private Boolean hasSession(Long id) {

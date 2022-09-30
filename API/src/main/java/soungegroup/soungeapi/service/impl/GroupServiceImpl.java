@@ -19,6 +19,7 @@ import soungegroup.soungeapi.request.PictureUpdateRequest;
 import soungegroup.soungeapi.response.GroupMatchResponse;
 import soungegroup.soungeapi.response.GroupPageResponse;
 import soungegroup.soungeapi.response.GroupSimpleResponse;
+import soungegroup.soungeapi.response.PostSimpleResponse;
 import soungegroup.soungeapi.service.GroupService;
 import soungegroup.soungeapi.util.LocationUtil;
 
@@ -79,6 +80,25 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public ResponseEntity<Page<PostSimpleResponse>> getPostsById(Long viewerId, Long id, Integer page) {
+        Optional<User> viewerOptional = userRepository.findById(viewerId);
+
+        if (viewerOptional.isPresent() && repository.existsById(id)) {
+            User viewer = viewerOptional.get();
+
+            Page<PostSimpleResponse> postList = postRepository.findByUserIdOrdered(id,
+                    Pageable.ofSize(50).withPage(page));
+
+            postList.forEach(p -> p.setHasLiked(viewer.getLikedPosts().stream()
+                    .anyMatch(lp -> lp.getId().equals(p.getId()))));
+
+            return ResponseEntity.status(HttpStatus.OK).body(postList);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
     public ResponseEntity<Page<GroupMatchResponse>> findMatchList(Long userId,
                                                                   Integer maxDistance,
                                                                   Optional<GenreName> genreName,
@@ -133,9 +153,7 @@ public class GroupServiceImpl implements GroupService {
                     .sorted(Comparator.comparing(GroupMatchResponse::getRelevance).reversed())
                     .collect(Collectors.toList()));
 
-            return matchList.isEmpty() ?
-                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                    ResponseEntity.status(HttpStatus.OK).body(matchList);
+            return ResponseEntity.status(HttpStatus.OK).body(matchList);
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -146,9 +164,7 @@ public class GroupServiceImpl implements GroupService {
         Page<GroupSimpleResponse> foundGroups = repository.findByName(nameLike,
                 Pageable.ofSize(50).withPage(page));
 
-        return foundGroups.isEmpty() ?
-                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                ResponseEntity.status(HttpStatus.OK).body(foundGroups);
+        return ResponseEntity.status(HttpStatus.OK).body(foundGroups);
     }
 
     @Override

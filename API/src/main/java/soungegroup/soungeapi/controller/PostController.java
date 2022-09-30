@@ -68,7 +68,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}/comments")
-    public ResponseEntity<Page<CommentSimpleResponse>> findCommentsByPostId(@RequestParam Optional<Long> viewerId,
+    public ResponseEntity<Page<CommentSimpleResponse>> findCommentsByPostId(@RequestParam Long viewerId,
                                                                             @PathVariable Long postId,
                                                                             @RequestParam Integer page) {
         return commentService.findByPostId(viewerId, postId, page);

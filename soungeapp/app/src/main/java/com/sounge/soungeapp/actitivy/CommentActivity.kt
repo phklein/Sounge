@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.actitivy.WritingActivity.Constants.USER_NEW_COMMENT_KEY
 import com.sounge.soungeapp.adapter.CommentAdapter
@@ -21,6 +22,7 @@ import com.sounge.soungeapp.fragment.ProfileFragment.Constants.ORIGIN_POST_POSIT
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.VIEWER_KEY
 import com.sounge.soungeapp.listeners.CommentEventListener
 import com.sounge.soungeapp.response.CommentSimple
+import com.sounge.soungeapp.response.Page
 import com.sounge.soungeapp.response.PostSimple
 import com.sounge.soungeapp.response.UserSimple
 import com.sounge.soungeapp.rest.PostClient
@@ -28,6 +30,7 @@ import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.GsonUtils
 import okhttp3.ResponseBody
+import org.w3c.dom.Comment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,7 +41,8 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
     private var originPostPosition: Int = -1
     private lateinit var originPost: PostSimple
     private lateinit var viewer: UserSimple
-    private lateinit var commentList: MutableList<CommentSimple>
+
+    private lateinit var commentPage: Page<CommentSimple>
 
     private lateinit var adapter: CommentAdapter
 
@@ -69,26 +73,28 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
     }
 
     private fun getComments() {
-        val comments = postClient.getComments(originPost.id)
+        val comments = postClient.getComments(originPost.id, viewer.id, 0)
 
-        comments.enqueue(object : Callback<MutableList<CommentSimple>> {
+        comments.enqueue(object : Callback<Page<CommentSimple>> {
             override fun onResponse(
-                call: Call<MutableList<CommentSimple>>,
-                response: Response<MutableList<CommentSimple>>
+                call: Call<Page<CommentSimple>>,
+                response: Response<Page<CommentSimple>>
             ) {
                 if (response.code() in 200..299) {
-                    setupRecyclerView(response.code() == 204)
+                    commentPage = response.body()!!
 
+                    setupRecyclerView(commentPage.isEmpty)
                     setupActionBar()
                     setListeners()
-                    return
                 } else {
                     showError(getString(R.string.get_comments_error))
+                    onBackPressed()
                 }
             }
 
-            override fun onFailure(call: Call<MutableList<CommentSimple>>, t: Throwable) {
+            override fun onFailure(call: Call<Page<CommentSimple>>, t: Throwable) {
                 showError(getString(R.string.get_comments_error))
+                onBackPressed()
             }
         })
     }
@@ -134,7 +140,7 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
         } else {
             val layoutManager = LinearLayoutManager(this)
 
-            adapter = CommentAdapter(commentList, this, this)
+            adapter = CommentAdapter(commentPage.content, this, this)
 
             binding.rvPostComments.layoutManager = layoutManager
             binding.rvPostComments.adapter = adapter
@@ -156,6 +162,48 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
             )
             startActivityForResult(intent, ProfileFragment.Constants.POST_WRITING_REQUEST_CODE)
         }
+
+        binding.rvPostComments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(v: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(v, newState)
+
+                if (!v.canScrollVertically(1) && !commentPage.last) {
+                    val comments = postClient.getComments(
+                        originPost.id, viewer.id, commentPage.number++)
+
+                    comments.enqueue(object : Callback<Page<CommentSimple>> {
+                        override fun onResponse(
+                            call: Call<Page<CommentSimple>>,
+                            response: Response<Page<CommentSimple>>
+                        ) {
+                            if (response.code() == 204) {
+                                //
+                            } else if (response.code() in 200..299) {
+                                val content = response.body()!!.content
+                                val start = content.size - 1
+
+                                content.forEach {
+                                    commentPage.content.add(it)
+                                }
+
+                                adapter.notifyItemRangeInserted(start, content.size)
+                            } else {
+                                showError(getString(R.string.post_error))
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Page<CommentSimple>>, t: Throwable) {
+                            showError(getString(R.string.post_error))
+                        }
+
+                    })
+                }
+
+                if (!v.canScrollVertically(0)) {
+                    getComments()
+                }
+            }
+        })
     }
 
     override fun onLike(position: Int) {
@@ -210,7 +258,7 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
                 CommentSimple::class.java
             )
 
-            commentList.add(0, newComment)
+            commentPage.content.add(0, newComment)
             adapter.notifyItemInserted(0);
             binding.rvPostComments.smoothScrollToPosition(0)
 

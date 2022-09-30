@@ -12,7 +12,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.CommentSimpleResponse(" +
             "c.id, c.text, c.mediaUrl, c.commentDateTime, c.user, SIZE(uwl)) " +
             "FROM Comment c " +
-            "JOIN c.usersWhoLiked uwl " +
+            "LEFT JOIN c.usersWhoLiked uwl " +
             "WHERE c.post = :post " +
             "ORDER BY c.commentDateTime DESC")
     Page<CommentSimpleResponse> findByPostOrdered(Post post, Pageable pageable);

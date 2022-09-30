@@ -63,7 +63,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public ResponseEntity<Page<CommentSimpleResponse>> findByPostId(Optional<Long> viewerId, Long postId, Integer page) {
+    public ResponseEntity<Page<CommentSimpleResponse>> findByPostId(Long viewerId, Long postId, Integer page) {
         Optional<Post> postOptional = postRepository.findById(postId);
 
         if (postOptional.isPresent()) {
@@ -74,20 +74,19 @@ public class CommentServiceImpl implements CommentService {
             );
 
 
-            if (viewerId.isPresent()) {
-                Optional<User> viewerOptional = userRepository.findById(viewerId.get());
+            Optional<User> viewerOptional = userRepository.findById(viewerId);
 
-                if (viewerOptional.isPresent()) {
-                    User viewer = viewerOptional.get();
+            if (viewerOptional.isPresent()) {
+                User viewer = viewerOptional.get();
 
-                    comments.forEach(c -> c.setHasLiked(viewer.getLikedComments().stream()
-                            .anyMatch(lc -> lc.getId().equals(c.getId()))));
-                }
+                comments.forEach(c -> c.setHasLiked(viewer.getLikedComments().stream()
+                        .anyMatch(lc -> lc.getId().equals(c.getId()))));
+
+                return ResponseEntity.status(HttpStatus.OK).body(comments);
+
             }
 
-            return comments.isEmpty() ?
-                    ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                    ResponseEntity.status(HttpStatus.OK).body(comments);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         }
 

@@ -7,11 +7,11 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.sounge.soungeapp.R
+import com.sounge.soungeapp.databinding.ActivityBandProfileBinding
+import com.sounge.soungeapp.enums.GenreName
 import com.sounge.soungeapp.response.GenreSimple
 import com.sounge.soungeapp.response.GroupPage
 import com.sounge.soungeapp.response.UserSimple
-import com.sounge.soungeapp.databinding.ActivityBandProfileBinding
-import com.sounge.soungeapp.enums.GenreName
 import com.sounge.soungeapp.utils.ImageUtils
 
 class BandProfileActivity : AppCompatActivity() {

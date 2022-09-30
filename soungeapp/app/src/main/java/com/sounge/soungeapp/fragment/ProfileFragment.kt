@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
 import android.widget.*
+import androidx.activity.result.IntentSenderRequest
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.actitivy.CommentActivity
 import com.sounge.soungeapp.actitivy.EditProfileActivity
@@ -29,6 +32,7 @@ import com.sounge.soungeapp.fragment.ProfileFragment.Constants.PROFILE_EDIT_REQU
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.USER_PAGE_KEY
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.VIEWER_KEY
 import com.sounge.soungeapp.listeners.PostEventListener
+import com.sounge.soungeapp.response.Page
 import com.sounge.soungeapp.response.PostSimple
 import com.sounge.soungeapp.response.UserLogin
 import com.sounge.soungeapp.response.UserPage
@@ -44,6 +48,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class ProfileFragment : Fragment(), PostEventListener {
     private lateinit var binding: FragmentProfileBinding
@@ -96,7 +101,7 @@ class ProfileFragment : Fragment(), PostEventListener {
                     showProfileInfo()
                     showTalentList()
                     showBandInfo()
-                    setupRecyclerView()
+                    setupRecyclerView(userPage.postList.isEmpty)
 
                     hideViewsIfViewerNotOwner()
 
@@ -109,13 +114,12 @@ class ProfileFragment : Fragment(), PostEventListener {
                     message = getString(R.string.profile_error)
                 }
 
-                Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                showError(message)
                 requireActivity().onBackPressed()
             }
 
             override fun onFailure(call: Call<UserPage>, t: Throwable) {
-                Toast.makeText(context, getString(R.string.profile_error),
-                    Toast.LENGTH_LONG).show()
+                showError(getString(R.string.profile_error))
                 requireActivity().onBackPressed()
             }
         })
@@ -128,8 +132,8 @@ class ProfileFragment : Fragment(), PostEventListener {
         }
     }
 
-    private fun setupRecyclerView() {
-        if (userPage.postList.isEmpty()) {
+    private fun setupRecyclerView(empty: Boolean) {
+        if (empty) {
             binding.tvNoPosts.visibility = View.VISIBLE
             binding.rvProfilePosts.visibility = View.GONE
         } else {
@@ -137,7 +141,7 @@ class ProfileFragment : Fragment(), PostEventListener {
 
             // TODO: Receber viewer da main activity
             adapter = PostAdapter(
-                userPage.postList,
+                userPage.postList.content,
                 viewer,
                 requireActivity(),
                 this
@@ -262,6 +266,45 @@ class ProfileFragment : Fragment(), PostEventListener {
             )
             startActivityForResult(intent, POST_WRITING_REQUEST_CODE)
         }
+
+        binding.nsvMainProfileView.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (!v.canScrollVertically(1) && !userPage.postList.last) {
+                val userPosts = userClient.getUserPosts(
+                    userPage.id, viewer.id, userPage.postList.number++)
+
+                userPosts.enqueue(object : Callback<Page<PostSimple>> {
+                    override fun onResponse(
+                        call: Call<Page<PostSimple>>,
+                        response: Response<Page<PostSimple>>
+                    ) {
+                        if (response.code() == 204) {
+                            //
+                        } else if (response.code() in 200..299) {
+                            val content = response.body()!!.content
+                            val start = content.size - 1
+
+                            content.forEach {
+                                userPage.postList.content.add(it)
+                            }
+
+                            adapter.notifyItemRangeInserted(start, content.size)
+                        } else {
+                            showError(getString(R.string.post_error))
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Page<PostSimple>>, t: Throwable) {
+                        showError(getString(R.string.post_error))
+                    }
+
+                })
+            }
+
+            if (!v.canScrollVertically(0)) {
+                getUserPage(userPage.id)
+            }
+        })
     }
 
     override fun onLike(position: Int) {
@@ -347,7 +390,7 @@ class ProfileFragment : Fragment(), PostEventListener {
                 PostSimple::class.java
             )
 
-            userPage.postList.add(0, newPost)
+            userPage.postList.content.add(0, newPost)
             adapter.notifyItemInserted(0)
             binding.rvProfilePosts.smoothScrollToPosition(0)
         } else if (requestCode == COMMENT_CREATION_REQUEST_CODE &&
@@ -356,7 +399,7 @@ class ProfileFragment : Fragment(), PostEventListener {
             val position = data!!.getIntExtra(ORIGIN_POST_POSITION_KEY, 0)
             val newCommentAmount = data.getIntExtra(NEW_COMMENT_AMOUNT_KEY, 0)
 
-            userPage.postList[position].commentCount = newCommentAmount
+            userPage.postList.content[position].commentCount = newCommentAmount
             adapter.notifyItemChanged(position)
         }
     }

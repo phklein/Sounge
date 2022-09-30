@@ -12,11 +12,11 @@ import com.sounge.soungeapp.actitivy.EditProfileActivity.Constants.USER_NEW_PROF
 import com.sounge.soungeapp.actitivy.EditProfileActivity.Constants.USER_TALENTS_KEY
 import com.sounge.soungeapp.actitivy.EditTalentsActivity.Constants.TALENTS_TO_ADD_KEY
 import com.sounge.soungeapp.actitivy.EditTalentsActivity.Constants.TALENTS_TO_REMOVE_KEY
-import com.sounge.soungeapp.response.RoleSimple
-import com.sounge.soungeapp.response.UserPage
 import com.sounge.soungeapp.databinding.ActivityEditProfileBinding
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.USER_PAGE_KEY
 import com.sounge.soungeapp.request.UpdateProfile
+import com.sounge.soungeapp.response.RoleSimple
+import com.sounge.soungeapp.response.UserPage
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.GsonUtils

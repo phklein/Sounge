@@ -16,5 +16,5 @@ data class UserPage (
     var roles: MutableList<RoleSimple>,
     var age: Int,
     var viewerProfile: Boolean,
-    var postList: MutableList<PostSimple>
+    var postList: Page<PostSimple>
 )
