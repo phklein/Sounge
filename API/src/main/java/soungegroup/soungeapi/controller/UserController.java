@@ -165,13 +165,13 @@ public class UserController {
         return service.leaveGroup(id);
     }
 
-    @PutMapping("/{id}/genres/multiple")
+    @PutMapping("/{id}/genres")
     public ResponseEntity<Void> updateGenres(@PathVariable Long id,
                                              @RequestBody GenreUpdateRequest body) {
         return service.updateGenres(id, body.getToAdd(), body.getToRemove());
     }
 
-    @PutMapping("/{id}/roles/multiple")
+    @PutMapping("/{id}/roles")
     public ResponseEntity<Void> updateRoles(@PathVariable Long id,
                                             @RequestBody RoleUpdateRequest body) {
         return service.updateRoles(id, body.getToAdd(), body.getToRemove());

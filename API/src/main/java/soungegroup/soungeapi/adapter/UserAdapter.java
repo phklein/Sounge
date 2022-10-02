@@ -13,6 +13,7 @@ import soungegroup.soungeapi.request.UserSaveRequest;
 import soungegroup.soungeapi.response.UserLoginResponse;
 import soungegroup.soungeapi.util.Mapper;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +47,7 @@ public class UserAdapter {
         }
 
         Signature signature = new Signature();
-//        signature.setExpiryDateTime(LocalDateTime.now());
+        signature.setExpiryDateTime(LocalDateTime.now());
 
         user.setLikedGenres(genres);
         user.setRoles(roles);

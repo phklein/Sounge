@@ -162,48 +162,6 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
             )
             startActivityForResult(intent, ProfileFragment.Constants.POST_WRITING_REQUEST_CODE)
         }
-
-        binding.rvPostComments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(v: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(v, newState)
-
-                if (!v.canScrollVertically(1) && !commentPage.last) {
-                    val comments = postClient.getComments(
-                        originPost.id, viewer.id, commentPage.number++)
-
-                    comments.enqueue(object : Callback<Page<CommentSimple>> {
-                        override fun onResponse(
-                            call: Call<Page<CommentSimple>>,
-                            response: Response<Page<CommentSimple>>
-                        ) {
-                            if (response.code() == 204) {
-                                //
-                            } else if (response.code() in 200..299) {
-                                val content = response.body()!!.content
-                                val start = content.size - 1
-
-                                content.forEach {
-                                    commentPage.content.add(it)
-                                }
-
-                                adapter.notifyItemRangeInserted(start, content.size)
-                            } else {
-                                showError(getString(R.string.post_error))
-                            }
-                        }
-
-                        override fun onFailure(call: Call<Page<CommentSimple>>, t: Throwable) {
-                            showError(getString(R.string.post_error))
-                        }
-
-                    })
-                }
-
-                if (!v.canScrollVertically(0)) {
-                    getComments()
-                }
-            }
-        })
     }
 
     override fun onLike(position: Int) {

@@ -2,19 +2,24 @@ package com.sounge.soungeapp.actitivy
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.webkit.URLUtil
 import android.widget.*
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.reflect.TypeToken
 import com.sounge.soungeapp.R
+import com.sounge.soungeapp.actitivy.EditProfileActivity.Constants.REQUEST_CODE_KEY
+import com.sounge.soungeapp.actitivy.EditProfileActivity.Constants.UPDATE_GENRES_REQUEST_CODE
+import com.sounge.soungeapp.actitivy.EditProfileActivity.Constants.UPDATE_TALENTS_REQUEST_CODE
+import com.sounge.soungeapp.actitivy.EditProfileActivity.Constants.USER_LIST_KEY
 import com.sounge.soungeapp.actitivy.EditProfileActivity.Constants.USER_NEW_PROFILE_KEY
-import com.sounge.soungeapp.actitivy.EditProfileActivity.Constants.USER_TALENTS_KEY
-import com.sounge.soungeapp.actitivy.EditTalentsActivity.Constants.TALENTS_TO_ADD_KEY
-import com.sounge.soungeapp.actitivy.EditTalentsActivity.Constants.TALENTS_TO_REMOVE_KEY
+import com.sounge.soungeapp.actitivy.EditProfileListsActivity.Constants.TO_ADD_KEY
+import com.sounge.soungeapp.actitivy.EditProfileListsActivity.Constants.TO_REMOVE_KEY
 import com.sounge.soungeapp.databinding.ActivityEditProfileBinding
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.USER_PAGE_KEY
 import com.sounge.soungeapp.request.UpdateProfile
+import com.sounge.soungeapp.response.GenreSimple
 import com.sounge.soungeapp.response.RoleSimple
 import com.sounge.soungeapp.response.UserPage
 import com.sounge.soungeapp.rest.Retrofit
@@ -34,7 +39,11 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var userClient: UserClient
 
     object Constants {
-        const val USER_TALENTS_KEY = "userTalents"
+        const val UPDATE_TALENTS_REQUEST_CODE = 1
+        const val UPDATE_GENRES_REQUEST_CODE = 2
+
+        const val REQUEST_CODE_KEY = "requestCode"
+        const val USER_LIST_KEY = "userList"
         const val USER_NEW_PROFILE_KEY = "userNewProfile"
     }
 
@@ -61,7 +70,7 @@ class EditProfileActivity : AppCompatActivity() {
         supportActionBar!!.setCustomView(R.layout.action_bar_edit)
 
         findViewById<TextView>(R.id.tv_action_cancel).setOnClickListener {
-            onBackPressed()
+            sendNewProfile()
         }
 
         findViewById<TextView>(R.id.tv_action_save).setOnClickListener {
@@ -71,7 +80,7 @@ class EditProfileActivity : AppCompatActivity() {
             if (newName != userPage.name || newDescription != userPage.description) {
                 updateProfile(newName, newDescription)
             } else {
-                onBackPressed()
+                sendNewProfile()
             }
         }
     }
@@ -87,15 +96,7 @@ class EditProfileActivity : AppCompatActivity() {
                     userPage.name = newName
                     userPage.description = newDescription
 
-                    val intent = Intent()
-
-                    intent.putExtra(
-                        USER_NEW_PROFILE_KEY,
-                        GsonUtils.INSTANCE.toJson(userPage)
-                    )
-
-                    setResult(RESULT_OK, intent)
-                    finish()
+                    sendNewProfile()
                     return
                 } else {
                     showSavingError()
@@ -106,6 +107,18 @@ class EditProfileActivity : AppCompatActivity() {
                 showSavingError()
             }
         })
+    }
+
+    private fun sendNewProfile() {
+        val intent = Intent()
+
+        intent.putExtra(
+            USER_NEW_PROFILE_KEY,
+            GsonUtils.INSTANCE.toJson(userPage)
+        )
+
+        setResult(RESULT_OK, intent)
+        finish()
     }
 
     private fun showSavingError() {
@@ -124,17 +137,43 @@ class EditProfileActivity : AppCompatActivity() {
         binding.etProfileName.setText(userPage.name)
         binding.etProfileDescription.setText(userPage.description)
 
+        showGenreList()
         showTalentList()
+    }
+
+    private fun showGenreList() {
+        binding.llEditGenreList.removeAllViews()
+
+        userPage.likedGenres.forEachIndexed { i, it ->
+            val talentCard = layoutInflater.inflate(R.layout.card, null)
+            talentCard.findViewById<ImageView>(R.id.iv_card_icon).visibility = View.GONE
+            talentCard.findViewById<TextView>(R.id.tv_card_name).text = it.name.s
+
+            binding.llEditGenreList.addView(talentCard)
+
+            if (userPage.likedGenres.size != i + 1) {
+                val space = Space(this)
+
+                val layoutParams = LinearLayout.LayoutParams(
+                    32,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+                space.layoutParams = layoutParams
+
+                binding.llEditGenreList.addView(space)
+            }
+        }
     }
 
     private fun showTalentList() {
         binding.llEditTalentList.removeAllViews()
 
         userPage.roles.forEachIndexed { i, it ->
-            val talentCard = layoutInflater.inflate(R.layout.card_talent, null)
-            talentCard.findViewById<ImageView>(R.id.iv_talent_icon)
+            val talentCard = layoutInflater.inflate(R.layout.card, null)
+            talentCard.findViewById<ImageView>(R.id.iv_card_icon)
                 .setImageResource(it.name.icon)
-            talentCard.findViewById<TextView>(R.id.tv_talent_name).text = it.name.s
+            talentCard.findViewById<TextView>(R.id.tv_card_name).text = it.name.s
 
             binding.llEditTalentList.addView(talentCard)
 
@@ -154,23 +193,32 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun setListeners() {
-        binding.ivEditProfileTalents.setOnClickListener {
-            val intent = Intent(this, EditTalentsActivity::class.java)
-            intent.putExtra(USER_TALENTS_KEY, GsonUtils.INSTANCE.toJson(userPage.roles))
-            startActivityForResult(intent, 1)
+        binding.ivEditProfileGenres.setOnClickListener {
+            val intent = Intent(this, EditProfileListsActivity::class.java)
+            intent.putExtra(USER_LIST_KEY, GsonUtils.INSTANCE.toJson(userPage.likedGenres))
+            intent.putExtra(REQUEST_CODE_KEY, UPDATE_GENRES_REQUEST_CODE)
+            startActivityForResult(intent, UPDATE_GENRES_REQUEST_CODE)
         }
+
+        binding.ivEditProfileTalents.setOnClickListener {
+            val intent = Intent(this, EditProfileListsActivity::class.java)
+            intent.putExtra(USER_LIST_KEY, GsonUtils.INSTANCE.toJson(userPage.roles))
+            intent.putExtra(REQUEST_CODE_KEY, UPDATE_TALENTS_REQUEST_CODE)
+            startActivityForResult(intent, UPDATE_TALENTS_REQUEST_CODE)
+        }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1 && resultCode == RESULT_OK) {
+        if (requestCode == UPDATE_TALENTS_REQUEST_CODE && resultCode == RESULT_OK) {
             val talentsToAdd = GsonUtils.INSTANCE.fromJson<List<RoleSimple>>(
-                data?.getStringExtra(TALENTS_TO_ADD_KEY),
+                data?.getStringExtra(TO_ADD_KEY),
                 object : TypeToken<List<RoleSimple>>() {}.type
             )
 
             val talentsToRemove = GsonUtils.INSTANCE.fromJson<List<RoleSimple>>(
-                data?.getStringExtra(TALENTS_TO_REMOVE_KEY),
+                data?.getStringExtra(TO_REMOVE_KEY),
                 object : TypeToken<List<RoleSimple>>() {}.type
             )
 
@@ -178,6 +226,21 @@ class EditProfileActivity : AppCompatActivity() {
             userPage.roles.removeAll(talentsToRemove)
 
             showTalentList()
+        } else if (requestCode == UPDATE_GENRES_REQUEST_CODE && resultCode == RESULT_OK) {
+            val genresToAdd = GsonUtils.INSTANCE.fromJson<List<GenreSimple>>(
+                data?.getStringExtra(TO_ADD_KEY),
+                object : TypeToken<List<GenreSimple>>() {}.type
+            )
+
+            val genresToRemove = GsonUtils.INSTANCE.fromJson<List<GenreSimple>>(
+                data?.getStringExtra(TO_REMOVE_KEY),
+                object : TypeToken<List<GenreSimple>>() {}.type
+            )
+
+            userPage.likedGenres.addAll(genresToAdd)
+            userPage.likedGenres.removeAll(genresToRemove)
+
+            showGenreList()
         }
     }
 }

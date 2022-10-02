@@ -1,7 +1,8 @@
 package com.sounge.soungeapp.rest
 
+import com.sounge.soungeapp.request.UpdateGenres
 import com.sounge.soungeapp.request.UpdateProfile
-import com.sounge.soungeapp.request.UpdateRole
+import com.sounge.soungeapp.request.UpdateRoles
 import com.sounge.soungeapp.response.Page
 import com.sounge.soungeapp.response.PostSimple
 import com.sounge.soungeapp.response.UserPage
@@ -29,11 +30,16 @@ interface UserClient {
         @Body body: UpdateProfile
     ): Call<ResponseBody>
 
-    @PUT("/users/{id}/roles/multiple")
-    @JvmSuppressWildcards
+    @PUT("/users/{id}/roles")
     fun updateTalents(
         @Path("id") id: Long,
-        @Body body: UpdateRole
+        @Body body: UpdateRoles
+    ): Call<ResponseBody>
+
+    @PUT("/users/{id}/genres")
+    fun updateGenres(
+        @Path("id") id: Long,
+        @Body body: UpdateGenres
     ): Call<ResponseBody>
 
     @POST("/users/{id}/likePost/{postId}")

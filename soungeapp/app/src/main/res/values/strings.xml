@@ -5,7 +5,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="posts">Posts</string>
     <string name="talents">Talentos</string>
-    <string name="band">Banda</string>
+    <string name="group">Grupo</string>
     <string name="not_in_band">Nenhuma banda para mostrar</string>
     <string name="error_unliking">Erro ao retirar reação</string>
     <string name="error_liking">Erro ao reagir ao post</string>
@@ -34,4 +34,9 @@
     <string name="unlike_error">Erro ao remover reação</string>
     <string name="like_post_error">Erro ao reagir ao post</string>
     <string name="post_error">Erro ao buscar posts</string>
+    <string name="about">Sobre</string>
+    <string name="musical_interests">Interesses Musicais</string>
+    <string name="loading_error">Erro ao carregar</string>
+    <string name="my_musical_interests">Meus Interesses Musicais</string>
+    <string name="other_musical_interests">Outros Interesses Musicais</string>
 </resources>

@@ -12,7 +12,7 @@ data class UserPage (
     var isOnline: Boolean,
     var skillLevel: SkillLevel,
     var group: GroupSimple,
-    var likedGenres: List<GenreSimple>,
+    var likedGenres: MutableList<GenreSimple>,
     var roles: MutableList<RoleSimple>,
     var age: Int,
     var viewerProfile: Boolean,

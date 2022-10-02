@@ -19,14 +19,14 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_my_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/my_talents"
                 android:textSize="18sp"
                 android:textStyle="bold" />
             
             <com.google.android.flexbox.FlexboxLayout
-                android:id="@+id/fbl_my_talents"
+                android:id="@+id/fbl_my_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -41,14 +41,14 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_other_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/other_talents"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <com.google.android.flexbox.FlexboxLayout
-                android:id="@+id/fbl_other_talents"
+                android:id="@+id/fbl_other_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"

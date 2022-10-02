@@ -7,13 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
 import android.widget.*
-import androidx.activity.result.IntentSenderRequest
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.actitivy.CommentActivity
 import com.sounge.soungeapp.actitivy.EditProfileActivity
@@ -32,7 +29,6 @@ import com.sounge.soungeapp.fragment.ProfileFragment.Constants.PROFILE_EDIT_REQU
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.USER_PAGE_KEY
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.VIEWER_KEY
 import com.sounge.soungeapp.listeners.PostEventListener
-import com.sounge.soungeapp.response.Page
 import com.sounge.soungeapp.response.PostSimple
 import com.sounge.soungeapp.response.UserLogin
 import com.sounge.soungeapp.response.UserPage
@@ -99,6 +95,7 @@ class ProfileFragment : Fragment(), PostEventListener {
                 if (response.code() in 200..299) {
                     userPage = response.body()!!
                     showProfileInfo()
+                    showGenreList()
                     showTalentList()
                     showBandInfo()
                     setupRecyclerView(userPage.postList.isEmpty)
@@ -139,7 +136,6 @@ class ProfileFragment : Fragment(), PostEventListener {
         } else {
             val layoutManager = LinearLayoutManager(requireActivity())
 
-            // TODO: Receber viewer da main activity
             adapter = PostAdapter(
                 userPage.postList.content,
                 viewer,
@@ -171,17 +167,45 @@ class ProfileFragment : Fragment(), PostEventListener {
         binding.tvProfileDescription.text = userPage.description
     }
 
+    private fun showGenreList() {
+        binding.llGenreList.removeAllViews()
+
+        binding.llProfileGenres.visibility = if (userPage.likedGenres.isEmpty())
+            View.GONE else View.VISIBLE
+
+        userPage.likedGenres.forEachIndexed { i, it ->
+            val talentCard = layoutInflater.inflate(R.layout.card, null)
+            talentCard.findViewById<ImageView>(R.id.iv_card_icon).visibility = View.GONE
+            talentCard.findViewById<TextView>(R.id.tv_card_name).text = it.name.s;
+
+            binding.llGenreList.addView(talentCard)
+
+            if (userPage.likedGenres.size != i + 1) {
+                val space = Space(context)
+
+                val layoutParams = LinearLayout.LayoutParams(
+                    32,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+                space.layoutParams = layoutParams
+
+                binding.llGenreList.addView(space)
+            }
+        }
+    }
+
     private fun showTalentList() {
         binding.llTalentList.removeAllViews()
 
-        binding.llTalentList.visibility = if (userPage.roles.isEmpty())
+        binding.llProfileTalents.visibility = if (userPage.roles.isEmpty())
             View.GONE else View.VISIBLE
 
         userPage.roles.forEachIndexed { i, it ->
-            val talentCard = layoutInflater.inflate(R.layout.card_talent, null)
-            talentCard.findViewById<ImageView>(R.id.iv_talent_icon)
+            val talentCard = layoutInflater.inflate(R.layout.card, null)
+            talentCard.findViewById<ImageView>(R.id.iv_card_icon)
                 .setImageResource(it.name.icon)
-            talentCard.findViewById<TextView>(R.id.tv_talent_name).text = it.name.s
+            talentCard.findViewById<TextView>(R.id.tv_card_name).text = it.name.s
 
             binding.llTalentList.addView(talentCard)
 
@@ -211,7 +235,7 @@ class ProfileFragment : Fragment(), PostEventListener {
 
             binding.tvBandProfileName.text = userPage.group.name
         } else {
-            binding.clProfileBandInfo.visibility = View.GONE
+            binding.llProfileGroup.visibility = View.GONE
         }
     }
 
@@ -230,7 +254,7 @@ class ProfileFragment : Fragment(), PostEventListener {
         } else {
             activity.supportActionBar!!.setCustomView(R.layout.action_bar_settings)
 
-            activity.findViewById<ImageView>(R.id.iv_settings_button).setOnClickListener {
+            activity.findViewById<ImageView>(R.id.iv_menu_button).setOnClickListener {
             }
         }
 
@@ -266,45 +290,6 @@ class ProfileFragment : Fragment(), PostEventListener {
             )
             startActivityForResult(intent, POST_WRITING_REQUEST_CODE)
         }
-
-        binding.nsvMainProfileView.setOnScrollChangeListener(
-            NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (!v.canScrollVertically(1) && !userPage.postList.last) {
-                val userPosts = userClient.getUserPosts(
-                    userPage.id, viewer.id, userPage.postList.number++)
-
-                userPosts.enqueue(object : Callback<Page<PostSimple>> {
-                    override fun onResponse(
-                        call: Call<Page<PostSimple>>,
-                        response: Response<Page<PostSimple>>
-                    ) {
-                        if (response.code() == 204) {
-                            //
-                        } else if (response.code() in 200..299) {
-                            val content = response.body()!!.content
-                            val start = content.size - 1
-
-                            content.forEach {
-                                userPage.postList.content.add(it)
-                            }
-
-                            adapter.notifyItemRangeInserted(start, content.size)
-                        } else {
-                            showError(getString(R.string.post_error))
-                        }
-                    }
-
-                    override fun onFailure(call: Call<Page<PostSimple>>, t: Throwable) {
-                        showError(getString(R.string.post_error))
-                    }
-
-                })
-            }
-
-            if (!v.canScrollVertically(0)) {
-                getUserPage(userPage.id)
-            }
-        })
     }
 
     override fun onLike(position: Int) {
@@ -381,6 +366,7 @@ class ProfileFragment : Fragment(), PostEventListener {
             )
 
             showProfileInfo()
+            showGenreList()
             showTalentList()
         } else if (requestCode == POST_WRITING_REQUEST_CODE &&
             resultCode == AppCompatActivity.RESULT_OK

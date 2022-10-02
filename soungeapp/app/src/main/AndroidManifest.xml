@@ -23,7 +23,7 @@
             android:name=".actitivy.WritingActivity"
             android:exported="false" />
         <activity
-            android:name=".actitivy.EditTalentsActivity"
+            android:name=".actitivy.EditProfileListsActivity"
             android:exported="false" />
         <activity
             android:name=".actitivy.EditProfileActivity"

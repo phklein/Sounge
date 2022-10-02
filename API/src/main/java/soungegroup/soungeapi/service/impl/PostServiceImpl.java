@@ -72,9 +72,7 @@ public class PostServiceImpl implements PostService {
                     );
                 }
 
-                return foundPosts.isEmpty() ?
-                        ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                        ResponseEntity.status(HttpStatus.OK).body(foundPosts);
+                return ResponseEntity.status(HttpStatus.OK).body(foundPosts);
             }
 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -84,9 +82,7 @@ public class PostServiceImpl implements PostService {
         Page<PostSimpleResponse> foundPosts = repository.findAllOrdered(
                 Pageable.ofSize(50).withPage(page));
 
-        return foundPosts.isEmpty() ?
-                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
-                ResponseEntity.status(HttpStatus.OK).body(foundPosts);
+        return ResponseEntity.status(HttpStatus.OK).body(foundPosts);
     }
 
     @Override

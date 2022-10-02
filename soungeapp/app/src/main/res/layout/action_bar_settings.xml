@@ -17,9 +17,9 @@
         android:layout_weight="1"/>
     
     <ImageView
-        android:id="@+id/iv_settings_button"
+        android:id="@+id/iv_menu_button"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/ic_settings"/>
+        android:src="@drawable/ic_menu"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

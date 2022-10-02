@@ -31,8 +31,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginStart="32dp"
+                android:layout_centerInParent="true"
                 android:src="@drawable/ic_camera" />
 
         </RelativeLayout>
@@ -42,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -128,6 +127,55 @@
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/ll_edit_genres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/musical_interests"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/iv_edit_profile_genres"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_edit" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <HorizontalScrollView
+                    android:id="@+id/sv_edit_genre_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_edit_talents">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/ll_edit_genre_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/card"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical" />
+
+                </HorizontalScrollView>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/ll_edit_talents"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -162,7 +210,7 @@
                         android:id="@+id/ll_edit_talent_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:listitem="@layout/card_talent"
+                        tools:listitem="@layout/card"
                         android:gravity="center_vertical"
                         android:layout_gravity="center_vertical" />
 

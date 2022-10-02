@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="100dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_purple_round_fill"
@@ -7,12 +9,12 @@
     android:padding="8dp">
 
     <ImageView
-        android:id="@+id/iv_talent_icon"
+        android:id="@+id/iv_card_icon"
         android:layout_width="20dp"
         android:layout_height="20dp" />
 
     <TextView
-        android:id="@+id/tv_talent_name"
+        android:id="@+id/tv_card_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
