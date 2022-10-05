@@ -47,4 +47,5 @@
     <string name="successfully_deleted_comment">Comentário deletado com sucesso</string>
     <string name="error_deleting_post">Erro ao deletar post</string>
     <string name="error_deleting_comment">Erro ao deletar comentário</string>
+    <string name="text">Texto</string>
 </resources>
