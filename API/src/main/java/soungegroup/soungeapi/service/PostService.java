@@ -3,6 +3,7 @@ package soungegroup.soungeapi.service;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import soungegroup.soungeapi.enums.GenreName;
+import soungegroup.soungeapi.request.CommentUpdateRequest;
 import soungegroup.soungeapi.request.PostSaveRequest;
 import soungegroup.soungeapi.request.PostUpdateRequest;
 import soungegroup.soungeapi.response.PostSimpleResponse;
@@ -21,6 +22,7 @@ public interface PostService {
                                                      Integer page);
 
     ResponseEntity<Void> update(Long id, PostUpdateRequest body);
+    ResponseEntity<Void> update(Long postId, Long id, CommentUpdateRequest body);
 
     ResponseEntity<Void> delete(Long id);
 }

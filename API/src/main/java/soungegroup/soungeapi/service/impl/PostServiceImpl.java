@@ -8,10 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soungegroup.soungeapi.adapter.PostAdapter;
 import soungegroup.soungeapi.enums.GenreName;
+import soungegroup.soungeapi.model.Comment;
 import soungegroup.soungeapi.model.Post;
 import soungegroup.soungeapi.model.User;
+import soungegroup.soungeapi.repository.CommentRepository;
 import soungegroup.soungeapi.repository.PostRepository;
 import soungegroup.soungeapi.repository.UserRepository;
+import soungegroup.soungeapi.request.CommentUpdateRequest;
 import soungegroup.soungeapi.request.PostSaveRequest;
 import soungegroup.soungeapi.request.PostUpdateRequest;
 import soungegroup.soungeapi.response.PostSimpleResponse;
@@ -24,6 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
     private final PostRepository repository;
+    private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final PostAdapter adapter;
 
@@ -94,6 +98,21 @@ public class PostServiceImpl implements PostService {
             post.setText(body.getText());
             post.setMediaUrl(body.getMediaUrl());
             repository.save(post);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> update(Long postId, Long id, CommentUpdateRequest body) {
+        Optional<Comment> commentOptional = commentRepository.findById(id);
+
+        if (commentOptional.isPresent() && repository.existsById(postId)) {
+            Comment comment = commentOptional.get();
+            comment.setText(body.getText());
+            comment.setMediaUrl(body.getMediaUrl());
+            commentRepository.save(comment);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
 

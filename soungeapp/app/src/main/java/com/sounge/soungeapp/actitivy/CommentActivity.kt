@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.actitivy.WritingActivity.Constants.USER_NEW_COMMENT_KEY
 import com.sounge.soungeapp.adapter.CommentAdapter
@@ -24,13 +23,12 @@ import com.sounge.soungeapp.listeners.CommentEventListener
 import com.sounge.soungeapp.response.CommentSimple
 import com.sounge.soungeapp.response.Page
 import com.sounge.soungeapp.response.PostSimple
-import com.sounge.soungeapp.response.UserSimple
+import com.sounge.soungeapp.response.UserLogin
 import com.sounge.soungeapp.rest.PostClient
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.GsonUtils
 import okhttp3.ResponseBody
-import org.w3c.dom.Comment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,7 +38,7 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
 
     private var originPostPosition: Int = -1
     private lateinit var originPost: PostSimple
-    private lateinit var viewer: UserSimple
+    private lateinit var viewer: UserLogin
 
     private lateinit var commentPage: Page<CommentSimple>
 
@@ -63,7 +61,7 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
 
         viewer = GsonUtils.INSTANCE.fromJson(
             intent.getStringExtra(VIEWER_KEY),
-            UserSimple::class.java
+            UserLogin::class.java
         )
 
         userClient = Retrofit.getInstance().create(UserClient::class.java)
@@ -140,7 +138,8 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
         } else {
             val layoutManager = LinearLayoutManager(this)
 
-            adapter = CommentAdapter(commentPage.content, this, this)
+            adapter = CommentAdapter(originPost.id, commentPage.content,
+                viewer, this, this)
 
             binding.rvPostComments.layoutManager = layoutManager
             binding.rvPostComments.adapter = adapter
@@ -183,6 +182,15 @@ class CommentActivity : AppCompatActivity(), CommentEventListener {
                 showError(getString(R.string.like_comment_error))
             }
         })
+    }
+
+    override fun onDelete(position: Int) {
+        adapter.notifyItemRemoved(position)
+        originPost.commentCount--
+
+        if (commentPage.content.isEmpty()) {
+            setupRecyclerView(true)
+        }
     }
 
     override fun onUnlike(position: Int) {

@@ -39,4 +39,12 @@
     <string name="loading_error">Erro ao carregar</string>
     <string name="my_musical_interests">Meus Interesses Musicais</string>
     <string name="other_musical_interests">Outros Interesses Musicais</string>
+    <string name="ask_before_delete_post">Deseja mesmo deletar este post?</string>
+    <string name="ask_before_delete_comment">Deseja mesmo deletar este comentário?</string>
+    <string name="delete_post">Deletar post?</string>
+    <string name="delete_comment">Deletar comentário?</string>
+    <string name="successfully_deleted_post">Post deletado com sucesso</string>
+    <string name="successfully_deleted_comment">Comentário deletado com sucesso</string>
+    <string name="error_deleting_post">Erro ao deletar post</string>
+    <string name="error_deleting_comment">Erro ao deletar comentário</string>
 </resources>

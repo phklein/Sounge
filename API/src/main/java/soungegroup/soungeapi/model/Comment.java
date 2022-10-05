@@ -35,4 +35,9 @@ public class Comment {
     // Many posts are liked by many users
     @ManyToMany(mappedBy = "likedComments", fetch = FetchType.LAZY)
     private List<User> usersWhoLiked;
+
+    @PreRemove
+    private void removeLikes() {
+        usersWhoLiked.forEach(u -> u.getLikedComments().remove(this));
+    }
 }

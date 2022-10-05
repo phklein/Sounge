@@ -21,11 +21,11 @@ public class Post {
     @Column(name = "post_date_time") private LocalDateTime postDateTime;
 
     // Many posts belong to one user
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_fk")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_fk")
     private Group group;
     // One post has many comments
@@ -42,4 +42,9 @@ public class Post {
     // Many posts are liked by many users
     @ManyToMany(mappedBy = "likedPosts", fetch = FetchType.LAZY)
     private List<User> usersWhoLiked;
+
+    @PreRemove
+    private void removeLikes() {
+        usersWhoLiked.forEach(u -> u.getLikedPosts().remove(this));
+    }
 }

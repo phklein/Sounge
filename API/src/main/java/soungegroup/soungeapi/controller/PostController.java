@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soungegroup.soungeapi.enums.GenreName;
 import soungegroup.soungeapi.request.CommentSaveRequest;
+import soungegroup.soungeapi.request.CommentUpdateRequest;
 import soungegroup.soungeapi.request.PostSaveRequest;
 import soungegroup.soungeapi.request.PostUpdateRequest;
 import soungegroup.soungeapi.response.CommentSimpleResponse;
@@ -72,6 +73,13 @@ public class PostController {
                                                                             @PathVariable Long postId,
                                                                             @RequestParam Integer page) {
         return commentService.findByPostId(viewerId, postId, page);
+    }
+
+    @PutMapping("/{postId}/comments/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long postId,
+                                       @PathVariable Long id,
+                                       @RequestBody @Valid CommentUpdateRequest body) {
+        return service.update(postId, id, body);
     }
 
     @DeleteMapping("/{postId}/comments/{id}")

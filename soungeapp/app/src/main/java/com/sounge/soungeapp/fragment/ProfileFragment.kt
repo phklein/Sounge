@@ -313,6 +313,14 @@ class ProfileFragment : Fragment(), PostEventListener {
         })
     }
 
+    override fun onDelete(position: Int) {
+        adapter.notifyItemRemoved(position)
+
+        if (userPage.postList.content.isEmpty()) {
+            setupRecyclerView(true)
+        }
+    }
+
     override fun onUnlike(position: Int) {
         val post = adapter.getItem(position)
         val unlikePost = userClient.unlikePost(viewer.id, post.id)

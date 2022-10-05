@@ -52,7 +52,7 @@ public class User {
     private List<Comment> comments;
 
     // Many users can have one signature
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "signature_fk")
     private Signature signature;
 
