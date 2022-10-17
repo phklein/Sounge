@@ -17,6 +17,12 @@
         android:theme="@style/Theme.Soungeapp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".actitivy.SuccessfulRegistrationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".actitivy.RegistrationActivity"
+            android:exported="false" />
+        <activity
             android:name=".actitivy.MainActivity"
             android:exported="false" />
         <activity

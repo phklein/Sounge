@@ -21,4 +21,13 @@
     <string name="cancel">Cancelar</string>
     <string name="enter">Entrar</string>
     <string name="email">E-mail</string>
+    <string name="integrantes">Integrantes da Banda</string>
+    <string name="perfil">Vamos escolher seu tipo de perfil</string>
+    <string name="tipo_perfil">Tipo de perfil...</string>
+    <string name="finalizar">Finalizar</string>
+    <string name="come_back">Voltar</string>
+    <string name="all_ready_one">Tudo Pronto!</string>
+    <string name="start_search">Começar a procurar!</string>
+    <string name="login_error">Email ou senha incorretos</string>
+
 </resources>

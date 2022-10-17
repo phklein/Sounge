@@ -11,4 +11,6 @@
     <color name="purple">#531693</color>
     <color name="main_purple">#6E6FF1</color>
     <color name="background_black">#111111</color>
+    <color name="light_green">#25CC44</color>
+    <color name="red"> #ff0000 </color>
 </resources>
