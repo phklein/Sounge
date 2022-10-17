@@ -1,0 +1,344 @@
+
+.register-container-left,
+.register-container-right {
+    height: 100%;
+    padding: 40px;
+}
+
+.register-container-left {
+    width: 60%;
+    position: relative;
+}
+
+.register-container-left h2 {
+    font-size: 25px;
+    font-weight: 500;
+    color: var(--white);
+}
+
+.form-label {
+    background: var(--black);
+    color: var(--light-gray);
+    border: none;
+    outline: none;
+    padding: 15px 20px;
+    margin: 5px 0;
+}
+
+.form-label > div > button{
+    color: white;
+    width: 100%;
+}
+
+.form-label-date {
+    background: var(--black);
+    color: var(--light-gray);
+    border: none;
+    outline: none;
+}
+
+.register-container-right {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: left;
+}
+
+.register-container-right img {
+    width: 70%;
+}
+
+.register-container-right h1 {
+    font-size: 35px;
+    font-weight: 500;
+    color: var(--white);
+}
+
+.register-container-right p {
+    font-size: 14px;
+    color: #757575;
+}
+
+.register-form {
+    width: 100%;
+    height: 100%;
+    background: var(--dark-gray);
+    z-index: 1;
+    padding: 60px 50px;
+    margin-bottom: 20px;
+}
+
+.register-form h2 {
+    margin: -10px 0 30px;
+}
+
+Form {
+    width: 100%;
+    height: 100%;
+}
+
+/* Button {
+    margin-top: 40px;
+
+    BOTÃO QUE BUGOU TUDO ARRUMAR
+    
+} */
+
+.form-group-previous Button {
+    float: left;
+    box-shadow: none;
+    background: var(--black);
+    border: 1px solid var(--white);
+    color: var(--white);
+}
+
+
+.form-group-next {
+    float: right;
+}
+
+.form-group {
+    width: 49%;
+    position: relative;
+}
+
+.form-group-all {
+    width: 100%;
+    position: relative;
+}
+
+.form-group > svg,
+.form-group-all > svg {
+    color: white;
+    position: absolute;
+    top:25%;
+    right: 24px;
+}
+
+.form-select {
+    z-index: 1000;
+    width: 100%;
+    background: var(--black);
+    color: var(--gray);
+    border: none;
+    outline: none;
+    appearance: none;
+    padding: 15px 20px;
+    margin: 5px 0;
+}
+
+
+
+.form-group-modal {
+    background: var(--black);
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 25px;
+    font-weight: 400;
+    border-radius: 4px;
+    color: var(--white);
+    margin-bottom: 10px;
+    border: none;
+}
+
+.form-group-modal p {
+    font-size: 15px;
+    color: var(--gray);
+}
+
+.form-group-modal > i {
+    color: var(--white);
+    transform: rotate(45deg);
+    font-size: 25px;
+}
+
+.form-group-modal > span {
+    display: flex;
+    flex-flow: wrap;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 65%;
+    height: max-content;
+    background: var(--black);
+    border: 1px solid var(--gray);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.btn-close-modal {
+    color: var(--white);
+    border: none;
+    outline: none;
+    padding: 10px 40px;
+    border-radius: 15px;
+    transition: .5s ease-in-out;
+}
+
+.btn-close-modal:hover {
+    background: var(--white);
+    color: var(--black);
+    background: #f73d3d;
+    cursor: pointer;
+}
+
+.btn-save-modal {
+    background: var(--green);
+    color: var(--white);
+    border: none;
+    outline: none;
+    padding: 10px 40px;
+    border-radius: 15px;
+    transition: .5s ease-in-out;
+}
+
+.btn-save-modal:hover {
+    background: #3ffa61;
+    cursor: pointer;
+}
+
+.container-button-modal {
+    width: 100%;
+    padding: 20px 0 10px;
+}
+
+.modal-title {
+    font-size: 25px;
+    font-weight: 500;
+    color: var(--white);
+    font-size: 20px;
+    font-weight: 300;
+    border-bottom: 1px solid var(--gray);
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.modal-body {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.hr {
+    margin: 20px 0;
+    height: 0;
+}
+
+.action-chip {
+    border-radius: 50px;
+    padding: 5px 20px;
+    border: 1px solid var(--gray);
+    color: var(--gray);
+    margin: 10px 20px 0 0;
+    font-weight: 500;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    transition: .5s ease;
+}
+
+.action-chip i {
+    color: var(--white);
+    font-size: 20px;
+    transform: rotate(45deg);
+    margin-left: 5px;
+}
+
+.action-chip:hover {
+    background: var(--dark-gray);
+    cursor: pointer;
+}
+
+
+.action-chip-select{
+    border-radius: 50px;
+    padding: 5px 20px;
+    border: 1px solid var(--white);
+    background: var(--light-purple);
+    color: var(--white);
+    margin: 10px 20px 0 0;
+    font-weight: 500;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    transition: .5s ease;
+}
+
+.action-chip-show{
+    border-radius: 50px;
+    padding: 4px 8px;
+    border: 1px solid var(--white);
+    background: var(--light-purple);
+    color: var(--white);
+    margin: 4px 4px;
+    font-weight: 500;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.action-chip-select i,
+.action-chip-show i {
+    color: var(--white);
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+.action-chip-select:hover {
+    background: var(--red);
+    cursor: pointer;
+}
+
+.container-concluid {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-concluid img {
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.container-concluid h1 {
+    font-size: 35px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 20px;
+}
+
+.btn-sign {
+    background: transparent;
+    color: var(--white);
+    padding: 10px 100px;
+    border: 1px solid var(--white);
+    outline: none;
+    padding: 10px 40px;
+    border-radius: 15px;
+    transition: .5s ease-in-out;
+}
+
+.btn-sign:hover {
+    background: var(--green);
+    border: 1px solid var(--green);
+    cursor: pointer;
+}

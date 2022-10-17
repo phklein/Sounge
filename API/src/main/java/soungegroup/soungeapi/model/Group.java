@@ -21,7 +21,8 @@ public class Group {
     @Column(name = "group_name") private String name;
     @Column(name = "group_description") private String description;
     @Column(name = "group_creation_date") private LocalDate creationDate;
-    @Column(name = "group_picture_url") private String pictureUrl;
+    @Column(name = "group_picture_url") private String profilePic;
+    @Column(name = "group_banner") private String banner;
 
     // Many users like many genres
     @ManyToMany
@@ -31,6 +32,6 @@ public class Group {
     private List<Genre> genres;
 
     // One group can have many users
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private List<User> users;
 }

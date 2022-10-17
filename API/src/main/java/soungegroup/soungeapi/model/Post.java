@@ -1,9 +1,6 @@
 package soungegroup.soungeapi.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,9 +9,9 @@ import java.util.List;
 @Entity(name = "Post")
 @Table(name = "tb_post")
 @Getter @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +21,13 @@ public class Post {
     @Column(name = "post_date_time") private LocalDateTime postDateTime;
 
     // Many posts belong to one user
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "user_fk")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "group_fk")
+    private Group group;
     // One post has many comments
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
@@ -40,6 +40,6 @@ public class Post {
     private List<Genre> genres;
 
     // Many posts are liked by many users
-    @ManyToMany(mappedBy = "likedPosts", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "likedPosts", fetch = FetchType.LAZY)
     private List<User> usersWhoLiked;
 }
