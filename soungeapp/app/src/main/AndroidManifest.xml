@@ -17,13 +17,22 @@
         android:theme="@style/Theme.Soungeapp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".actitivy.SuccessfulRegistrationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".actitivy.RegistrationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".actitivy.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".actitivy.EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".actitivy.CommentActivity"
             android:exported="false" />
         <activity
-            android:name=".actitivy.MainActivity"
+            android:name=".actitivy.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
