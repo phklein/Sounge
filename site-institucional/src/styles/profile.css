@@ -1,0 +1,133 @@
+
+.test {
+  display: flex;
+  justify-content: space-between;
+}
+
+.post-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.background-intro {
+  border-radius: 10px;
+}
+
+.background-post {
+  border-radius: 10px;
+}
+
+.background-profile {
+  background-color: #0D0C0C;
+}
+
+/* Profile
+_______________________________________________________________________________________ */
+
+
+.profile-details {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: -18%;
+  padding: 2%;
+}
+
+.img-guitar {
+  border-radius: 50%;
+}
+
+.profile-container{
+  padding-inline: 10%;
+}
+
+.profile-cap {
+  background-color: var(--dark-gray);
+  height: 300px;
+  border-radius: 0 0 10px 10px;
+  width: 100%;
+}
+
+.btn-update-picture {
+  background-color: red;
+}
+
+.profile-picture {
+  background-color: var(--black);
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  border: 5px solid #0D0C0C;
+  position: relative;
+}
+
+
+.circle-online {
+  background-color: #20f520;
+  border: 4px solid #0D0C0C;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+}
+
+.profile-user-name {
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 42px;
+  color: white;
+  margin: 2%;
+  font-weight: 400;
+}
+
+.typography {
+  line-height: 10px;
+  color: #757575;
+  font-weight: 400;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+/* Menu
+_______________________________________________________________________________________ */
+
+.father-menu {
+  border-top: #757575 solid 1px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4%;
+}
+
+.menu-profile {
+  padding: 2% 10% 2% 0;
+  display: flex;
+  align-items: center;
+  margin: 1%;
+}
+
+h5 {
+  font-size: 20px;
+  margin-inline: 8%;
+}
+
+.seta-baixo {
+  margin-left: -1%;
+  color: #757575;
+}
+
+.btn-space {
+ float: right;
+}
+
+/* Post and Info
+_______________________________________________________________________________________ */
+

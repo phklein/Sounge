@@ -1,3 +1,33 @@
 <resources>
-    <string name="app_name">soungeapp</string>
+    <string name="app_name">Sounge</string>
+    <string name="banner_content_description">Imagem de fundo de perfil</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit_button">Editar</string>
+    <string name="posts">Posts</string>
+    <string name="talents">Talentos</string>
+    <string name="band">Banda</string>
+    <string name="not_in_band">Nenhuma banda para mostrar</string>
+    <string name="error_unliking">Erro ao retirar reação</string>
+    <string name="error_liking">Erro ao reagir ao post</string>
+    <string name="syntonize">Sintonizar</string>
+    <string name="delete">Deletar</string>
+    <string name="edit">Editar</string>
+    <string name="save">Salvar</string>
+    <string name="permission_error">Não foi possível continuar, permissão necessária</string>
+    <string name="name">Nome</string>
+    <string name="description">Descrição</string>
+    <string name="password">Senha</string>
+    <string name="cancel">Cancelar</string>
+    <string name="enter">Entrar</string>
+    <string name="email">E-mail</string>
+    <string name="integrantes">Integrantes da Banda</string>
+    <string name="perfil">Vamos escolher seu tipo de perfil</string>
+    <string name="tipo_perfil">Tipo de perfil...</string>
+    <string name="finalizar">Finalizar</string>
+    <string name="come_back">Voltar</string>
+    <string name="all_ready_one">Tudo Pronto!</string>
+    <string name="start_search">Começar a procurar!</string>
+    <string name="login_error">Email ou senha incorretos</string>
+
 </resources>

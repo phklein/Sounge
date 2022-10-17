@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dark_gray"
+    android:paddingBottom="24dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_post_owner_picture"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:civ_border_color="@color/dark_gray"
+        app:civ_border_width="2dp" />
+
+    <TextView
+        android:id="@+id/tv_post_owner_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_post_owner_picture"
+        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:textAlignment="textStart"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_hours_past"
+        android:layout_width="wrap_content"
+        android:maxWidth="250dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:textAlignment="textStart"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/dark_white" />
+
+
+    <TextView
+        android:id="@+id/tv_post_text"
+        android:layout_width="wrap_content"
+        android:maxWidth="250dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_post_owner_name"
+        app:layout_constraintStart_toEndOf="@id/iv_post_owner_picture"
+        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:textAlignment="textStart"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/dark_white" />
+
+    <ImageView
+        android:id="@+id/iv_post_media"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="300dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_post_text"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_post_options"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_post_media"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:padding="5dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical">
+            
+            <ImageView
+                android:id="@+id/iv_like_button"
+                android:layout_width="30dp"
+                android:layout_height="25dp" />
+
+            <TextView
+                android:id="@+id/tv_like_amount"
+                android:layout_width="0dp"
+                android:maxWidth="280dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_post_owner_name"
+                app:layout_constraintStart_toEndOf="@id/iv_post_owner_picture"
+                android:padding="5dp"
+                android:layout_weight="1"
+                android:textAlignment="textStart"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/dark_white"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical" >
+
+            <ImageView
+                android:id="@+id/iv_comment_button"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_comment" />
+
+            <TextView
+                android:id="@+id/tv_comment_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tv_post_owner_name"
+                app:layout_constraintStart_toEndOf="@id/iv_post_owner_picture"
+                android:padding="5dp"
+                android:layout_weight="1"
+                android:textAlignment="textStart"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/dark_white"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        
+        <ImageView
+            android:id="@+id/iv_share_button"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_share" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:alpha="0.3"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/ll_post_options"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/medium_gray"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

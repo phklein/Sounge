@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_black"
+    tools:context=".actitivy.RegistrationActivity">
+
+    <ImageView
+        android:id="@+id/logo_sounge_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/image_sounge_basico_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/entrarText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="@string/perfil"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo_sounge_horizontal" />
+
+    <Spinner
+        android:id="@+id/menu_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/style_spinner"
+        android:dropDownWidth="match_parent"
+        android:dropDownVerticalOffset="60dp"
+        android:paddingRight="25dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entrarText" />
+
+    <Button
+        android:id="@+id/finalizarButon"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/light_green"
+        android:text="@string/finalizar"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/voltarButon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/menu_spinner"
+        app:layout_constraintVertical_bias="1" />
+
+    <Button
+        android:id="@+id/voltarButon"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:text="@string/come_back"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="1"
+        app:strokeColor="@color/white" />
+
+    <!--    <com.google.android.material.textfield.TextInputLayout-->
+    <!--        android:id="@+id/menu"-->
+    <!--        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_margin="20dp"-->
+    <!--        android:hint="@string/tipo_perfil"-->
+    <!--        android:textColorHint="@color/white"-->
+    <!--        app:boxBackgroundColor="@color/black"-->
+    <!--        app:hintTextColor="@color/white"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/entrarText"-->
+    <!--        app:startIconTint="#FFFFFF"-->
+    <!--        tools:layout_editor_absoluteX="20dp">-->
+
+    <!--        <AutoCompleteTextView-->
+    <!--            android:id="@+id/menuDeTipos"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:inputType="none"-->
+    <!--            android:textColor="@color/white" />-->
+
+    <!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,114 @@
+.premium-container{
+    width: 100%;
+    display: flex;
+    color: var(--light-purple);
+    align-items: center;
+    flex-direction: column;
+    padding: 50px 60px 0 60px;
+}
+
+.imagem-premium{
+    background-image: url(../assets/img/espaco.png);
+    width: 100%;
+    height: 400px;
+    background-repeat: no-repeat;
+    background-size: 70%;
+    background-position: right top;
+}
+
+.premium-banner{
+    display: flex;
+    flex-direction: row;
+}
+
+.titulo-premium h2{
+    padding-bottom: 50px;
+    font-weight: 500;
+    font-size: 35px;
+}
+
+.text-premium h1{
+    font-weight: 500;
+    font-size: 30px;
+}
+
+
+
+.premium-planos{
+    width: 100%;
+    display: flex;
+    color: var(--light-purple);
+    align-items: center;
+    flex-direction: column;
+    padding: 50px 60px 50px 60px;
+}
+
+.nossos-planos{
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.tipos-planos{
+    width: 270px;
+    height: 460px;
+    background-color: var(--black-purple);
+    padding: 10px;
+}
+
+.planos{
+    border: solid 1px var(--dark-purple);
+    height: 100%;
+    padding: 15px;
+}
+
+.tipos-planos:nth-child(2){
+    width: 270px;
+    height: 500px;
+    background-color: var(--black-purple);
+    padding: 10px;
+}
+
+
+/*--------------------------------------Fontes--------------------------------------*/
+.nome-plano{
+    font-weight: 402;
+    font-size: 30px;
+}
+
+.planos p{
+    padding-top: 10px;
+}
+
+.reais{
+    font-size: 60px;
+    padding-left: 20px;
+    font-weight: 430
+}
+
+.botao{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*------------------------------------Botões----------------------------------------*/
+
+.button-premium{
+    background: var(--light-purple);
+    color: var(--white);
+    font-weight: 400;
+    text-transform: lowercase;
+    border-radius: 20px;
+    border: none;
+    padding: 12px 50px;
+    cursor: pointer;
+    transition: ease-in-out .3s;
+}
+
+.button-premium:hover{ 
+    background: var(--dark-purple);
+    box-shadow: none;
+}

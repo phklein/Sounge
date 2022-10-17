@@ -1,0 +1,204 @@
+.profilePageWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profilePageWrapper > span{
+    margin: 8px;
+    color: var(--light-purple);
+}
+
+.profileTopic{
+    background-color: var(--dark-gray);
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profileNavigation{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profileNavigation > a{
+    color: white;
+    cursor: pointer;
+    padding: 8px 24px;
+    border-radius: 8px;
+    background-image: linear-gradient(100deg, #af26ef, var(--light-purple));
+}
+
+.profileTabs{
+    color: var(--gray);
+}
+
+.profileLists{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    font-size: 20px;
+    display: flex;
+}
+
+.profileShowcaseWrapper{
+    display: flex;
+    width: 100%;
+    margin: 24px auto;
+    padding: 0 15%;
+    justify-content: space-between;
+}
+
+.form-label {
+    z-index: 1000;
+    background: var(--black);
+    color: var(--light-gray);
+    border: none;
+    outline: none;
+    padding: 15px 20px;
+    margin: 5px 0;
+    resize: none;
+}
+
+.registerBandDialog .MuiDialog-paper{
+    color: var(--white);
+    background-color: var(--dark-gray);
+    border: 1px solid var(--dark-purple);
+}
+
+.registerBandDialogContent{
+    display: flex;
+    flex-direction: column;
+}
+
+.registerBandMemberFormWrapper{
+    width: 100%;
+}
+
+.registerBandMemberFormWrapper > div{
+    margin-bottom: 16px;
+}
+
+.registerBandMemberForm{
+    display: flex;
+    background-color: var(--dark-gray);
+    color: var(--white);
+    border-radius: 2px;
+    padding: 12px;
+}
+
+.registerBandMemberForm > div{
+    margin-right: 12px;
+}
+
+.profileBandMemberFormConfirmButton{
+    color: var(--white);
+}
+
+.profileBandMemberFormInput {
+    background: var(--black);
+}
+
+.profileBandMemberFormInput .MuiButtonBase-root{
+    color:var(--white);
+    visibility: visible;
+}
+
+.profileBandMemberFormInputMember {
+    width: 420px;
+}
+
+.profileBandMemberFormInputRole {
+    width: 280px;
+}
+
+.profileBandMembersList{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--dark-gray);
+    color: var(--white);
+    border-radius: 2px;
+    padding: 12px;
+}
+
+.profileBandMembersList > ul{
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+    width: 100%;
+}
+
+.profileBandMembersList > ul > li{
+    margin-bottom: 8px;
+}
+
+.profileBandWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profileBand{
+    display: flex;
+    align-items: center;
+    padding: 2px 1px;
+}
+
+.profileBand > img,
+.profileBand svg{
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profileBand:hover{
+    color: var(--light-purple);
+}
+
+.profileBand:hover > img,
+.profileBand:hover svg{
+    outline: 2px solid var(--light-purple);
+}
+
+.profileBandInfo{
+    display: flex;
+    flex-direction: column;
+    margin: 0 8px;
+    font-size: 16px;
+}
+
+.profileBandInfoName > span{
+    display: flex;
+    align-items: center;
+}
+
+.profileBandInfoLeader{
+    margin: 0 8px;
+    padding-bottom: 4px;
+    font-size: 14px;
+}
+
+.profileBandInfoRole{
+    font-size: 12px;
+    color: var(--gray);
+}
+
+.profileBandWrapper--otherMember .MuiButton-root{
+    height: 28px;
+    color: var(--gray);
+    border: 1px solid var(--gray);
+}
+
+.profileBandWrapper--otherMember > .MuiButton-root:hover{
+    border: 1px solid var(--light-gray);
+}
+
+.profileBandWrapper--currentUser .MuiButton-root{
+    height: 28px;
+}
