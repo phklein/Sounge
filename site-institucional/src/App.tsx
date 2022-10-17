@@ -2,15 +2,15 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { Home } from "./pages/Home";
 import { PageNotFound } from "./pages/PageNotFound";
-import { Login } from "./pages/Login";
-import UserProfile from "./pages/profile/UserProfile";
-import BandProfile from "./pages/profile/BandProfile";
-import { Match } from "./pages/match/Match";
-import { Premium } from "./pages/Premium";
+import { Login } from "././pages/Login";
+import UserProfile from "././pages/profile/UserProfile";
+import BandProfile from "././pages/profile/BandProfile";
+import { Match } from "././pages/match/Match";
+import { Premium } from "././pages/Premium";
 
-import { MultiForm } from "./components/MultiForm";
-import { MatchMock } from "./pages/match/MatchMock";
-import { Interaction } from "./components/Interaction"
+import { MultiForm } from "././components/MultiForm";
+import { MatchMock } from "././pages/match/MatchMock";
+import { Interaction } from "././components/Interaction";
 
 function App() {
   return (
