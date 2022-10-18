@@ -15,7 +15,7 @@ data class UserMatch (
     var description: String,
     var isOnline: Boolean,
     var skillLevel: SkillLevel,
-    var group: GroupSimple,
+    var group: GroupSimple?,
     var likedGenres: List<GenreSimple>,
     var roles: List<RoleSimple>,
     var age: Int,
