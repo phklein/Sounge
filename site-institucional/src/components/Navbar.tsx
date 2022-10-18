@@ -86,17 +86,17 @@ export function NavBar(props: Iprops) {
           <ul>
             <li>
               <Link to="/" className="link-navbar">
-                Inicio
+                Start
               </Link>
             </li>
             <li>
               <Link to="/page-not-found" className="link-navbar">
-                Blog
+                BLOGS
               </Link>
             </li>
             <li>
               <Link to="/page-not-found" className="link-navbar">
-                Sobre
+                ABOUT
               </Link>
             </li>
             <li>
