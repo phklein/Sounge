@@ -1,5 +1,8 @@
 package com.sounge.soungeapp.rest
 
+import com.sounge.soungeapp.data.LoginRequest
+import com.sounge.soungeapp.data.LoginResponse
+import com.sounge.soungeapp.data.SaveUsers
 import com.sounge.soungeapp.data.UserPage
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -35,4 +38,12 @@ interface UserClient {
         @Path("id") id: Long,
         @Path("postId") postId: Long,
     ): Call<ResponseBody>
+
+    @POST("/users/auth")
+    fun login(@Body body: LoginRequest):Call<LoginResponse>
+
+    @POST("/users")
+    fun save(@Body body: SaveUsers): Call<LoginResponse>
+
+
 }
