@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_gray"
+
+    tools:context=".actitivy.ActivityRegistrationPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="60dp"
+            android:paddingBottom="50dp">
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="80dp"
+                android:src="@drawable/sounge_invertido___horizontal__fundo_preto_"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24sp"
+                android:text="Crie sua conta"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_nome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_border_input"
+            android:hint="Nome"
+            android:inputType="textPersonName"
+            android:padding="14dp"
+            android:textColorHint="@color/light_gray"
+            android:textSize="14sp"
+            android:textColor="@color/white"/>
+
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_border_input"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress"
+            android:padding="14dp"
+            android:textColorHint="@color/light_gray"
+            android:textSize="14sp"
+            android:textColor="@color/white"/>
+
+        <EditText
+            android:id="@+id/et_senha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_border_input"
+            android:hint="Senha"
+            android:inputType="textPassword"
+            android:padding="14dp"
+            android:textColorHint="@color/light_gray"
+            android:textSize="14sp"
+            android:textColor="@color/white"/>
+
+        <EditText
+            android:id="@+id/et_repetir_senha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_border_input"
+            android:hint="Repetir senha"
+            android:inputType="textPassword"
+            android:padding="14dp"
+            android:textColorHint="@color/light_gray"
+            android:textSize="14sp"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/btn_main_purple"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:text="Próximo"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:onClick="nextRegistration"/>
+
+        <Button
+            android:layout_width="180dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bd_border_red"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:text="Cancelar"
+            android:textSize="16sp"
+            android:textColor="@color/red"
+            android:onClick="rollBack"/>
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
