@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.sounge.soungeapp.R
@@ -22,19 +23,25 @@ class RegistrationActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, R.layout.styler_spinner, items)
         binding.menuSpinner.setAdapter(adapter)
 
-        validatorFinalizar()
 
-    }
 
-    private fun validatorFinalizar(){
-        val botaoFinalizar = binding.finalizarButon
+        binding.menuSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
-        botaoFinalizar.setOnClickListener {
-            val intent = Intent(this, SuccessfulRegistrationActivity::class.java)
-            startActivity(intent)
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
         }
 
     }
+
+    private fun cadastro(){
+
+    }
+
 
 
 
