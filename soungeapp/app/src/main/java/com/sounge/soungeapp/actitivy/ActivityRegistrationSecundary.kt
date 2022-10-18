@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.*
 import androidx.core.view.get
 import com.sounge.soungeapp.R
+import com.sounge.soungeapp.databinding.ActivityRegistrationSecundaryBinding
+import com.sounge.soungeapp.databinding.ActivityRegistrationTertiaryBinding
 import com.sounge.soungeapp.models.States
 import com.sounge.soungeapp.models.Town
 import com.sounge.soungeapp.rest.Retrofit
@@ -21,46 +23,18 @@ class ActivityRegistrationSecundary : AppCompatActivity() {
 
     private val retrofitStates = Retrofit.getInstanceIBGE().create(StatesService::class.java)
     private val retrofitTown = Retrofit.getInstanceIBGE().create(TownService::class.java)
+    private lateinit var binding: ActivityRegistrationSecundaryBinding
     private val states = mutableListOf<String>()
     private val towns = mutableListOf<String>()
     private val statesObject = mutableListOf<States>()
-    private lateinit var eTdocument: EditText
-    private lateinit var dPtown: Spinner
-    private lateinit var dPstate: Spinner
-    private lateinit var btnProx: Button
-    private lateinit var tvStates: TextView
-    private lateinit var tvTown: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registration_secundary)
-
-        eTdocument = findViewById(R.id.et_document)
-        dPtown = findViewById(R.id.dp_town)
-        dPstate = findViewById(R.id.dp_state)
-        btnProx = findViewById(R.id.btn_next)
-        tvStates = findViewById(R.id.tv_state)
-        tvTown = findViewById(R.id.tv_town)
+        binding = ActivityRegistrationSecundaryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         states.add("")
         getStates()
-        dPstate.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, states)
-        dPstate.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                tvStates.text = states[position]
-                getTown()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-        }
-
-
-
+        itemSelectedSpinner(binding.dpState, states, binding.tvState)
     }
 
     fun getStates(){
@@ -87,7 +61,7 @@ class ActivityRegistrationSecundary : AppCompatActivity() {
         towns.clear()
         var idState = 0
         statesObject.forEach { state ->
-            if(tvStates.text.toString() == state.nome){
+            if(binding.tvState.text.toString() == state.nome){
                 idState = state.id
             }
         }
@@ -108,33 +82,48 @@ class ActivityRegistrationSecundary : AppCompatActivity() {
 
         })
         towns.add("")
-        dPtown.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, towns)
-        dPtown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                tvTown.text = towns[position]
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-        }
+        itemSelectedSpinner(binding.dpTown, towns,binding.tvTown)
     }
 
     fun nextRegistration(view: View){
         val editor = getSharedPreferences("USER", MODE_PRIVATE).edit()
-        editor.putString("cpf", eTdocument.text.toString())
-        editor.putString("estado", tvStates.text.toString())
-        editor.putString("cidade", tvTown.text.toString())
+        editor.putString("cpf", binding.etDocument.text.toString())
+        editor.putString("estado", binding.tvState.text.toString())
+        editor.putString("cidade", binding.tvTown.text.toString())
         editor.apply()
-        startActivity(Intent(baseContext, RegistrationActivity::class.java))
+        startActivity(Intent(baseContext, ActivityRegistrationTertiary::class.java))
     }
 
     fun rollBack(view: View){
         startActivity(Intent(baseContext, LoginActivity::class.java))
     }
 
+    private fun itemSelectedSpinner(
+        spinner: Spinner,
+        array: MutableList<String>,
+        textView: TextView
+    ){
+        spinner.adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            array
+        )
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                textView.text = array[position]
+                if(spinner == binding.dpState){
+                    getTown()
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
+    }
 }

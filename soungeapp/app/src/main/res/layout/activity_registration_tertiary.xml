@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/dark_gray"
 
-    tools:context=".actitivy.ActivityRegistrationSecundary">
+    tools:context=".actitivy.ActivityRegistrationTertiary">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,23 +39,11 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/et_document"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_border_input"
-            android:hint="CPF"
-            android:inputType="number"
-            android:padding="14dp"
-            android:textColorHint="@color/light_gray"
-            android:textSize="14sp"
-            android:textColor="@color/white"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/tv_state"
+                android:id="@+id/tv_style"
                 android:layout_width="290dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -64,11 +52,38 @@
                 android:padding="14dp"
                 android:textColorHint="@color/light_gray"
                 android:textSize="14sp"
-                android:textColor="@color/light_gray"
-                android:hint="cidade"/>
+                android:textColor="@color/white"
+                android:hint="Selecione seu tipo de música"/>
 
             <Spinner
-                android:id="@+id/dp_state"
+                android:id="@+id/dp_style"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/dropdown_input_item"
+                android:padding="24dp"
+                android:spinnerMode="dropdown"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bg_border_input"
+                android:padding="14dp"
+                android:textColorHint="@color/light_gray"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:hint="Selecione sua categoria"/>
+
+            <Spinner
+                android:id="@+id/dp_category"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="14dp"
@@ -84,7 +99,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tv_town"
+                android:id="@+id/tv_level"
                 android:layout_width="290dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -94,10 +109,11 @@
                 android:textColorHint="@color/light_gray"
                 android:textSize="14sp"
                 android:textColor="@color/light_gray"
-                android:hint="estado"/>
+                android:hint="Seu nível"
+                />
 
             <Spinner
-                android:id="@+id/dp_town"
+                android:id="@+id/dp_level"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/dropdown_input_item"
