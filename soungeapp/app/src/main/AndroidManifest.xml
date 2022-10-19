@@ -23,7 +23,7 @@
             android:name=".actitivy.ActivityRegistrationSecundary"
             android:exported="false"/>
         <activity
-            android:name=".actitivy.ActivityRegistrationPrimary"
+            android:name=".actitivy.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,7 +47,7 @@
             android:name=".actitivy.CommentActivity"
             android:exported="false" />
         <activity
-            android:name=".actitivy.LoginActivity"
+            android:name=".actitivy.ActivityRegistrationPrimary"
             android:exported="false"/>
     </application>
 
