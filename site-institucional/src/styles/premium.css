@@ -5,6 +5,7 @@
     align-items: center;
     flex-direction: column;
     padding: 50px 60px 0 60px;
+    background-color: var(--white);
 }
 
 .imagem-premium{
@@ -54,7 +55,7 @@
 .tipos-planos{
     width: 270px;
     height: 460px;
-    background-color: var(--black-purple);
+    background-color: var(--light-purple -purple);
     padding: 10px;
 }
 
