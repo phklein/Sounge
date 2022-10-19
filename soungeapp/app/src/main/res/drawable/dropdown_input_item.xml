@@ -7,7 +7,6 @@
                 <shape>
                     <solid android:color="@color/black"/>
                     <corners android:radius="10dp"/>
-                    <padding android:left="10dp"/>
                 </shape>
 
             </item>

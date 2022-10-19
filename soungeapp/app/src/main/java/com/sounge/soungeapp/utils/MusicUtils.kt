@@ -36,10 +36,11 @@ object MusicUtils {
 
     fun getCategoryAll(): Array<String> =
             arrayOf("",
-            "Violão",
-            "Bateria",
-            "Viola",
-            "Triangulo")
+            "Guitarrista",
+            "Baterista",
+            "Vocalista",
+            "baixista",
+            "Outros")
 
     fun getLevelAll(): Array<String> =
             arrayOf("",
