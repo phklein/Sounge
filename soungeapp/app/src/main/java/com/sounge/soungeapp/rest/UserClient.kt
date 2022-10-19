@@ -1,9 +1,6 @@
 package com.sounge.soungeapp.rest
 
-import com.sounge.soungeapp.data.LoginRequest
-import com.sounge.soungeapp.data.LoginResponse
-import com.sounge.soungeapp.data.SaveUsers
-import com.sounge.soungeapp.data.UserPage
+import com.sounge.soungeapp.data.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -19,7 +16,13 @@ interface UserClient {
     @GET("/users/{id}/newMatches")
     fun checkNewMatches(
         @Path("id") id: Long
-    ): Call<List<Objects>>
+    ): Call<List<NotificationSimple>>
+
+    @GET("/users/{id}/match")
+    fun findMatchList(
+        @Path("id") id: Long,
+        @Query("maxDistance") maxDistance: Int
+    ): Call<MutableList<UserMatch>>
 
     @POST("/users/{id}/likeUser/{likedId}")
     fun likeUser(

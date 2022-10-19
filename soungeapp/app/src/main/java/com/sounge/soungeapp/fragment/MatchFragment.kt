@@ -14,6 +14,8 @@ import com.sounge.soungeapp.enums.*
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.yuyakaido.android.cardstackview.*
+import retrofit2.Call
+import retrofit2.Response
 
 
 class MatchFragment : Fragment(), CardStackListener {
@@ -31,38 +33,50 @@ class MatchFragment : Fragment(), CardStackListener {
         binding = FragmentMatchBinding.inflate(inflater, container, false)
         userClient = Retrofit.getInstance().create(UserClient::class.java)
 
-        getMatchInfo()
+        findCardsList()
 
         return binding.root
     }
 
-    private fun getMatchInfo() {
-        cardsList = mockCardsList()
+    private fun findCardsList() {
+        userClient.findMatchList(28, 1000).enqueue(
+            object : retrofit2.Callback<MutableList<UserMatch>> {
+                override fun onResponse(
+                    call: Call<MutableList<UserMatch>>,
+                    response: Response<MutableList<UserMatch>>
+                ) {
+                    when (response.code()) {
+                        200 -> cardsList = CardsList(response.body()!!)
+                        204 -> cardsList = CardsList(mockCardsList())
+                    }
 
-        setupRecyclerView()
+                    setupRecyclerView()
+                }
+
+                override fun onFailure(call: Call<MutableList<UserMatch>>, t: Throwable) {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Erro inesperado...",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        )
     }
 
     private fun setupRecyclerView() {
-        val setting = SwipeAnimationSetting.Builder()
-            .setDirection(Direction.Left)
-            .setDuration(Duration.Normal.duration)
-            .setInterpolator(AccelerateInterpolator())
-            .build()
-
         adapter = CardStackAdapter(cardsList.cards, requireActivity(), this)
 
         binding.csvCardStack.layoutManager = CardStackLayoutManager(context)
         binding.csvCardStack.adapter = adapter
-
-        (binding.csvCardStack.layoutManager as CardStackLayoutManager).setSwipeAnimationSetting(setting)
     }
 
-    private fun mockCardsList(): CardsList {
+    private fun mockCardsList(): ArrayList<UserMatch> {
         val cardsList = ArrayList<UserMatch>(
             listOf(
                 UserMatch(
                     1,
-                    "Danielzinho do Rock",
+                    "Daniel do Rock",
                     "https://veja.abril.com.br/wp-content/uploads/2016/06/alx_maria_bethania3_original.jpeg",
                     false,
                     Sex.MALE,
@@ -103,7 +117,7 @@ class MatchFragment : Fragment(), CardStackListener {
             )
         )
 
-        return CardsList(cardsList)
+        return cardsList
     }
 
     private fun mockGroup(): GroupSimple {

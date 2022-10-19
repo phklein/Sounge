@@ -1,5 +1,5 @@
 package com.sounge.soungeapp.data
 
 data class CardsList(
-    var cards: List<UserMatch>
+    var cards: MutableList<UserMatch>
 )

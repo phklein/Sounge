@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso
 import com.yuyakaido.android.cardstackview.CardStackListener
 
 internal class CardStackAdapter(
-    private val cardList: List<UserMatch>,
+    private val cardList: MutableList<UserMatch>,
     private val context: Context,
     private val fragment: CardStackListener
     ) : RecyclerView.Adapter<CardStackAdapter.CardViewHolder>() {

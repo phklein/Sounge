@@ -17,9 +17,10 @@
         android:id="@+id/ctv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="22sp"
+        android:textSize="30sp"
         android:padding="20dp"
-        android:textFontWeight="@integer/material_motion_duration_long_1"
+        android:background="@color/black"
+        android:textFontWeight="900"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@id/civ_image" />
 </androidx.constraintlayout.widget.ConstraintLayout>
