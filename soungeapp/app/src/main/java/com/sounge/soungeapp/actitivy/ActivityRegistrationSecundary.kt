@@ -1,14 +1,12 @@
 package com.sounge.soungeapp.actitivy
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import androidx.core.view.get
-import com.sounge.soungeapp.R
+import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import com.sounge.soungeapp.databinding.ActivityRegistrationSecundaryBinding
-import com.sounge.soungeapp.databinding.ActivityRegistrationTertiaryBinding
 import com.sounge.soungeapp.models.States
 import com.sounge.soungeapp.models.Town
 import com.sounge.soungeapp.rest.Retrofit
@@ -17,7 +15,6 @@ import com.sounge.soungeapp.services.TownService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 
 class ActivityRegistrationSecundary : AppCompatActivity() {
 
@@ -43,7 +40,7 @@ class ActivityRegistrationSecundary : AppCompatActivity() {
                 if (response.isSuccessful){
                     response.body()?.forEach { state ->
                         statesObject.add(state)
-                        states.add(state.nome)
+                        states.add(state.sigla)
                     }
                 } else {
                     Toast.makeText(baseContext, "não conseguimos encontrar estados", Toast.LENGTH_LONG).show()
@@ -61,7 +58,7 @@ class ActivityRegistrationSecundary : AppCompatActivity() {
         towns.clear()
         var idState = 0
         statesObject.forEach { state ->
-            if(binding.tvState.text.toString() == state.nome){
+            if(binding.tvState.text.toString() == state.sigla){
                 idState = state.id
             }
         }
@@ -87,6 +84,7 @@ class ActivityRegistrationSecundary : AppCompatActivity() {
 
     fun nextRegistration(view: View){
         val editor = getSharedPreferences("USER", MODE_PRIVATE).edit()
+
         editor.putString("cpf", binding.etDocument.text.toString())
         editor.putString("estado", binding.tvState.text.toString())
         editor.putString("cidade", binding.tvTown.text.toString())

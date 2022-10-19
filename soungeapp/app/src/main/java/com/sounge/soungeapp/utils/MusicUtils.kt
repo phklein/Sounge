@@ -1,52 +1,66 @@
 package com.sounge.soungeapp.utils
 
+import com.sounge.soungeapp.R
+
 object MusicUtils {
 
     fun getStylesAll(): Array<String> =
-            arrayOf("",
-                "Dance",
-                "Axé",
-                "Country",
-                "Forró",
-                "Reggae",
-                "Sertanejo",
-                "Sertanejo Universitário",
-                "Black",
-                "Música Erudita no Brasil",
-                "Múscia Folclórica",
-                "Samba",
-                "Pagode",
-                "Gospel",
-                "Eletrônica",
-                "Funk",
-                "Blues",
-                "Soul",
-                "Pop",
-                "Rock",
-                "Hip Hop",
-                "Rap",
-                "Heavy Metal",
-                "Trash Metal",
-                "Black Metal",
-                "Punk",
-                "Hardcore",
-                "MPB",
-                "Jazz"
-            )
+        arrayOf(
+            "",
+            "Rock",
+            "Metal",
+            "Blues",
+            "Pop",
+            "Rap",
+            "Trap",
+            "KPop",
+            "Lo-Fi",
+            "Indie",
+            "Eletrônica",
+            "Clássica",
+            "Fuunk",
+            "MPB",
+            "Sertanejo",
+            "Pagode",
+            "Forró",
+            "Eclétic(a)"
+        )
 
     fun getCategoryAll(): Array<String> =
-            arrayOf("",
+        arrayOf(
+            "",
+            "Violonista",
             "Guitarrista",
+            "Violinista",
+            "Baixista",
+            "Ukulelista",
             "Baterista",
+            "Pandeirista",
+            "Pianista",
+            "Tecladista",
+            "Sanfoneiro(a)",
+            "Corneteiro(a)",
+            "Trombonista",
+            "Saxofonista",
+            "Flautista",
+            "DJ",
+            "Produtor(a)",
             "Vocalista",
-            "baixista",
-            "Outros")
+            "Outros",
+//            "Guitarrista",
+//            "Baterista",
+//            "Vocalista",
+//            "baixista",
+//            "Outros")
+        )
 
     fun getLevelAll(): Array<String> =
-            arrayOf("",
-                "Iniciante",
-                "Intermediario",
-                "Avançado",
-                "Profissional")
+        arrayOf(
+            "",
+            "Iniciante",
+            "Intermediário",
+            "Avançado",
+            "Profissional"
+        )
 
 }

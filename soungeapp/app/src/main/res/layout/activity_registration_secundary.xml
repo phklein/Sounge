@@ -26,7 +26,7 @@
             <ImageView
                 android:layout_width="300dp"
                 android:layout_height="80dp"
-                android:src="@drawable/sounge_invertido___horizontal__fundo_preto_"
+                android:src="@drawable/image_sounge_basico_horizontal"
                 />
 
             <TextView
@@ -65,7 +65,7 @@
                 android:textColorHint="@color/light_gray"
                 android:textSize="14sp"
                 android:textColor="@color/light_gray"
-                android:hint="cidade"/>
+                android:hint="Estado"/>
 
             <Spinner
                 android:id="@+id/dp_state"
@@ -94,7 +94,7 @@
                 android:textColorHint="@color/light_gray"
                 android:textSize="14sp"
                 android:textColor="@color/light_gray"
-                android:hint="estado"/>
+                android:hint="Cidade"/>
 
             <Spinner
                 android:id="@+id/dp_town"

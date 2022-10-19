@@ -30,5 +30,6 @@
     <string name="start_search">Começar a procurar!</string>
     <string name="login_error">Email ou senha incorretos</string>
     <string name="login_sucess">Bem Vindo!</string>
+    <string name="cadastre_se">Clique aqui e Cadastre-se!</string>
 
 </resources>

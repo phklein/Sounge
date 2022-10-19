@@ -26,13 +26,13 @@
             <ImageView
                 android:layout_width="300dp"
                 android:layout_height="80dp"
-                android:src="@drawable/sounge_invertido___horizontal__fundo_preto_"
+                android:src="@drawable/image_sounge_basico_horizontal"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24sp"
+                android:layout_marginTop="24dp"
                 android:text="Crie sua conta"
                 android:textAlignment="center"
                 android:textColor="@color/white"

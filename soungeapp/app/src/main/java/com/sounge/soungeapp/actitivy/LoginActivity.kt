@@ -1,5 +1,6 @@
 package com.sounge.soungeapp.actitivy
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -27,6 +28,14 @@ class LoginActivity : AppCompatActivity() {
         binding.entrarButon.setOnClickListener {
             login()
         }
+
+        binding.cadastrese.setOnClickListener{
+            cadastro()
+        }
+    }
+
+    private fun cadastro(){
+        startActivity(Intent(baseContext, ActivityRegistrationPrimary::class.java))
     }
 
 
