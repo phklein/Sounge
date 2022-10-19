@@ -59,7 +59,7 @@ export function NavBar(props: Iprops) {
             </li>
             <li>
               <Link to="/page-not-found" className="link-navbar">
-                MEMBROS
+                MEMBERS
               </Link>
             </li>
             <li>
