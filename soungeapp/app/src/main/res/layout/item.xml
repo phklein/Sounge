@@ -10,7 +10,8 @@
         android:id="@+id/simpleimg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_profile" />
+        android:src="@drawable/ic_profile"
+        android:scaleType="centerCrop" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,11 +19,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="40dp">
+        android:layout_marginBottom="120dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
             android:text="Nome Sobrenome"
             android:textSize="40sp"
             android:textStyle="bold"

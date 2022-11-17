@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import android.webkit.URLUtil
 import androidx.fragment.app.Fragment
 import com.sounge.soungeapp.data.UserMatch
-import com.sounge.soungeapp.databinding.FragmentMatchBinding
+import com.sounge.soungeapp.databinding.FragmentMatchInfoBinding
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.squareup.picasso.Picasso
 
 
-class MatchFragment(private val userMatch: UserMatch) : Fragment() {
+class MatchInfoFragment(private val userMatch: UserMatch) : Fragment() {
 
-    private lateinit var binding: FragmentMatchBinding
+    private lateinit var binding: FragmentMatchInfoBinding
 
     private lateinit var userClient: UserClient
 
@@ -24,21 +24,17 @@ class MatchFragment(private val userMatch: UserMatch) : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMatchBinding.inflate(inflater, container, false)
+        binding = FragmentMatchInfoBinding.inflate(inflater, container, false)
         userClient = Retrofit.getInstance().create(UserClient::class.java)
 
-        setInfoCard()
+        setInfoUser()
 
         return binding.root
     }
 
-    private fun setInfoCard() {
+    private fun setInfoUser() {
         if (URLUtil.isValidUrl(userMatch.profilePic)) {
             Picasso.get().load(userMatch.profilePic).into(binding.ivProfilePic)
         }
-    }
-
-    fun getMatchObject(): UserMatch {
-        return userMatch
     }
 }
