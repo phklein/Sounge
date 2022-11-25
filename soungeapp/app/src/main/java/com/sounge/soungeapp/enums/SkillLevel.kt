@@ -4,5 +4,5 @@ enum class SkillLevel(val s: String) {
     BEGINNER("Iniciante"),
     INTERMEDIATE("Intermediário"),
     ADVANCED("Avançado"),
-    EXPERT("Expert")
+    EXPERT("Profissional")
 }

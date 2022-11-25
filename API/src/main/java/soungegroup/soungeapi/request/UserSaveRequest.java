@@ -30,7 +30,7 @@ public class UserSaveRequest {
     @Schema(description = "Nome do usuário",
             example = "Robson da Silva Junior")
     private String name;
-    @NotNull
+
     @Schema(description = "Sexo do usuário",
             example = "MALE")
     private Sex sex;
@@ -38,7 +38,7 @@ public class UserSaveRequest {
             example = "Toco guitarra desde pequeno, sou apaixonado por rock")
     private String description;
     @Past
-    @NotNull
+
     @Schema(description = "Data de nascimento do usuário",
             format = "yyy-MM-dd",
             example = "2003-05-12")

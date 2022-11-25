@@ -18,4 +18,5 @@ enum class GenreName(val s: String) {
     PAGODE("Pagode"),
     FORRO("Forró"),
     ECLECTIC("Eclétic(a)")
+
 }

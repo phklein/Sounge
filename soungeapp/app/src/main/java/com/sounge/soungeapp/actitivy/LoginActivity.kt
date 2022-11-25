@@ -1,5 +1,6 @@
 package com.sounge.soungeapp.actitivy
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -27,6 +28,14 @@ class LoginActivity : AppCompatActivity() {
         binding.entrarButon.setOnClickListener {
             login()
         }
+
+        binding.cadastrese.setOnClickListener{
+            cadastro()
+        }
+    }
+
+    private fun cadastro(){
+        startActivity(Intent(baseContext, ActivityRegistrationPrimary::class.java))
     }
 
 
@@ -43,8 +52,18 @@ class LoginActivity : AppCompatActivity() {
                     call:Call<LoginResponse>,
                     response: Response<LoginResponse>
                 ){
-                    Toast.makeText(baseContext, "Name; ${response.body()?.id}",
-                        Toast.LENGTH_LONG).show()
+                    if(response.isSuccessful){
+                        Toast.makeText(baseContext, "Name: ${response.body()?.name}",
+                            Toast.LENGTH_LONG).show()
+                        val mensagemDeSucesso = binding.mensagemDeErro
+                        mensagemDeSucesso.text = getText(R.string.login_sucess)
+                        mensagemDeSucesso.setTextColor(getColor(R.color.light_green))
+                    } else{
+                        val mensagemDeErro = binding.mensagemDeErro
+                        mensagemDeErro.text = getText(R.string.login_error)
+                        mensagemDeErro.setTextColor(getColor(R.color.red))
+                    }
+
                 }
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     val mensagemDeErro = binding.mensagemDeErro

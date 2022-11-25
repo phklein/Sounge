@@ -17,6 +17,21 @@
         android:theme="@style/Theme.Soungeapp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".actitivy.ActivityRegistrationTertiary"
+            android:exported="false"/>
+        <activity
+            android:name=".actitivy.ActivityRegistrationSecundary"
+            android:exported="false"/>
+        <activity
+            android:name=".actitivy.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".actitivy.SuccessfulRegistrationActivity"
             android:exported="false" />
         <activity
@@ -32,14 +47,8 @@
             android:name=".actitivy.CommentActivity"
             android:exported="false" />
         <activity
-            android:name=".actitivy.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".actitivy.ActivityRegistrationPrimary"
+            android:exported="false"/>
     </application>
 
 </manifest>
