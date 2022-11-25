@@ -82,16 +82,5 @@
                 android:text="Vocalista"
                 android:layout_weight="1" />
         </com.google.android.flexbox.FlexboxLayout>
-
-        <TextView
-            android:id="@+id/tvDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Estou em busca de uma nova banda compromissada!"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@id/llTalentList"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:paddingTop="20dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

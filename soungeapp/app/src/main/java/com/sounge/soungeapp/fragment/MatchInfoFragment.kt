@@ -1,6 +1,7 @@
 package com.sounge.soungeapp.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,12 @@ class MatchInfoFragment(private val userMatch: UserMatch) : Fragment() {
     }
 
     private fun setInfoUser() {
+        Log.v("test", "${userMatch}")
+
+        binding.tvName.text = userMatch.name
+        binding.tvAge.text = userMatch.age.toString()
+        binding.tvDescription?.text = userMatch.description
+
         if (URLUtil.isValidUrl(userMatch.profilePic)) {
             Picasso.get().load(userMatch.profilePic).into(binding.ivProfilePic)
         }

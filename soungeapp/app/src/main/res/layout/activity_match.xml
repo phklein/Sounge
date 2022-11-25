@@ -7,11 +7,6 @@
     android:background="@color/background_black"
     tools:context=".actitivy.MatchActivity">
 
-    <FrameLayout
-        android:id="@+id/fl_match"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
@@ -135,5 +130,15 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="20dp" />
             </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_match"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

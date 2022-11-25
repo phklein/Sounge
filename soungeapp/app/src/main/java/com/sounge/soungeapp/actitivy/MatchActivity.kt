@@ -64,7 +64,7 @@ class MatchActivity : AppCompatActivity() {
             }
         })
 
-        binding.ivMatchButton.setOnClickListener {
+        binding.ivMoreInfoButton.setOnClickListener {
             replaceFragment(MatchInfoFragment(adapter.getItem(viewPager.currentItem).getMatchObject()))
         }
     }
@@ -157,7 +157,7 @@ class MatchActivity : AppCompatActivity() {
 
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fl_match, fragment, fragment.javaClass.name)
-        fragmentTransaction.commit()
+        fragmentTransaction.commitAllowingStateLoss()
     }
 
     private fun mockCardsList(): ArrayList<UserMatch> {
@@ -171,7 +171,7 @@ class MatchActivity : AppCompatActivity() {
                     Sex.MALE,
                     State.SP,
                     "",
-                    "",
+                    "Estou em busca de uma nova banda compromissada!",
                     true,
                     SkillLevel.BEGINNER,
                     null,
@@ -191,7 +191,7 @@ class MatchActivity : AppCompatActivity() {
                     Sex.MALE,
                     State.SP,
                     "",
-                    "",
+                    "Estou em busca de uma nova banda compromissada!",
                     true,
                     SkillLevel.BEGINNER,
                     mockGroup(),
