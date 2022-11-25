@@ -1,10 +1,14 @@
 package com.sounge.soungeapp.data
 
+import android.os.Parcelable
 import com.sounge.soungeapp.enums.Sex
 import com.sounge.soungeapp.enums.SkillLevel
 import com.sounge.soungeapp.enums.State
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
-data class UserMatch (
+@Parcelize
+data class UserMatch(
     var id: Long,
     var name: String,
     var profilePic: String,
@@ -15,7 +19,7 @@ data class UserMatch (
     var description: String,
     var isOnline: Boolean,
     var skillLevel: SkillLevel,
-    var group: GroupSimple,
+    var group: GroupSimple?,
     var likedGenres: List<GenreSimple>,
     var roles: List<RoleSimple>,
     var age: Int,
@@ -23,4 +27,4 @@ data class UserMatch (
     var relevance: Double,
     var hasSignature: Boolean,
     var phone: String
-)
+) : Parcelable

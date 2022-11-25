@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.MatchInfoFragment">
+
+    <ImageView
+        android:id="@+id/ivProfilePic"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@drawable/inner_shadow"
+        android:src="@drawable/ic_profile"
+        android:scaleType="centerCrop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfilePic"
+        android:background="@color/background_black"
+        android:paddingEnd="15dp"
+        android:paddingStart="15dp"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Marco"
+            android:textColor="@color/white"
+            android:textFontWeight="800"
+            android:textSize="45sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/tvAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:paddingLeft="20dp"
+            android:text="34"
+            android:textColor="@color/white"
+            android:textFontWeight="400"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tvName"
+            app:layout_constraintLeft_toRightOf="@+id/tvName" />
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/llTalentList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:alignItems="flex_start"
+            app:justifyContent="flex_start"
+            app:flexWrap="wrap"
+            app:layout_constraintTop_toBottomOf="@id/tvName">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="24sp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textFontWeight="500"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:background="@drawable/bg_white_round_outline"
+                android:text="Vocalista"
+                android:layout_weight="1" />
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estou em busca de uma nova banda compromissada!"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/llTalentList"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:paddingTop="20dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
