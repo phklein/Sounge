@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:top="5dp"
+        android:left="5dp"
+        android:right="5dp"
+        android:bottom="5dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+    <!--  left shadow -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="180"
+                android:centerColor="@android:color/transparent"
+                android:centerX="0.2"
+                android:endColor="@android:color/transparent"
+                android:startColor="#6B000000" />
+        </shape>
+    </item>
+    <!--  right shadow -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="360"
+                android:centerColor="@android:color/transparent"
+                android:centerX="0.2"
+                android:endColor="@android:color/transparent"
+                android:startColor="#6B000000" />
+        </shape>
+    </item>
+    <!--  top shadow -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:centerColor="@android:color/transparent"
+                android:centerY="0.2"
+                android:endColor="@android:color/transparent"
+                android:startColor="#6B000000" />
+        </shape>
+    </item>
+    <!--  bottom shadow -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="90"
+                android:centerColor="@android:color/transparent"
+                android:centerY="0.2"
+                android:endColor="@android:color/transparent"
+                android:startColor="#6B000000" />
+        </shape>
+    </item>
+</layer-list>

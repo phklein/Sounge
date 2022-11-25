@@ -49,6 +49,11 @@
         <activity
             android:name=".actitivy.ActivityRegistrationPrimary"
             android:exported="false"/>
+        </activity>
+        <activity
+            android:name=".actitivy.MatchActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>
