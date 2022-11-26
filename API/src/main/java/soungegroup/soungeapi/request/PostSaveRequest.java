@@ -1,13 +1,9 @@
 package soungegroup.soungeapi.request;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import soungegroup.soungeapi.enums.GenreName;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @Data
 public class PostSaveRequest {
@@ -26,9 +22,4 @@ public class PostSaveRequest {
     @Schema(description = "URL da mídia do post",
             example = "https://www.google.com.br/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
     private String mediaUrl;
-    @NotEmpty
-    @ArraySchema(uniqueItems = true, minItems = 1, arraySchema =
-    @Schema(description = "Gêneros musicais relacionados ao post",
-            example = "[\"METAL\", \"ROCK\"]"))
-    private List<GenreName> genres;
 }

@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface GenreRepository extends JpaRepository<Genre, Long> {
     Optional<Genre> findByName(GenreName name);
 
+    List<Genre> findByNameIn(List<GenreName> nameList);
+
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.GenreSimpleResponse(g.id, g.name) " +
             "FROM Genre g " +
             "JOIN g.usersWhoLike u " +

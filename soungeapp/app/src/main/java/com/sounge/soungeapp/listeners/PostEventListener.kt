@@ -1,6 +1,7 @@
 package com.sounge.soungeapp.listeners
 
-interface PostEventListener {
-    fun onLike(position: Int)
-    fun onUnlike(position: Int)
+import com.sounge.soungeapp.response.PostSimple
+
+interface PostEventListener : CommentEventListener {
+    fun onClickComment(post: PostSimple, position: Int)
 }

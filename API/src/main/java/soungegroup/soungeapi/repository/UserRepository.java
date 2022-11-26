@@ -1,5 +1,6 @@
 package soungegroup.soungeapi.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -35,7 +36,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "AND (g.name = :genreName OR :genreName IS NULL) " +
             "AND (u.sex = :sex OR :sex IS NULL) " +
             "AND (u.skillLevel = :skillLevel OR :skillLevel IS NULL)")
-    List<UserMatchResponse> findMatchList(Long userId,
+    Page<UserMatchResponse> findMatchList(Long userId,
                                           List<User> likedUsers,
                                           LocalDate minBirthDate,
                                           LocalDate maxBirthDate,
@@ -55,13 +56,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "JOIN usuarios_seguidos u2 ON u1.liker_fk = u2.liked_fk\n" +
             "JOIN tb_user ON u1.liker_fk = tb_user.user_id\n" +
             "WHERE u1.liked_fk = :userId", nativeQuery = true)
-    List<UserContactResponse> findContactList(Long userId);
+    Page<UserContactResponse> findContactList(Long userId, Pageable pageable);
 
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.UserSimpleResponse(" +
             "u.id, u.name, u.profilePic, u.leader) " +
             "FROM User u " +
             "WHERE LOWER(u.name) LIKE CONCAT('%', LOWER(:nameLike), '%')")
-    List<UserSimpleResponse> findByName(String nameLike, Pageable pageable);
+    Page<UserSimpleResponse> findByName(String nameLike, Pageable pageable);
 
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.UserSimpleResponse(" +
             "u.id, u.name, u.profilePic, u.leader) " +
@@ -76,12 +77,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "FROM User u " +
             "WHERE u.id = :id")
     Optional<UserProfileResponse> findProfile(Long id);
-
-    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.UserCsvResponse(" +
-            "u.id, u.name, u.sex, " +
-            "u.description, u.birthDate, " +
-            "u.state, u.city, u.latitude, " +
-            "u.longitude, u.leader, u.skillLevel) " +
-            "FROM User u")
-    List<UserCsvResponse> findAllCsv(Pageable pageable);
 }

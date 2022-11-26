@@ -1,20 +1,28 @@
 package com.sounge.soungeapp.actitivy
 
-import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.sounge.soungeapp.R
+import com.sounge.soungeapp.actitivy.MainActivity.Constants.PROFILE_OWNER_ID_KEY
 import com.sounge.soungeapp.databinding.ActivityMainBinding
+import com.sounge.soungeapp.fragment.FeedFragment
 import com.sounge.soungeapp.fragment.ProfileFragment
-
+import com.sounge.soungeapp.response.UserLogin
+import com.sounge.soungeapp.utils.GsonUtils
+import com.sounge.soungeapp.utils.SharedPreferencesUtils
+import com.sounge.soungeapp.utils.SharedPreferencesUtils.Constants.USER_INFO_PREFS
+import com.sounge.soungeapp.utils.SharedPreferencesUtils.Constants.USER_LOGIN_KEY
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var viewer: UserLogin
+
+    object Constants {
+        const val PROFILE_OWNER_ID_KEY = "profileOwnerId"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,17 +30,39 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupActionBar()
 
-        // TODO: Substituir para o fragment do feed
-        replaceFragment(ProfileFragment())
+        viewer = UserLogin(
+            27,
+            "Danielzinho do Rock",
+            "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
+            true,
+            0,
+            0
+        )
+
+        // TODO: Botar esse código na hora do login, colocando oq retornar do banco
+        SharedPreferencesUtils.put(
+            this, USER_INFO_PREFS, USER_LOGIN_KEY,
+            GsonUtils.INSTANCE.toJson(viewer)
+        )
+
+        replaceFragment(FeedFragment())
 
         // TODO: Substituir fragments conforme for criando
         binding.bnvMain.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.mi_home -> replaceFragment(ProfileFragment())
+                R.id.mi_home -> replaceFragment(FeedFragment())
                 R.id.mi_search -> replaceFragment(ProfileFragment())
                 R.id.mi_match -> replaceFragment(ProfileFragment())
                 R.id.mi_notifications -> replaceFragment(ProfileFragment())
-                R.id.mi_profile -> replaceFragment(ProfileFragment())
+                R.id.mi_profile -> {
+                    val args = Bundle()
+                    args.putLong(PROFILE_OWNER_ID_KEY, viewer.id)
+
+                    val fragment = ProfileFragment()
+                    fragment.arguments = args
+
+                    replaceFragment(fragment)
+                }
                 else -> {}
             }
             true
@@ -40,15 +70,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupActionBar() {
-        supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-        supportActionBar!!.setDisplayShowCustomEnabled(true)
-        supportActionBar!!.setCustomView(R.layout.action_bar_main)
-
-        findViewById<ImageView>(R.id.iv_back_button).setOnClickListener {
-            val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-            onBackPressed()
-        }
+        // TODO: Mudar para actionbar com menu lateral
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

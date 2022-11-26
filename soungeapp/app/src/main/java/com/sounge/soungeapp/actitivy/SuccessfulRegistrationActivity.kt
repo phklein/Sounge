@@ -4,9 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
-import com.sounge.soungeapp.data.LoginResponse
-import com.sounge.soungeapp.data.SaveUsers
+import com.sounge.soungeapp.response.LoginResponse
+import com.sounge.soungeapp.response.SaveUsers
 import com.sounge.soungeapp.databinding.ActivitySuccessfulRegistrationBinding
 import com.sounge.soungeapp.enums.GenreName
 import com.sounge.soungeapp.enums.RoleName

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".actitivy.CommentActivity"
+    android:padding="24dp"
+    android:background="@color/dark_gray">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_writing_user_picture"
+            android:layout_width="56dp"
+            android:layout_height="56dp" />
+
+        <EditText
+            android:id="@+id/et_create_post_text"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:inputType="text|textMultiLine"
+            android:background="@drawable/bg_medium_gray_underline"
+            android:textSize="18sp"
+            android:textColor="@color/dark_white"
+            android:textColorHint="@color/dark_white"
+            android:gravity="top"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    
+</androidx.constraintlayout.widget.ConstraintLayout>

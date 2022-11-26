@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
 import androidx.fragment.app.Fragment
-import com.sounge.soungeapp.data.UserMatch
 import com.sounge.soungeapp.databinding.FragmentMatchInfoBinding
+import com.sounge.soungeapp.response.UserMatch
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.squareup.picasso.Picasso

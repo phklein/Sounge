@@ -34,6 +34,7 @@ public class UserSaveRequest {
     @Schema(description = "Sexo do usuário",
             example = "MALE")
     private Sex sex;
+    @Length(max = 256)
     @Schema(description = "Descrição do usuário",
             example = "Toco guitarra desde pequeno, sou apaixonado por rock")
     private String description;

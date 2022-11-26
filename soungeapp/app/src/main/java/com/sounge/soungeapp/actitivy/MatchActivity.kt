@@ -1,7 +1,6 @@
 package com.sounge.soungeapp.actitivy
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -11,11 +10,11 @@ import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.adapter.ViewPagerAdapter
-import com.sounge.soungeapp.data.*
 import com.sounge.soungeapp.databinding.ActivityMatchBinding
 import com.sounge.soungeapp.enums.*
 import com.sounge.soungeapp.fragment.MatchFragment
 import com.sounge.soungeapp.fragment.MatchInfoFragment
+import com.sounge.soungeapp.response.*
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import retrofit2.Call

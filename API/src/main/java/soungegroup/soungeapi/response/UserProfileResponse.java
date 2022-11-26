@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 import soungegroup.soungeapi.enums.SkillLevel;
 
 import java.time.LocalDate;
@@ -61,7 +62,7 @@ public class UserProfileResponse {
     @ArraySchema(uniqueItems = true, arraySchema =
     @Schema(description = "Posts feitos pelo usuário",
             oneOf = PostSimpleResponse.class))
-    private List<PostSimpleResponse> postList;
+    private Page<PostSimpleResponse> postList;
 
     public UserProfileResponse(Long id,
                                String name,

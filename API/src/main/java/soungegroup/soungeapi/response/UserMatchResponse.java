@@ -9,7 +9,6 @@ import soungegroup.soungeapi.enums.State;
 import soungegroup.soungeapi.model.Signature;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 
@@ -105,7 +104,7 @@ public class UserMatchResponse {
         this.longitude = longitude;
         this.spotifyID = spotifyID;
         this.description = description;
-        this.hasSignature = false;
+        this.hasSignature = !signature.isExpired();
         this.skillLevel = skillLevel;
         this.age = Period.between(birthDate, LocalDate.now()).getYears();
     }
