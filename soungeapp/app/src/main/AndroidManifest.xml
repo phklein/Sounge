@@ -2,12 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sounge.soungeapp">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,6 +13,21 @@
         <activity
             android:name=".actitivy.ActivityRegistrationTertiary"
             android:exported="false"/>
+        <activity
+            android:name=".actitivy.EditPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".actitivy.BandProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".actitivy.WritingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".actitivy.EditProfileListsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".actitivy.EditProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".actitivy.ActivityRegistrationSecundary"
             android:exported="false"/>
@@ -41,19 +50,14 @@
             android:name=".actitivy.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".actitivy.EditProfileActivity"
-            android:exported="false" />
-        <activity
             android:name=".actitivy.CommentActivity"
             android:exported="false" />
         <activity
             android:name=".actitivy.ActivityRegistrationPrimary"
             android:exported="false"/>
-        </activity>
         <activity
             android:name=".actitivy.MatchActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"/>
     </application>
 
 </manifest>

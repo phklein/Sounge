@@ -12,11 +12,10 @@ enum class GenreName(val s: String) {
     INDIE("Indie"),
     ELECTRONIC("Eletrônica"),
     CLASSICAL("Clássica"),
-    FUNK("Fuunk"),
+    FUNK("Funk"),
     MPB("MPB"),
     SERTANEJO("Sertanejo"),
     PAGODE("Pagode"),
     FORRO("Forró"),
-    ECLECTIC("Eclétic(a)")
-
+    ECLECTIC("Eclético(a)")
 }

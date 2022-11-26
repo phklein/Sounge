@@ -29,16 +29,23 @@ public class CommentSimpleResponse {
     @Schema(description = "Usuário dono do comentário",
             oneOf = UserSimpleResponse.class)
     private UserSimpleResponse user;
+    @Schema(description = "Contagem de likes do comentário",
+            example = "1523")
+    private Integer likeCount;
+    @Schema(description = "Usuário deu ou não deu like neste comentário")
+    private boolean hasLiked;
 
     public CommentSimpleResponse(Long id,
                                  String text,
                                  String mediaUrl,
                                  LocalDateTime postDateTime,
-                                 User user) {
+                                 User user,
+                                 Integer likeCount) {
         this.id = id;
         this.text = text;
         this.mediaUrl = mediaUrl;
         this.hoursPast = Duration.between(postDateTime, LocalDateTime.now()).toHours();
         this.user = Mapper.INSTANCE.map(user, UserSimpleResponse.class);
+        this.likeCount = likeCount;
     }
 }

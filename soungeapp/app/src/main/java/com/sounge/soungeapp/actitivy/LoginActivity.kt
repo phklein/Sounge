@@ -5,15 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.sounge.soungeapp.R
-import com.sounge.soungeapp.data.LoginRequest
-import com.sounge.soungeapp.data.LoginResponse
-import com.sounge.soungeapp.data.UserLogin
+import com.sounge.soungeapp.response.LoginRequest
+import com.sounge.soungeapp.response.LoginResponse
 import com.sounge.soungeapp.databinding.ActivityLoginBinding
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import retrofit2.Call
 import retrofit2.Response
-import javax.security.auth.callback.Callback
 
 class LoginActivity : AppCompatActivity() {
 

@@ -52,7 +52,7 @@ public class User {
     private List<Comment> comments;
 
     // Many users can have one signature
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "signature_fk")
     private Signature signature;
 
@@ -81,6 +81,12 @@ public class User {
             joinColumns = @JoinColumn(name = "user_fk"),
             inverseJoinColumns = @JoinColumn(name = "post_fk"))
     private List<Post> likedPosts;
+
+    @ManyToMany
+    @JoinTable(name = "tb_user_likes_comment",
+            joinColumns = @JoinColumn(name = "user_fk"),
+            inverseJoinColumns = @JoinColumn(name = "comment_fk"))
+    private List<Comment> likedComments;
 
     // Many users like many users
     @ManyToMany
