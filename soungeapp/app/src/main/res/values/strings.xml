@@ -31,5 +31,9 @@
     <string name="login_error">Email ou senha incorretos</string>
     <string name="login_sucess">Bem Vindo!</string>
     <string name="cadastre_se">Clique aqui e Cadastre-se!</string>
+    
+    <string name="seja_premium">Seja Premium!</string>
+    <string name="saber_mais">Saber mais</string>
+    <string name="seja_premium_text">Faça com que você, sua banda ou seu estabelecimento ganhe mais relevância e engajamento e se torne viral!</string>
 
 </resources>

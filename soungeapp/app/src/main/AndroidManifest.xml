@@ -17,13 +17,16 @@
         android:theme="@style/Theme.Soungeapp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".actitivy.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".actitivy.ActivityRegistrationTertiary"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".actitivy.ActivityRegistrationSecundary"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
-            android:name=".actitivy.LoginActivity"
+            android:name=".actitivy.PremiumActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,7 +51,7 @@
             android:exported="false" />
         <activity
             android:name=".actitivy.ActivityRegistrationPrimary"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>
