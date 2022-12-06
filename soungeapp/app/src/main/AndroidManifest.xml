@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Soungeapp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".actitivy.PremiumActivity"
+            android:exported="false" />
+        <activity
             android:name=".actitivy.LoginActivity"
             android:exported="false" />
         <activity
@@ -26,7 +29,7 @@
             android:name=".actitivy.ActivityRegistrationSecundary"
             android:exported="false" />
         <activity
-            android:name=".actitivy.PremiumActivity"
+            android:name=".actitivy.PremiumChoiceActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

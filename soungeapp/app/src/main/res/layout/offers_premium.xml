@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fundo_premium">
+
+    <TextView
+        android:id="@+id/textOffersPremium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:text="@string/seja_premium"
+        android:textColor="@color/main_purple"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imagemPlanosOffers"
+        android:layout_width="wrap_content"
+        android:layout_height="230dp"
+        android:layout_below="@+id/textOffersPremium"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/headphone" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imagemPlanosOffers"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        >
+
+        <TextView
+            android:id="@+id/planosOffersText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/main_purple"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            tools:text="Plano Bronze" />
+
+        <TextView
+            android:id="@+id/tipoPlanosOffersText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/planosOffersText"
+            android:textColor="@color/main_purple"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:text="plano mensal" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
