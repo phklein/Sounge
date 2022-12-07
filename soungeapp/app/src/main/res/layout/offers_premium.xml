@@ -18,28 +18,27 @@
 
     <ImageView
         android:id="@+id/imagemPlanosOffers"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="230dp"
         android:layout_below="@+id/textOffersPremium"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="16dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
         android:src="@drawable/headphone" />
 
     <LinearLayout
+        android:id="@+id/linearPremiumInfos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imagemPlanosOffers"
-        android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        >
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/planosOffersText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:textColor="@color/main_purple"
             android:textSize="35sp"
             android:textStyle="bold"
@@ -54,6 +53,51 @@
             android:textSize="15sp"
             android:textStyle="bold"
             tools:text="plano mensal" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linearPremiumInfos"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/simboloReal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+
+                android:text="R$"
+                android:textColor="@color/main_purple"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/valorPlanoPremiumText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/simboloReal"
+                android:includeFontPadding="false"
+                android:padding="0dp"
+                android:textColor="@color/main_purple"
+                android:textSize="50sp"
+                android:textStyle="bold"
+                tools:text="100" />
+
+        </LinearLayout>
+
+        <Button
+
+            android:id="@+id/buttonPremiumPlanos"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/main_purple"
+            android:text="@string/selecione_premium"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

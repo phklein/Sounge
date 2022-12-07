@@ -1,6 +1,10 @@
 package com.sounge.soungeapp.models
 
+import androidx.annotation.DrawableRes
+
 data class Offer(
-    val title: String,
-    val color: Int
+    val plano: String,
+    val tipoPlano: String,
+    val valorPlano: String,
+    @DrawableRes val logo: Int
 )
