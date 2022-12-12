@@ -1,5 +1,6 @@
 package com.sounge.soungeapp.actitivy
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,11 +11,14 @@ import com.sounge.soungeapp.response.LoginResponse
 import com.sounge.soungeapp.databinding.ActivityLoginBinding
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
+import com.sounge.soungeapp.utils.GsonUtils
+import com.sounge.soungeapp.utils.SharedPreferencesUtils
 import retrofit2.Call
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
 
+    private val context: Context = this
     private val retrofit = Retrofit.getInstance()
     private lateinit var binding: ActivityLoginBinding
 
@@ -56,6 +60,14 @@ class LoginActivity : AppCompatActivity() {
                         val mensagemDeSucesso = binding.mensagemDeErro
                         mensagemDeSucesso.text = getText(R.string.login_sucess)
                         mensagemDeSucesso.setTextColor(getColor(R.color.light_green))
+
+                        SharedPreferencesUtils.put(context,
+                            SharedPreferencesUtils.Constants.USER_INFO_PREFS,
+                            SharedPreferencesUtils.Constants.USER_LOGIN_KEY,
+                            GsonUtils.INSTANCE.toJson(response.body()!!))
+
+                        startActivity(Intent(context, MainActivity::class.java))
+
                     } else{
                         val mensagemDeErro = binding.mensagemDeErro
                         mensagemDeErro.text = getText(R.string.login_error)

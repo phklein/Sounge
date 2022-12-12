@@ -47,6 +47,7 @@
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/afddwqdqwdqwd.xml" value="0.148" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_black_gray_round_fill.xml" value="0.15" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_black_opacity_round_fill.xml" value="0.1" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_border_input.xml" value="0.123" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_card_talent.xml" value="0.1315" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_dark_gray_top_shadow.xml" value="0.1875" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_gray_outline_button.xml" value="0.2" />
@@ -54,6 +55,7 @@
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_gray_round_outline.xml" value="0.15" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_light_black_round_fill.xml" value="0.1" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_light_gray_underline.xml" value="0.15" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_medium_gray_underline.xml" value="0.123" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_profile_info.xml" value="0.1855" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_purple_outline_button.xml" value="0.169" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_purple_round_fill.xml" value="0.15" />
@@ -123,21 +125,25 @@
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/activity_edit_talents.xml" value="0.1921875" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/activity_profile.xml" value="0.14719202898550723" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/activity_registration_tertiary.xml" value="0.1" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/activity_search_result.xml" value="0.1716485507246377" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/activity_writing.xml" value="0.1" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/card.xml" value="0.1921875" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/card_talent.xml" value="0.33" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/card_talent_outline.xml" value="0.5" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/custom_action_bar.xml" value="0.1921875" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/fragment_blank.xml" value="0.1921875" />
-        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/fragment_feed.xml" value="0.15307971014492755" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/fragment_feed.xml" value="0.25" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/fragment_profile.xml" value="0.2421259842519685" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/fragment_profile_band.xml" value="0.33" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/fragment_profile_posts.xml" value="0.25" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/fragment_profile_talents.xml" value="0.21" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/fragment_search_result_fragmenty.xml" value="0.1716485507246377" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/popup_fullscreen_media.xml" value="0.18" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/popup_write_post.xml" value="0.1921875" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/row_comment.xml" value="0.25" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/row_post.xml" value="0.33" />
+        <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/layout/row_search_result.xml" value="0.1716485507246377" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/menu/comment_context_menu.xml" value="0.1921875" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/menu/image_context_menu.xml" value="0.1" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/menu/main_bottom_nav.xml" value="0.19114583333333332" />

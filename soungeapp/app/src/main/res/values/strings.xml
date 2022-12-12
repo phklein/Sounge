@@ -63,4 +63,5 @@
     <string name="error_deleting_comment">Erro ao deletar comentário</string>
     <string name="text">Texto</string>
     <string name="group">Grupo</string>
+    <string name="search_people">Pesquisar pessoas...</string>
 </resources>

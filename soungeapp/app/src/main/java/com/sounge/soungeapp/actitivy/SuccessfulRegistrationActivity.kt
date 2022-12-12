@@ -34,62 +34,10 @@ class SuccessfulRegistrationActivity : AppCompatActivity() {
         val botaoComecar = binding.comecarProcurar
 
         botaoComecar.setOnClickListener {
-            cadastrar()
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
     }
 
-    private fun cadastrar() {
-        val editor = getSharedPreferences("USER", MODE_PRIVATE)
-        val name = editor.getString("name", "")
-        val email = editor.getString("email", "")
-        val password = editor.getString("senha", "")
-        val state = editor.getString("estado", "ta dando erro aqui ó")
-        val city = editor.getString("cidade", "")
-        val likedGenres = editor.getString("style", "")
-        val roles = editor.getString("category", "")
-        val skillLevel = editor.getString("level", "")
-        val body = SaveUsers(
-            name = name, email = email,
-            password = password, state = State.valueOf(state.toString()), city = city, sex = null,
-            birthDate = null, phone = null, description = null,
-            likedGenres = listOf(GenreName.values().find { it.s == likedGenres }),
-            roles = listOf(RoleName.values().find { it.s == roles }),
-            skillLevel = SkillLevel.values().find { it.s == skillLevel}
-        )
 
-        val intent = Intent(this, LoginActivity::class.java)
-        val authRequest = retrofit.create(UserClient::class.java)
-
-        authRequest.save(body).enqueue(
-            object : retrofit2.Callback<LoginResponse> {
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(
-                            baseContext, "Name: ${response.body()?.name}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(
-                            baseContext, "Cadastro não realizado",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-
-                }
-
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    Toast.makeText(
-                        baseContext, "DEU MUITO RUIM",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-
-
-            })
-    }
 }
