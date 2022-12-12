@@ -13,9 +13,6 @@
         android:theme="@style/Theme.Soungeapp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".SearchResultActivity"
-            android:exported="false" />
-        <activity
             android:name=".actitivy.ActivityRegistrationTertiary"
             android:exported="false" />
         <activity
@@ -35,7 +32,7 @@
             android:exported="false" />
         <activity
             android:name=".actitivy.ActivityRegistrationSecundary"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".actitivy.LoginActivity"
             android:exported="true">
@@ -59,10 +56,10 @@
             android:exported="false" />
         <activity
             android:name=".actitivy.ActivityRegistrationPrimary"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".actitivy.MatchActivity"
-            android:exported="false" />
+            android:exported="false"/>
     </application>
 
 </manifest>
