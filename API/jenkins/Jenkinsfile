@@ -3,9 +3,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('Build') {
             steps {
-                echo 'Hello World'
+                echo 'Hello sounge developer'
+                echo 'Your project change has been built successfully!'
             }
         }
     }
