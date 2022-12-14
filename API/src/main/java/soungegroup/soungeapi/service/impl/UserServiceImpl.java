@@ -576,46 +576,42 @@ public class UserServiceImpl implements UserService {
                                                                  Optional<Sex> sex,
                                                                  Optional<SkillLevel> skillLevel,
                                                                  Integer page) {
-        Optional<User> userOptional = repository.findById(id);
-
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-
+        if (repository.existsById(id)) {
             List<UserMatchResponse> matchList = repository.findMatchList(
-                    user.getId()
+                    id
             );
 
             matchList.forEach(u -> {
-                u.setGroup(groupRepository.findByUserId(u.getId()).orElse(null));
+//                u.setGroup(groupRepository.findByUserId(u.getId()).orElse(null));
                 u.setLikedGenres(genreRepository.findByUserId(u.getId()));
                 u.setRoles(roleRepository.findByUserId(u.getId()));
-                u.setIsOnline(hasSession(u.getId()));
-                u.setDistance(locationUtil.distance(
-                        user.getLatitude(), user.getLongitude(),
-                        u.latitude(), u.longitude()
-                ));
-
-                // Calculate relevance, +2 if has signature
+//                u.setIsOnline(hasSession(u.getId()));
+//                u.setDistance(locationUtil.distance(
+//                        repository.findLatitudeById(id), repository.findLongitudeById(id),
+//                        u.latitude(), u.longitude()
+//                ));
+//
+//                 Calculate relevance, +2 if has signature
                 double relevance = u.isHasSignature() ? 2 : 0;
-
-                // 10 - 0.20 for each km away
-                relevance += (10 - (u.getDistance() * 0.2));
-
-                // +0.5 for each matching genre
-                relevance += 0.5 * u.getLikedGenres().stream().filter(g ->
-                        user.getLikedGenres().stream().anyMatch(ug ->
-                                ug.getId().equals(g.getId()))).count();
-
-                // +0.5 for each matching roles
-                relevance += 0.5 * u.getRoles().stream().filter(r ->
-                        user.getRoles().stream().anyMatch(ur ->
-                                ur.getId().equals(r.getId()))).count();
-
+//
+//                 10 - 0.20 for each km away
+//                relevance += (10 - (u.getDistance() * 0.2));
+//
+//                 +0.5 for each matching genre
+//                relevance += 0.5 * u.getLikedGenres().stream().filter(g ->
+//                        user.getLikedGenres().stream().anyMatch(ug ->
+//                                ug.getId().equals(g.getId()))).count();
+//
+//                 +0.5 for each matching roles
+//                relevance += 0.5 * u.getRoles().stream().filter(r ->
+//                        user.getRoles().stream().anyMatch(ur ->
+//                                ur.getId().equals(r.getId()))).count();
+//
                 u.setRelevance(relevance);
             });
 
             return ResponseEntity.status(HttpStatus.OK).body(new PageImpl<>(matchList.stream()
-                    .filter(u -> u.getDistance() <= maxDistance)
+//                    .filter(u -> u.getDistance() <= maxDistance)
                     .sorted(Comparator.comparing(UserMatchResponse::getRelevance).reversed())
                     .collect(Collectors.toList())));
         }

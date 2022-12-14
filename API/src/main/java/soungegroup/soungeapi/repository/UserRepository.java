@@ -69,10 +69,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.UserMatchResponse(" +
             "u.id, u.name, u.profilePic, u.leader, u.sex, u.state, u.city, u.latitude, u.longitude, " +
-            "u.spotifyID, u.description, u.signature, u.skillLevel, u.birthDate) " +
+            "u.spotifyID, u.description, u.skillLevel) " +
             "FROM User u " +
             "JOIN u.roles r " +
             "JOIN u.likedGenres g " +
             "WHERE u.id = :id")
     UserMatchResponse findUserContactDetailsById(Long id);
+
+    @Query("SELECT u.latitude FROM User u WHERE u.id = :id")
+    double findLatitudeById(Long id);
+
+    @Query("SELECT u.longitude FROM User u WHERE u.id = :id")
+    double findLongitudeById(Long id);
 }
