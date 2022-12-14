@@ -13,8 +13,13 @@
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_edit.xml" value="0.215" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_like.xml" value="0.215" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_match.xml" value="0.215" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_notification.xml" value="0.2105" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_others.xml" value="0.2105" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_pianist.xml" value="0.215" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_producer.xml" value="0.2105" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_profile.xml" value="0.215" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_return.xml" value="0.2105" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_saxophonist.xml" value="0.2105" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_search.xml" value="0.215" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_share.xml" value="0.215" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_soungehorizontal.xml" value="0.215" />
@@ -23,11 +28,14 @@
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_ukulele_player.xml" value="0.215" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_violinist.xml" value="0.215" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/ic_vocalist.xml" value="0.215" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/inner_shadow.xml" value="0.2105" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/shadow.xml" value="0.2105" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/soungehorizontal.xml" value="0.215" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/style_spinner.xml" value="0.2605" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/drawable/style_spinner_sub.xml" value="0.1955" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_notificacao.xml" value="0.25" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_registration.xml" value="0.18" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_registration_primary.xml" value="0.33" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_registration_secundary.xml" value="0.2" />
@@ -36,6 +44,7 @@
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/card_talent.xml" value="0.3009833262077811" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/fragment_profile.xml" value="0.3009833262077811" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/list_item.xml" value="0.9" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/notification_item.xml" value="0.67" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/popup_fullscreen_media.xml" value="0.3009833262077811" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/row_post.xml" value="0.3009833262077811" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/style_spinners.xml" value="0.1" />
