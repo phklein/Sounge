@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.ffe3ac67.css",
+    "main.js": "/static/js/main.37269590.js",
+    "static/media/event-two.png": "/static/media/event-two.2a56d6a93b12ab2e027e.png",
+    "static/media/event-three.png": "/static/media/event-three.b1c0718ef4a6f6cef186.png",
+    "static/media/pub-one.png": "/static/media/pub-one.87514ebf2e221b7ca05d.png",
+    "static/media/ari-pagodeira.png": "/static/media/ari-pagodeira.6caebfd63bc7932b2ef6.png",
+    "static/media/pub-three.png": "/static/media/pub-three.7cc8b0bdcb792c660dde.png",
+    "static/media/pub-two.png": "/static/media/pub-two.a66a90e3434480c57072.png",
+    "static/media/event-one.png": "/static/media/event-one.805441ad65375926b778.png",
+    "static/media/logo-fundo-escuro-texto-horizontal.png": "/static/media/logo-fundo-escuro-texto-horizontal.759442141e45ee1d896c.png",
+    "static/media/logo-texto-vertical.png": "/static/media/logo-texto-vertical.41a5099324ae6bbdf0aa.png",
+    "static/media/espaco.png": "/static/media/espaco.0d474c9d8f620cea1fe7.png",
+    "index.html": "/index.html",
+    "static/media/Vector.svg": "/static/media/Vector.d4eba00055c627db5128.svg",
+    "main.ffe3ac67.css.map": "/static/css/main.ffe3ac67.css.map",
+    "main.37269590.js.map": "/static/js/main.37269590.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ffe3ac67.css",
+    "static/js/main.37269590.js"
+  ]
+}
