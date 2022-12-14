@@ -13,7 +13,7 @@ import com.sounge.soungeapp.rest.UserClient
 import com.squareup.picasso.Picasso
 
 
-class MatchInfoFragment(private val userMatch: UserMatch) : Fragment() {
+class TuninInfoFragment(private val userMatch: UserMatch) : Fragment() {
 
     private lateinit var binding: FragmentTuninInfoBinding
 

@@ -9,6 +9,8 @@ import com.sounge.soungeapp.actitivy.MainActivity.Constants.PROFILE_OWNER_ID_KEY
 import com.sounge.soungeapp.databinding.ActivityMainBinding
 import com.sounge.soungeapp.fragment.FeedFragment
 import com.sounge.soungeapp.fragment.ProfileFragment
+import com.sounge.soungeapp.fragment.TuninFragment
+import com.sounge.soungeapp.fragment.TuninInfoFragment
 import com.sounge.soungeapp.response.UserLogin
 import com.sounge.soungeapp.utils.GsonUtils
 import com.sounge.soungeapp.utils.SharedPreferencesUtils
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.mi_home -> replaceFragment(FeedFragment())
                 R.id.mi_search -> replaceFragment(ProfileFragment())
-                R.id.mi_match -> replaceFragment(ProfileFragment())
+                R.id.mi_match -> replaceFragment(TuninFragment())
                 R.id.mi_notifications -> replaceFragment(ProfileFragment())
                 R.id.mi_profile -> {
                     val args = Bundle()

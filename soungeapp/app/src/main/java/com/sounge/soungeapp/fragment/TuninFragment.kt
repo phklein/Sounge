@@ -4,16 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.lorentzos.flingswipe.SwipeFlingAdapterView
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.adapter.UserMatchAdapter
-import com.sounge.soungeapp.data.*
 import com.sounge.soungeapp.databinding.FragmentTuninBinding
 import com.sounge.soungeapp.enums.*
+import com.sounge.soungeapp.response.*
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import okhttp3.ResponseBody

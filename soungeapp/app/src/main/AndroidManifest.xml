@@ -57,9 +57,6 @@
         <activity
             android:name=".actitivy.ActivityRegistrationPrimary"
             android:exported="false"/>
-        <activity
-            android:name=".actitivy.MatchActivity"
-            android:exported="false"/>
     </application>
 
 </manifest>
