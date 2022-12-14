@@ -146,7 +146,7 @@ class ProfileFragment : Fragment(), PostEventListener {
             binding.rvProfilePosts.layoutManager = layoutManager
             binding.rvProfilePosts.adapter = adapter
 
-            registerForContextMenu(binding.rvProfilePosts);
+            registerForContextMenu(binding.rvProfilePosts)
         }
     }
 
@@ -160,7 +160,7 @@ class ProfileFragment : Fragment(), PostEventListener {
         if (URLUtil.isValidUrl(userPage.profilePic)) {
             Picasso.get().load(userPage.profilePic).into(binding.ivProfilePicture)
         } else {
-            Picasso.get().load(R.drawable.ic_blank_profile).into(binding.ivProfileBanner)
+            Picasso.get().load(R.drawable.ic_blank_profile).into(binding.ivProfilePicture)
         }
 
         binding.tvProfileName.text = userPage.name
@@ -176,7 +176,7 @@ class ProfileFragment : Fragment(), PostEventListener {
         userPage.likedGenres.forEachIndexed { i, it ->
             val talentCard = layoutInflater.inflate(R.layout.card, null)
             talentCard.findViewById<ImageView>(R.id.iv_card_icon).visibility = View.GONE
-            talentCard.findViewById<TextView>(R.id.tv_card_name).text = it.genreName.s;
+            talentCard.findViewById<TextView>(R.id.tv_card_name).text = it.name.s
 
             binding.llGenreList.addView(talentCard)
 
@@ -204,8 +204,8 @@ class ProfileFragment : Fragment(), PostEventListener {
         userPage.roles.forEachIndexed { i, it ->
             val talentCard = layoutInflater.inflate(R.layout.card, null)
             talentCard.findViewById<ImageView>(R.id.iv_card_icon)
-                .setImageResource(it.roleName.icon)
-            talentCard.findViewById<TextView>(R.id.tv_card_name).text = it.roleName.s
+                .setImageResource(it.name.icon)
+            talentCard.findViewById<TextView>(R.id.tv_card_name).text = it.name.s
 
             binding.llTalentList.addView(talentCard)
 

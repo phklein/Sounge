@@ -7,5 +7,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class GenreSimple (
     var id: Long,
-    var genreName: GenreName
+    var name: GenreName
 ) : Parcelable

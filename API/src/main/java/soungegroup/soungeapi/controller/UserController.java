@@ -62,6 +62,11 @@ public class UserController {
         return service.findContactList(id, page);
     }
 
+    @GetMapping("{id}/contacts/details")
+    public ResponseEntity<UserMatchResponse> findContactDetails(@PathVariable Long id) {
+        return service.findUserContactDetailsByid(id);
+    }
+
     @GetMapping("{id}/newMatches")
     public ResponseEntity<List<NotificationSimpleResponse>> checkNewMatches(@PathVariable Long id) {
         return service.checkNewMatches(id);

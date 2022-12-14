@@ -147,7 +147,7 @@ class EditProfileActivity : AppCompatActivity() {
         userPage.likedGenres.forEachIndexed { i, it ->
             val talentCard = layoutInflater.inflate(R.layout.card, null)
             talentCard.findViewById<ImageView>(R.id.iv_card_icon).visibility = View.GONE
-            talentCard.findViewById<TextView>(R.id.tv_card_name).text = it.genreName.s
+            talentCard.findViewById<TextView>(R.id.tv_card_name).text = it.name.s
 
             binding.llEditGenreList.addView(talentCard)
 
@@ -172,8 +172,8 @@ class EditProfileActivity : AppCompatActivity() {
         userPage.roles.forEachIndexed { i, it ->
             val talentCard = layoutInflater.inflate(R.layout.card, null)
             talentCard.findViewById<ImageView>(R.id.iv_card_icon)
-                .setImageResource(it.roleName.icon)
-            talentCard.findViewById<TextView>(R.id.tv_card_name).text = it.roleName.s
+                .setImageResource(it.name.icon)
+            talentCard.findViewById<TextView>(R.id.tv_card_name).text = it.name.s
 
             binding.llEditTalentList.addView(talentCard)
 

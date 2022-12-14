@@ -649,6 +649,17 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.status(HttpStatus.OK).body(foundUsers);
     }
 
+    @Override
+    public ResponseEntity<UserMatchResponse> findUserContactDetailsByid(Long id) {
+        UserMatchResponse userMatchResponse = repository.findUserContactDetailsById(id);
+
+        if (userMatchResponse != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(repository.findUserContactDetailsById(id));
+        }
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     private Boolean hasSession(Long id) {
         for (UserLoginResponse ulr : sessions) {
             if (ulr.getId().equals(id)) {

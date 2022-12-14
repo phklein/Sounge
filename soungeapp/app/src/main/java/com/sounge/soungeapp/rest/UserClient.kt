@@ -73,7 +73,8 @@ interface UserClient {
     @GET("/users/{id}/match")
     fun findMatchList(
         @Path("id") id: Long,
-        @Query("maxDistance") maxDistance: Int
+        @Query("maxDistance") maxDistance: Int,
+        @Query("page") page: Int
     ): Call<MutableList<UserMatch>>
 
     @POST("/{id}/likeUser/{likedId}")
@@ -81,5 +82,16 @@ interface UserClient {
         @Path("id") id: Long,
         @Path("likedId") likedId: Long
     ): Call<ResponseBody>
+
+    @GET("/users/{id}/contacts/details")
+    fun findContactDetails(
+        @Path("id") id: Long
+    ): Call<UserMatch>
+
+    @GET("/users/{id}/contacts")
+    fun findContactList(
+        @Path("id") id: Long,
+        @Query("page") page: Int
+    ): Call<MutableList<UserContact>>
 
 }

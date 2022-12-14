@@ -136,7 +136,7 @@ class EditProfileListsActivity : AppCompatActivity() {
                 UPDATE_TALENTS_REQUEST_CODE -> {
                     val updateTalents = userClient.updateTalents(
                         viewer.id, UpdateRoles(
-                            talentsToAdd.map { it.roleName }, talentsToRemove.map { it.roleName }
+                            talentsToAdd.map { it.name }, talentsToRemove.map { it.name }
                         )
                     )
 
@@ -174,7 +174,7 @@ class EditProfileListsActivity : AppCompatActivity() {
                 else -> {
                     val updateGenres = userClient.updateGenres(
                         viewer.id, UpdateGenres(
-                            genresToAdd.map { it.genreName }, genresToRemove.map { it.genreName }
+                            genresToAdd.map { it.name }, genresToRemove.map { it.name }
                         )
                     )
 
@@ -223,8 +223,8 @@ class EditProfileListsActivity : AppCompatActivity() {
                 userTalentList.forEach {
                     val card = layoutInflater.inflate(R.layout.card, null)
                     card.findViewById<ImageView>(R.id.iv_card_icon)
-                        .setImageResource(it.roleName.icon)
-                    card.findViewById<TextView>(R.id.tv_card_name).text = it.roleName.s
+                        .setImageResource(it.name.icon)
+                    card.findViewById<TextView>(R.id.tv_card_name).text = it.name.s
 
                     val layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
                     layoutParams.setMargins(24, 24, 24, 24)
@@ -248,7 +248,7 @@ class EditProfileListsActivity : AppCompatActivity() {
                 userGenreList.forEach {
                     val card = layoutInflater.inflate(R.layout.card, null)
                     card.findViewById<ImageView>(R.id.iv_card_icon).visibility = View.GONE
-                    card.findViewById<TextView>(R.id.tv_card_name).text = it.genreName.s
+                    card.findViewById<TextView>(R.id.tv_card_name).text = it.name.s
 
                     val layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
                     layoutParams.setMargins(24, 24, 24, 24)
@@ -288,7 +288,7 @@ class EditProfileListsActivity : AppCompatActivity() {
         val list = ArrayList<RoleSimple>()
 
         RoleName.values().forEach {
-            if (!userTalentList.any { t -> t.roleName == it }) {
+            if (!userTalentList.any { t -> t.name == it }) {
                 list.add(RoleSimple(1, it))
             }
         }
@@ -300,7 +300,7 @@ class EditProfileListsActivity : AppCompatActivity() {
         val list = ArrayList<GenreSimple>()
 
         GenreName.values().forEach {
-            if (!userGenreList.any { t -> t.genreName == it }) {
+            if (!userGenreList.any { t -> t.name == it }) {
                 list.add(GenreSimple(1, it))
             }
         }
@@ -314,8 +314,8 @@ class EditProfileListsActivity : AppCompatActivity() {
                 otherTalentList.forEach {
                     val card = layoutInflater.inflate(R.layout.card, null)
                     card.findViewById<ImageView>(R.id.iv_card_icon)
-                        .setImageResource(it.roleName.icon)
-                    card.findViewById<TextView>(R.id.tv_card_name).text = it.roleName.s
+                        .setImageResource(it.name.icon)
+                    card.findViewById<TextView>(R.id.tv_card_name).text = it.name.s
 
                     val layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
                     layoutParams.setMargins(24, 24, 24, 24)
@@ -340,7 +340,7 @@ class EditProfileListsActivity : AppCompatActivity() {
                 otherGenreList.forEach {
                     val card = layoutInflater.inflate(R.layout.card, null)
                     card.findViewById<ImageView>(R.id.iv_card_icon).visibility = View.GONE
-                    card.findViewById<TextView>(R.id.tv_card_name).text = it.genreName.s
+                    card.findViewById<TextView>(R.id.tv_card_name).text = it.name.s
 
                     val layoutParams = LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
                     layoutParams.setMargins(24, 24, 24, 24)

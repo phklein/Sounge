@@ -7,5 +7,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class RoleSimple (
     var id: Long,
-    var roleName: RoleName
+    var name: RoleName
 ) : Parcelable

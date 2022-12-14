@@ -7,10 +7,7 @@ import androidx.fragment.app.Fragment
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.actitivy.MainActivity.Constants.PROFILE_OWNER_ID_KEY
 import com.sounge.soungeapp.databinding.ActivityMainBinding
-import com.sounge.soungeapp.fragment.FeedFragment
-import com.sounge.soungeapp.fragment.ProfileFragment
-import com.sounge.soungeapp.fragment.TuninFragment
-import com.sounge.soungeapp.fragment.TuninInfoFragment
+import com.sounge.soungeapp.fragment.*
 import com.sounge.soungeapp.response.UserLogin
 import com.sounge.soungeapp.utils.GsonUtils
 import com.sounge.soungeapp.utils.SharedPreferencesUtils
@@ -32,19 +29,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupActionBar()
 
-        viewer = UserLogin(
-            27,
-            "Danielzinho do Rock",
-            "https://conteudo.imguol.com.br/c/entretenimento/58/2020/09/28/phil-claudio-gonzales-e-a-cara-do-chaves-1601293813371_v2_600x600.jpg",
-            true,
-            0,
-            0
-        )
-
-        // TODO: Botar esse código na hora do login, colocando oq retornar do banco
-        SharedPreferencesUtils.put(
-            this, USER_INFO_PREFS, USER_LOGIN_KEY,
-            GsonUtils.INSTANCE.toJson(viewer)
+        viewer = GsonUtils.INSTANCE.fromJson(
+            SharedPreferencesUtils.get(
+                this,
+                USER_INFO_PREFS,
+                USER_LOGIN_KEY),
+            UserLogin::class.java
         )
 
         replaceFragment(FeedFragment())
@@ -54,7 +44,15 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.mi_home -> replaceFragment(FeedFragment())
                 R.id.mi_search -> replaceFragment(ProfileFragment())
-                R.id.mi_match -> replaceFragment(TuninFragment())
+                R.id.mi_match -> {
+                    val args = Bundle()
+                    args.putLong(PROFILE_OWNER_ID_KEY, viewer.id)
+
+                    val fragment = ContactFragment()
+                    fragment.arguments = args
+                    
+                    replaceFragment(fragment)
+                }
                 R.id.mi_notifications -> replaceFragment(ProfileFragment())
                 R.id.mi_profile -> {
                     val args = Bundle()

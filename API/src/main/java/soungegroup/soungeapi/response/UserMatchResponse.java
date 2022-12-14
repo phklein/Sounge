@@ -104,7 +104,7 @@ public class UserMatchResponse {
         this.longitude = longitude;
         this.spotifyID = spotifyID;
         this.description = description;
-        this.hasSignature = !signature.isExpired();
+        this.hasSignature = false;
         this.skillLevel = skillLevel;
         this.age = Period.between(birthDate, LocalDate.now()).getYears();
     }

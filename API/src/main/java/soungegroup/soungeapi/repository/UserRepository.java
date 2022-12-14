@@ -77,4 +77,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "FROM User u " +
             "WHERE u.id = :id")
     Optional<UserProfileResponse> findProfile(Long id);
+
+    @Query("SELECT DISTINCT new soungegroup.soungeapi.response.UserMatchResponse(" +
+            "u.id, u.name, u.profilePic, u.leader, u.sex, u.state, u.city, u.latitude, u.longitude, " +
+            "u.spotifyID, u.description, u.signature, u.skillLevel, u.birthDate) " +
+            "FROM User u " +
+            "JOIN u.roles r " +
+            "JOIN u.likedGenres g " +
+            "WHERE u.id = :id")
+    UserMatchResponse findUserContactDetailsById(Long id);
 }

@@ -61,11 +61,11 @@ public class UserMatchAdapter extends ArrayAdapter<UserMatch> {
             secondTalent.setVisibility(View.INVISIBLE);
         } else
         if (card_item.getRoles().size() == 1) {
-            firstTalent.setText(card_item.getRoles().get(0).getRoleName().getS());
+            firstTalent.setText(card_item.getRoles().get(0).getName().getS());
             secondTalent.setVisibility(View.INVISIBLE);
         } else {
-            firstTalent.setText(card_item.getRoles().get(0).getRoleName().getS());
-            secondTalent.setText(card_item.getRoles().get(1).getRoleName().getS());
+            firstTalent.setText(card_item.getRoles().get(0).getName().getS());
+            secondTalent.setText(card_item.getRoles().get(1).getName().getS());
         }
 
         name.setText(card_item.getName());

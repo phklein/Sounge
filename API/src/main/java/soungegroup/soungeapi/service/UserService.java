@@ -53,4 +53,6 @@ public interface UserService {
                                                           Optional<SkillLevel> skillLevel,
                                                           Integer page);
     ResponseEntity<Page<UserSimpleResponse>> findByName(String nameLike);
+
+    ResponseEntity<UserMatchResponse> findUserContactDetailsByid(Long id);
 }
