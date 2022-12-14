@@ -75,7 +75,7 @@ interface UserClient {
         @Path("id") id: Long,
         @Query("maxDistance") maxDistance: Int,
         @Query("page") page: Int
-    ): Call<MutableList<UserMatch>>
+    ): Call<Page<UserMatch>>
 
     @POST("/{id}/likeUser/{likedId}")
     fun likeUser(

@@ -94,6 +94,77 @@
             app:layout_constraintTop_toBottomOf="@id/llTalentList"
             app:layout_constraintLeft_toLeftOf="parent"
             android:paddingTop="20dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/tvContatos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contatos"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textFontWeight="500"
+            app:layout_constraintTop_toBottomOf="@id/tvDescription"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:paddingTop="30dp"
+            android:paddingBottom="20dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvContatos"
+            app:layout_constraintLeft_toLeftOf="parent">
+
+            <ImageView
+                android:id="@+id/ivTel"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ic_tel"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <TextView
+                android:id="@+id/tvTel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingLeft="20dp"
+                android:text="Telefone:"
+                android:textColor="@color/white"
+                android:textFontWeight="600"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@+id/ivTel"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="+55 (11) 91234-5678"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivFirstDots"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/ic_dots"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:layout_editor_absoluteY="-33dp"
+                tools:ignore="MissingConstraints" />
+
+            <ImageView
+                android:id="@+id/ivSecondDots"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/ic_dots"
+                app:layout_constraintRight_toLeftOf="@+id/ivFirstDots"
+                tools:layout_editor_absoluteY="-33dp"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@ import java.util.List;
 
 public class UserMatchAdapter extends ArrayAdapter<UserMatch> {
 
+    private Context context;
     private List<UserMatch> items;
 
     public UserMatchAdapter(@NonNull Context context, int resource, List<UserMatch> objects) {
@@ -72,6 +73,8 @@ public class UserMatchAdapter extends ArrayAdapter<UserMatch> {
 
         if (URLUtil.isValidUrl(card_item.getProfilePic())) {
             Picasso.get().load(card_item.getProfilePic()).into(image);
+        } else {
+            Picasso.get().load(R.drawable.ic_blank_profile).into(image);
         }
 
         return convertView;
