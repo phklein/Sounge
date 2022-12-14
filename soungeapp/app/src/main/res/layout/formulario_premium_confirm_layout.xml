@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp"
+    android:background="@color/white">
+
+    <ImageButton
+        android:id="@+id/closeButtonFormPremiumConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:padding="8dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="@+id/imageFormularioPremiumConfirm"
+        app:layout_constraintTop_toTopOf="@+id/imageFormularioPremiumConfirm" />
+    <ImageView
+        android:id="@+id/imageFormularioPremiumConfirm"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:src="@drawable/discoteca"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/mensagemConfirmFormPremiumConfirm"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/formulario_premium_parabens"
+        android:textColor="@color/main_purple"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/imageFormularioPremiumConfirm"/>
+
+    <Button
+        android:id="@+id/buttonFormPremiumConfirm"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/main_purple"
+        android:text="@string/confirmar_premium"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mensagemConfirmFormPremiumConfirm"
+        app:layout_constraintVertical_bias="1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

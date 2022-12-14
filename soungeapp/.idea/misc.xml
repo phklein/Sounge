@@ -31,16 +31,20 @@
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_premium.xml" value="0.33" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_premium_choice.xml" value="0.3233695652173913" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_premium_offers.xml" value="0.36666666666666664" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_registration.xml" value="0.18" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_registration_primary.xml" value="0.33" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_registration_secundary.xml" value="0.2" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_registration_tertiary.xml" value="0.5" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/activity_successful_registration.xml" value="0.18" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/card_talent.xml" value="0.3009833262077811" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/formulario_premium_confirm_layout.xml" value="0.276268115942029" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/formulario_premium_layout.xml" value="0.25" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/fragment_premium_info.xml" value="0.33" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/fragment_premium_initial.xml" value="0.3421875" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/fragment_profile.xml" value="0.3009833262077811" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/list_item.xml" value="0.9" />
+        <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/notification_match.xml" value="0.276268115942029" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/offers_premium.xml" value="0.25" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/popup_fullscreen_media.xml" value="0.3009833262077811" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/layout/row_post.xml" value="0.3009833262077811" />
@@ -50,11 +54,6 @@
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/menu/main_bottom_nav.xml" value="0.23899102180418982" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/menu/post_context_menu.xml" value="0.23899102180418982" />
         <entry key="..\:/Documentos/bandtec/4 semestre/Sounge - App/Sounge/soungeapp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.253" />
-        <entry key="..\:/Users/Aluno/Downloads/Sounge/soungeapp/app/src/main/res/layout/activity_premium.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Aluno/Downloads/Sounge/soungeapp/app/src/main/res/layout/activity_premium_choice.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Aluno/Downloads/Sounge/soungeapp/app/src/main/res/layout/fragment_premium_info.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Aluno/Downloads/Sounge/soungeapp/app/src/main/res/layout/fragment_premium_initial.xml" value="0.1675929884566054" />
-        <entry key="..\:/Users/Aluno/Downloads/Sounge/soungeapp/app/src/main/res/layout/offers_premium.xml" value="0.5" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_black_gray_round_fill.xml" value="0.15" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_black_opacity_round_fill.xml" value="0.1" />
         <entry key="..\:/sptech/PI/Sounge/soungeapp/app/src/main/res/drawable/bg_card_talent.xml" value="0.1315" />
