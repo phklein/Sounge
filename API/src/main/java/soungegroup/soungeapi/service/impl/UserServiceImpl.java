@@ -581,24 +581,8 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
-            Optional<LocalDate> minBirthDate = maxAge.isEmpty() ?
-                    Optional.empty() :
-                    Optional.of(LocalDate.now().minusYears(maxAge.get()));
-
-            Optional<LocalDate> maxBirthDate = minAge.isEmpty() ?
-                    Optional.empty() :
-                    Optional.of(LocalDate.now().minusYears(minAge.get()));
-
-            Page<UserMatchResponse> matchList = repository.findMatchList(
-                    user.getId(),
-                    user.getLikedUsers(),
-                    minBirthDate.orElse(null),
-                    maxBirthDate.orElse(null),
-                    genreName.orElse(null),
-                    roleName.orElse(null),
-                    sex.orElse(null),
-                    skillLevel.orElse(null),
-                    Pageable.ofSize(50).withPage(0)
+            List<UserMatchResponse> matchList = repository.findMatchList(
+                    user.getId()
             );
 
             matchList.forEach(u -> {
@@ -630,12 +614,10 @@ public class UserServiceImpl implements UserService {
                 u.setRelevance(relevance);
             });
 
-            matchList = new PageImpl<>(matchList.stream()
+            return ResponseEntity.status(HttpStatus.OK).body(new PageImpl<>(matchList.stream()
                     .filter(u -> u.getDistance() <= maxDistance)
                     .sorted(Comparator.comparing(UserMatchResponse::getRelevance).reversed())
-                    .collect(Collectors.toList()));
-
-            return ResponseEntity.status(HttpStatus.OK).body(matchList);
+                    .collect(Collectors.toList())));
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
