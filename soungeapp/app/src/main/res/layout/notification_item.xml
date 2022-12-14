@@ -32,14 +32,14 @@
             tools:text="Sintonize-se!" />
 
         <TextView
-            android:id="@+id/text_mensagem"
+            android:id="@+id/text_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_title"
             android:layout_marginStart="16dp"
             android:layout_toEndOf="@id/iconNotification"
             android:singleLine="true"
-            tools:text="Fulano sintonixou com você!" />
+            tools:text="Fulano sintonizou com você!" />
 
 
     </RelativeLayout>
