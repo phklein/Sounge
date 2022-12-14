@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:rotation_degrees="15.5"
-        tools:context=".MyActivity2" />
+        tools:context=".fragment.TuninFragment" />
 
     <TextView
         android:id="@+id/tvWarningCards"
