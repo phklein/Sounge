@@ -24,27 +24,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT DISTINCT new soungegroup.soungeapi.response.UserMatchResponse(" +
             "u.id, u.name, u.profilePic, u.leader, u.sex, u.state, u.city, u.latitude, u.longitude, " +
-            "u.spotifyID, u.description, u.signature, u.skillLevel, u.birthDate) " +
+            "u.spotifyID, u.description, u.skillLevel) " +
             "FROM User u " +
-            "JOIN u.roles r " +
-            "JOIN u.likedGenres g " +
-            "WHERE u.id <> :userId " +
-            "AND u NOT IN :likedUsers " +
-            "AND (u.birthDate >= :minBirthDate OR :minBirthDate IS NUll) " +
-            "AND (u.birthDate <= :maxBirthDate OR :maxBirthDate IS NUll) " +
-            "AND (r.name = :roleName OR :roleName IS NULL) " +
-            "AND (g.name = :genreName OR :genreName IS NULL) " +
-            "AND (u.sex = :sex OR :sex IS NULL) " +
-            "AND (u.skillLevel = :skillLevel OR :skillLevel IS NULL)")
-    Page<UserMatchResponse> findMatchList(Long userId,
-                                          List<User> likedUsers,
-                                          LocalDate minBirthDate,
-                                          LocalDate maxBirthDate,
-                                          GenreName genreName,
-                                          RoleName roleName,
-                                          Sex sex,
-                                          SkillLevel skillLevel,
-                                          Pageable pageable);
+            "WHERE u.id <> :userId")
+//            "AND (u.birthDate >= :minBirthDate OR :minBirthDate IS NUll) " +
+//            "AND (u.birthDate <= :maxBirthDate OR :maxBirthDate IS NUll) " +
+//            "AND (r.name = :roleName OR :roleName IS NULL) " +
+//            "AND (g.name = :genreName OR :genreName IS NULL) " +
+//            "AND (u.sex = :sex OR :sex IS NULL) " +
+//            "AND (u.skillLevel = :skillLevel OR :skillLevel IS NULL)")
+    List<UserMatchResponse> findMatchList(Long userId);
 
     @Query(value = ";with usuarios_seguidos (liker_fk, liked_fk) as(\n" +
             "    SELECT *\n" +

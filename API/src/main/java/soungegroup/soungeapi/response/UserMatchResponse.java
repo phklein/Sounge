@@ -90,9 +90,7 @@ public class UserMatchResponse {
                              Double longitude,
                              String spotifyID,
                              String description,
-                             Signature signature,
-                             SkillLevel skillLevel,
-                             LocalDate birthDate) {
+                             SkillLevel skillLevel) {
         this.id = id;
         this.name = name;
         this.profilePic = profilePic;
@@ -104,9 +102,7 @@ public class UserMatchResponse {
         this.longitude = longitude;
         this.spotifyID = spotifyID;
         this.description = description;
-        this.hasSignature = false;
         this.skillLevel = skillLevel;
-        this.age = Period.between(birthDate, LocalDate.now()).getYears();
     }
 
     public Double latitude() {
