@@ -2,7 +2,7 @@
 .banner { 
     width: 100%;
     height: 500px;
-    background-image: url('https://s3-alpha-sig.figma.com/img/52b6/5370/750e956ef310ff9ae8a8a6d1061e71c8?Expires=1647216000&Signature=J6JjyGOtLO3w7BYRF37fDr9n6zRbaSBsL~juVSGlM3tRXPEyKkAtKL9D0yOmI1xmzBU6fPyt1uMdvpjqgoYGXqIqkW15y7VgfbgKnXJSYNsgzlMBIflErT1JvzKJ3lXNtU~hTXLnjUyyAstxG7G1IZYyCG1yH1HpFOy18QR3bzzKE3VUIQmEQKmaU9-al2McwM-MTE9LRUkmovmFQgWWECOj0YUDFwSA16VZC8snaGBefg~z2oHNtaXHxHMwiJKZSQoGnmFPGfn7aG537zNBtCa34-gynVmTbUO-C3DAajiE4dUlW8TX0zhPnQws8F7qSE4T1JULX9hMHa544YWl3w__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA');
+    background: url('https://imgur.com/3ySQKGK');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -13,7 +13,6 @@
     align-items: center;
     text-align: center;
     flex-direction: column;
-    backdrop-filter: blur(2px);
 }
 
 .banner h1 { 
@@ -154,5 +153,35 @@
     box-shadow: inset 0 0 20px #080808e0, 0 0 50px #080808;
     border-bottom: 5px solid var(--dark-purple);
 }
+
+.btn-entrar {
+    background: var(--dark-purple);
+    box-shadow: inset 0 0 20px #712abd;
+    color: var(--light-gray);
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 20px;
+    border: none;
+    padding: 12px 30px;
+    cursor: pointer;
+    transition: ease-in-out .3s;
+    margin-top: 32px;
+}
+
+.btn-entrar:hover {
+    background: var(--light-gray);
+    color: var(--dark-gray);
+    box-shadow: none;
+}
+
+.presentation {
+    width: 100%;
+    height: 766px;
+}
+
+.presentation h2 {
+    color:white
+}
+
 
 
