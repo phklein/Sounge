@@ -2,15 +2,58 @@ package soungegroup.soungeapi.response;
 
 import org.springframework.beans.factory.annotation.Value;
 
-public interface UserContactResponse {
-    @Value("#{target.user_id}")
-    Long getId();
-    @Value("#{target.user_name}")
-    String getName();
-    @Value("#{target.user_photo}")
-    String getProfilePic();
-    @Value("#{target.user_leader}")
-    Boolean getLeader();
-    @Value("#{target.user_phone_number}")
-     String getPhoneNumber();
+public class UserContactResponse {
+    private Long id;
+    private String name;
+    private String profilePic;
+    private Boolean leader;
+    private String phoneNumber;
+
+    public UserContactResponse(Long id, String name, String profilePic, Boolean leader, String phoneNumber) {
+        this.id = id;
+        this.name = name;
+        this.profilePic = profilePic;
+        this.leader = leader;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    public Boolean getLeader() {
+        return leader;
+    }
+
+    public void setLeader(Boolean leader) {
+        this.leader = leader;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }
