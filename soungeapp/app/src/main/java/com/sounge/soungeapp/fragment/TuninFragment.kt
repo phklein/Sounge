@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.google.gson.reflect.TypeToken
 import com.lorentzos.flingswipe.SwipeFlingAdapterView
 import com.sounge.soungeapp.R
 import com.sounge.soungeapp.adapter.UserMatchAdapter
@@ -33,8 +34,6 @@ class TuninFragment : Fragment() {
     private lateinit var cardsList: CardsList
     private lateinit var userMatchAdapter: UserMatchAdapter
 
-    private lateinit var itemLayout: View
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,77 +52,84 @@ class TuninFragment : Fragment() {
             UserLogin::class.java
         )
 
-        println(userLogin)
+        cardsList = CardsList(GsonUtils.INSTANCE.fromJson(
+            SharedPreferencesUtils.get(
+                requireActivity(),
+                "cardMatch",
+                "card"
+            ),
+            object : TypeToken<MutableList<UserMatch>>() {}.type)
+        )
 
-        itemLayout = inflater.inflate(R.layout.item, container, false)
-
-        findCardsList()
+//        findCardsList()
+        createAdapter()
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun createAdapter() {
+//        cardsList = CardsList(mockCardsList())
+
+        userMatchAdapter = UserMatchAdapter(
+            requireActivity(),
+            R.layout.item,
+            cardsList.cards
+        )
+
+        val flingContainer: SwipeFlingAdapterView = binding.root.findViewById(R.id.frame)
+
+        flingContainer.adapter = userMatchAdapter
+
+        flingContainer.setFlingListener(object : SwipeFlingAdapterView.onFlingListener {
+            override fun removeFirstObjectInAdapter() {
+                cardsList.cards.removeAt(0)
+                userMatchAdapter.notifyDataSetChanged()
+
+                if (cardsList.cards.size == 0) {
+                    binding.tvWarningCards.text = "Lista vazia!"
+                }
+            }
+
+            override fun onLeftCardExit(dataObject: Any?) {}
+
+            override fun onRightCardExit(dataObject: Any?) {
+                val userMatch = dataObject as UserMatch
+                likeUser(userMatch.id)
+            }
+
+            override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
+                userMatchAdapter.notifyDataSetChanged()
+            }
+
+            override fun onScroll(scrollProgressPercent: Float) {}
+        })
+
+        flingContainer.setOnItemClickListener { itemPosition, dataObject ->
+            replaceFragment(
+                TuninInfoFragment(cardsList.cards[0], null, true)
+            )
+        }
+
+        binding.ivRecuseBtn.setOnClickListener {
+            flingContainer.topCardListener.selectLeft()
+        }
+
+        binding.ivMatchBtn.setOnClickListener {
+            flingContainer.topCardListener.selectRight()
+        }
     }
 
     private fun findCardsList() {
         userClient.findMatchList(userLogin.id, 1000, 0).enqueue(
-            object : retrofit2.Callback<MutableList<UserMatch>> {
+            object : retrofit2.Callback<Page<UserMatch>> {
                 override fun onResponse(
-                    call: Call<MutableList<UserMatch>>,
-                    response: Response<MutableList<UserMatch>>
+                    call: Call<Page<UserMatch>>,
+                    response: Response<Page<UserMatch>>
                 ) {
                     when (response.code()) {
                         200 -> {
-                            cardsList = CardsList(response.body()!!)
-
-                            userMatchAdapter = UserMatchAdapter(
-                                requireActivity(),
-                                R.layout.item,
-                                cardsList.cards
-                            )
-
-                            val flingContainer: SwipeFlingAdapterView = binding.root.findViewById(R.id.frame)
-
-                            flingContainer.adapter = userMatchAdapter
-
-                            flingContainer.setFlingListener(object : SwipeFlingAdapterView.onFlingListener {
-                                override fun removeFirstObjectInAdapter() {
-                                    cardsList.cards.removeAt(0)
-                                    userMatchAdapter.notifyDataSetChanged()
-
-                                    if (cardsList.cards.size == 0) {
-                                        binding.tvWarningCards.text = "Lista vazia!"
-                                    }
-                                }
-
-                                override fun onLeftCardExit(dataObject: Any?) {}
-
-                                override fun onRightCardExit(dataObject: Any?) {
-                                    val userMatch = dataObject as UserMatch
-                                    likeUser(userMatch.id)
-                                }
-
-                                override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
-                                    userMatchAdapter.notifyDataSetChanged()
-                                }
-
-                                override fun onScroll(scrollProgressPercent: Float) {}
-                            })
-
-                            flingContainer.setOnItemClickListener { itemPosition, dataObject ->
-                                replaceFragment(
-                                    TuninInfoFragment(cardsList.cards[0], null)
-                                )
-                            }
-
-                            binding.ivRecuseBtn.setOnClickListener {
-                                flingContainer.topCardListener.selectLeft()
-                            }
-
-                            binding.ivMatchBtn.setOnClickListener {
-                                flingContainer.topCardListener.selectRight()
-                            }
+                            cardsList = CardsList(response.body()!!.content)
+                            createAdapter()
                         }
                         204 -> {
                             Toast.makeText(requireActivity(), "CODE 204", Toast.LENGTH_LONG).show()
@@ -131,7 +137,7 @@ class TuninFragment : Fragment() {
                     }
                 }
 
-                override fun onFailure(call: Call<MutableList<UserMatch>>, t: Throwable) {
+                override fun onFailure(call: Call<Page<UserMatch>>, t: Throwable) {
                     Toast.makeText(
                         requireActivity(),
                         "Erro inesperado...",

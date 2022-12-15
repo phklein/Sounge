@@ -19,7 +19,8 @@ import retrofit2.Response
 
 class TuninInfoFragment(
     private val userMatch: UserMatch?,
-    private val userContactId: Long?
+    private val userContactId: Long?,
+    private val ocult: Boolean
 ) : Fragment() {
 
     private lateinit var binding: FragmentTuninInfoBinding
@@ -41,13 +42,7 @@ class TuninInfoFragment(
 
     private fun setInfoUser() {
         if (userMatch != null) {
-            binding.tvName.text = userMatch.name
-            binding.tvAge.text = userMatch.age.toString()
-            binding.tvDescription.text = userMatch.description
-
-            if (URLUtil.isValidUrl(userMatch.profilePic)) {
-                Picasso.get().load(userMatch.profilePic).into(binding.ivProfilePic)
-            }
+           setContactDetail(userMatch)
         } else {
             userClient.findContactDetails(userContactId!!).enqueue(
                 object : retrofit2.Callback<UserMatch> {
@@ -82,6 +77,16 @@ class TuninInfoFragment(
 
         if (URLUtil.isValidUrl(userContactDetail.profilePic)) {
             Picasso.get().load(userContactDetail.profilePic).into(binding.ivProfilePic)
+        }
+
+        if (ocult) {
+            binding.tvPhone.visibility = View.INVISIBLE
+            binding.ivFirstDots.visibility = View.VISIBLE
+            binding.ivSecondDots.visibility = View.VISIBLE
+        } else {
+            binding.tvPhone.text = userContactDetail.phone
+            binding.ivFirstDots.visibility = View.INVISIBLE
+            binding.ivSecondDots.visibility = View.INVISIBLE
         }
     }
 }

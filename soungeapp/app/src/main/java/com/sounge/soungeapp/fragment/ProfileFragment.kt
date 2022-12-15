@@ -29,9 +29,7 @@ import com.sounge.soungeapp.fragment.ProfileFragment.Constants.PROFILE_EDIT_REQU
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.USER_PAGE_KEY
 import com.sounge.soungeapp.fragment.ProfileFragment.Constants.VIEWER_KEY
 import com.sounge.soungeapp.listeners.PostEventListener
-import com.sounge.soungeapp.response.PostSimple
-import com.sounge.soungeapp.response.UserLogin
-import com.sounge.soungeapp.response.UserPage
+import com.sounge.soungeapp.response.*
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.GsonUtils

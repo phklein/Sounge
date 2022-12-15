@@ -88,7 +88,7 @@ class ContactFragment : Fragment() {
 
         recyclerContainer.layoutManager = LinearLayoutManager(requireActivity())
         recyclerContainer.adapter = ContactAdapter(contactList) { contact ->
-            replaceFragment(TuninInfoFragment(null, contact.id))
+            replaceFragment(TuninInfoFragment(null, contact.id, false))
         }
     }
 

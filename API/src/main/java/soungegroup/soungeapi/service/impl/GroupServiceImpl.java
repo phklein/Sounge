@@ -24,6 +24,7 @@ import soungegroup.soungeapi.service.GroupService;
 import soungegroup.soungeapi.util.LocationUtil;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -111,49 +112,19 @@ public class GroupServiceImpl implements GroupService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
-            Page<GroupMatchResponse> matchList = repository.findMatchList(
-                    user.getId(),
-                    user.getLikedUsers(),
-                    genreName.orElse(null),
-                    minSize.orElse(null),
-                    maxSize.orElse(null),
-                    missingRoleName.orElse(null),
-                    Pageable.ofSize(50).withPage(page)
+            List<GroupMatchResponse> matchList = repository.findMatchList(
+                    user.getId()
             );
 
             matchList.forEach(gp -> {
                 gp.setRolesFilled(roleRepository.findByGroupId(gp.getId()));
-                gp.setGenres(genreRepository.findByGroupId(gp.getId()));
-                gp.setLeaderDistance(locationUtil.distance(
-                        user.getLatitude(), user.getLongitude(),
-                        gp.latitude(), gp.longitude()
-                ));
-
-                // Calculate relevance, +2 if has signature
                 double relevance = gp.isLeaderHasSignature() ? 2 : 0;
-
-                // 5 - 0.20 for each km away
-                relevance += (5 - (gp.getLeaderDistance() * 0.2));
-
-                // +0.5 for each matching genre
-                relevance += 0.5 * gp.getGenres().stream().filter(g ->
-                        user.getLikedGenres().stream().anyMatch(ug ->
-                                ug.getId().equals(g.getId()))).count();
-
-                // +0.5 for each missing role that user has
-                relevance += 0.5 * user.getRoles().stream().filter(r ->
-                        gp.getRolesFilled().stream().noneMatch(rf ->
-                                rf.getId().equals(r.getId()))).count();
-
                 gp.setRelevance(relevance);
             });
 
-            matchList = new PageImpl<>(matchList.stream()
-                    .filter(u -> u.getLeaderDistance() <= maxDistance)
+            return ResponseEntity.status(200).body(new PageImpl<>(matchList.stream()
                     .sorted(Comparator.comparing(GroupMatchResponse::getRelevance).reversed())
-                    .collect(Collectors.toList()));
-
-            return ResponseEntity.status(HttpStatus.OK).body(matchList);
+                    .collect(Collectors.toList())));
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

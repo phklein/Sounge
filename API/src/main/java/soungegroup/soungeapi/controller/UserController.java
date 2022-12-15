@@ -148,7 +148,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/likeUser/{likedId}")
-    public ResponseEntity<Void> likeUser(@PathVariable Long id,
+    public ResponseEntity<Boolean> likeUser(@PathVariable Long id,
                                          @PathVariable Long likedId) {
         return service.likeUser(id, likedId);
     }
