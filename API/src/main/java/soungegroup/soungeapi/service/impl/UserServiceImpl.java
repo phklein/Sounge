@@ -210,7 +210,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Void> likeUser(Long id, Long likedId) {
+    public ResponseEntity<Boolean> likeUser(Long id, Long likedId) {
         Optional<User> likerOptional = repository.findById(id);
         Optional<User> likedOptional = repository.findById(likedId);
 
@@ -223,30 +223,8 @@ public class UserServiceImpl implements UserService {
                 liker.getRecentLikes().push(liked);
                 repository.save(liker);
 
-                if (liked.getLikedUsers().contains(liker)) {
-                    Thread notificationThread = new Thread(() -> {
-                        Notification likedNotification = new Notification();
-                        likedNotification.setType(NotificationType.MATCH);
-                        likedNotification.setSender(liker);
-                        likedNotification.setReceiver(liked);
-                        likedNotification.setCreationDateTime(LocalDateTime.now());
-                        likedNotification.setText(String.format("Você sintonizou com %s", liker.getName()));
-
-                        Notification likerNotification = new Notification();
-                        likerNotification.setType(NotificationType.MATCH);
-                        likerNotification.setSender(liked);
-                        likerNotification.setReceiver(liker);
-                        likerNotification.setCreationDateTime(LocalDateTime.now());
-                        likerNotification.setText(String.format("Você sintonizou com %s", liked.getName()));
-
-                        notificationRepository.save(likedNotification);
-                        notificationRepository.save(likerNotification);
-                    });
-
-                    notificationThread.start();
-                }
-
-                return ResponseEntity.status(HttpStatus.CREATED).build();
+                boolean match = liked.getLikedUsers().contains(liker);
+                return ResponseEntity.status(HttpStatus.CREATED).body(match);
             }
 
             return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
