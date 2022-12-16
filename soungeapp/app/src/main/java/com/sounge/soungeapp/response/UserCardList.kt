@@ -1,5 +1,5 @@
 package com.sounge.soungeapp.response
 
-data class CardsList(
+data class UserCardList(
     var cards: MutableList<UserMatch>
 )

@@ -11,7 +11,7 @@ data class UserMatch(
     var id: Long,
     var name: String,
     var profilePic: String,
-    var isLeader: Boolean,
+    var leader: Boolean,
     var sex: Sex,
     var state: State,
     var city: String,

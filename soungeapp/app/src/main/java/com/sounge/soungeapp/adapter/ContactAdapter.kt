@@ -31,7 +31,7 @@ class ContactAdapter(
             if (URLUtil.isValidUrl(item.profilePic)) {
                 Picasso.get().load(item.profilePic).into(civProfilePic)
             } else {
-                civProfilePic.visibility = View.GONE
+                Picasso.get().load(R.drawable.ic_blank_profile).into(civProfilePic)
             }
 
             llContact.setOnClickListener {

@@ -3,6 +3,7 @@ import http from '../http-commn'
 
 import IGroupRequestDto from '../dto/request/GroupRequestDto'
 import GroupMatchResponseDto from '../dto/response/GroupMatchResponseDto'
+import { vi } from 'date-fns/locale'
 
 const save = (data: any) => {
     return http.post<any>("/groups", data)
@@ -16,8 +17,10 @@ const deleteGroupById = (idGroup: number) => {
     return http.delete<void>(`/groups/${idGroup}`)
 }
 
-const getGroupPageById = (idGroup: number) => {
-    return http.get<any>(`/groups/${idGroup}`)
+const getGroupPageById = (idGroup: number, viewerId: number) => {
+    return http.get<any>(`/groups/${idGroup}`, {
+        params: viewerId
+    })
 }
 
 const changeGroupImages = (idGroup: number, data: any) => {
@@ -25,7 +28,7 @@ const changeGroupImages = (idGroup: number, data: any) => {
 }
 
 const getMatchList = (parameters: any) => {
-    return http.get<Array<GroupMatchResponseDto>>(`/groups/match`, {
+    return http.get<Array<GroupMatchResponseDto>>(`/groups/match?page=0`, {
         params: parameters
     })
 }

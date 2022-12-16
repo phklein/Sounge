@@ -51,7 +51,7 @@ const updatePicture = (id: any, data: PictureUpdateRequestDto) => {
 }
 
 const getMatchList = (parameters: any) => {
-    return http.get<Array<UserMatchResponseDto>>(`/users/${parameters.id}/match`, { 
+    return http.get<Array<UserMatchResponseDto>>(`/users/${parameters.id}/match?page=0`, { 
         params: parameters
     })
 }

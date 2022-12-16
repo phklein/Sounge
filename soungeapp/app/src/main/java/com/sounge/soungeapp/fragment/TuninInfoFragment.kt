@@ -8,6 +8,7 @@ import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.sounge.soungeapp.databinding.FragmentTuninInfoBinding
+import com.sounge.soungeapp.response.GroupMatch
 import com.sounge.soungeapp.response.UserContact
 import com.sounge.soungeapp.response.UserMatch
 import com.sounge.soungeapp.rest.Retrofit
@@ -19,6 +20,7 @@ import retrofit2.Response
 
 class TuninInfoFragment(
     private val userMatch: UserMatch?,
+    private val groupMatch: GroupMatch?,
     private val userContactId: Long?,
     private val ocult: Boolean
 ) : Fragment() {
@@ -41,8 +43,11 @@ class TuninInfoFragment(
     }
 
     private fun setInfoUser() {
-        if (userMatch != null) {
-           setContactDetail(userMatch)
+        if (userMatch != null && groupMatch == null) {
+            setContactDetail(userMatch, "user")
+        } else
+        if (groupMatch != null && userMatch == null) {
+            setContactDetail(groupMatch, "group")
         } else {
             userClient.findContactDetails(userContactId!!).enqueue(
                 object : retrofit2.Callback<UserMatch> {
@@ -51,7 +56,7 @@ class TuninInfoFragment(
                         response: Response<UserMatch>
                     ) {
                         if (response.code() == 200) {
-                            setContactDetail(response.body()!!)
+                            setContactDetail(response.body()!!, "user")
                         }
                     }
 
@@ -70,23 +75,41 @@ class TuninInfoFragment(
         }
     }
 
-    private fun setContactDetail(userContactDetail: UserMatch) {
-        binding.tvName.text = userContactDetail.name
-        binding.tvAge.text = userContactDetail.age.toString()
-        binding.tvDescription.text = userContactDetail.description
+    private fun setContactDetail(dataObject: Any?, type: String) {
+        if (type == "user") {
+            val userContactDetail = dataObject as UserMatch
 
-        if (URLUtil.isValidUrl(userContactDetail.profilePic)) {
-            Picasso.get().load(userContactDetail.profilePic).into(binding.ivProfilePic)
-        }
+            binding.tvName.text = userContactDetail.name
+            binding.tvAge.text = userContactDetail.age.toString()
+            binding.tvDescription.text = userContactDetail.description
 
-        if (ocult) {
-            binding.tvPhone.visibility = View.INVISIBLE
+            if (URLUtil.isValidUrl(userContactDetail.profilePic)) {
+                Picasso.get().load(userContactDetail.profilePic).into(binding.ivProfilePic)
+            }
+
+            if (ocult) {
+                binding.tvPhone.visibility = View.INVISIBLE
+                binding.ivFirstDots.visibility = View.VISIBLE
+                binding.ivSecondDots.visibility = View.VISIBLE
+            } else {
+                binding.tvPhone.text = userContactDetail.phone
+                binding.ivFirstDots.visibility = View.INVISIBLE
+                binding.ivSecondDots.visibility = View.INVISIBLE
+            }
+        } else {
+            val groupContactDetail = dataObject as GroupMatch
+
+            binding.tvName.text = groupContactDetail.name
+            binding.tvAge.text = groupContactDetail.age.toString()
+            binding.tvDescription.text = groupContactDetail.description
+
+            if (URLUtil.isValidUrl(groupContactDetail.profilePic)) {
+                Picasso.get().load(groupContactDetail.profilePic).into(binding.ivProfilePic)
+            }
+
             binding.ivFirstDots.visibility = View.VISIBLE
             binding.ivSecondDots.visibility = View.VISIBLE
-        } else {
-            binding.tvPhone.text = userContactDetail.phone
-            binding.ivFirstDots.visibility = View.INVISIBLE
-            binding.ivSecondDots.visibility = View.INVISIBLE
+            binding.tvPhone.visibility = View.INVISIBLE
         }
     }
 }

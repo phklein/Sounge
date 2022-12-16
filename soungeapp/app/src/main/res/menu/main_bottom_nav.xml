@@ -13,10 +13,6 @@
         android:icon="@drawable/ic_match"
         tools:ignore="MenuTitle" />
 
-    <item android:id="@+id/mi_notifications"
-        android:icon="@drawable/ic_notification"
-        tools:ignore="MenuTitle" />
-
     <item android:id="@+id/mi_profile"
         android:icon="@drawable/ic_profile"
         tools:ignore="MenuTitle" />

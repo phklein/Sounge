@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.gson.reflect.TypeToken
 import com.lorentzos.flingswipe.SwipeFlingAdapterView
 import com.sounge.soungeapp.R
+import com.sounge.soungeapp.adapter.GroupMatchAdapter
 import com.sounge.soungeapp.adapter.UserMatchAdapter
 import com.sounge.soungeapp.databinding.FragmentTuninBinding
 import com.sounge.soungeapp.enums.*
@@ -30,9 +31,12 @@ class TuninFragment : Fragment() {
     private lateinit var userClient: UserClient
 
     private lateinit var userLogin: UserLogin
+    private lateinit var user: UserMatch
 
-    private lateinit var cardsList: CardsList
+    private lateinit var userCardList: UserCardList
+    private lateinit var groupCardList: GroupCardList
     private lateinit var userMatchAdapter: UserMatchAdapter
+    private lateinit var groupMatchAdapter: GroupMatchAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,132 +56,308 @@ class TuninFragment : Fragment() {
             UserLogin::class.java
         )
 
-        cardsList = CardsList(GsonUtils.INSTANCE.fromJson(
+        user = GsonUtils.INSTANCE.fromJson(
             SharedPreferencesUtils.get(
                 requireActivity(),
-                "cardMatch",
-                "card"
+                "userLog",
+                "user"
             ),
-            object : TypeToken<MutableList<UserMatch>>() {}.type)
+            UserMatch::class.java
         )
 
-//        findCardsList()
-        createAdapter()
+        if (user.leader == true) {
+            groupCardList = GroupCardList(mutableListOf())
+            userCardList = UserCardList(GsonUtils.INSTANCE.fromJson(
+                SharedPreferencesUtils.get(
+                    requireActivity(),
+                    "userCardMatch",
+                    "userCard"
+                ),
+                object : TypeToken<MutableList<UserMatch>>() {}.type)
+            )
+
+            createAdapter("users")
+        } else if (user.leader == false) {
+            userCardList = UserCardList(mutableListOf())
+            groupCardList = GroupCardList(GsonUtils.INSTANCE.fromJson(
+                SharedPreferencesUtils.get(
+                    requireActivity(),
+                    "groupCardMatch",
+                    "groupCard"
+                ),
+                object : TypeToken<MutableList<GroupMatch>>() {}.type)
+            )
+
+            createAdapter("groups")
+        }
 
         return binding.root
     }
 
-    private fun createAdapter() {
-//        cardsList = CardsList(mockCardsList())
-
-        userMatchAdapter = UserMatchAdapter(
-            requireActivity(),
-            R.layout.item,
-            cardsList.cards
-        )
-
+    private fun createAdapter(typeFind: String) {
         val flingContainer: SwipeFlingAdapterView = binding.root.findViewById(R.id.frame)
 
-        flingContainer.adapter = userMatchAdapter
+        if (typeFind == "users") {
+            groupMatchAdapter = GroupMatchAdapter(requireActivity(), R.layout.item, mutableListOf())
+            userMatchAdapter = UserMatchAdapter(
+                requireActivity(),
+                R.layout.item,
+                userCardList.cards
+            )
 
-        flingContainer.setFlingListener(object : SwipeFlingAdapterView.onFlingListener {
-            override fun removeFirstObjectInAdapter() {
-                cardsList.cards.removeAt(0)
-                userMatchAdapter.notifyDataSetChanged()
+            flingContainer.adapter = userMatchAdapter
 
-                if (cardsList.cards.size == 0) {
-                    binding.tvWarningCards.text = "Lista vazia!"
+            flingContainer.setFlingListener(object : SwipeFlingAdapterView.onFlingListener {
+                override fun removeFirstObjectInAdapter() {
+                    userCardList.cards.removeAt(0)
+                    userMatchAdapter.notifyDataSetChanged()
+
+                    if (userCardList.cards.size == 0) {
+                        binding.tvWarningCards.text = "Lista vazia!"
+                    }
                 }
+
+                override fun onLeftCardExit(dataObject: Any?) {
+//                    unlikeUser(dataObject, "user")
+                }
+
+                override fun onRightCardExit(dataObject: Any?) {
+                    likeUser(dataObject, "user")
+                }
+
+                override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
+                    userMatchAdapter.notifyDataSetChanged()
+                }
+
+                override fun onScroll(scrollProgressPercent: Float) {}
+            })
+
+            flingContainer.setOnItemClickListener { itemPosition, dataObject ->
+                replaceFragment(
+                    TuninInfoFragment(
+                        userCardList.cards[0],
+                        null,
+                        null,
+                        true
+                    )
+                )
             }
 
-            override fun onLeftCardExit(dataObject: Any?) {}
-
-            override fun onRightCardExit(dataObject: Any?) {
-                val userMatch = dataObject as UserMatch
-                likeUser(userMatch.id)
+            binding.ivRecuseBtn.setOnClickListener {
+                flingContainer.topCardListener.selectLeft()
             }
 
-            override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
-                userMatchAdapter.notifyDataSetChanged()
+            binding.ivMatchBtn.setOnClickListener {
+                flingContainer.topCardListener.selectRight()
+            }
+        } else if (typeFind == "groups") {
+            userMatchAdapter = UserMatchAdapter(requireActivity(), R.layout.item, mutableListOf())
+            groupMatchAdapter = GroupMatchAdapter(
+                requireActivity(),
+                R.layout.item,
+                groupCardList.cards
+            )
+
+            flingContainer.adapter = groupMatchAdapter
+
+            flingContainer.setFlingListener(object : SwipeFlingAdapterView.onFlingListener {
+                override fun removeFirstObjectInAdapter() {
+                    groupCardList.cards.removeAt(0)
+                    groupMatchAdapter.notifyDataSetChanged()
+
+                    if (groupCardList.cards.size == 0) {
+                        binding.tvWarningCards.text = "Lista vazia!"
+                    }
+                }
+
+                override fun onLeftCardExit(dataObject: Any?) {
+//                    unlikeUser(dataObject, "group")
+                }
+
+                override fun onRightCardExit(dataObject: Any?) {
+                    likeUser(dataObject, "group")
+                }
+
+                override fun onAdapterAboutToEmpty(itemsInAdapter: Int) {
+                    groupMatchAdapter.notifyDataSetChanged()
+                }
+
+                override fun onScroll(scrollProgressPercent: Float) {}
+            })
+
+            flingContainer.setOnItemClickListener { itemPosition, dataObject ->
+                replaceFragment(
+                    TuninInfoFragment(
+                        null,
+                        groupCardList.cards[0],
+                        null,
+                        true
+                    )
+                )
             }
 
-            override fun onScroll(scrollProgressPercent: Float) {}
-        })
+            binding.ivRecuseBtn.setOnClickListener {
+                flingContainer.topCardListener.selectLeft()
+            }
 
-        flingContainer.setOnItemClickListener { itemPosition, dataObject ->
-            replaceFragment(
-                TuninInfoFragment(cardsList.cards[0], null, true)
+            binding.ivMatchBtn.setOnClickListener {
+                flingContainer.topCardListener.selectRight()
+            }
+        }
+    }
+
+    private fun unlikeUser(dataObject: Any?, type: String) {
+        if (type == "user") {
+            val userMatch = dataObject as UserMatch
+
+            userClient.unlikeUser(userLogin.id, userMatch.id).enqueue(
+                object : retrofit2.Callback<ResponseBody> {
+                    override fun onResponse(
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
+                    ) {
+                        when (response.code()) {
+                            404 -> Toast.makeText(
+                                requireActivity(),
+                                "Erro ao procurar usuário",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            405 -> Toast.makeText(
+                                requireActivity(),
+                                "Erro ao processar deslike",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(
+                            requireActivity(),
+                            "Erro inesperado",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            )
+        } else {
+            val groupMatch = dataObject as GroupMatch
+
+            userClient.unlikeUser(userLogin.id, groupMatch.leaderId).enqueue(
+                object : retrofit2.Callback<ResponseBody> {
+                    override fun onResponse(
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
+                    ) {
+                        when (response.code()) {
+                            404 -> Toast.makeText(
+                                requireActivity(),
+                                "Erro ao procurar usuário",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            405 -> Toast.makeText(
+                                requireActivity(),
+                                "Erro ao processar deslike",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        Toast.makeText(
+                            requireActivity(),
+                            "Erro inesperado",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             )
         }
-
-        binding.ivRecuseBtn.setOnClickListener {
-            flingContainer.topCardListener.selectLeft()
-        }
-
-        binding.ivMatchBtn.setOnClickListener {
-            flingContainer.topCardListener.selectRight()
-        }
     }
 
-    private fun findCardsList() {
-        userClient.findMatchList(userLogin.id, 1000, 0).enqueue(
-            object : retrofit2.Callback<Page<UserMatch>> {
-                override fun onResponse(
-                    call: Call<Page<UserMatch>>,
-                    response: Response<Page<UserMatch>>
-                ) {
-                    when (response.code()) {
-                        200 -> {
-                            cardsList = CardsList(response.body()!!.content)
-                            createAdapter()
-                        }
-                        204 -> {
-                            Toast.makeText(requireActivity(), "CODE 204", Toast.LENGTH_LONG).show()
+    private fun likeUser(dataObject: Any?, type: String) {
+        if (type == "user") {
+            val userMatch = dataObject as UserMatch
+
+            userClient.likeUser(userLogin.id, userMatch.id).enqueue(
+                object : retrofit2.Callback<Boolean> {
+                    override fun onResponse(
+                        call: Call<Boolean>,
+                        response: Response<Boolean>
+                    ) {
+                        when (response.code()) {
+                            201 -> {
+                                if (response.body()!!) {
+                                    Toast.makeText(
+                                        requireActivity(),
+                                        "Parabéns, Você está sintonizado(a) com o(a) ${userMatch.name}!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                            404 -> Toast.makeText(
+                                requireActivity(),
+                                "Erro ao procurar usuário",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            405 -> Toast.makeText(
+                                requireActivity(),
+                                "Erro ao processar like",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<Page<UserMatch>>, t: Throwable) {
-                    Toast.makeText(
-                        requireActivity(),
-                        "Erro inesperado...",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-        )
-    }
-
-    private fun likeUser(likedId: Long) {
-        userClient.likeUser(userLogin.id, likedId).enqueue(
-            object : retrofit2.Callback<ResponseBody> {
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    when (response.code()) {
-                        404 -> Toast.makeText(
+                    override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                        Toast.makeText(
                             requireActivity(),
-                            "Erro ao procurar usuário",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        405 -> Toast.makeText(
-                            requireActivity(),
-                            "Erro ao processar like",
+                            "Erro inesperado",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
+            )
+        } else {
+            val groupMatch = dataObject as GroupMatch
 
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Toast.makeText(
-                        requireActivity(),
-                        "Erro inesperado",
-                        Toast.LENGTH_SHORT
-                    ).show()
+            userClient.likeUser(userLogin.id, groupMatch.leaderId).enqueue(
+                object : retrofit2.Callback<Boolean> {
+                    override fun onResponse(
+                        call: Call<Boolean>,
+                        response: Response<Boolean>
+                    ) {
+                        when (response.code()) {
+                            201 -> {
+                                if (response.body()!!) {
+                                    Toast.makeText(
+                                        requireActivity(),
+                                        "Parabéns, Você está sintonizado(a) com a banda ${groupMatch.name}!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                            404 -> Toast.makeText(
+                                requireActivity(),
+                                "Erro ao procurar usuário",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            405 -> Toast.makeText(
+                                requireActivity(),
+                                "Erro ao processar like",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                        Toast.makeText(
+                            requireActivity(),
+                            "Erro inesperado",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -198,7 +378,7 @@ class TuninFragment : Fragment() {
                 UserMatch(
                     1,
                     "Daniel do Rock",
-                    "https://veja.abril.com.br/wp-content/uploads/2016/06/alx_maria_bethania3_original.jpeg",
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0QQDZiJHvjPBEHdxr0Cg8ar0pLHw61eO7QQ&usqp=CAU",
                     false,
                     Sex.MALE,
                     State.SP,

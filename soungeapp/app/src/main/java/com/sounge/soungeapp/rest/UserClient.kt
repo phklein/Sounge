@@ -77,11 +77,17 @@ interface UserClient {
         @Query("page") page: Int
     ): Call<Page<UserMatch>>
 
-    @POST("/{id}/likeUser/{likedId}")
-    fun likeUser(
+    @DELETE("/users/{id}/likeUser/{likedId}")
+    fun unlikeUser(
         @Path("id") id: Long,
         @Path("likedId") likedId: Long
     ): Call<ResponseBody>
+
+    @POST("/users/{id}/likeUser/{likedId}")
+    fun likeUser(
+        @Path("id") id: Long,
+        @Path("likedId") likedId: Long
+    ): Call<Boolean>
 
     @GET("/users/{id}/contacts/details")
     fun findContactDetails(
@@ -92,6 +98,6 @@ interface UserClient {
     fun findContactList(
         @Path("id") id: Long,
         @Query("page") page: Int
-    ): Call<MutableList<UserContact>>
+    ): Call<Page<UserContact>>
 
 }

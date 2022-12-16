@@ -12,17 +12,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.sounge.soungeapp.R;
-import com.sounge.soungeapp.response.UserMatch;
+import com.sounge.soungeapp.response.GroupMatch;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class UserMatchAdapter extends ArrayAdapter<UserMatch> {
+public class GroupMatchAdapter extends ArrayAdapter<GroupMatch> {
 
     private Context context;
-    private List<UserMatch> items;
+    private List<GroupMatch> items;
 
-    public UserMatchAdapter(@NonNull Context context, int resource, List<UserMatch> objects) {
+    public GroupMatchAdapter(@NonNull Context context, int resource, List<GroupMatch> objects) {
         super(context, resource, objects);
         items = objects;
     }
@@ -36,14 +36,14 @@ public class UserMatchAdapter extends ArrayAdapter<UserMatch> {
         }
     }
 
-    public void updateItemList(List<UserMatch> newlist) {
+    public void updateItemList(List<GroupMatch> newlist) {
         items.clear();
         items.addAll(newlist);
         this.notifyDataSetChanged();
     }
 
     public View getView(int position, View convertView, ViewGroup parent){
-        UserMatch card_item = getItem(position);
+        GroupMatch card_item = getItem(position);
 
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
@@ -57,17 +57,17 @@ public class UserMatchAdapter extends ArrayAdapter<UserMatch> {
         firstTalent.setVisibility(View.VISIBLE);
         secondTalent.setVisibility(View.VISIBLE);
 
-        if (card_item.getRoles().size() == 0) {
-            firstTalent.setVisibility(View.INVISIBLE);
-            secondTalent.setVisibility(View.INVISIBLE);
-        } else
-        if (card_item.getRoles().size() == 1) {
-            firstTalent.setText(card_item.getRoles().get(0).getName().getS());
-            secondTalent.setVisibility(View.INVISIBLE);
-        } else {
-            firstTalent.setText(card_item.getRoles().get(0).getName().getS());
-            secondTalent.setText(card_item.getRoles().get(1).getName().getS());
-        }
+//        if (card_item.getRolesFilled().size() == 0) {
+//            firstTalent.setVisibility(View.INVISIBLE);
+//            secondTalent.setVisibility(View.INVISIBLE);
+//        } else
+//        if (card_item.getRolesFilled().size() == 1) {
+//            firstTalent.setText(card_item.getRolesFilled().get(0).getName().getS());
+//            secondTalent.setVisibility(View.INVISIBLE);
+//        } else {
+//            firstTalent.setText(card_item.getRolesFilled().get(0).getName().getS());
+//            secondTalent.setText(card_item.getRolesFilled().get(1).getName().getS());
+//        }
 
         name.setText(card_item.getName());
 

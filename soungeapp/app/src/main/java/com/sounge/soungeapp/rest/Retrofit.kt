@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit
 
 object Retrofit {
     private const val BASE_URL = "http://10.0.2.2:8082/"
+//    private const val BASE_URL = "http://192.168.17.106:8082"
     val baseApiIBGE = "https://servicodados.ibge.gov.br"
 
     fun getInstance() : Retrofit {

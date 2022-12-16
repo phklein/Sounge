@@ -9,7 +9,7 @@
     android:paddingLeft="10dp">
 
     <ImageView
-        android:id="@+id/ivProfilePicc"
+        android:id="@+id/ivImageUserMatch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"

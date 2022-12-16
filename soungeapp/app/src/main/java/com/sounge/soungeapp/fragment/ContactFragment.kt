@@ -56,21 +56,21 @@ class ContactFragment : Fragment() {
 
     private fun findContactList() {
         userClient.findContactList(userLogin.id, 0).enqueue(
-            object : retrofit2.Callback<MutableList<UserContact>> {
+            object : retrofit2.Callback<Page<UserContact>> {
                 override fun onResponse(
-                    call: Call<MutableList<UserContact>>,
-                    response: Response<MutableList<UserContact>>
+                    call: Call<Page<UserContact>>,
+                    response: Response<Page<UserContact>>
                 ) {
                     when (response.code()) {
                         200 ->  {
-                            contactList = response.body()!!
+                            contactList = response.body()!!.content
                             setupRecyclerView()
                         }
                     }
                 }
 
                 override fun onFailure(
-                    call: Call<MutableList<UserContact>>,
+                    call: Call<Page<UserContact>>,
                     t: Throwable
                 ) {
                     Toast.makeText(
@@ -88,7 +88,7 @@ class ContactFragment : Fragment() {
 
         recyclerContainer.layoutManager = LinearLayoutManager(requireActivity())
         recyclerContainer.adapter = ContactAdapter(contactList) { contact ->
-            replaceFragment(TuninInfoFragment(null, contact.id, false))
+            replaceFragment(TuninInfoFragment(null, null, contact.id, false))
         }
     }
 

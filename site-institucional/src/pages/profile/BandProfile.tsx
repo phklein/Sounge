@@ -317,32 +317,35 @@ const BandProfile = () => {
   const getProfileBandData = async (bandId: number) => {
     try {
       setLoadingProfileBandData(true);
-      const response = await GroupService.getGroupPageById(bandId);
-      const formatedProfileIntroMembers = response.data.users
-        .map((user: any) => ({
-          imageSrc: user.profilePic,
-          name: user.name,
-          role: "",
-          leader: user.leader,
-          userId: user.id,
-        }))
-        .sort((a: any, b: any) => {
-          if (a.leader < b.leader) return 1;
-          if (a.leader > b.leader) return -1;
-          if (a.leader === b.leader) return 0;
-        });
-      setProfileBandData({
-        profileHighlight: {
-          bannerSrc: response.data.banner,
-          avatarSrc: response.data.pictureUrl,
-          userInfo: {
-            name: response.data.name,
-            description: response.data.description,
+      const viewerId = localStorage.getItem("viewerId") || null;
+      if (viewerId) {
+        const response = await GroupService.getGroupPageById(bandId, Number.parseInt(viewerId));
+        const formatedProfileIntroMembers = response.data.users
+          .map((user: any) => ({
+            imageSrc: user.profilePic,
+            name: user.name,
+            role: "",
+            leader: user.leader,
+            userId: user.id,
+          }))
+          .sort((a: any, b: any) => {
+            if (a.leader < b.leader) return 1;
+            if (a.leader > b.leader) return -1;
+            if (a.leader === b.leader) return 0;
+          });
+        setProfileBandData({
+          profileHighlight: {
+            bannerSrc: response.data.banner,
+            avatarSrc: response.data.pictureUrl,
+            userInfo: {
+              name: response.data.name,
+              description: response.data.description,
+            },
           },
-        },
-        profileIntroMembers: formatedProfileIntroMembers,
-        groupId: response.data.id,
-      });
+          profileIntroMembers: formatedProfileIntroMembers,
+          groupId: response.data.id,
+        });
+      }
     } catch (err: any) {
       console.log(err);
     } finally {

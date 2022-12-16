@@ -9,10 +9,8 @@ import com.sounge.soungeapp.R
 import com.sounge.soungeapp.actitivy.MainActivity.Constants.PROFILE_OWNER_ID_KEY
 import com.sounge.soungeapp.databinding.ActivityMainBinding
 import com.sounge.soungeapp.fragment.*
-import com.sounge.soungeapp.response.CardsList
-import com.sounge.soungeapp.response.Page
-import com.sounge.soungeapp.response.UserLogin
-import com.sounge.soungeapp.response.UserMatch
+import com.sounge.soungeapp.response.*
+import com.sounge.soungeapp.rest.GroupClient
 import com.sounge.soungeapp.rest.Retrofit
 import com.sounge.soungeapp.rest.UserClient
 import com.sounge.soungeapp.utils.GsonUtils
@@ -25,9 +23,13 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var cardsList: CardsList
+    private lateinit var userCardList: UserCardList
+    private lateinit var groupCardList: GroupCardList
 
     private lateinit var userClient: UserClient
+    private lateinit var groupClient: GroupClient
+
+    private lateinit var user: UserMatch
 
     private lateinit var viewer: UserLogin
 
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         userClient = Retrofit.getInstance().create(UserClient::class.java)
+        groupClient = Retrofit.getInstance().create(GroupClient::class.java)
         setContentView(binding.root)
         setupActionBar()
 
@@ -50,6 +53,9 @@ class MainActivity : AppCompatActivity() {
             UserLogin::class.java
         )
 
+        findUserById()
+
+        findCardsGroupList(viewer.id)
         findCardsList(viewer.id)
 
         replaceFragment(FeedFragment())
@@ -58,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         binding.bnvMain.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.mi_home -> replaceFragment(FeedFragment())
-                R.id.mi_search -> replaceFragment(ProfileFragment())
+                R.id.mi_search -> replaceFragment(ContactFragment())
                 R.id.mi_match -> {
                     val args = Bundle()
                     args.putLong(PROFILE_OWNER_ID_KEY, viewer.id)
@@ -68,7 +74,6 @@ class MainActivity : AppCompatActivity() {
                     
                     replaceFragment(fragment)
                 }
-                R.id.mi_notifications -> replaceFragment(ProfileFragment())
                 R.id.mi_profile -> {
                     val args = Bundle()
                     args.putLong(PROFILE_OWNER_ID_KEY, viewer.id)
@@ -82,6 +87,33 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+    }
+
+    private fun findUserById() {
+        userClient.findContactDetails(viewer.id).enqueue(
+            object : retrofit2.Callback<UserMatch> {
+                override fun onResponse(call: Call<UserMatch>, response: Response<UserMatch>) {
+                   if (response.code() == 200) {
+                       user = response.body()!!
+                       println("é lider: ${user.leader}")
+                       SharedPreferencesUtils.put(
+                           this@MainActivity,
+                           "userLog",
+                           "user",
+                           GsonUtils.INSTANCE.toJson(user)
+                       )
+                   }
+                }
+
+                override fun onFailure(call: Call<UserMatch>, t: Throwable) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Erro inesperado...",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        )
     }
 
     private fun setupActionBar() {
@@ -120,18 +152,63 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     when (response.code()) {
                         200 -> {
-                            cardsList = CardsList(response.body()!!.content)
+                            userCardList = UserCardList(response.body()!!.content)
                             SharedPreferencesUtils.put(
-                                this@MainActivity, "cardMatch", "card", GsonUtils.INSTANCE.toJson(cardsList.cards)
+                                this@MainActivity,
+                                "userCardMatch",
+                                "userCard",
+                                GsonUtils.INSTANCE.toJson(userCardList.cards)
                             )
                         }
                         204 -> {
-                            Toast.makeText(this@MainActivity, "CODE 204", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this@MainActivity,
+                                "CODE 204",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<Page<UserMatch>>, t: Throwable) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Erro inesperado...",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        )
+    }
+
+    private fun findCardsGroupList(ownerId: Long) {
+        groupClient.findGroupMatchList(ownerId, 1000, 0).enqueue(
+            object : retrofit2.Callback<Page<GroupMatch>> {
+                override fun onResponse(
+                    call: Call<Page<GroupMatch>>,
+                    response: Response<Page<GroupMatch>>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            groupCardList = GroupCardList(response.body()!!.content)
+                            SharedPreferencesUtils.put(
+                                this@MainActivity,
+                                "groupCardMatch",
+                                "groupCard",
+                                GsonUtils.INSTANCE.toJson(groupCardList.cards)
+                            )
+                        }
+                        204 -> {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "CODE 204",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<Page<GroupMatch>>, t: Throwable) {
                     Toast.makeText(
                         this@MainActivity,
                         "Erro inesperado...",
